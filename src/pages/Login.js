@@ -56,7 +56,7 @@ const Login = props => {
 
         <div className='items-center mx-8'>
           <div className='flex space-x-2'>
-            <h1 className='text-4xl font-semibold'>¡Bienvenido de nuevo!</h1>
+            <h1 className='text-4xl font-semibold'>¡Bienvenido!</h1>
             <ICONS.SparklesIconS className='h-10 pr-20 mt-0 md:mt-1 text-blue-600' />
           </div>
           {/* EMAIL */}
