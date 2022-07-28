@@ -27,6 +27,7 @@ const Login = props => {
       await props.UserLogin(obj)
       token = window.localStorage.getItem('token')
       tipo = window.localStorage.getItem('tipo')
+      console.log(token, tipo)
       if (token) {
         if (tipo === '1') {
           navigate('/dashboard') //admin

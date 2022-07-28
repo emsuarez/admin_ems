@@ -4,10 +4,10 @@ import authImage from '../assets/auth-image.jpg'
 import authDecorator from '../assets/auth-decoration.png'
 import logo from '../assets/logo.png'
 import { Route, useNavigate, Navigate } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { UserRegister } from '../store/actions'
 import { RedirectWithLogin, Toast } from '../components'
-// import { getTiposUsuarioAction } from '../store/actions'
+import { getTiposUsuarioAction } from '../store/actions'
 
 const Registration = props => {
   const [usuario, setUsuario] = useState()
@@ -18,33 +18,17 @@ const Registration = props => {
   const [confirmPassword, setConfirmPassword] = useState()
   const [tipo, setTipo] = useState(0)
 
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   const cargarDataNivelUsuario = () => dispatch(getTiposUsuarioAction())
+  useEffect(() => {
+    const cargarDataNivelUsuario = () => dispatch(getTiposUsuarioAction())
 
-  //   cargarDataNivelUsuario()
-  // }, [])
+    cargarDataNivelUsuario()
+  }, [])
 
-  const dataNivelUsuario = [
-    {
-      id: 1,
-      title: 'Administrador',
-    },
-    {
-      id: 2,
-      title: 'Supervidor CCTV',
-    },
-    {
-      id: 3,
-      title: 'Supervisor TRS',
-    },
-  ]
+  const roles = useSelector(state => state.auth.roles)
 
   let navigate = useNavigate()
-
-  //   var token
-  //   var tipo
 
   const handleRegister = async dispatch => {
     const obj = {
@@ -55,14 +39,15 @@ const Registration = props => {
       contraseña,
       tipo,
     }
+
     if (usuario && contraseña && nombres && apellidos && email) {
       if (contraseña !== confirmPassword) {
-        alert('[ERROR]. Password dont match!')
+        alert('[ERROR]. Las contraseñas no coinciden!')
       } else {
         props.UserRegister(obj)
       }
     } else {
-      alert('[ERROR]. Fill all Fields')
+      alert('[ERROR]. Llene todos los campos!')
     }
   }
 
@@ -143,21 +128,23 @@ const Registration = props => {
             </div>
 
             {/* Select Nivel de Usuario */}
-            <div className='mt-5'>
-              <p className='font-medium'>Nivel de Usuario</p>
-              <select
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
-                id={tipo}
-                value={tipo}
-                onChange={item => setTipo(item.target.value)}
-              >
-                {dataNivelUsuario.map(nivelUser => (
-                  <option key={nivelUser.id} value={nivelUser.id}>
-                    {nivelUser.title}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {roles.length === 0 ? null : (
+              <div className='mt-5'>
+                <p className='font-medium'>Nivel de Usuario</p>
+                <select
+                  className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
+                  id={tipo}
+                  value={tipo}
+                  onChange={item => setTipo(item.target.value)}
+                >
+                  {roles.map(nivelUser => (
+                    <option key={nivelUser.id} value={nivelUser.id}>
+                      {nivelUser.rol}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
 
           <div className='space-x-3 mt-5 flex flex-row items-center'>

@@ -4,6 +4,7 @@ import { types } from '../actionTypes'
 const initialState = {
   isLoading: false,
   user: {},
+  roles: [],
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -24,10 +25,11 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.GET_TIPOUSER_START:
-      return { ...state, isLoading: payload }
-    // case types.GET_TIPOUSER_SUCCESS:
-    //   return { ...state, isLoading: false, user: payload }
-
+      return { ...state, isLoading: true }
+    case types.GET_TIPOUSER_SUCCESS:
+      return { ...state, isLoading: false, roles: payload }
+    case types.GET_TIPOUSER_FAILED:
+      return { ...state, isLoading: false }
     default:
       return state
   }

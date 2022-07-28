@@ -3,6 +3,7 @@ import { httpRequest } from '../../config'
 import qs from 'qs'
 import { setToast } from './ToastAction'
 import ProgressBar from '@badrap/bar-of-progress'
+import { Navigate } from 'react-router-dom'
 
 export const UserLogin = data => async dispatch => {
   var response
@@ -18,13 +19,12 @@ export const UserLogin = data => async dispatch => {
       headers: { 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log(result.userData)
 
     if (result.message === 'Bienvenido a Emsecor') {
       window.localStorage.setItem('token', result.userData.token)
       window.localStorage.setItem('userid', result.userData.user_id)
-      window.localStorage.setItem('tipo', 3)
-      console.log('test ', window.localStorage.getItem('token'))
+      window.localStorage.setItem('tipo', result.userData.tipo)
+
       dispatch(setToast('success', result.message))
       progress.finish()
       dispatch({ type: types.LOGIN_SUCCESS, payload: result })
@@ -79,9 +79,10 @@ export const UserRegister = data => async dispatch => {
 
     // }
     // else if(result.message){
+
     progress.finish()
-    dispatch({ type: types.REGISTER_FAILED })
-    dispatch(setToast('error', result.message))
+    // dispatch({ type: types.REGISTER_FAILED })
+    // dispatch(setToast('error', result.message))
 
     // }
   } catch (error) {
@@ -102,22 +103,28 @@ export const UserRegister = data => async dispatch => {
 
 export const getTiposUsuarioAction = () => {
   return async dispatch => {
-    // let response
-    // try {
-    //   response = await httpRequest.get('/tipos/')
-    //   const result = response.data
-    dispatch(downloadTiposUsuario())
-    // } catch (error) {
-    //   response = await httpRequest.get('/tipos/').catch(err => {
-    //     console.log(err.request.response)
-    //     dispatch(setToast('error', err.request.response))
-    //   })
-    //   dispatch({ type: types.GET_TIPOS_USUARIO })
-    // }
+    await dispatch(getTipoUser())
+    try {
+      const response = await httpRequest.get('/roles')
+      dispatch(getTipoUserSuccess(response.data.results))
+    } catch (error) {
+      console.log('Error getRoles ', error)
+      dispatch(getTipoUserFailed(true))
+    }
   }
 }
 
-const downloadTiposUsuario = () => ({
-  type: types.GET_TIPOS_USUARIO,
+const getTipoUser = () => ({
+  type: types.GET_TIPOUSER_START,
   payload: true,
+})
+
+const getTipoUserSuccess = roles => ({
+  type: types.GET_TIPOUSER_SUCCESS,
+  payload: roles,
+})
+
+const getTipoUserFailed = estadoError => ({
+  type: types.GET_TIPOUSER_FAILED,
+  payload: estadoError,
 })
