@@ -97,3 +97,27 @@ export const UserRegister = data => async dispatch => {
     dispatch({ type: types.LOGIN_FAILED })
   }
 }
+
+// Función de carga de niveles de usuario (tipos)
+
+export const getTiposUsuarioAction = () => {
+  return async dispatch => {
+    // let response
+    // try {
+    //   response = await httpRequest.get('/tipos/')
+    //   const result = response.data
+    dispatch(downloadTiposUsuario())
+    // } catch (error) {
+    //   response = await httpRequest.get('/tipos/').catch(err => {
+    //     console.log(err.request.response)
+    //     dispatch(setToast('error', err.request.response))
+    //   })
+    //   dispatch({ type: types.GET_TIPOS_USUARIO })
+    // }
+  }
+}
+
+const downloadTiposUsuario = () => ({
+  type: types.GET_TIPOS_USUARIO,
+  payload: true,
+})

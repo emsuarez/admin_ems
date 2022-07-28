@@ -7,6 +7,7 @@ import { Route, useNavigate, Navigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { UserRegister } from '../store/actions'
 import { RedirectWithLogin, Toast } from '../components'
+// import { getTiposUsuarioAction } from '../store/actions'
 
 const Registration = props => {
   const [usuario, setUsuario] = useState()
@@ -16,6 +17,14 @@ const Registration = props => {
   const [contraseña, setContraseña] = useState()
   const [confirmPassword, setConfirmPassword] = useState()
   const [tipo, setTipo] = useState(0)
+
+  // const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //   const cargarDataNivelUsuario = () => dispatch(getTiposUsuarioAction())
+
+  //   cargarDataNivelUsuario()
+  // }, [])
 
   const dataNivelUsuario = [
     {
@@ -58,55 +67,53 @@ const Registration = props => {
   }
 
   return (
-    <div className='bg-white flex h-screen w-screen justify-center overflow-hidden'>
+    <div className='flex bg-white justify-center my-5'>
       <RedirectWithLogin />
       {/*  CARD */}
-      <div className='flex bg-white shadow-md border-2 lg:px-52 -mt-32 md:mt-0 flex-col justify-center'>
-        <div className='h-fit flex flex-col items-center'>
-          <img src={logo} className='h-24 -mt-10' />
-        </div>
+      <div className='flex flex-col justify-center items-center'>
+        <img src={logo} alt='logo' className='h-32' />
 
-        <div className='items-center mx-8'>
-          <h1 className='text-2xl font-semibold text-center'>
+        <div className='flex flex-col items-center'>
+          <h1 className='text-3xl font-bold text-center'>
             Completa tu registro para ingresar a EMSECOR
           </h1>
 
-          <div className='items-center flex flex-col mt-8'>
+          <div className='flex flex-col mt-8'>
             {/* User */}
-            <div className='mt-1'>
+            <div className='mt-0'>
               <p className='font-medium'>Usuario</p>
               <input
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-96 focus:border-blue-500 outline-none mb-3'
+                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
                 value={usuario}
                 onChange={item => setUsuario(item.target.value)}
               />
             </div>
 
             {/* NAME */}
-            <div className='mt-1'>
+            <div className='mt-5'>
               <p className='font-medium'>Nombres</p>
               <input
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-96 focus:border-blue-500 outline-none mb-3'
+                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
                 value={nombres}
                 onChange={item => setNombres(item.target.value)}
               />
             </div>
 
             {/* SURNAME */}
-            <div className='mt-1'>
+            <div className='mt-5'>
               <p className='font-medium'>Apellidos</p>
               <input
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-96 focus:border-blue-500 outline-none mb-3'
+                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
                 value={apellidos}
                 onChange={item => setApellidos(item.target.value)}
               />
             </div>
 
             {/* EMAIL */}
-            <div className='mt-1'>
+            <div className='mt-5'>
               <p className='font-medium'>Email</p>
               <input
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-96 focus:border-blue-500 outline-none mb-3'
+                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
                 type='email'
                 value={email}
                 onChange={item => setEmail(item.target.value)}
@@ -114,10 +121,10 @@ const Registration = props => {
             </div>
 
             {/* Contraseña */}
-            <div className='mt-1'>
+            <div className='mt-5'>
               <p className='font-medium'>Contraseña</p>
               <input
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-96 focus:border-blue-500 outline-none mb-3'
+                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
                 type='password'
                 value={contraseña}
                 onChange={item => setContraseña(item.target.value)}
@@ -125,10 +132,10 @@ const Registration = props => {
             </div>
 
             {/* Repite la Contraseña */}
-            <div className='mt-1'>
+            <div className='mt-5'>
               <p className='font-medium'>Repite la Contraseña</p>
               <input
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-96 focus:border-blue-500 outline-none mb-3'
+                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
                 type='password'
                 value={confirmPassword}
                 onChange={item => setConfirmPassword(item.target.value)}
@@ -136,10 +143,10 @@ const Registration = props => {
             </div>
 
             {/* Select Nivel de Usuario */}
-            <div className='mt-1'>
+            <div className='mt-5'>
               <p className='font-medium'>Nivel de Usuario</p>
               <select
-                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-96 focus:border-blue-500 outline-none mb-3'
+                className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
                 id={tipo}
                 value={tipo}
                 onChange={item => setTipo(item.target.value)}
@@ -153,29 +160,29 @@ const Registration = props => {
             </div>
           </div>
 
-          <div className=' space-y-3 mt-1 flex flex-col items-center'>
+          <div className='space-x-3 mt-5 flex flex-row items-center'>
             <p
-              className='ml-2 mt-2 flex flex-col justify-center text-lg hover:cursor-pointer 
-                        hover:no-underline text-gray-600 md:w-[60vh] lg:w-[50vh]'
+              className='ml-2 mt-2 flex flex-col justify-center text-lg
+                        hover:no-underline text-gray-600 w-80'
             >
               Al registrarte el administrador recibira tu información para
               aprobar tu registro.
             </p>
 
-            <h4
+            <button
               onClick={() => handleRegister()}
-              className='bg-blue-600 hover:bg-blue-500 
-                        text-white hover:cursor-pointer h-fit w-fit font-medium text-lg py-1 px-2 rounded-lg'
+              className='bg-blue-900 hover:bg-blue-800 
+                        text-white hover:cursor-pointer font-medium text-xl px-3 py-1 rounded-md'
             >
               Registrarte
-            </h4>
+            </button>
           </div>
 
-          <div className='flex justify-center space-x-2 mt-2'>
+          <div className='flex justify-center space-x-2 mt-5'>
             <p className='text-gray-600'>¿Tienes ya tus credenciales?</p>
             <p
               onClick={() => navigate('/')}
-              className='text-blue-600 font-medium hover:cursor-pointer hover:text-blue-700'
+              className='text-blue-800 font-medium hover:cursor-pointer hover:text-blue-700'
             >
               Ingresar
             </p>

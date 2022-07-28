@@ -46,13 +46,11 @@ const Login = props => {
   }
 
   return (
-    <div className='bg-white flex flex-col h-screen justify-center'>
+    <div className='bg-white flex h-screen justify-center'>
       <RedirectWithLogin />
       {/* LOGIN CARD */}
       <div className='flex flex-col justify-center items-center'>
-        <div className='flex justify-center'>
-          <img src={logo} alt='logo' className='h-32' />
-        </div>
+        <img src={logo} alt='logo' className='h-32' />
 
         <div className='flex flex-col items-center'>
           <div className='flex space-x-2'>
@@ -65,7 +63,7 @@ const Login = props => {
           <div className='mt-10'>
             <p className='font-medium'>Usuario</p>
             <input
-              className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-500 outline-none'
+              className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
               onChange={item => setUsername(item.target.value)}
             />
           </div>
@@ -74,7 +72,7 @@ const Login = props => {
           <div className='mt-10'>
             <p className='font-medium'>Contraseña</p>
             <input
-              className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-500 outline-none'
+              className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
               type='password'
               onChange={item => setPassword(item.target.value)}
             />
@@ -86,9 +84,9 @@ const Login = props => {
             </p>
             <button
               onClick={() => handleLogin()}
-              className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-4 rounded-md'
+              className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-3 rounded-md'
             >
-              Ingresar{' '}
+              Ingresar
             </button>
           </div>
 
