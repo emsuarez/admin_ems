@@ -22,7 +22,7 @@ import { TRSDashboard } from './pages/TRSUSER'
 
 function App(props) {
   return (
-    <div className='bg-slate-100 h-full '>
+    <div>
       {props.isToastShowing && (
         <Toast
           {...props.toastConfig}

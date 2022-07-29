@@ -72,7 +72,7 @@ export default function CCTVTable(props) {
   }
 
   return (
-    <Paper sx={{ width: '90vh' }}>
+    <Paper sx={{ width: '100%' }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -91,7 +91,7 @@ export default function CCTVTable(props) {
                   column.id == 'ESTADO'
                     ? {
                         top: 57,
-                        maxWidth: '90vh',
+                        maxWidth: '100%',
                         textAlign: 'end',
                         paddingRight: '4vh',
                         backgroundColor: '#F8F9FA',
@@ -99,7 +99,7 @@ export default function CCTVTable(props) {
                       }
                     : {
                         top: 57,
-                        maxWidth: '90vh',
+                        maxWidth: '100%',
                         backgroundColor: '#F8F9FA',
                         fontWeight: 'bold',
                       }
@@ -114,25 +114,6 @@ export default function CCTVTable(props) {
 
       <TableContainer sx={{ maxHeight: props.height }}>
         <Table stickyHeader aria-label='sticky table'>
-          {/* <TableHead>
-            <TableRow>
-              <TableCell align="center" colSpan={12} >
-                <h3 className='font-semibold text-left'>CONSIGNAS ESPECIALES PENDIENTES CCTV</h3>
-              </TableCell>
-              
-            </TableRow>
-            <TableRow >
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ top: 57, minWidth: column.minWidth,backgroundColor:'#F8F9FA',fontWeight:'bold' }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead> */}
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -161,7 +142,7 @@ export default function CCTVTable(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 15, 20]}
         component='div'
         count={rows.length}
         rowsPerPage={rowsPerPage}
