@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { DropDown } from '../constants'
 import CCTV from './CCTV'
@@ -21,17 +21,33 @@ const Header = ({ items }) => {
     handleModal()
     navigate('/')
   }
+  const [tipoDashboard, setTipoDashboard] = useState('')
+
+  useEffect(() => {
+    const tipo = window.localStorage.getItem('tipo')
+    switch (tipo) {
+      case '1':
+        setTipoDashboard('/dashboard') //admin
+        break
+      case '2':
+        setTipoDashboard('/cctvdashboard') //cctv
+        break
+      case '3':
+        setTipoDashboard('/trsdashboard') //trs
+        break
+      default:
+        return
+    }
+  }, [])
 
   return (
     <div>
       <div className='flex sticky top-0 z-50 h-20 bg-white items-center p-2 lg:px-5 shadow-md'>
         {/* Left */}
         <div className='flex items-center'>
-          <img
-            src={logo}
-            className='w-28 ml-6 -mt-1 hover:cursor-pointer'
-            onClick={() => navigate('/')}
-          />
+          <Link to={tipoDashboard}>
+            <img src={logo} className='w-28 ml-6 -mt-1 hover:cursor-pointer' />
+          </Link>
         </div>
 
         {/* Center */}
@@ -79,7 +95,7 @@ const Header = ({ items }) => {
               />
             </svg>
           </div>
-          <RightImage handleModal={handleModal} />
+          <RightImage handleModal={() => Leave()} />
         </div>
       </div>
 
@@ -125,9 +141,9 @@ const Header = ({ items }) => {
             </div>
           </div>
         </div>
-      ) : (
-        navigate('/')
-      )}
+      ) : // navigate('/')
+      // setNavegar(true)
+      null}
     </div>
   )
 }

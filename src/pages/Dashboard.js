@@ -11,7 +11,7 @@ import {
 
 const Dashboard = () => {
   return (
-    <div className=''>
+    <div>
       <RedirectWithoutLogin />
       {AdminAuthorized() == -1 ? (
         <div className='z-50 bg-white flex flex-col justify-center'>
