@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   AdminAuthorized,
   Header,
@@ -6,8 +6,15 @@ import {
   RedirectWithoutLogin,
 } from '../components'
 import user from '../assets/user.jpg'
+import useFocus from '../hooks/useFocus'
 
 const PerfilUsuario = () => {
+  const [editarInformacion, setEditarInformacion] = useState(true)
+
+  const handleEditarInformacion = () => {
+    setEditarInformacion(!editarInformacion)
+  }
+
   return (
     <div>
       <RedirectWithoutLogin />
@@ -23,8 +30,12 @@ const PerfilUsuario = () => {
           <div className='flex items-center bg-slate-100 py-2'>
             <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
             <p className=' ml-1'>Perfil</p>
-            <ICONS.ChevronRightIconO className='h-3  ml-1' />
-            <p className=' ml-1'>Editar perfil</p>
+            {editarInformacion ? (
+              <>
+                <ICONS.ChevronRightIconO className='h-3  ml-1' />
+                <p className=' ml-1'>Editar perfil</p>
+              </>
+            ) : null}
           </div>
           <div className='mx-10'>
             <div className='flex flex-col justify-center items-center'>
@@ -33,7 +44,12 @@ const PerfilUsuario = () => {
                   <div className='mr-10 bg-white rounded-[50%]'>
                     <img
                       src={user}
-                      className='w-72 rounded-[50%] border-red-700 border-2 p-2'
+                      alt='imagen de usuario'
+                      className={
+                        editarInformacion
+                          ? 'w-72 rounded-[50%] border-red-700 border-2 p-2'
+                          : 'w-72 rounded-[50%] border-red-700 border-2 p-2 hover:opacity-25 hover:cursor-help'
+                      }
                     />
                   </div>
                 </div>
@@ -67,26 +83,60 @@ const PerfilUsuario = () => {
                     <div class='grid grid-cols-2 gap-x-36 place-content-center'>
                       <div className='mt-10'>
                         <p className='font-medium text-2xl'>Nombre</p>
-                        <input className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3' />
+                        <input
+                          className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3'
+                          disabled={editarInformacion}
+                        />
                       </div>
                       <div className='mt-10'>
                         <p className='font-medium text-2xl'>Apellido</p>
-                        <input className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3' />
+                        <input
+                          className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3'
+                          disabled={editarInformacion}
+                        />
                       </div>
                       <div className='mt-10'>
                         <p className='font-medium text-2xl'>Email</p>
-                        <input className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3' />
+                        <input
+                          className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3'
+                          disabled={editarInformacion}
+                        />
                       </div>
                       <div className='mt-10'>
                         <p className='font-medium text-2xl'>Usuario</p>
-                        <input className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3' />
+                        <input
+                          className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3'
+                          disabled
+                        />
                       </div>
                     </div>
-                    <div className='mt-28'>
-                      <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'>
-                        Editar Información
-                      </button>
-                    </div>
+                    {editarInformacion ? (
+                      <div className='mt-28'>
+                        <button
+                          className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                          onClick={() => handleEditarInformacion()}
+                        >
+                          Editar Información
+                        </button>
+                      </div>
+                    ) : (
+                      <div className='mt-28'>
+                        <div class='grid grid-cols-2  place-content-center ml-16 gap-x-12'>
+                          <button
+                            className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                            onClick={() => handleEditarInformacion()}
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                            onClick={() => setEditarInformacion(true)}
+                          >
+                            Guardar
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
