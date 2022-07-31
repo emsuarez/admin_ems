@@ -19,6 +19,7 @@ import Lugares from './pages/Recursos/Lugares'
 import { HistorialMovimiento, RecepcionTurno } from './pages/TRS'
 import HistorialCCTV from './pages/CCTVAdmin/HistorialCCTV'
 import { TRSDashboard } from './pages/TRSUSER'
+import PerfilUsuario from './pages/PerfilUsuario'
 
 function App(props) {
   return (
@@ -39,6 +40,7 @@ function App(props) {
         <Route path='/' element={<Login />} />
         <Route path='register' element={<Registration />} />
         <Route path='dashboard' element={<Dashboard />} />
+        <Route path='perfilusuario' element={<PerfilUsuario />} />
         <Route path='ejecutivos' element={<Ejecutivos />} />
         <Route path='grupofamiliar' element={<GrupoFamiliar />} />
         <Route path='vehiculosejecutivos' element={<VehicleEjectivos />} />
@@ -66,7 +68,6 @@ function App(props) {
 }
 
 const mapStateToProps = props => {
-  // // console.log(" props===========================", props)
   return {
     isToastShowing: props.toast.isToastShowing,
     toastConfig: props.toast.config,

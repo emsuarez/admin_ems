@@ -4,6 +4,7 @@ import user from '../../assets/user.jpg'
 import { styled } from '@mui/material/styles'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 import 'reactjs-popup/dist/index.css'
+import { Link, useNavigate } from 'react-router-dom'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -31,10 +32,12 @@ const RightImage = ({ handleModal }) => {
       title={
         <React.Fragment>
           <ul className=' w-44 space-y-4'>
-            <li className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
-              <ICONS.PencilAltIconS className='h-4 mt-3 ml-3' color='blue' />
-              <p className='text-sm mt-3 ml-3'>Perfil</p>
-            </li>
+            <Link to='/perfilusuario'>
+              <li className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
+                <ICONS.PencilAltIconS className='h-4 mt-3 ml-3' color='blue' />
+                <p className='text-sm mt-3 ml-3'>Perfil</p>
+              </li>
+            </Link>
 
             <li
               onClick={() => handleLogout()}
