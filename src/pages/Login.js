@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { ICONS } from '../components/constants'
-import authImage from '../assets/auth-image.jpg'
-import authDecorator from '../assets/auth-decoration.png'
 import logo from '../assets/logo.png'
-import { Route, useNavigate, Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setToast, UserLogin } from '../store/actions'
 import { RedirectWithLogin } from '../components'
@@ -18,33 +15,48 @@ const Login = props => {
   var tipo
 
   const handleLogin = async () => {
-    console.log('handleLogin')
     const obj = {
       username,
       password,
     }
     if (username && password) {
       await props.UserLogin(obj)
-      token = window.localStorage.getItem('token')
-      tipo = window.localStorage.getItem('tipo')
-      console.log(token, tipo)
-      if (token) {
-        if (tipo === '1') {
-          navigate('/dashboard') //admin
-        } else if (tipo === '2') {
-          navigate('/cctvdashboard')
-        } else if (tipo === '3') {
-          navigate('/trsdashboard')
-        }
-      }
     } else {
       await props.setToast(
         'error',
         'Uno de los campos del formulario estan vacios.'
       )
-      //dispatch(setToast('error',result.message))
     }
   }
+
+  useEffect(() => {
+    token = window.localStorage.getItem('token')
+    tipo = window.localStorage.getItem('tipo')
+    console.log(token, tipo)
+    if (token) {
+      switch (tipo) {
+        case '1':
+          navigate('/dashboard') //admin
+          break
+        case '2':
+          navigate('/cctvdashboard') //cctv
+          break
+        case '3':
+          navigate('/trsdashboard') //trs
+          break
+        default:
+          return
+      }
+
+      // if (tipo === '1') {
+      //   navigate('/dashboard') //admin
+      // } else if (tipo === '2') {
+      //   navigate('/cctvdashboard')
+      // } else if (tipo === '3') {
+      //   navigate('/trsdashboard')
+      // }
+    }
+  }, [])
 
   return (
     <div className='bg-white flex h-screen justify-center'>
