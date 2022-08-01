@@ -32,8 +32,9 @@ const Login = props => {
   useEffect(() => {
     token = window.localStorage.getItem('token')
     tipo = window.localStorage.getItem('tipo')
-    console.log(token, tipo)
+
     if (token) {
+      console.log('TOKEN ', token, 'Tipo', tipo)
       switch (tipo) {
         case '1':
           navigate('/dashboard') //admin
@@ -47,14 +48,6 @@ const Login = props => {
         default:
           return
       }
-
-      // if (tipo === '1') {
-      //   navigate('/dashboard') //admin
-      // } else if (tipo === '2') {
-      //   navigate('/cctvdashboard')
-      // } else if (tipo === '3') {
-      //   navigate('/trsdashboard')
-      // }
     }
   }, [])
 

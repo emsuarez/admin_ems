@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ICONS } from '../constants'
 import user from '../../assets/user.jpg'
 import { styled } from '@mui/material/styles'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 import 'reactjs-popup/dist/index.css'
 import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -19,6 +20,12 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }))
 
 const RightImage = ({ handleModal }) => {
+  const [datosUsuario, setDatosUsuario] = useState({})
+  const dataUser = useSelector(state => state.auth.user.userData)
+  useEffect(() => {
+    setDatosUsuario(dataUser)
+  }, [])
+
   const handleLogout = () => {
     window.localStorage.clear()
     handleModal()
@@ -52,12 +59,15 @@ const RightImage = ({ handleModal }) => {
     >
       <div className='flex hover:cursor-pointer'>
         <div className='rounded-full h-14 '>
-          <img src={user} className='h-12 rounded-full mt-0.5' />
+          <img
+            src={`https://cloudbitakor.com${datosUsuario.imagen}`}
+            className='h-12 rounded-full mt-0.5'
+          />
         </div>
 
         <div className='flex ml-4 mt-4'>
           <p className='hidden md:inline-block text-black font-semibold text-lg'>
-            Katherine
+            {datosUsuario.username}
           </p>
           <ICONS.ChevronDownIconO className='h-3 w-3 hidden mt-2 ml-3 text-black md:inline-block' />
         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,8 +8,8 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
+} from 'chart.js'
+import { Line } from 'react-chartjs-2'
 
 ChartJS.register(
   CategoryScale,
@@ -19,36 +19,66 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top'
+      position: 'top',
     },
     title: {
       display: true,
       text: 'CONSIGNAS PENDIENTES CCTV',
     },
   },
-};
+  interaction: {
+    intersect: false,
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+      display: true,
 
-const labels = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM'];
+      title: {
+        display: true,
+      },
+    },
+
+    y: {
+      grid: {
+        display: false,
+      },
+      display: false,
+      title: {
+        display: true,
+        text: 'Value',
+      },
+      suggestedMin: -5,
+      suggestedMax: 10,
+    },
+  },
+}
+
+const labels = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM']
 
 export const data = {
   labels,
   datasets: [
-    
     {
       label: 'CONSIGNAS',
-      data: [1,2,1,4,3,1],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      data: [4, 2, 5, 7, 1, 10, 8],
+      borderColor: 'rgb(38, 52, 110, 1)',
+      backgroundColor: 'rgba(38, 52, 110, 1)',
+      fill: false,
+      cubicInterpolationMode: 'monotone',
+      tension: 0.4,
     },
   ],
-};
+}
 
 export default function LineChart() {
-  return <Line options={options} data={data} />;
+  return <Line options={options} data={data} />
 }

@@ -14,7 +14,7 @@ const Dashboard = () => {
     <div>
       <RedirectWithoutLogin />
       {AdminAuthorized() == -1 ? (
-        <div className='z-50 bg-white flex flex-col justify-center'>
+        <div className='bg-white flex flex-col justify-center'>
           <h1 className='font-bold text-3xl text-center'>
             No tiene permisos para acceder a esta página
           </h1>
