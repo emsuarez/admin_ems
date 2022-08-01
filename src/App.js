@@ -1,9 +1,5 @@
 import './App.css'
-import {
-  EditRecepcion,
-  RedirectWithoutLogin,
-  ViewRecepcion,
-} from './components'
+import { EditRecepcion, ViewRecepcion } from './components'
 import { Dashboard, Login, Registration } from './pages'
 import { Routes, Route } from 'react-router-dom'
 import Ejecutivos from './pages/Recursos/Ejecutivos'

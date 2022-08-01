@@ -6,12 +6,40 @@ import AuthReducer from './reducers/AuthReducer'
 import RecursosReducer from './reducers/RecursosReducer'
 import { ToastReducer } from './reducers/ToastReducer'
 
+//redux-persist
+import storage from 'redux-persist/lib/storage'
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+
+const persistConfig = {
+  key: 'counter',
+  storage,
+}
+
 let rootReducers = combineReducers({
   auth: AuthReducer,
   toast: ToastReducer,
   recursos: RecursosReducer,
 })
 
-export const store = configureStore({ reducer: rootReducers })
+const persistedReducer = persistReducer(persistConfig, rootReducers)
+
+// export const store = configureStore({ reducer: rootReducers })
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+})
 
 //   applyMiddleware(thunk)

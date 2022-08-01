@@ -1,9 +1,8 @@
 import { types } from '../actionTypes'
 import { httpRequest } from '../../config'
-import qs from 'qs'
+
 import { setToast } from './ToastAction'
 import ProgressBar from '@badrap/bar-of-progress'
-import { Navigate } from 'react-router-dom'
 
 export const UserLogin = data => async dispatch => {
   var response
