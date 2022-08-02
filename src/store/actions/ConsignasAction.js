@@ -10,18 +10,19 @@ const progress = new ProgressBar({
 
 export function obtenerConsignasCCTVAction() {
   return async dispatch => {
+    dispatch(comenzarDescargaConsignasCCTV())
     try {
-      dispatch(comenzarDescargaConsignasCCTV())
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.get('/consignacctv/?id=0', {
         headers: { Authorization: Token },
       })
+      // console.log(respuesta, 'desde consignasAction')
       progress.finish()
       dispatch(comenzarDescargaConsignasCCTVExitosa(respuesta.data))
     } catch (error) {
-      console.log(error)
+      console.log(error, 'DESCARGA CONSIGNAS CCTV ERROR')
       dispatch(comenzarDescargaConsignasCCTVError(true))
     }
   }
@@ -44,19 +45,20 @@ const comenzarDescargaConsignasCCTVError = estado => ({
 
 export function obtenerConsignasTRSAction() {
   return async dispatch => {
+    dispatch(comenzarDescargaConsignasTRS())
     try {
-      dispatch(comenzarDescargaConsignasTRS())
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.get('/consignatrs/?id=0', {
         headers: { Authorization: Token },
       })
+      // console.log(respuesta, 'desde consignasAction')
 
       progress.finish()
       dispatch(comenzarDescargaConsignasTRSExitosa(respuesta.data))
     } catch (error) {
-      console.log(error)
+      console.log(error, 'DESCARGA CONSIGNAS TRS ERROR')
       dispatch(comenzarDescargaConsignasTRSError(true))
     }
   }

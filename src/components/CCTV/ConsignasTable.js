@@ -3,6 +3,8 @@ import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React, { useEffect } from 'react'
 
 const ConsignasTable = ({ data }) => {
+  const { results, count } = data
+
   return (
     <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
       <div className='mb-0 px-4 py-3 border-0'>
@@ -31,34 +33,36 @@ const ConsignasTable = ({ data }) => {
             </tr>
           </thead>
 
-          <tbody className='overflow-x-auto'>
-            {data.results.map((item, index) => (
-              <tr key={index}>
-                <th className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 text-left text-blueGray-700 '>
-                  {item.created}
-                </th>
-                <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 '>
-                  {item.obs_creacion}
-                </td>
-                <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 hover:cursor-pointer text-white hover:text-red-600 mx-auto'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-6 w-6 border-2 rounded-full border-red-700 bg-red-700'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M6 18L18 6M6 6l12 12'
-                    />
-                  </svg>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {results.length > 0 ? (
+            <tbody className='overflow-x-auto'>
+              {results.map((item, index) => (
+                <tr key={item.id}>
+                  <th className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 text-left text-blueGray-700 '>
+                    {item.created}
+                  </th>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 '>
+                    {item.obs_creacion}
+                  </td>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 hover:cursor-pointer text-white hover:text-red-600 mx-auto'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      className='h-6 w-6 border-2 rounded-full border-red-700 bg-red-700'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      stroke='currentColor'
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M6 18L18 6M6 6l12 12'
+                      />
+                    </svg>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : null}
         </table>
       </div>
 
@@ -82,8 +86,14 @@ const ConsignasTable = ({ data }) => {
           <div>
             <p className='text-sm text-gray-700'>
               Mostrando <span className='font-medium'>1</span> -{' '}
-              <span className='font-medium'>{data.results.length}</span> de{' '}
-              <span className='font-medium'>{data.count}</span> resultados
+              <span className='font-medium'>
+                {results.length > 0 ? results.length : null}
+              </span>{' '}
+              de{' '}
+              <span className='font-medium'>
+                {results.length > 0 ? count : null}
+              </span>{' '}
+              resultados
             </p>
           </div>
           <div>

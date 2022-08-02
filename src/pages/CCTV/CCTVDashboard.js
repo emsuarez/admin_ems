@@ -60,7 +60,7 @@ const CCTVDashboard = () => {
               </div>
               <div className='basis-2/4 flex items-stretch'>
                 {/* <CCTVTable height={900} /> */}
-                <ConsignasTable />
+                {/* <ConsignasTable /> */}
               </div>
             </div>
           </div>
