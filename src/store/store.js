@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import AuthReducer from './reducers/AuthReducer'
 import RecursosReducer from './reducers/RecursosReducer'
 import { ToastReducer } from './reducers/ToastReducer'
+import ConsignasReducer from './reducers/ConsignasReducer'
 
 //redux-persist
 import storage from 'redux-persist/lib/storage'
@@ -27,6 +28,7 @@ let rootReducers = combineReducers({
   auth: AuthReducer,
   toast: ToastReducer,
   recursos: RecursosReducer,
+  consignas: ConsignasReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducers)

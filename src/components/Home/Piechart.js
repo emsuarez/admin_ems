@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
+import { obtenerConsignasTRSAction } from '../../store/actions'
 
 import Period from './Period'
 
-const Piechart = () => {
+const Piechart = ({ consignasPendientes }) => {
+  const { consignasCctv, consignasTrs } = consignasPendientes
+
   return (
     <div className='flex-col bg-white shadow-sm border-[1px] h-full w-full'>
       <h3 className='px-5 mt-5 font-semibold'>
@@ -21,7 +24,7 @@ const Piechart = () => {
             animationEasing='ease-out'
             center={[50, 50]}
             data={[
-              { title: 'CCTV', value: 63, color: '#1A84E7' },
+              { title: 'CCTV', value: consignasCctv.count, color: '#1A84E7' },
               { title: 'TRS', value: 25, color: '#21B739' },
             ]}
             radius={50}
@@ -35,7 +38,9 @@ const Piechart = () => {
               <p className='text-[#A3AED0]'>TRS</p>
             </div>
 
-            <div className='text-2xl font-bold self-end'>63</div>
+            <div className='text-2xl font-bold self-end'>
+              {consignasTrs.count}
+            </div>
           </div>
 
           <div className='flex flex-col ml-8'>
@@ -44,7 +49,9 @@ const Piechart = () => {
               <p className='text-[#A3AED0]'>CCTV</p>
             </div>
 
-            <div className='text-2xl font-bold self-end'>25</div>
+            <div className='text-2xl font-bold self-end'>
+              {consignasCctv.count}
+            </div>
           </div>
         </div>
       </div>
