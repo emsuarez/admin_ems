@@ -87,11 +87,11 @@ const ConsignasTable = ({ data }) => {
             <p className='text-sm text-gray-700'>
               Mostrando <span className='font-medium'>1</span> -{' '}
               <span className='font-medium'>
-                {results.length > 0 ? results.length : null}
+                {Object.keys(data).length > 0 ? results.length : null}
               </span>{' '}
               de{' '}
               <span className='font-medium'>
-                {results.length > 0 ? count : null}
+                {Object.keys(data).length > 0 ? count : null}
               </span>{' '}
               resultados
             </p>
