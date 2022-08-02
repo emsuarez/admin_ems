@@ -33,7 +33,7 @@ const ConsignasTable = ({ data }) => {
             </tr>
           </thead>
 
-          {results.length > 0 ? (
+          {Object.keys(data).length > 0 ? (
             <tbody className='overflow-x-auto'>
               {results.map((item, index) => (
                 <tr key={item.id}>
