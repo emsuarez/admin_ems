@@ -9,10 +9,11 @@ import RightImage from './RightImage'
 import TRS from './TRS'
 import Usuarios from './Usuarios'
 
-const Header = ({ items }) => {
+const Header = () => {
   const navigate = useNavigate()
 
   const [modal, setModal] = useState(false)
+  const [items, setItems] = useState('')
 
   const handleModal = () => {
     setModal(!modal)
@@ -28,12 +29,15 @@ const Header = ({ items }) => {
     switch (tipo) {
       case '1':
         setTipoDashboard('/dashboard') //admin
+        setItems('all')
         break
       case '2':
         setTipoDashboard('/cctvdashboard') //cctv
+        setItems('cctv')
         break
       case '3':
         setTipoDashboard('/trsdashboard') //trs
+        setItems('trs')
         break
       default:
         return

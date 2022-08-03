@@ -1,12 +1,12 @@
 import './App.css'
-import { EditRecepcion, ViewRecepcion } from './components'
+import { EditRecepcion, Header, ViewRecepcion } from './components'
 import { Dashboard, Login, Registration } from './pages'
 import { Routes, Route } from 'react-router-dom'
 import Ejecutivos from './pages/Recursos/Ejecutivos'
 import { CCTVDashboard, Diurno, Historial, Nocturno } from './pages/CCTV'
 import { clearToast } from './store/actions'
 import { Toast } from './components'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import GrupoFamiliar from './pages/Recursos/GrupoFamiliar'
 import VehicleEjectivos from './pages/Recursos/VehicleEjectivos'
 import Protectores from './pages/Recursos/Protectores'
@@ -18,6 +18,8 @@ import { TRSDashboard } from './pages/TRSUSER'
 import PerfilUsuario from './pages/PerfilUsuario'
 
 function App(props) {
+  const usuarioLogeado = useSelector(state => state.auth.user)
+
   return (
     <div>
       {props.isToastShowing && (
@@ -27,16 +29,16 @@ function App(props) {
           clearToast={() => props.clearToast()}
         />
       )}
-      {/* HEADER */}
-      {/* <Header/> */}
-      {/* <LoginOption/> */}
-      {/* <Login/> */}
 
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='register' element={<Registration />} />
+
+        {/* ADMIN */}
+
         <Route path='dashboard' element={<Dashboard />} />
         <Route path='perfilusuario' element={<PerfilUsuario />} />
+
         <Route path='ejecutivos' element={<Ejecutivos />} />
         <Route path='grupofamiliar' element={<GrupoFamiliar />} />
         <Route path='vehiculosejecutivos' element={<VehicleEjectivos />} />

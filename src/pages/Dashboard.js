@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
@@ -12,6 +12,7 @@ import {
 import ConsignasTable from '../components/CCTV/ConsignasTable'
 import {
   obtenerConsignasCCTVAction,
+  obtenerConsignasGrafica,
   obtenerConsignasTRSAction,
 } from '../store/actions/ConsignasAction'
 
@@ -40,7 +41,7 @@ const Dashboard = () => {
         </div>
       ) : (
         <>
-          <Header items='all' />
+          <Header />
           <div className='flex flex-col'>
             <div className='mt-4'>
               <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />

@@ -1,6 +1,6 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 const ConsignasTable = ({ data }) => {
   const { results, count } = data

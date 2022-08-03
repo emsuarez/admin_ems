@@ -78,3 +78,38 @@ const comenzarDescargaConsignasTRSError = estado => ({
   type: types.GET_CONSIGNASTRS_FAILED,
   payload: estado,
 })
+
+export function obtenerConsignasGrafica(id) {
+  return async dispatch => {
+    dispatch(comenzarDescargaConsignasGrafica(id))
+    try {
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(`/grafica/?tipo=${id}`, {
+        headers: { Authorization: Token },
+      })
+      console.log(respuesta, 'desde grafica', id)
+      progress.finish()
+      dispatch(comenzarDescargaConsignasGraficaExitosa(respuesta.data))
+    } catch (error) {
+      console.log(error, 'DESCARGA CONSIGNAS GRAFICA ERROR')
+      dispatch(comenzarDescargaConsignasGraficaError(true))
+    }
+  }
+}
+
+const comenzarDescargaConsignasGrafica = id => ({
+  type: types.GET_CONSIGNASGRAFICA_START,
+  payload: id,
+})
+
+const comenzarDescargaConsignasGraficaExitosa = consignas => ({
+  type: types.GET_CONSIGNASGRAFICA_SUCCESS,
+  payload: consignas,
+})
+
+const comenzarDescargaConsignasGraficaError = estado => ({
+  type: types.GET_CONSIGNASGRAFICA_FAILED,
+  payload: estado,
+})

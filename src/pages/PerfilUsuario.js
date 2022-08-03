@@ -30,9 +30,8 @@ const PerfilUsuario = () => {
   return (
     <div>
       <RedirectWithoutLogin />
-
       <>
-        <Header items='all' />
+        <Header />
         <div className='flex items-center bg-slate-100 py-2'>
           <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
           <p className=' ml-1'>Perfil</p>

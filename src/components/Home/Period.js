@@ -18,8 +18,6 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 
 const Period=()=>{
-
-
   const [open,setOpen] = useState(false)
   const [selectedPeriod, setSelectedPeriod] = useState("Ultimo Día")
 
@@ -34,6 +32,7 @@ const Period=()=>{
       setSelectedPeriod(item)
   }
 
+  
 
     return(
         <HtmlTooltip
