@@ -19,11 +19,15 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }))
 
-const RightImage = ({ handleModal }) => {
-  const [datosUsuario, setDatosUsuario] = useState({})
-  const dataUser = useSelector(state => state.auth.user.userData)
+const RightImage = ({ handleModal, userInfo }) => {
+  const [imagenUsuario, setImagenUsuario] = useState()
+  const [nombreUsuario, setNombreUsuario] = useState()
+  // const dataUser = useSelector(state => state.auth.user.userData)
   useEffect(() => {
-    setDatosUsuario(dataUser)
+    // setDatosUsuario(userInfo)
+    console.log(userInfo)
+    setNombreUsuario(userInfo.userData.username)
+    setImagenUsuario(userInfo.userData.imagen)
   }, [])
 
   const handleLogout = () => {
@@ -60,14 +64,14 @@ const RightImage = ({ handleModal }) => {
       <div className='flex hover:cursor-pointer'>
         <div className='rounded-full h-14 '>
           <img
-            src={`https://cloudbitakor.com${datosUsuario.imagen}`}
+            src={`https://cloudbitakor.com${imagenUsuario}`}
             className='h-12 rounded-full mt-0.5'
           />
         </div>
 
         <div className='flex ml-4 mt-4'>
           <p className='hidden md:inline-block text-black font-semibold text-lg'>
-            {datosUsuario.username}
+            {nombreUsuario}
           </p>
           <ICONS.ChevronDownIconO className='h-3 w-3 hidden mt-2 ml-3 text-black md:inline-block' />
         </div>

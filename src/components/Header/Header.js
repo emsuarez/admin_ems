@@ -3,14 +3,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { DropDown } from '../constants'
 import CCTV from './CCTV'
-import { ICONS } from '../constants'
 import Recursos from './Recursos'
 import RightImage from './RightImage'
 import TRS from './TRS'
 import Usuarios from './Usuarios'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserInfoAction } from '../../store/actions'
 
 const Header = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [modal, setModal] = useState(false)
   const [items, setItems] = useState('')
@@ -42,7 +44,14 @@ const Header = () => {
       default:
         return
     }
+
+    const cargarInfoUsuario = () => {
+      dispatch(getUserInfoAction())
+    }
+    cargarInfoUsuario()
   }, [])
+
+  const userInfo = useSelector(state => state.auth.user)
 
   return (
     <div>
@@ -99,7 +108,7 @@ const Header = () => {
               />
             </svg>
           </div>
-          <RightImage handleModal={() => Leave()} />
+          <RightImage handleModal={() => Leave()} userInfo={userInfo} />
         </div>
       </div>
 

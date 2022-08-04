@@ -18,11 +18,12 @@ import {
 
 const Dashboard = () => {
   const dispatch = useDispatch()
-
+  const [idConsigna, setIdConsigna] = useState(1)
   useEffect(() => {
     const cargarConsignas = async () => {
       await dispatch(obtenerConsignasCCTVAction())
       await dispatch(obtenerConsignasTRSAction())
+      await dispatch(obtenerConsignasGrafica(idConsigna))
     }
 
     cargarConsignas()
@@ -30,6 +31,10 @@ const Dashboard = () => {
 
   const consignas = useSelector(state => state.consignas)
 
+  const handleTimeConsignas = async consigna => {
+    setIdConsigna(consigna)
+    await dispatch(obtenerConsignasGrafica(consigna))
+  }
   return (
     <div>
       <RedirectWithoutLogin />
@@ -49,7 +54,10 @@ const Dashboard = () => {
 
             <div className='flex mt-4 justify-center mb-8'>
               <div className='mx-8 w-3/6'>
-                <Piechart consignasPendientes={consignas} />
+                <Piechart
+                  data={consignas.consignasGrafica}
+                  handleTimeConsignas={handleTimeConsignas}
+                />
               </div>
               <div className='mr-8 w-3/6'>
                 <div className='w-full mx-auto border-2 border-gray-200 h-96 mb-8'>

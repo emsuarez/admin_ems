@@ -152,7 +152,7 @@ const PerfilUsuario = () => {
                     </div>
                   ) : (
                     <div className='mt-28'>
-                      <div class='grid grid-cols-2  place-content-center ml-16 gap-x-12'>
+                      <div className='grid grid-cols-2  place-content-center ml-16 gap-x-12'>
                         <button
                           className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
                           onClick={() => handleCancelar()}

@@ -87,7 +87,7 @@ const Login = props => {
               type={showPassword ? 'password' : 'text'}
               onChange={item => setPassword(item.target.value)}
             />
-            <span class='absolute inset-y-0 flex items-center pt-3 ml-72'>
+            <span className='absolute inset-y-0 flex items-center pt-3 ml-72'>
               <button onClick={togglePassword} className='z-0 pt-2'>
                 {!showPassword ? (
                   <svg

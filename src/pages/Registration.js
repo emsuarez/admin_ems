@@ -126,7 +126,7 @@ const Registration = props => {
                 value={contraseña}
                 onChange={item => setContraseña(item.target.value)}
               />
-              <span class='absolute inset-y-0 flex items-center pt-3 ml-72'>
+              <span className='absolute inset-y-0 flex items-center pt-3 ml-72'>
                 <button onClick={togglePassword} className='pt-2'>
                   {!showPassword ? (
                     <svg
@@ -170,7 +170,7 @@ const Registration = props => {
                 value={confirmPassword}
                 onChange={item => setConfirmPassword(item.target.value)}
               />
-              <span class='absolute inset-y-0 flex items-center pt-3 ml-72'>
+              <span className='absolute inset-y-0 flex items-center pt-3 ml-72'>
                 <button onClick={toggleConfirmPassword} className='pt-2'>
                   {!showConfirmPassword ? (
                     <svg

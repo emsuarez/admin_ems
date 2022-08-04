@@ -7,7 +7,7 @@ import RecursosReducer from './reducers/RecursosReducer'
 import { ToastReducer } from './reducers/ToastReducer'
 import ConsignasReducer from './reducers/ConsignasReducer'
 
-//redux-persist
+// redux - persist
 import storage from 'redux-persist/lib/storage'
 import {
   persistReducer,

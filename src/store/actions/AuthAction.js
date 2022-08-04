@@ -4,6 +4,10 @@ import { httpRequest } from '../../config'
 import { setToast } from './ToastAction'
 import ProgressBar from '@badrap/bar-of-progress'
 
+const progress = new ProgressBar({
+  size: 4,
+  color: 'blue',
+})
 export const UserLogin = data => async dispatch => {
   var response
   const progress = new ProgressBar({
@@ -29,7 +33,7 @@ export const UserLogin = data => async dispatch => {
       dispatch({ type: types.LOGIN_SUCCESS, payload: result })
     } else if (result.message) {
       progress.finish()
-      console.log(result.message)
+
       dispatch({ type: types.LOGIN_FAILED })
       dispatch(setToast('error', result.message))
     }
@@ -64,14 +68,6 @@ export const UserRegister = data => async dispatch => {
     })
     const result = response.data
 
-    // if(result.message === 'Bienvenido a Emsecor'){
-
-    //   console.log(result)
-
-    //      window.localStorage.setItem('token',result.userData.token)
-    //      window.localStorage.setItem('userid',  result.userData.user_id)
-    //      window.localStorage.setItem('tipo',  result.userData.tipo)
-    //         console.log("test ",window.localStorage.getItem('token'))
     dispatch(setToast('success', result.message))
     progress.finish()
     dispatch({ type: types.REGISTER_SUCCESS, payload: result })
@@ -125,5 +121,40 @@ const getTipoUserSuccess = roles => ({
 
 const getTipoUserFailed = estadoError => ({
   type: types.GET_TIPOUSER_FAILED,
+  payload: estadoError,
+})
+
+// Funcion obtener info de Usuario
+export const getUserInfoAction = () => {
+  return async dispatch => {
+    await dispatch(getUserInfo())
+    try {
+      progress.start()
+      const token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(`/usuario/`, {
+        headers: { Authorization: Token },
+      })
+
+      dispatch(getUserInfoSuccess(respuesta.data))
+    } catch (error) {
+      console.log('Error getUserInfo ', error)
+      dispatch(getUserInfoFailed(true))
+    }
+  }
+}
+
+const getUserInfo = () => ({
+  type: types.GET_USERINFO_START,
+  payload: true,
+})
+
+const getUserInfoSuccess = user => ({
+  type: types.GET_USERINFO_SUCCESS,
+  payload: user,
+})
+
+const getUserInfoFailed = estadoError => ({
+  type: types.GET_USERINFO_FAILED,
   payload: estadoError,
 })

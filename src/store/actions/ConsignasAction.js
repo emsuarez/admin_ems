@@ -10,15 +10,15 @@ const progress = new ProgressBar({
 
 export function obtenerConsignasCCTVAction() {
   return async dispatch => {
-    dispatch(comenzarDescargaConsignasCCTV())
     try {
+      dispatch(comenzarDescargaConsignasCCTV())
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.get('/consignacctv/?id=0', {
         headers: { Authorization: Token },
       })
-      // console.log(respuesta, 'desde consignasAction')
+
       progress.finish()
       dispatch(comenzarDescargaConsignasCCTVExitosa(respuesta.data))
     } catch (error) {
@@ -45,15 +45,14 @@ const comenzarDescargaConsignasCCTVError = estado => ({
 
 export function obtenerConsignasTRSAction() {
   return async dispatch => {
-    dispatch(comenzarDescargaConsignasTRS())
     try {
+      dispatch(comenzarDescargaConsignasTRS())
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.get('/consignatrs/?id=0', {
         headers: { Authorization: Token },
       })
-      // console.log(respuesta, 'desde consignasAction')
 
       progress.finish()
       dispatch(comenzarDescargaConsignasTRSExitosa(respuesta.data))
@@ -81,18 +80,20 @@ const comenzarDescargaConsignasTRSError = estado => ({
 
 export function obtenerConsignasGrafica(id) {
   return async dispatch => {
-    dispatch(comenzarDescargaConsignasGrafica(id))
     try {
+      dispatch(comenzarDescargaConsignasGrafica(id))
       progress.start()
-      let token = window.localStorage.getItem('token')
+      const token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const respuesta = await httpRequest.get(`/grafica/?tipo=${id}`, {
+      const respuesta = await httpRequest.get(`/grafica/?tipo=${id || 1}`, {
         headers: { Authorization: Token },
       })
-      console.log(respuesta, 'desde grafica', id)
+      const result = respuesta.data
+      console.log(result, 'resultado consignasgrafica')
       progress.finish()
-      dispatch(comenzarDescargaConsignasGraficaExitosa(respuesta.data))
+      dispatch(comenzarDescargaConsignasGraficaExitosa(result))
     } catch (error) {
+      progress.finish()
       console.log(error, 'DESCARGA CONSIGNAS GRAFICA ERROR')
       dispatch(comenzarDescargaConsignasGraficaError(true))
     }

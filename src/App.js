@@ -16,6 +16,7 @@ import { HistorialMovimiento, RecepcionTurno } from './pages/TRS'
 import HistorialCCTV from './pages/CCTVAdmin/HistorialCCTV'
 import { TRSDashboard } from './pages/TRSUSER'
 import PerfilUsuario from './pages/PerfilUsuario'
+import ProtectedRoutes from './components/routes/ProtectedRoutes'
 
 function App(props) {
   const usuarioLogeado = useSelector(state => state.auth.user)
@@ -32,34 +33,36 @@ function App(props) {
 
       <Routes>
         <Route path='/' element={<Login />} />
+
         <Route path='register' element={<Registration />} />
 
         {/* ADMIN */}
+        <Route element={<ProtectedRoutes />}>
+          <Route path='dashboard' element={<Dashboard />} />
+          <Route path='perfilusuario' element={<PerfilUsuario />} />
 
-        <Route path='dashboard' element={<Dashboard />} />
-        <Route path='perfilusuario' element={<PerfilUsuario />} />
+          <Route path='ejecutivos' element={<Ejecutivos />} />
+          <Route path='grupofamiliar' element={<GrupoFamiliar />} />
+          <Route path='vehiculosejecutivos' element={<VehicleEjectivos />} />
+          <Route path='protectores' element={<Protectores />} />
+          <Route path='vehiculosprotectores' element={<VehicleProtectores />} />
+          <Route path='lugares' element={<Lugares />} />
+          <Route path='admin/historial' element={<HistorialCCTV />} />
 
-        <Route path='ejecutivos' element={<Ejecutivos />} />
-        <Route path='grupofamiliar' element={<GrupoFamiliar />} />
-        <Route path='vehiculosejecutivos' element={<VehicleEjectivos />} />
-        <Route path='protectores' element={<Protectores />} />
-        <Route path='vehiculosprotectores' element={<VehicleProtectores />} />
-        <Route path='lugares' element={<Lugares />} />
-        <Route path='admin/historial' element={<HistorialCCTV />} />
+          {/* TRS */}
+          <Route path='historialmovimiento' element={<HistorialMovimiento />} />
+          <Route path='recepcionturno' element={<RecepcionTurno />} />
+          <Route path='editrecepcion' element={<EditRecepcion />} />
+          <Route path='viewrecepcion' element={<ViewRecepcion />} />
 
-        {/* TRS */}
-        <Route path='historialmovimiento' element={<HistorialMovimiento />} />
-        <Route path='recepcionturno' element={<RecepcionTurno />} />
-        <Route path='editrecepcion' element={<EditRecepcion />} />
-        <Route path='viewrecepcion' element={<ViewRecepcion />} />
+          {/* TRSUSER */}
+          <Route path='trsdashboard' element={<TRSDashboard />} />
 
-        {/* TRSUSER */}
-        <Route path='trsdashboard' element={<TRSDashboard />} />
-
-        <Route path='cctvdashboard' element={<CCTVDashboard />} />
-        <Route path='cctv/diurno' element={<Diurno />} />
-        <Route path='cctv/nocturno' element={<Nocturno />} />
-        <Route path='cctv/historial' element={<Historial />} />
+          <Route path='cctvdashboard' element={<CCTVDashboard />} />
+          <Route path='cctv/diurno' element={<Diurno />} />
+          <Route path='cctv/nocturno' element={<Nocturno />} />
+          <Route path='cctv/historial' element={<Historial />} />
+        </Route>
       </Routes>
     </div>
   )
