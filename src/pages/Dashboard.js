@@ -16,18 +16,19 @@ import {
   obtenerConsignasTRSAction,
 } from '../store/actions/ConsignasAction'
 
-const Dashboard = () => {
+const Dashboard = props => {
   const dispatch = useDispatch()
   const [idConsigna, setIdConsigna] = useState(1)
-  useEffect(() => {
-    const cargarConsignas = async () => {
-      await dispatch(obtenerConsignasCCTVAction())
-      await dispatch(obtenerConsignasTRSAction())
-      await dispatch(obtenerConsignasGrafica(idConsigna))
-    }
 
+  const cargarConsignas = () => {
+    dispatch(obtenerConsignasCCTVAction())
+    dispatch(obtenerConsignasTRSAction())
+    dispatch(obtenerConsignasGrafica(idConsigna))
+  }
+
+  useEffect(() => {
     cargarConsignas()
-  }, [])
+  }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
 

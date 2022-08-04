@@ -6,7 +6,7 @@ import { obtenerConsignasGrafica } from '../../store/actions'
 import Period from './Period'
 
 const Piechart = ({ data, handleTimeConsignas }) => {
-  const { trs, cctv } = data.datos
+  const { trs, cctv } = data.datos || {}
 
   return (
     <div className='flex-col bg-white shadow-sm border-[1px] h-full w-full'>
@@ -69,7 +69,9 @@ const Piechart = ({ data, handleTimeConsignas }) => {
 
               <p className='text-[#A3AED0]'>TRS</p>
             </div>
-            <div className='text-2xl font-bold self-end'>{trs}</div>
+            <div className='text-2xl font-bold self-end'>
+              {Object.keys(data).length > 0 ? trs : 0}
+            </div>
           </div>
 
           <div className='flex flex-col ml-8'>
@@ -77,7 +79,9 @@ const Piechart = ({ data, handleTimeConsignas }) => {
               <div className='h-3 w-3 bg-[#1A84E7] rounded-full mt-2 mr-2'></div>
               <p className='text-[#A3AED0]'>CCTV</p>
             </div>
-            <div className='text-2xl font-bold self-end'>{cctv}</div>
+            <div className='text-2xl font-bold self-end'>
+              {Object.keys(data).length > 0 ? cctv : 0}
+            </div>
           </div>
         </div>
       </div>
