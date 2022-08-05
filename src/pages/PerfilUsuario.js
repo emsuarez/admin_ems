@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Header, ICONS, RedirectWithoutLogin } from '../components'
 import user from '../assets/user.jpg'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { info } from 'autoprefixer'
+import { updateUserInfoAction } from '../store/actions'
 
 const PerfilUsuario = () => {
   const [editarInformacion, setEditarInformacion] = useState(true)
 
   const infoUsuario = useSelector(state => state.auth.user.userData)
   const [usuarioState, setUsuarioState] = useState({})
+  const [nuevoUsuario, setNuevoUsuario] = useState({})
+  const [imagenChange, setImagenChange] = useState()
 
+  const dispatch = useDispatch()
   useEffect(() => {
     setUsuarioState(infoUsuario)
   }, [])
@@ -23,10 +27,28 @@ const PerfilUsuario = () => {
     setUsuarioState(infoUsuario)
   }
 
-  const handleGuardar = usuarioState => {
-    console.log(usuarioState)
+  const handleImage = e => {
+    // console.log(e.target.files[0])
+    setImagenChange(e.target.files[0])
+    // console.log(imagenChange)
+    console.log(nuevoUsuario)
+    dispatch(updateUserInfoAction(nuevoUsuario))
   }
 
+  const handleUpdateDataUser = (e, usuarioState) => {
+    e.preventDefault()
+    const usuario = {
+      id: usuarioState.user_id,
+      usuario: usuarioState.username,
+      nombres: usuarioState.first_name,
+      apellidos: usuarioState.last_name,
+      email: usuarioState.email,
+      tipo: usuarioState.tipo,
+      imagen: imagenChange,
+    }
+    setNuevoUsuario(usuario)
+    console.log(nuevoUsuario)
+  }
   return (
     <div>
       <RedirectWithoutLogin />
@@ -45,18 +67,39 @@ const PerfilUsuario = () => {
         <div className='mx-10'>
           <div className='flex flex-col justify-center items-center'>
             <div className='flex justify-start w-full bg-blue-900 pt-20 h-56 z-10'>
-              <div className='ml-28'>
-                <div className='mr-10 bg-white rounded-[50%]'>
-                  <img
-                    src={`https://cloudbitakor.com${infoUsuario.imagen}`}
-                    alt='imagen de usuario'
+              <div className='ml-28 group relative z-0'>
+                <label
+                  for='dropzone-file'
+                  className='flex flex-col justify-center items-center w-full h-64cursor-pointer'
+                >
+                  <div
                     className={
-                      editarInformacion
-                        ? 'w-72 rounded-[50%] border-red-700 border-2 p-2'
-                        : 'w-72 rounded-[50%] border-red-700 border-2 p-2 hover:opacity-25 hover:cursor-help'
+                      !editarInformacion
+                        ? ' bg-white rounded-[50%] hover:opacity-80 hover:cursor-pointer hover:bg-black hover:bg-opacity-60'
+                        : 'bg-white rounded-[50%]'
                     }
+                  >
+                    <div>
+                      <img
+                        src={`https://cloudbitakor.com${usuarioState.imagen}`}
+                        alt='imagen de usuario'
+                        className='w-72 rounded-[50%] border-red-700 border-2 p-2'
+                      />
+                    </div>
+                    <div className='mx-10 bg-white rounded-[50%] object-cover'></div>
+                    {!editarInformacion ? (
+                      <div className='absolute top-40 left-0 w-full h-0 flex flex-col justify-center items-center duration-500'>
+                        <ICONS.UploadIconS className='h-16 text-gray-600 z-50 absolute' />
+                      </div>
+                    ) : null}
+                  </div>
+                  <input
+                    id='dropzone-file'
+                    type='file'
+                    className='hidden'
+                    onChange={e => handleImage(e)}
                   />
-                </div>
+                </label>
               </div>
               <div className='text-white text-5xl font-semibold mt-10'>
                 PERFIL
@@ -161,10 +204,16 @@ const PerfilUsuario = () => {
                         </button>
                         <button
                           className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
-                          onClick={() => handleGuardar(usuarioState)}
+                          onClick={e => handleUpdateDataUser(e, usuarioState)}
                         >
                           Guardar
                         </button>
+                        {/* <input
+                          className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                          type={'file'}
+                          value={imagenChange}
+                          onChange={e => handleImage(e)}
+                        /> */}
                       </div>
                     </div>
                   )}

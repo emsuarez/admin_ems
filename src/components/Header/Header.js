@@ -55,7 +55,7 @@ const Header = () => {
 
   return (
     <div>
-      <div className='flex sticky top-0 z-50 h-20 bg-white items-center p-2 lg:px-5 shadow-md'>
+      <div className='flex sticky top-0 z-50 h-16 bg-white items-center p-2 lg:px-5 shadow-2xl shadow-gray-800/40 '>
         {/* Left */}
         <div className='flex items-center'>
           <Link to={tipoDashboard}>
@@ -66,22 +66,22 @@ const Header = () => {
         {/* Center */}
         <nav className='hidden md:flex ml-14 border-2 divide-x-2'>
           {(items == 'all' || items == 'recursos') && (
-            <div className='px-4  hover:border-b-blue-500 hover:border-b-2  hover:cursor-pointer'>
+            <div className='px-4  hover:border-b-blue-500 hover:border-b-2  hover:cursor-pointer py-1'>
               <Recursos item={items} />
             </div>
           )}
           {(items == 'all' || items == 'trs') && (
-            <div className='px-4 hover:border-b-blue-500 hover:border-b-2  hover:cursor-pointer'>
+            <div className='px-4 hover:border-b-blue-500 hover:border-b-2  hover:cursor-pointer py-1'>
               <TRS item={items} />
             </div>
           )}
           {(items == 'all' || items == 'cctv') && (
-            <div className='px-4  hover:border-b-blue-500  hover:border-b-2  hover:cursor-pointer'>
+            <div className='px-4  hover:border-b-blue-500  hover:border-b-2  hover:cursor-pointer py-1'>
               <CCTV item={items} />
             </div>
           )}
           {items == 'all' && (
-            <div className='px-4  hover:border-b-blue-500  hover:border-b-2  hover:cursor-pointer'>
+            <div className='px-4  hover:border-b-blue-500  hover:border-b-2  hover:cursor-pointer py-1'>
               <Usuarios item={items} />
             </div>
           )}
