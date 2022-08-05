@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Header, ICONS, RedirectWithoutLogin } from '../components'
-import user from '../assets/user.jpg'
 import { useDispatch, useSelector } from 'react-redux'
-import { info } from 'autoprefixer'
 import { getUserInfoAction, updateUserInfoAction } from '../store/actions'
-import { Link, Navigate } from 'react-router-dom'
 import AlertCrudConfirm from '../components/alerts/AlertCrudConfirm'
 
 const PerfilUsuario = () => {
@@ -60,6 +57,7 @@ const PerfilUsuario = () => {
   const handleGuardar = usuarioState => {
     handleUpdateDataUser(usuarioState)
     setModal(false)
+    setEditarInformacion(false)
   }
 
   useEffect(() => {
