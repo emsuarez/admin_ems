@@ -98,13 +98,16 @@ export const UserRegister = data => async dispatch => {
 
 export const getTiposUsuarioAction = () => {
   return async dispatch => {
-    await dispatch(getTipoUser())
     try {
+      await dispatch(getTipoUser())
+      progress.start()
       const response = await httpRequest.get('/roles')
       dispatch(getTipoUserSuccess(response.data.results))
+      progress.finish()
     } catch (error) {
       console.log('Error getRoles ', error)
       dispatch(getTipoUserFailed(true))
+      progress.finish()
     }
   }
 }
@@ -135,11 +138,14 @@ export const getUserInfoAction = () => {
       const respuesta = await httpRequest.get(`/usuario/`, {
         headers: { Authorization: Token },
       })
-
+      progress.finish()
       dispatch(getUserInfoSuccess(respuesta.data))
+      progress.finish()
     } catch (error) {
       console.log('Error getUserInfo ', error)
+      progress.finish()
       dispatch(getUserInfoFailed(true))
+      progress.finish()
     }
   }
 }
@@ -156,5 +162,44 @@ const getUserInfoSuccess = user => ({
 
 const getUserInfoFailed = estadoError => ({
   type: types.GET_USERINFO_FAILED,
+  payload: estadoError,
+})
+
+// Funcion actualizar info de Usuario
+export const updateUserInfoAction = data => {
+  return async dispatch => {
+    await dispatch(updateUserInfo())
+    try {
+      progress.start()
+      const token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch(`/usuario/`, data, {
+        headers: { Authorization: Token },
+      })
+
+      progress.finish()
+      dispatch(updateUserInfoSuccess(respuesta.data))
+      progress.finish()
+    } catch (error) {
+      console.log('Error updateUserInfo ', error)
+      progress.finish()
+      dispatch(updateUserInfoFailed(true))
+      progress.finish()
+    }
+  }
+}
+
+const updateUserInfo = () => ({
+  type: types.UPDATE_USERINFO_START,
+  payload: true,
+})
+
+const updateUserInfoSuccess = user => ({
+  type: types.UPDATE_USERINFO_SUCCESS,
+  payload: user,
+})
+
+const updateUserInfoFailed = estadoError => ({
+  type: types.UPDATE_USERINFO_FAILED,
   payload: estadoError,
 })

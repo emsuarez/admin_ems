@@ -89,13 +89,14 @@ export function obtenerConsignasGrafica(id) {
         headers: { Authorization: Token },
       })
       const result = respuesta.data
-      console.log(result, 'resultado consignasgrafica')
-      progress.finish()
+     
       dispatch(comenzarDescargaConsignasGraficaExitosa(result))
-    } catch (error) {
       progress.finish()
+    } catch (error) {
       console.log(error, 'DESCARGA CONSIGNAS GRAFICA ERROR')
+   
       dispatch(comenzarDescargaConsignasGraficaError(true))
+      progress.finish()
     }
   }
 }
