@@ -4,16 +4,22 @@ import user from '../assets/user.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 import { info } from 'autoprefixer'
 import { getUserInfoAction, updateUserInfoAction } from '../store/actions'
+import { Link, Navigate } from 'react-router-dom'
+import AlertCrudConfirm from '../components/alerts/AlertCrudConfirm'
 
 const PerfilUsuario = () => {
+  const dispatch = useDispatch()
   const [editarInformacion, setEditarInformacion] = useState(true)
 
   const infoUsuario = useSelector(state => state.auth.user.userData)
+
   const [usuarioState, setUsuarioState] = useState({})
   const [nuevoUsuario, setNuevoUsuario] = useState({})
-  const [imagenChange, setImagenChange] = useState()
+  const [imagenNueva, setImagenNueva] = useState()
+  const [imagenSeleccionada, setImagenSeleccionada] = useState()
 
-  const dispatch = useDispatch()
+  const [modal, setModal] = useState(false)
+
   useEffect(() => {
     setUsuarioState(infoUsuario)
   }, [])
@@ -28,14 +34,14 @@ const PerfilUsuario = () => {
   }
 
   const handleImage = e => {
-    // console.log(e.target.files[0])
-    setImagenChange(e.target.files[0])
-    // console.log(imagenChange)
-    console.log(nuevoUsuario)
+    const [file] = e.target.files
+    console.log(e.target.files[0], 'Archivo cargado')
+    setImagenNueva(e.target.files[0])
+    setImagenSeleccionada(URL.createObjectURL(file))
   }
 
-  const handleUpdateDataUser = async (e, usuarioState) => {
-    e.preventDefault()
+  const handleUpdateDataUser = usuarioState => {
+    console.log(imagenNueva, 'Imagen nueva')
     const usuario = {
       id: usuarioState.user_id,
       usuario: usuarioState.username,
@@ -43,13 +49,23 @@ const PerfilUsuario = () => {
       apellidos: usuarioState.last_name,
       email: usuarioState.email,
       tipo: usuarioState.tipo,
-      // imagen: null,
+      imagen: imagenNueva ? imagenNueva : usuarioState.imagen,
     }
+    console.log(usuario, 'DATA QUE SE ENVIARA')
     setNuevoUsuario(usuario)
-    await dispatch(updateUserInfoAction(usuario))
-    await dispatch(getUserInfoAction())
+    dispatch(updateUserInfoAction(usuario))
     console.log(nuevoUsuario)
   }
+
+  const handleGuardar = usuarioState => {
+    handleUpdateDataUser(usuarioState)
+    setModal(false)
+  }
+
+  useEffect(() => {
+    dispatch(getUserInfoAction())
+  }, [dispatch])
+
   return (
     <div>
       <RedirectWithoutLogin />
@@ -82,7 +98,11 @@ const PerfilUsuario = () => {
                   >
                     <div>
                       <img
-                        src={`https://cloudbitakor.com${usuarioState.imagen}`}
+                        src={
+                          imagenSeleccionada
+                            ? imagenSeleccionada
+                            : `https://cloudbitakor.com${usuarioState.imagen}`
+                        }
                         alt='imagen de usuario'
                         className='w-72 rounded-[50%] border-red-700 border-2 p-2'
                       />
@@ -94,12 +114,14 @@ const PerfilUsuario = () => {
                       </div>
                     ) : null}
                   </div>
-                  <input
-                    id='dropzone-file'
-                    type='file'
-                    className='hidden'
-                    onChange={e => handleImage(e)}
-                  />
+                  {!editarInformacion ? (
+                    <input
+                      id='dropzone-file'
+                      type='file'
+                      className='hidden'
+                      onChange={e => handleImage(e)}
+                    />
+                  ) : null}
                 </label>
               </div>
               <div className='text-white text-5xl font-semibold mt-10'>
@@ -120,9 +142,9 @@ const PerfilUsuario = () => {
                     {infoUsuario.first_name + ' ' + infoUsuario.last_name}
                   </div>
                   <div className='text-2xl font-semibold text-gray-400 mt-2'>
-                    {infoUsuario.tipo === 1
+                    {usuarioState.tipo === 1
                       ? 'Administrador'
-                      : infoUsuario.tipo
+                      : infoUsuario.tipo === 2
                       ? 'CCTV'
                       : 'TRS'}
                   </div>
@@ -203,23 +225,23 @@ const PerfilUsuario = () => {
                         >
                           Cancelar
                         </button>
+
                         <button
                           className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
-                          onClick={e => handleUpdateDataUser(e, usuarioState)}
+                          onClick={() => setModal(true)}
                         >
                           Guardar
                         </button>
-                        {/* <input
-                          className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
-                          type={'file'}
-                          value={imagenChange}
-                          onChange={e => handleImage(e)}
-                        /> */}
                       </div>
                     </div>
                   )}
                 </div>
               </div>
+              <AlertCrudConfirm
+                modal={modal}
+                setModal={setModal}
+                handleGuardar={() => handleGuardar(usuarioState)}
+              />
             </div>
           </div>
         </div>
