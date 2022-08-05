@@ -171,12 +171,13 @@ export const updateUserInfoAction = data => {
     await dispatch(updateUserInfo())
     try {
       progress.start()
+      console.log('DATA', data)
       const token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.patch(`/usuario/`, data, {
         headers: { Authorization: Token },
       })
-
+      console.log(respuesta)
       progress.finish()
       dispatch(updateUserInfoSuccess(respuesta.data))
       progress.finish()

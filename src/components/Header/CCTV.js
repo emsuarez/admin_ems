@@ -6,7 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import { ClickOutSide } from '../clickOutside/ClickOutSide'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <Tooltip
+    {...props}
+    classes={{ popper: className }}
+    placement='bottom-start'
+  />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: 'white',
@@ -24,6 +28,7 @@ const CCTV = ({ item }) => {
   const [subopen, setSubOpen] = useState(false)
 
   const wrapperRef = useRef(null)
+
   ClickOutSide(wrapperRef, setOpen)
 
   const toogleTooltip = () => {
@@ -36,80 +41,39 @@ const CCTV = ({ item }) => {
 
   return (
     <HtmlTooltip
-      className='group'
       open={open}
       enterDelay={0}
       leaveDelay={200}
       title={
         <React.Fragment>
-          <ul className='w-80' ref={wrapperRef}>
+          <ul className='w-full' ref={wrapperRef}>
+            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+              <p className='text-sm my-1 ml-3 '>Entrega y recepción de turno</p>
+            </li>
+
             <li
               onClick={() => {
-                item == 'all'
-                  ? window.location.href !==
-                      window.location.protocol +
-                        '//' +
-                        window.location.host +
-                        '/admin/historial' && navigate('/admin/historial')
-                  : window.location.href !==
-                      window.location.protocol +
-                        '//' +
-                        window.location.host +
-                        '/cctv/historial' && navigate('/cctv/historial')
+                if (
+                  window.location.href !==
+                  window.location.protocol +
+                    '//' +
+                    window.location.host +
+                    '/recepcionturno'
+                ) {
+                  navigate('/recepcionturno')
+                }
               }}
-              className='flex space-x-4 hover:cursor-pointer hover:border-l-4 border-blue-500 hover:bg-slate-200 h-10 '
+              className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
-              {/* <ICONS.PencilAltIconS className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm   mt-3 ml-3'>
-                Historial entrega y recepción de Turno
+              <p className='text-sm my-1 ml-3 mr-3'>
+                Historial Entrega y recepción de Turno
               </p>
             </li>
-            {item == 'cctv' && (
-              <li
-                onClick={() => toogleSubTooltip()}
-                className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
-              >
-                <p className='text-sm mt-3 ml-3'>Entrega y recepciónde turno</p>
-                <ICONS.ChevronRightIconO
-                  className='h-4 mt-3 ml-3'
-                  color='blue'
-                />
-              </li>
-            )}
-
-            <div className='flex flex-col w-fit ml-96 bg-red-400 '>
-              <HtmlTooltip
-                open={subopen}
-                enterDelay={0}
-                leaveDelay={200}
-                title={
-                  <React.Fragment>
-                    <ul className=' w-80 space-y-4'>
-                      <li
-                        onClick={() => navigate('/cctv/diurno')}
-                        className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
-                      >
-                        {/* <ICONS.PencilAltIconS className="h-4 mt-3 ml-3" color="blue"/> */}
-                        <p className='text-sm  mt-3 ml-3'>Diurno</p>
-                      </li>
-                      {item == 'cctv' && (
-                        <li
-                          onClick={() => navigate('/cctv/nocturno')}
-                          className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
-                        >
-                          <p className='text-sm  mt-3 ml-3'>Nocturno</p>
-                        </li>
-                      )}
-                    </ul>
-                  </React.Fragment>
-                }
-              ></HtmlTooltip>
-            </div>
           </ul>
         </React.Fragment>
       }
     >
-      <div className='flex space-x-2'>
+      <div className='flex space-x-2' onClick={() => toogleTooltip()}>
         <div className='mt-1'>
           <svg
             width='16'

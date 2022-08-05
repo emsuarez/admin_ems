@@ -3,7 +3,7 @@ import { Header, ICONS, RedirectWithoutLogin } from '../components'
 import user from '../assets/user.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 import { info } from 'autoprefixer'
-import { updateUserInfoAction } from '../store/actions'
+import { getUserInfoAction, updateUserInfoAction } from '../store/actions'
 
 const PerfilUsuario = () => {
   const [editarInformacion, setEditarInformacion] = useState(true)
@@ -32,10 +32,9 @@ const PerfilUsuario = () => {
     setImagenChange(e.target.files[0])
     // console.log(imagenChange)
     console.log(nuevoUsuario)
-    dispatch(updateUserInfoAction(nuevoUsuario))
   }
 
-  const handleUpdateDataUser = (e, usuarioState) => {
+  const handleUpdateDataUser = async (e, usuarioState) => {
     e.preventDefault()
     const usuario = {
       id: usuarioState.user_id,
@@ -44,9 +43,11 @@ const PerfilUsuario = () => {
       apellidos: usuarioState.last_name,
       email: usuarioState.email,
       tipo: usuarioState.tipo,
-      imagen: imagenChange,
+      // imagen: null,
     }
     setNuevoUsuario(usuario)
+    await dispatch(updateUserInfoAction(usuario))
+    await dispatch(getUserInfoAction())
     console.log(nuevoUsuario)
   }
   return (

@@ -6,7 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import { ClickOutSide } from '../clickOutside/ClickOutSide'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <Tooltip
+    {...props}
+    classes={{ popper: className }}
+    placement='bottom-start'
+  />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: 'white',
@@ -51,10 +55,10 @@ const Recursos = () => {
                 }
               }}
               className='flex space-x-4 hover:border-l-4 border-blue-500  hover:cursor-pointer 
-                  hover:bg-slate-200 h-10 '
+                  hover:bg-slate-200'
             >
               {/* <ICONS.PencilAltIconS className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm mt-3 ml-3'>Ejecutivos</p>
+              <p className='text-sm my-1 ml-3'>Ejecutivos</p>
             </li>
 
             <li
@@ -69,10 +73,10 @@ const Recursos = () => {
                   navigate('/grupofamiliar')
                 }
               }}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
               {/* <ICONS.LogoutIconO className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm mt-3 ml-3'>Grupo Familiar</p>
+              <p className='text-sm my-1 ml-3'>Grupo Familiar</p>
             </li>
 
             <li
@@ -87,10 +91,10 @@ const Recursos = () => {
                   navigate('/vehiculosejecutivos')
                 }
               }}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
               {/* <ICONS.LogoutIconO className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm mt-3 ml-3'>Vehículos de Ejecutivos</p>
+              <p className='text-sm my-1 ml-3'>Vehículos de Ejecutivos</p>
             </li>
 
             <li
@@ -105,10 +109,10 @@ const Recursos = () => {
                   navigate('/protectores')
                 }
               }}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
               {/* <ICONS.LogoutIconO className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm mt-3 ml-3'>Protectores</p>
+              <p className='text-sm my-1 ml-3'>Protectores</p>
             </li>
 
             <li
@@ -123,10 +127,10 @@ const Recursos = () => {
                   navigate('/vehiculosprotectores')
                 }
               }}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
               {/* <ICONS.LogoutIconO className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm mt-3 ml-3'>Vehículos de Protectores</p>
+              <p className='text-sm my-1 ml-3'>Vehículos de Protectores</p>
             </li>
 
             <li
@@ -141,10 +145,10 @@ const Recursos = () => {
                   navigate('/lugares')
                 }
               }}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
               {/* <ICONS.LogoutIconO className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm mt-3 ml-3'>Lugares</p>
+              <p className='text-sm my-1 ml-3'>Lugares</p>
             </li>
           </ul>
         </React.Fragment>

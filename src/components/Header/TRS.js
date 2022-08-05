@@ -6,12 +6,15 @@ import { ClickOutSide } from '../clickOutside/ClickOutSide'
 import { useNavigate } from 'react-router-dom'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
+  <Tooltip
+    {...props}
+    classes={{ popper: className }}
+    placement='bottom-start'
+  />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: 'white',
     color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 620,
     fontSize: theme.typography.pxToRem(12),
     border: '1px solid #dadde9',
   },
@@ -36,9 +39,9 @@ const TRS = () => {
       leaveDelay={200}
       title={
         <React.Fragment>
-          <ul className=' w-80' ref={wrapperRef}>
-            <li className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
-              <p className='text-sm mt-3 ml-3 '>Control de movimiento</p>
+          <ul className='w-full' ref={wrapperRef}>
+            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+              <p className='text-sm my-1 ml-3 '>Control de movimiento</p>
             </li>
 
             <li
@@ -53,15 +56,15 @@ const TRS = () => {
                   navigate('/historialmovimiento')
                 }
               }}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
-              <p className='text-sm mt-3 ml-3 '>
+              <p className='text-sm my-1 ml-3 '>
                 Historial Control de movimiento
               </p>
             </li>
 
-            <li className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
-              <p className='text-sm mt-3 ml-3 '>Entrega y recepción de turno</p>
+            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+              <p className='text-sm my-1 ml-3 '>Entrega y recepción de turno</p>
             </li>
 
             <li
@@ -76,9 +79,9 @@ const TRS = () => {
                   navigate('/recepcionturno')
                 }
               }}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
             >
-              <p className='text-sm mt-3 ml-3'>
+              <p className='text-sm my-1 ml-3 mr-3'>
                 Historial Entrega y recepción de Turno
               </p>
             </li>
@@ -86,10 +89,7 @@ const TRS = () => {
         </React.Fragment>
       }
     >
-      <div
-        onClick={() => toogleTooltip()}
-        className='flex space-x-2'
-      >
+      <div className='flex space-x-2' onClick={() => toogleTooltip()}>
         <div>
           <svg
             width='22'

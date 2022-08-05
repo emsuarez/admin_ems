@@ -66,7 +66,7 @@ const Header = () => {
         {/* Center */}
         <nav className='hidden md:flex ml-14 border-2 divide-x-2'>
           {(items == 'all' || items == 'recursos') && (
-            <div className='px-4  hover:border-b-blue-500 hover:border-b-2  hover:cursor-pointer py-1'>
+            <div className='px-4 hover:border-b-blue-500 hover:border-b-2  hover:cursor-pointer py-1'>
               <Recursos item={items} />
             </div>
           )}
