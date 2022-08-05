@@ -6,6 +6,7 @@ import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 import 'reactjs-popup/dist/index.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import CerrarSesionModal from '../alerts/CerrarSesionModal'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -19,10 +20,12 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }))
 
-const RightImage = ({ handleModal, userInfo }) => {
+const RightImage = ({ userInfo }) => {
   const [imagenUsuario, setImagenUsuario] = useState()
   const [nombreUsuario, setNombreUsuario] = useState()
-  // const dataUser = useSelector(state => state.auth.user.userData)
+
+  const [modal, setModal] = useState(false)
+
   useEffect(() => {
     // setDatosUsuario(userInfo)
     console.log(userInfo)
@@ -31,52 +34,63 @@ const RightImage = ({ handleModal, userInfo }) => {
   }, [])
 
   const handleLogout = () => {
-    window.localStorage.clear()
-    handleModal()
+    // window.localStorage.clear()
+    setModal(true)
   }
 
   return (
-    <HtmlTooltip
-      // disableTouchListener
-      enterDelay={0}
-      leaveDelay={200}
-      title={
-        <React.Fragment>
-          <ul className=' w-44 space-y-4'>
-            <Link to='/perfilusuario'>
-              <li className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
-                <ICONS.PencilAltIconS className='h-4 mt-3 ml-3' color='blue' />
-                <p className='text-sm mt-3 ml-3'>Perfil</p>
+    <>
+      <HtmlTooltip
+        // disableTouchListener
+        enterDelay={0}
+        leaveDelay={200}
+        title={
+          <React.Fragment>
+            <ul className=' w-44 space-y-4'>
+              <Link to='/perfilusuario'>
+                <li className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
+                  <ICONS.PencilAltIconS
+                    className='h-4 mt-3 ml-3'
+                    color='blue'
+                  />
+                  <p className='text-sm mt-3 ml-3'>Perfil</p>
+                </li>
+              </Link>
+
+              <li
+                onClick={() => handleLogout()}
+                className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
+              >
+                <ICONS.LogoutIconO className='h-4 mt-3 ml-3' color='blue' />
+                <p className='text-sm mt-3 ml-3'>Cerrar sesión</p>
               </li>
-            </Link>
+            </ul>
+          </React.Fragment>
+        }
+      >
+        <div className='flex hover:cursor-pointer'>
+          <div className='rounded-full h-14 '>
+            <img
+              src={`https://cloudbitakor.com${imagenUsuario}`}
+              className='h-12 rounded-full mt-0.5'
+            />
+          </div>
 
-            <li
-              onClick={() => handleLogout()}
-              className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '
-            >
-              <ICONS.LogoutIconO className='h-4 mt-3 ml-3' color='blue' />
-              <p className='text-sm mt-3 ml-3'>Cerrar sesión</p>
-            </li>
-          </ul>
-        </React.Fragment>
-      }
-    >
-      <div className='flex hover:cursor-pointer'>
-        <div className='rounded-full h-14 '>
-          <img
-            src={`https://cloudbitakor.com${imagenUsuario}`}
-            className='h-12 rounded-full mt-0.5'
-          />
+          <div className='flex ml-4 mt-4'>
+            <p className='hidden md:inline-block text-black font-semibold text-lg'>
+              {nombreUsuario}
+            </p>
+            <ICONS.ChevronDownIconO className='h-3 w-3 hidden mt-2 ml-3 text-black md:inline-block' />
+          </div>
         </div>
+      </HtmlTooltip>
 
-        <div className='flex ml-4 mt-4'>
-          <p className='hidden md:inline-block text-black font-semibold text-lg'>
-            {nombreUsuario}
-          </p>
-          <ICONS.ChevronDownIconO className='h-3 w-3 hidden mt-2 ml-3 text-black md:inline-block' />
-        </div>
-      </div>
-    </HtmlTooltip>
+      <CerrarSesionModal
+        userInfo={userInfo}
+        modal={modal}
+        setModal={setModal}
+      />
+    </>
   )
 }
 

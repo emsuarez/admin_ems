@@ -9,21 +9,13 @@ import TRS from './TRS'
 import Usuarios from './Usuarios'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserInfoAction } from '../../store/actions'
+import CerrarSesionModal from '../alerts/CerrarSesionModal'
 
 const Header = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [modal, setModal] = useState(false)
   const [items, setItems] = useState('')
 
-  const handleModal = () => {
-    setModal(!modal)
-  }
-  const Leave = () => {
-    handleModal()
-    navigate('/')
-  }
   const [tipoDashboard, setTipoDashboard] = useState('')
 
   useEffect(() => {
@@ -108,7 +100,7 @@ const Header = () => {
               />
             </svg>
           </div>
-          <RightImage handleModal={() => Leave()} userInfo={userInfo} />
+          <RightImage userInfo={userInfo} />
         </div>
       </div>
 
@@ -120,43 +112,6 @@ const Header = () => {
           {(items == 'all' || items == 'cctv') && <CCTV item={items} />}
         </nav>
       </div>
-
-      {modal &&
-      (items === 'cctv' || items === 'trs' || items === 'recursos') ? (
-        <div className='flex justify-center w-full z-50 fixed'>
-          <div className='mt-10 h-fit pb-4 rounded-md bg-white border-2 shadow-md z-50 lg:w-1/3 absolute'>
-            <div className=' z-50 text-left pl-4 pt-2'>
-              <h3 className='font-bold text-2xl'>Estas por cerrar sesión</h3>
-            </div>
-            <p className='text-center mt-14'>
-              Debes escojer a tu compañero que relevara tu puesto:
-            </p>
-
-            <div className='justify-center flex -mt-12'>
-              <DropDown />
-            </div>
-
-            <div className='flex justify-center space-x-4 mt-4'>
-              <h3
-                onClick={() => Leave()}
-                className='border-2 w-20 rounded-md text-center font-semibold hover:cursor-pointer
-                            hover:bg-slate-200 active:bg-slate-50'
-              >
-                Salir
-              </h3>
-              <h3
-                onClick={() => handleModal()}
-                className='border-2 w-20 rounded-md text-center font-semibold hover:cursor-pointer
-                            hover:bg-slate-200 active:bg-slate-50'
-              >
-                Cancelar
-              </h3>
-            </div>
-          </div>
-        </div>
-      ) : // navigate('/')
-      // setNavegar(true)
-      null}
     </div>
   )
 }
