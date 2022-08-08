@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUserInfoAction, updateUserInfoAction } from '../store/actions'
 import AlertCrudConfirm from '../components/alerts/AlertCrudConfirm'
 
+import '../global'
+
 const PerfilUsuario = () => {
   const dispatch = useDispatch()
   const [editarInformacion, setEditarInformacion] = useState(true)
@@ -99,7 +101,7 @@ const PerfilUsuario = () => {
                         src={
                           imagenSeleccionada
                             ? imagenSeleccionada
-                            : `https://cloudbitakor.com${usuarioState.imagen}`
+                            : `${global.urlMedia}${usuarioState.imagen}`
                         }
                         alt='imagen de usuario'
                         className='w-72 rounded-[50%] border-red-700 border-2 p-2'

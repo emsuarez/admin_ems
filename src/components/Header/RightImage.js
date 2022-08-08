@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { ICONS } from '../constants'
-import user from '../../assets/user.jpg'
+
 import { styled } from '@mui/material/styles'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 import 'reactjs-popup/dist/index.css'
-import { Link, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+
 import CerrarSesionModal from '../alerts/CerrarSesionModal'
+
+import '../../global'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -71,7 +73,7 @@ const RightImage = ({ userInfo }) => {
         <div className='flex hover:cursor-pointer'>
           <div className='rounded-full h-14 '>
             <img
-              src={`https://cloudbitakor.com${imagenUsuario}`}
+              src={`${global.urlMedia}${imagenUsuario}`}
               className='h-12 rounded-full mt-0.5'
             />
           </div>
