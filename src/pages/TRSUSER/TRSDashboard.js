@@ -1,15 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
-  CCTVAuthorized,
-  CCTVTable,
   Header,
   ICONS,
   LineChart,
   RedirectWithoutLogin,
   TRSAuthorized,
 } from '../../components'
+import ConsignasTable from '../../components/CCTV/ConsignasTable'
+import {
+  obtenerConsignasGrafica,
+  obtenerConsignasTRSAction,
+} from '../../store/actions'
 
 const TRSDashboard = () => {
+  const dispatch = useDispatch()
+
+  const [idConsigna] = useState(3)
+
+  const cargarConsignas = () => {
+    dispatch(obtenerConsignasTRSAction())
+    dispatch(obtenerConsignasGrafica(idConsigna))
+  }
+
+  useEffect(() => {
+    cargarConsignas()
+  }, [dispatch])
+
+  const consignas = useSelector(state => state.consignas)
   return (
     <div className='h-full w-full'>
       <RedirectWithoutLogin />
@@ -21,46 +39,48 @@ const TRSDashboard = () => {
           </h1>
         </div>
       ) : (
-        <div>
-          <Header items='trs' />
-          <div className='flex items-center bg-slate-100 shadow-sm py-2'>
-            <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
-          </div>
+        <>
+          <Header items='cctv' />
+          <div className='flex flex-col mx-8'>
+            <div className='mt-4 flex flex-row'>
+              <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
+              <p className=' ml-1 font-semibold'>TRS</p>
+            </div>
 
-          <div className='md:flex md:justify-evenly'>
-            <div className='md:w-1/2 '>
-              <div className=' space-x-4 '>
-                <div className=' bg-white mt-4 md:ml-24 shadow-sm rounded-md'>
-                  <LineChart />
+            <div className='flex mt-4 justify-center mb-8'>
+              <div className='flex flex-col basis-2/4 mx-8'>
+                <div className='bg-white w-full mb-12 border-2 border-gray-200 p-20'>
+                  <LineChart data={consignas.consignasGrafica} />
+                </div>
+
+                <div className='bg-white p-6 shadow-md mb-12 w-full border-2 border-gray-200'>
+                  <h2 className='font-semibold text-lg'>
+                    GUARDIA DE PROTECCIÓN GUARDIA
+                  </h2>
+                  <ol>
+                    <li>1 - Pedro Sanchez</li>
+                    <li>2 - Luis Alberto</li>
+                    <li>3 - Santiago Gutierrez</li>
+                    <li>4 - Alfredo Alma</li>
+                  </ol>
+                </div>
+
+                <div className='bg-white p-6 shadow-md w-full border-2 border-gray-200'>
+                  <h2 className='font-semibold text-lg'>GRUPO DE TRABAJO</h2>
+                  <ol>
+                    <li>1 - Alberto López</li>
+                    <li>2 - Roberto Sol</li>
+                    <li>3 - Mauricio Rosa</li>
+                    <li>4 - Alfredo Alma</li>
+                  </ol>
                 </div>
               </div>
-
-              <div className='md:ml-24 mt-4 bg-white p-6 shadow-sm rounded-md'>
-                <h2 className='font-semibold'>GUARDIA DE PROTECCIÓN GUARDIA</h2>
-                <ol>
-                  <li>1 - Pedro Sanchez</li>
-                  <li>2 - Luis Alberto</li>
-                  <li>3 - Santiago Gutierrez</li>
-                  <li>4 - Alfredo Alma</li>
-                </ol>
+              <div className='basis-2/4 flex items-stretch'>
+                <ConsignasTable data={consignas.consignasTrs} />
               </div>
-
-              <div className='md:ml-24 mt-4 bg-white  p-6 shadow-sm rounded-md'>
-                <h2 className='font-semibold'>GRUPO DE TRABAJO</h2>
-                <ol>
-                  <li>1 - Alberto López</li>
-                  <li>2 - Roberto Sol</li>
-                  <li>3 - Mauricio Rosa</li>
-                  <li>4 - Alfredo Alma</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className='md:w-fit w-screen space-y-4 mt-4 md:flex-col md:mx-5'>
-              <CCTVTable height={600} />
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   )

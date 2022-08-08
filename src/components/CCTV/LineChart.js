@@ -21,49 +21,50 @@ ChartJS.register(
   Legend
 )
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'CONSIGNAS PENDIENTES CCTV',
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  scales: {
-    x: {
-      grid: {
-        display: false,
-      },
-      display: true,
-
-      title: {
-        display: true,
-      },
-    },
-
-    y: {
-      grid: {
-        display: false,
-      },
-      display: false,
-      title: {
-        display: true,
-        text: 'Value',
-      },
-      suggestedMin: -5,
-      suggestedMax: 10,
-    },
-  },
-}
-
 export default function LineChart({ data }) {
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'CONSIGNAS PENDIENTES CCTV',
+      },
+    },
+    interaction: {
+      intersect: false,
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        display: true,
+
+        title: {
+          display: true,
+        },
+      },
+
+      y: {
+        grid: {
+          display: false,
+        },
+        display: false,
+        title: {
+          display: true,
+          text: 'Value',
+        },
+        suggestedMin: -5,
+        suggestedMax: 10,
+      },
+    },
+  }
+
   const labels = Object.keys(data.datos)
+
   const dataFormat = {
     labels,
     datasets: [
