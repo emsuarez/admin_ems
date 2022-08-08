@@ -72,14 +72,7 @@ export const UserRegister = data => async dispatch => {
     progress.finish()
     dispatch({ type: types.REGISTER_SUCCESS, payload: result })
 
-    // }
-    // else if(result.message){
-
     progress.finish()
-    // dispatch({ type: types.REGISTER_FAILED })
-    // dispatch(setToast('error', result.message))
-
-    // }
   } catch (error) {
     response = await httpRequest
       .post('/register/', data, {

@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
-import { useDispatch, useSelector } from 'react-redux'
-import { obtenerConsignasGrafica } from '../../store/actions'
-
-import Period from './Period'
 
 const Piechart = ({ data, handleTimeConsignas }) => {
   const { trs, cctv } = data.datos || {}

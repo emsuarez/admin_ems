@@ -62,23 +62,21 @@ export const options = {
   },
 }
 
-const labels = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM']
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'CONSIGNAS',
-      data: [4, 2, 5, 7, 1, 10, 8],
-      borderColor: 'rgb(38, 52, 110, 1)',
-      backgroundColor: 'rgba(38, 52, 110, 1)',
-      fill: false,
-      cubicInterpolationMode: 'monotone',
-      tension: 0.4,
-    },
-  ],
-}
-
-export default function LineChart() {
-  return <Line options={options} data={data} />
+export default function LineChart({ data }) {
+  const labels = Object.keys(data.datos)
+  const dataFormat = {
+    labels,
+    datasets: [
+      {
+        label: 'CONSIGNAS',
+        data: Object.values(data.datos),
+        borderColor: 'rgb(38, 52, 110, 1)',
+        backgroundColor: 'rgba(38, 52, 110, 1)',
+        fill: false,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+      },
+    ],
+  }
+  return <Line options={options} data={dataFormat} />
 }

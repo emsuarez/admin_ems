@@ -1,16 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   CCTVAuthorized,
-  CCTVTable,
   Header,
   ICONS,
   LineChart,
   RedirectWithoutLogin,
 } from '../../components'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
+import {
+  obtenerConsignasCCTVAction,
+  obtenerConsignasGrafica,
+} from '../../store/actions'
 
 const CCTVDashboard = () => {
-  console.log('CCTV ', CCTVAuthorized())
+  const dispatch = useDispatch()
+
+  const [idConsigna] = useState(4)
+
+  const cargarConsignas = () => {
+    dispatch(obtenerConsignasCCTVAction())
+    dispatch(obtenerConsignasGrafica(idConsigna))
+  }
+
+  useEffect(() => {
+    cargarConsignas()
+  }, [dispatch])
+
+  const consignas = useSelector(state => state.consignas)
   return (
     <div className='h-full w-full'>
       <RedirectWithoutLogin />
@@ -33,7 +50,7 @@ const CCTVDashboard = () => {
             <div className='flex mt-4 justify-center mb-8'>
               <div className='flex flex-col basis-2/4 mx-8'>
                 <div className='bg-white w-full mb-12 border-2 border-gray-200 p-20'>
-                  <LineChart />
+                  <LineChart data={consignas.consignasGrafica} />
                 </div>
 
                 <div className='bg-white p-6 shadow-md mb-12 w-full border-2 border-gray-200'>
@@ -59,8 +76,7 @@ const CCTVDashboard = () => {
                 </div>
               </div>
               <div className='basis-2/4 flex items-stretch'>
-                {/* <CCTVTable height={900} /> */}
-                {/* <ConsignasTable /> */}
+                <ConsignasTable data={consignas.consignasCctv} />
               </div>
             </div>
           </div>
