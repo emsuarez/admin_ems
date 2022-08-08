@@ -178,7 +178,7 @@ export const updateUserInfoAction = data => {
       form_data.append('tipo', data.tipo)
       form_data.append('imagen', data.imagen, data.imagen.name)
 
-      console.log(form_data, 'EL FORM DATA CARJO')
+      console.log(form_data, 'EL FORM DATA CARGO')
       const respuesta = await httpRequest.patch(`/usuario/`, form_data, {
         headers: {
           'Content-Type': 'multipart/form-data',

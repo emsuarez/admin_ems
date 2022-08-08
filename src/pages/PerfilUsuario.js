@@ -59,7 +59,7 @@ const PerfilUsuario = () => {
   const handleGuardar = usuarioState => {
     handleUpdateDataUser(usuarioState)
     setModal(false)
-    setEditarInformacion(false)
+    setEditarInformacion(true)
   }
 
   useEffect(() => {
