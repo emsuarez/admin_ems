@@ -7,8 +7,10 @@ import {
   RedirectWithoutLogin,
   TRSAuthorized,
 } from '../../components'
+import AlertCerrarConsigna from '../../components/alerts/AlertCerrarConsigna'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
 import {
+  cerrarConsignacTrsAction,
   obtenerConsignasGrafica,
   obtenerConsignasTRSAction,
 } from '../../store/actions'
@@ -17,6 +19,10 @@ const TRSDashboard = () => {
   const dispatch = useDispatch()
 
   const [idConsigna] = useState(3)
+
+  const [modalTrs, setModalTrs] = useState(false)
+
+  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
 
   const cargarConsignas = () => {
     dispatch(obtenerConsignasTRSAction())
@@ -28,6 +34,17 @@ const TRSDashboard = () => {
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
+
+  const confirmarCerrarConsignaTrs = consigna => {
+    setModalTrs(true)
+    setConsignaSeleccionada(consigna)
+  }
+
+  const handleCerrarConsignaTrs = () => {
+    dispatch(cerrarConsignacTrsAction(consignaSeleccionada))
+    setModalTrs(false)
+  }
+
   return (
     <div className='h-full w-full'>
       <RedirectWithoutLogin />
@@ -75,8 +92,18 @@ const TRSDashboard = () => {
                   </ol>
                 </div>
               </div>
+              <AlertCerrarConsigna
+                modal={modalTrs}
+                setModal={setModalTrs}
+                infoConsigna={consignaSeleccionada}
+                handleCerrarConsigna={handleCerrarConsignaTrs}
+              />
               <div className='basis-2/4 flex items-stretch'>
-                <ConsignasTable data={consignas.consignasTrs} />
+                <ConsignasTable
+                  data={consignas.consignasTrs}
+                  confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
+                  tituloTipoTable='TRS'
+                />
               </div>
             </div>
           </div>
