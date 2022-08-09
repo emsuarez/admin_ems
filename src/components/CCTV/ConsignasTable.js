@@ -1,8 +1,8 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const ConsignasTable = ({ data }) => {
+const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
   const { results, count } = data
 
   return (
@@ -11,7 +11,7 @@ const ConsignasTable = ({ data }) => {
         <div className='flex flex-wrap items-center'>
           <div className='relative w-full px-4  flex-grow flex-1'>
             <h3 className='font-semibold text-lg text-blueGray-700 '>
-              CONSIGNAS ESPECIALES PENDIENTES CCTV
+              CONSIGNAS ESPECIALES PENDIENTES {tituloTipoTable}
             </h3>
           </div>
         </div>
@@ -43,22 +43,24 @@ const ConsignasTable = ({ data }) => {
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 '>
                     {item.obs_creacion}
                   </td>
-                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 hover:cursor-pointer text-white hover:text-red-600 mx-auto'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='h-6 w-6 border-2 rounded-full border-red-700 bg-red-700'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M6 18L18 6M6 6l12 12'
-                      />
-                    </svg>
-                  </td>
+                  <button onClick={() => confirmarCerrarConsigna(item)}>
+                    <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 hover:cursor-pointer text-white hover:text-red-600 mx-auto'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-6 w-6 border-2 rounded-full border-red-700 bg-red-700'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M6 18L18 6M6 6l12 12'
+                        />
+                      </svg>
+                    </td>
+                  </button>
                 </tr>
               ))}
             </tbody>

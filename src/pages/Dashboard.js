@@ -2,23 +2,31 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
-  CCTVTable,
   Header,
   ICONS,
   Piechart,
   RedirectWithoutLogin,
-  TRSTable,
 } from '../components'
 import ConsignasTable from '../components/CCTV/ConsignasTable'
 import {
+  cerrarConsignacCctvAction,
+  cerrarConsignacTrsAction,
   obtenerConsignasCCTVAction,
   obtenerConsignasGrafica,
   obtenerConsignasTRSAction,
 } from '../store/actions/ConsignasAction'
 
+import AlertCerrarConsigna from '../components/alerts/AlertCerrarConsigna'
+import CCTV from '../components/Header/CCTV'
+
 const Dashboard = props => {
   const dispatch = useDispatch()
   const [idConsigna, setIdConsigna] = useState(1)
+
+  const [modalTrs, setModalTrs] = useState(false)
+  const [modalCctv, setModalCctv] = useState(false)
+
+  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
 
   const cargarConsignas = () => {
     dispatch(obtenerConsignasCCTVAction())
@@ -36,6 +44,27 @@ const Dashboard = props => {
     setIdConsigna(consigna)
     await dispatch(obtenerConsignasGrafica(consigna))
   }
+
+  const confirmarCerrarConsignaTrs = consigna => {
+    setModalTrs(true)
+    setConsignaSeleccionada(consigna)
+  }
+
+  const confirmarCerrarConsignaCctv = consigna => {
+    setModalCctv(true)
+    setConsignaSeleccionada(consigna)
+  }
+
+  const handleCerrarConsignaTrs = () => {
+    dispatch(cerrarConsignacTrsAction(consignaSeleccionada))
+    setModalTrs(false)
+  }
+
+  const handleCerrarConsignaCctv = () => {
+    dispatch(cerrarConsignacCctvAction(consignaSeleccionada))
+    setModalCctv(false)
+  }
+
   return (
     <div>
       <RedirectWithoutLogin />
@@ -60,14 +89,32 @@ const Dashboard = props => {
                   handleTimeConsignas={handleTimeConsignas}
                 />
               </div>
+              <AlertCerrarConsigna
+                modal={modalTrs}
+                setModal={setModalTrs}
+                infoConsigna={consignaSeleccionada}
+                handleCerrarConsigna={handleCerrarConsignaTrs}
+              />
+              <AlertCerrarConsigna
+                modal={modalCctv}
+                setModal={setModalCctv}
+                infoConsigna={consignaSeleccionada}
+                handleCerrarConsigna={handleCerrarConsignaCctv}
+              />
               <div className='mr-8 w-3/6'>
                 <div className='w-full mx-auto border-2 border-gray-200 h-96 mb-8'>
-                  {/* <TRSTable height={'100%'} /> */}
-                  <ConsignasTable data={consignas.consignasTrs} />
+                  <ConsignasTable
+                    data={consignas.consignasTrs}
+                    confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
+                    tituloTipoTable='TRS'
+                  />
                 </div>
                 <div className='w-full mx-auto border-2 border-gray-200 h-96'>
-                  {/* <CCTVTable height={'100%'} /> */}
-                  <ConsignasTable data={consignas.consignasCctv} />
+                  <ConsignasTable
+                    data={consignas.consignasCctv}
+                    confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                    tituloTipoTable='CCTV'
+                  />
                 </div>
               </div>
             </div>

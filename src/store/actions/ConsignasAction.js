@@ -89,12 +89,12 @@ export function obtenerConsignasGrafica(id) {
         headers: { Authorization: Token },
       })
       const result = respuesta.data
-     
+
       dispatch(comenzarDescargaConsignasGraficaExitosa(result))
       progress.finish()
     } catch (error) {
       console.log(error, 'DESCARGA CONSIGNAS GRAFICA ERROR')
-   
+
       dispatch(comenzarDescargaConsignasGraficaError(true))
       progress.finish()
     }
@@ -113,5 +113,87 @@ const comenzarDescargaConsignasGraficaExitosa = consignas => ({
 
 const comenzarDescargaConsignasGraficaError = estado => ({
   type: types.GET_CONSIGNASGRAFICA_FAILED,
+  payload: estado,
+})
+
+// Seleeccion y cierre de consignas
+export function cerrarConsignacTrsAction(consignaTrs, observacionCierre) {
+  return async dispatch => {
+    try {
+      dispatch(obtenerConsignaTrsCerrar(consignaTrs))
+      progress.start()
+      console.log(consignaTrs, 'CONSIGNACERRARCTRS')
+      const token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+
+      const consignaCerrar = {
+        id: consignaTrs.id,
+        estado: observacionCierre,
+      }
+
+      await httpRequest.put(`/consignatrs/`, consignaCerrar, {
+        headers: { Authorization: Token },
+      })
+
+      dispatch(cerrarConsignaTrsExitosa())
+      progress.finish()
+    } catch (error) {
+      console.log(error, 'CERRAR CONSIGNAS TRS ERROR')
+      dispatch(cerrarConsignaTrsError(true))
+      progress.finish()
+    }
+  }
+}
+
+const obtenerConsignaTrsCerrar = consignaTrs => ({
+  type: types.GET_CONSIGNACERRARCTRS_START,
+  payload: consignaTrs,
+})
+
+const cerrarConsignaTrsExitosa = () => ({
+  type: types.CONSIGNACERRARTRS_SUCCESS,
+})
+
+const cerrarConsignaTrsError = estado => ({
+  type: types.CONSIGNACERRARTRS_FAILED,
+  payload: estado,
+})
+
+export function cerrarConsignacCctvAction(consignaCctv, observacionCierre) {
+  return async dispatch => {
+    try {
+      dispatch(obtenerConsignaCctvCerrar(consignaCctv))
+      progress.start()
+      console.log(consignaCctv, 'CONSIGNACERRARCCTV')
+      const token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const consignaCerrar = {
+        id: consignaCctv.id,
+        estado: observacionCierre,
+      }
+      await httpRequest.put(`/consignacctv/`, consignaCerrar, {
+        headers: { Authorization: Token },
+      })
+      dispatch(cerrarConsignaCctvExitosa())
+      progress.finish()
+    } catch (error) {
+      console.log(error, 'CERRAR CONSIGNAS CCTV ERROR')
+      dispatch(cerrarConsignaCctvError(true))
+      progress.finish()
+    }
+  }
+}
+
+const obtenerConsignaCctvCerrar = consignaCctv => ({
+  type: types.GET_CONSIGNACERRARCCTV_START,
+  payload: consignaCctv,
+})
+
+const cerrarConsignaCctvExitosa = () => ({
+  type: types.CONSIGNACERRARCCTV_SUCCESS,
+})
+
+const cerrarConsignaCctvError = estado => ({
+  type: types.CONSIGNACERRARCCTV_FAILED,
   payload: estado,
 })
