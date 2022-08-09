@@ -6,11 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ClickOutSide } from '../clickOutside/ClickOutSide'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip
-    {...props}
-    classes={{ popper: className }}
-    placement='bottom-start'
-  />
+  <Tooltip {...props} classes={{ popper: className }} placement='bottom' />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: 'white',
@@ -44,6 +40,7 @@ const CCTV = ({ item }) => {
       open={open}
       enterDelay={0}
       leaveDelay={200}
+      className='pl-40'
       title={
         <React.Fragment>
           <ul className='w-full' ref={wrapperRef}>

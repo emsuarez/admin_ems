@@ -6,11 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { ClickOutSide } from '../clickOutside/ClickOutSide'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip
-    {...props}
-    classes={{ popper: className }}
-    placement='bottom-start'
-  />
+  <Tooltip {...props} classes={{ popper: className }} placement='bottom' />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: 'white',
@@ -45,8 +41,8 @@ const Usuarios = ({ item }) => {
       leaveDelay={200}
       title={
         <React.Fragment>
-          <ul className='w-32' ref={wrapperRef}>
-            <li className='flex space-x-4 hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
+          <ul className='w-36' ref={wrapperRef}>
+            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
               {/* <ICONS.PencilAltIconS className="h-4 mt-3 ml-3" color="blue"/> */}
               <p className='text-sm  mt-3 ml-3'>Administrar</p>
             </li>
