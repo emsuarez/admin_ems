@@ -7,8 +7,10 @@ import {
   LineChart,
   RedirectWithoutLogin,
 } from '../../components'
+import AlertCerrarConsigna from '../../components/alerts/AlertCerrarConsigna'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
 import {
+  cerrarConsignacCctvAction,
   obtenerConsignasCCTVAction,
   obtenerConsignasGrafica,
 } from '../../store/actions'
@@ -17,6 +19,10 @@ const CCTVDashboard = () => {
   const dispatch = useDispatch()
 
   const [idConsigna] = useState(4)
+
+  const [modalCctv, setModalCctv] = useState(false)
+
+  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
 
   const cargarConsignas = () => {
     dispatch(obtenerConsignasCCTVAction())
@@ -28,6 +34,17 @@ const CCTVDashboard = () => {
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
+
+  const confirmarCerrarConsignaCctv = consigna => {
+    setModalCctv(true)
+    setConsignaSeleccionada(consigna)
+  }
+
+  const handleCerrarConsignaCctv = () => {
+    dispatch(cerrarConsignacCctvAction(consignaSeleccionada))
+    setModalCctv(false)
+  }
+
   return (
     <div className='h-full w-full'>
       <RedirectWithoutLogin />
@@ -75,8 +92,18 @@ const CCTVDashboard = () => {
                   </ol>
                 </div>
               </div>
+              <AlertCerrarConsigna
+                modal={modalCctv}
+                setModal={setModalCctv}
+                infoConsigna={consignaSeleccionada}
+                handleCerrarConsigna={handleCerrarConsignaCctv}
+              />
               <div className='basis-2/4 flex items-stretch'>
-                <ConsignasTable data={consignas.consignasCctv} />
+                <ConsignasTable
+                  data={consignas.consignasCctv}
+                  confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                  tituloTipoTable='CCTV'
+                />
               </div>
             </div>
           </div>
