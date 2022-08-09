@@ -40,18 +40,24 @@ export default (state = initialState, { type, payload }) => {
     case types.CONSIGNACERRARTRS_SUCCESS:
       return {
         ...state,
-        consignasTrs: state.consignasTrs.filter(
-          consigna => consigna.id !== state.consignaCerrar.id
-        ),
+        consignasTrs: {
+          ...state.consignasTrs,
+          results: state.consignasTrs.results.filter(
+            consigna => consigna.id !== state.consignaCerrar.id
+          ),
+        },
         consignaCerrar: null,
       }
 
     case types.CONSIGNACERRARCCTV_SUCCESS:
       return {
         ...state,
-        consignasCctv: state.consignasCctv.filter(
-          consigna => consigna.id !== state.consignaCerrar.id
-        ),
+        consignasCctv: {
+          ...state.consignasCctv,
+          results: state.consignasCctv.results.filter(
+            consigna => consigna.id !== state.consignaCerrar.id
+          ),
+        },
         consignaCerrar: null,
       }
 

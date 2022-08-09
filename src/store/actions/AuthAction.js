@@ -132,6 +132,7 @@ export const getUserInfoAction = () => {
         headers: { Authorization: Token },
       })
       progress.finish()
+      console.log('Info Usuario Login Header', respuesta.data)
       dispatch(getUserInfoSuccess(respuesta.data))
       progress.finish()
     } catch (error) {
@@ -185,8 +186,9 @@ export const updateUserInfoAction = data => {
           Authorization: Token,
         },
       })
-      console.log(respuesta)
+      console.log(respuesta.data, 'Nuevo Info user')
       progress.finish()
+
       dispatch(updateUserInfoSuccess(respuesta.data))
       progress.finish()
     } catch (error) {

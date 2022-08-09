@@ -33,7 +33,7 @@ const RightImage = ({ userInfo }) => {
     console.log(userInfo)
     setNombreUsuario(userInfo.userData.username)
     setImagenUsuario(userInfo.userData.imagen)
-  }, [])
+  }, [userInfo])
 
   const handleLogout = () => {
     // window.localStorage.clear()
@@ -74,7 +74,7 @@ const RightImage = ({ userInfo }) => {
           <div className='rounded-full h-14 '>
             <img
               src={`${global.urlMedia}${imagenUsuario}`}
-              className='h-12 rounded-full mt-0.5'
+              className='h-12 rounded-full mt-0.5 w-12 object-cover'
             />
           </div>
 

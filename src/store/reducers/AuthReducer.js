@@ -41,7 +41,11 @@ export default (state = initialState, { type, payload }) => {
     case types.UPDATE_USERINFO_START:
       return { ...state, isLoading: true }
     case types.UPDATE_USERINFO_SUCCESS:
-      return { ...state, isLoading: false, user: payload }
+      return {
+        ...state,
+        isLoading: false,
+        user: { ...state.user, userData: payload.userData },
+      }
     case types.UPDATE_USERINFO_FAILED:
       return { ...state, isLoading: false }
     default:

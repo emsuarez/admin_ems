@@ -36,13 +36,14 @@ const Header = () => {
       default:
         return
     }
+  }, [])
 
+  useEffect(() => {
     const cargarInfoUsuario = () => {
       dispatch(getUserInfoAction())
     }
     cargarInfoUsuario()
-  }, [])
-
+  }, [dispatch])
   const userInfo = useSelector(state => state.auth.user)
 
   return (

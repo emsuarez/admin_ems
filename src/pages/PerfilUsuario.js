@@ -87,7 +87,7 @@ const PerfilUsuario = () => {
               <div className='ml-28 group relative z-0'>
                 <label
                   for='dropzone-file'
-                  className='flex flex-col justify-center items-center w-full h-64cursor-pointer'
+                  className='flex flex-col justify-center items-center w-full h-64 cursor-pointer'
                 >
                   <div
                     className={
@@ -96,7 +96,7 @@ const PerfilUsuario = () => {
                         : 'bg-white rounded-[50%]'
                     }
                   >
-                    <div>
+                    <div className=''>
                       <img
                         src={
                           imagenSeleccionada
@@ -104,7 +104,7 @@ const PerfilUsuario = () => {
                             : `${global.urlMedia}${usuarioState.imagen}`
                         }
                         alt='imagen de usuario'
-                        className='w-72 rounded-[50%] border-red-700 border-2 p-2'
+                        className='w-72 rounded-[50%] border-red-700 border-2 p-2 object-cover h-72'
                       />
                     </div>
                     <div className='mx-10 bg-white rounded-[50%] object-cover'></div>
@@ -184,7 +184,16 @@ const PerfilUsuario = () => {
                         }
                       />
                     </div>
+
                     <div className='mt-10'>
+                      <p className='font-medium text-2xl'>Usuario</p>
+                      <input
+                        className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3'
+                        disabled
+                        value={usuarioState.username}
+                      />
+                    </div>
+                    {/* <div className='mt-10'>
                       <p className='font-medium text-2xl'>Email</p>
                       <input
                         className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3'
@@ -197,15 +206,7 @@ const PerfilUsuario = () => {
                           })
                         }
                       />
-                    </div>
-                    <div className='mt-10'>
-                      <p className='font-medium text-2xl'>Usuario</p>
-                      <input
-                        className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none mt-3'
-                        disabled
-                        value={usuarioState.username}
-                      />
-                    </div>
+                    </div> */}
                   </div>
                   {editarInformacion ? (
                     <div className='mt-28'>
