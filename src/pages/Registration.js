@@ -107,7 +107,7 @@ const Registration = props => {
             </div>
 
             {/* EMAIL */}
-            <div className='mt-5'>
+            {/* <div className='mt-5'>
               <p className='font-medium'>Email</p>
               <input
                 className='border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none'
@@ -115,7 +115,7 @@ const Registration = props => {
                 value={email}
                 onChange={item => setEmail(item.target.value)}
               />
-            </div>
+            </div> */}
 
             {/* Contraseña */}
             <div className='mt-5 relative'>
