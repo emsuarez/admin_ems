@@ -132,7 +132,7 @@ export const getUserInfoAction = () => {
         headers: { Authorization: Token },
       })
       progress.finish()
-      console.log('Info Usuario Login Header', respuesta.data)
+
       dispatch(getUserInfoSuccess(respuesta.data))
       progress.finish()
     } catch (error) {

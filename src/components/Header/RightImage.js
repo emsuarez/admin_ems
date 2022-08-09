@@ -29,14 +29,11 @@ const RightImage = ({ userInfo }) => {
   const [modal, setModal] = useState(false)
 
   useEffect(() => {
-    // setDatosUsuario(userInfo)
-    console.log(userInfo)
     setNombreUsuario(userInfo.userData.username)
     setImagenUsuario(userInfo.userData.imagen)
   }, [userInfo])
 
   const handleLogout = () => {
-    // window.localStorage.clear()
     setModal(true)
   }
 
