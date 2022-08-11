@@ -1,60 +1,87 @@
-import React from "react";
-import { connect } from "react-redux";
-import { DeleteEjecutivoRecord } from "../../store/actions";
-import { ICONS } from "../constants";
+import { Box, Modal } from '@mui/material'
+import React from 'react'
 
-const DeleteEjecutivo = (props) =>{
-    const {Delete,setDelete} = props
-    const handleCancel = () =>{
-        setDelete(false)
-    }
+import { ICONS } from '../constants'
 
-    const handleDelete=()=>{
-        const obj={
-            id:props.userID
-        }
-        props.DeleteEjecutivoRecord(obj)
-        setDelete(false)
-    }
+const DeleteEjecutivo = ({
+  tipo,
+  openModal,
+  handleClose,
+  tituloModal,
+  descripcionModal,
+  handleAction,
+  itemEliminar,
+}) => {
+  const handleEjectAction = () => {
+    handleAction(itemEliminar)
+  }
 
-    return(
-        <div>
-        
-                <div className="flex flex-row items-end justify-center -mt-10 w-full z-50">
-                <div className="mt-10 h-fit pb-8 rounded-md bg-white border-2 shadow-lg py-10 z-50 lg:w-1/3 absolute">
-                    <div className="border-b-[1px] z-50  pb-4 -mt-4 flex justify-between">
-                        <ICONS.ExclamationIconS className="h-6 hover:cursor-pointer pl-4 text-orange-600 "/>
-                        <h3 className="font-bold pl-7 text-xl">Crear Ejecutivo</h3>
-                        <ICONS.XCircleIconS className="h-6 hover:cursor-pointer pr-4" onClick={()=>handleCancel()}/>
-                    </div>
-                    <p className="text-center text-lg -ml-3 py-2 px-5">
-                    Estas seguro de la eliminación de los datos del ejecutivo, 
-                    se eliminarán tambien datos asociados con el ejecutivo como:</p>
-
-                        <ul className="list-disc ml-16">
-                            <li>Historial</li>
-                            <li>Miembros familiares</li>
-                        </ul>
-
-
-                    <div className="flex justify-end pr-5 space-x-4 mt-4">
-                        <h3 onClick={()=>handleCancel()} className="w-20 py-1 rounded-md text-center font-semibold hover:cursor-pointer
-                            hover:bg-green-700 active:bg-slate-50 bg-green-900 text-white">Cancelar</h3>
-                        <h3 onClick={()=>handleDelete()} className="bg-orange-600 w-20 py-1 rounded-md text-center font-semibold hover:cursor-pointer
-                            hover:bg-orange-500 text-white active:bg-slate-50">Eliminor</h3>
-                    </div>
-
+  return (
+    <>
+      <Modal
+        hideBackdrop
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby='child-modal-title'
+        aria-describedby='child-modal-description'
+      >
+        <Box>
+          <div
+            id='defaultModal'
+            tabindex='-1'
+            aria-hidden='true'
+            className=' overflow-y-auto overflow-x-hidden fixed top-1/3 right-0 left-1/3 z-50 w-full inset-0 h-modal'
+          >
+            <div className='relative p-4 max-w-lg'>
+              <div className='relative bg-white rounded-lg shadow '>
+                <div className='flex justify-between items-start px-4 py-2 rounded-t border-b'>
+                  <ICONS.ExclamationIconS className='w-14 pt-2 hover:cursor-pointer px-4 text-red-600 ' />
+                  <h1 className='text-2xl font-bold'>{tituloModal}</h1>
+                  <button
+                    type='button'
+                    className='bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center'
+                    data-modal-toggle='defaultModal'
+                    onClick={handleClose}
+                  >
+                    <span className='sr-only'>Cerrar modal</span>
+                  </button>
                 </div>
+
+                <div className='px-6 pt-2 space-y-3'>
+                  <h2>{descripcionModal}</h2>
+                  {tipo === 'Ejecutivo' ? (
+                    <ul className='list-disc ml-16'>
+                      <li>Historial</li>
+                      <li>Miembros familiares</li>
+                    </ul>
+                  ) : null}
                 </div>
-            
-        
-</div>
-    )
+
+                <div className='flex items-end justify-end px-6 py-3 space-x-2 rounded-b border-t border-gray-200 '>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-blue-900 hover:bg-blue-700  focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
+                    onClick={handleClose}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
+                    onClick={handleEjectAction}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+    </>
+  )
 }
 
-const mapStateToProps = (props) =>{
-    return{
-        ejecutivo:props.recursos.ejecutivo
-}
-}
-export default connect(mapStateToProps,{DeleteEjecutivoRecord})(DeleteEjecutivo)
+export default DeleteEjecutivo

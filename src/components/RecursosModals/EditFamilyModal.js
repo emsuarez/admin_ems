@@ -1,55 +1,121 @@
-import React,{useState} from "react";
-import { ICONS } from "../constants";
-import { FamilyTable } from "../RecursosTable/index.js";
+import { Box, Modal } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getGrupoFamiliarAction } from '../../store/actions'
+import VinculoFamiliarTable from '../RecursosTable/VinculoFamiliarTable'
+import DeleteEjecutivo from './DeleteEjecutivo'
+import EditEjecutivo from './EditEjecutivo'
 
-const EditFamilyModal = (props) =>{
-    const {EditFamily,setEditFamily} = props
-    const [nombre,setNombre] = useState()
-    const [alias,setAlias] = useState()
+const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
+  const dispatch = useDispatch()
+  const [openEditModal, setOpenEditModal] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
-    const handleCancel = () =>{
-        setEditFamily(false)
-    }
+  const [itemEditar, setItemEditar] = useState('')
+  const [itemEliminar, setItemEliminar] = useState('')
 
-    const handleEditFamily=()=>{
-        alert("[SUCCESS]. Done !!")
-        setEditFamily(false)
-    }
+  const familiaData = useSelector(state => state.recursos.grupoFamiliar)
 
-    return(
-        <div className="justify-center flex flex-col ml-96 mt-28">
-        
-                <div className="flex flex-row items-end justify-start z-50">
-                <div className="mt-10 h-fit w-fit pb-8 rounded-md bg-white border-2 shadow-lg py-10 z-50 absolute">
-                    <div className="border-b-[1px] z-50  pb-4 -mt-4 flex justify-between">
-                        <h3 className="font-bold pl-7 text-xl">Editar vinculo familiar</h3>
-                        <ICONS.XCircleIconS className="h-6 hover:cursor-pointer pr-4" onClick={()=>handleCancel()}/>
-                    </div>
-                    {/* <p className="text-center text-lg -ml-3 py-2">Crea a un ejecutivo con su sobrenombre clave.</p> */}
-                   
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
 
-                <div className="pt-10">
+  const handleEditarGrupoFamiliar = grupoFamiliar => {
+    const familiarActualizado = { ...grupoFamiliar, id: itemEditar.id }
+    // dispatch(UpdateGrupoFamiliarAction(grupoFamiliarActualizado))
+    setOpenEditModal(false)
+  }
 
-                    <FamilyTable name="Nombre"/>
+  const handleOpenEditModal = itemEditar => {
+    setOpenEditModal(true)
+    setItemEditar(itemEditar)
+  }
+
+  const handleOpenDeleteModal = itemEliminar => {
+    setOpenDeleteModal(true)
+    setItemEliminar(itemEliminar)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleDeleteGrupoFamiliar = () => {
+    // dispatch(DeleteGrupoFamiliarAction(itemEliminar))
+    setOpenDeleteModal(false)
+  }
+  return (
+    <>
+      <Modal
+        hideBackdrop
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby='child-modal-title'
+        aria-describedby='child-modal-description'
+      >
+        <Box>
+          <div
+            id='defaultModal'
+            tabindex='-1'
+            aria-hidden='true'
+            className=' overflow-y-auto overflow-x-hidden fixed top-1/3 right-0 left-1/3 z-50 w-full inset-0 h-modal'
+          >
+            <div className='relative p-4 max-w-4xl'>
+              <div className='relative bg-white rounded-lg shadow '>
+                <div className='flex justify-between items-start px-4 py-2 rounded-t border-b'>
+                  <h1 className='text-2xl font-bold'>{tituloModal}</h1>
+                  <button
+                    type='button'
+                    className='bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center'
+                    data-modal-toggle='defaultModal'
+                    onClick={handleClose}
+                  >
+                    <span className='sr-only'>Cerrar modal</span>
+                  </button>
                 </div>
+                <VinculoFamiliarTable
+                  data={familiaData}
+                  handleOpenEditModal={handleOpenEditModal}
+                  handleOpenDeleteModal={handleOpenDeleteModal}
+                />
 
-
-
-                
-
-
-
-                    <div className="flex justify-end pr-5 space-x-4 mt-4">
-                        <h3 onClick={()=>handleEditFamily()} className="bg-blue-500 w-20 py-1 rounded-md text-center font-semibold hover:cursor-pointer
-                            hover:bg-blue-400 text-white active:bg-slate-50">Salir</h3>
-                    </div>
-
+                {/* Modales CAMBIAR NOMBRE para hacer del componente más generico */}
+                <EditEjecutivo
+                  tituloModal={'Editar Familiar del Ejecutivo'}
+                  descripcionModal={''}
+                  openModal={openEditModal}
+                  handleClose={handleCloseEditModal}
+                  handleAction={handleEditarGrupoFamiliar}
+                  itemEditar={itemEditar}
+                />
+                <DeleteEjecutivo
+                  tipo='Familiar'
+                  tituloModal={'Eliminar Familiar de Ejecutivo'}
+                  descripcionModal={
+                    'Estas por eliminar a familiar vinculado a un ejecutivo'
+                  }
+                  openModal={openDeleteModal}
+                  handleClose={handleCloseDeleteModal}
+                  handleAction={handleDeleteGrupoFamiliar}
+                  itemEliminar={itemEliminar}
+                />
+                <div className='flex items-end justify-end px-6 py-3 space-x-2 rounded-b border-t border-gray-200 '>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-blue-900 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
+                    onClick={handleClose}
+                  >
+                    Salir
+                  </button>
                 </div>
-                </div>
-            
-        
-</div>
-    )
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+    </>
+  )
 }
 
 export default EditFamilyModal

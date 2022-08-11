@@ -11,54 +11,74 @@ const progress = new ProgressBar({
 })
 
 //Get ejecutivo
-export const GetEjecutivo = () => async dispatch => {
-  try {
-    dispatch({ type: types.GET_EJECUTIVO_START })
-    progress.start()
-    let token = window.localStorage.getItem('token')
-    const Token = 'Token ' + token
-    const response = await httpRequest.get('/ejecutivo/', {
-      headers: { Authorization: Token },
-    })
-    const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
-    dispatch({ type: types.GET_EJECUTIVO_SUCCESS, payload: result })
-  } catch (err) {
-    progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
-    dispatch({ type: types.GET_EJECUTIVO_FAILED })
+export const getEjecutivoAction =
+  (enlacePaginacion = '/ejecutivo/') =>
+  async dispatch => {
+    try {
+      dispatch({ type: types.GET_EJECUTIVO_START })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.get(enlacePaginacion, {
+        headers: { Authorization: Token },
+      })
+      const result = response.data
+
+      dispatch({ type: types.GET_EJECUTIVO_SUCCESS, payload: result })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_EJECUTIVO_FAILED })
+      progress.finish()
+    }
   }
-}
+
 //Create ejecutivo
-export const CreateNewEjecutivo = data => async dispatch => {
+export const createNewEjecutivoAction = data => async dispatch => {
   try {
     dispatch({ type: types.POST_EJECUTIVO_START })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
+    console.log(data, 'data')
     const response = await httpRequest.post('/ejecutivo/', data, {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.POST_EJECUTIVO_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (error) {
     dispatch({ type: types.POST_EJECUTIVO_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
+
+//Update ejecutivo
+export const UpdateEjecutivoAction = data => async dispatch => {
+  try {
+    dispatch({ type: types.UPDATE_EJECUTIVO_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.patch('/ejecutivo/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({ type: types.UPDATE_EJECUTIVO_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_EJECUTIVO_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 
 //Delete ejecutivo
-export const DeleteEjecutivoRecord = data => async dispatch => {
+export const DeleteEjecutivoAction = data => async dispatch => {
   try {
     dispatch({ type: types.DELETE_EJECUTIVO_START })
     progress.start()
@@ -75,40 +95,67 @@ export const DeleteEjecutivoRecord = data => async dispatch => {
       }
     )
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.DELETE_EJECUTIVO_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (error) {
     dispatch({ type: types.DELETE_EJECUTIVO_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 
-//Update ejecutivo
-export const UpdateEjecutivoRecord = data => async dispatch => {
+// Get Vinculo Familiar
+export const getGrupoFamiliarAction =
+  (id_ejecutivo = '') =>
+  async dispatch => {
+    console.log(id_ejecutivo, 'id')
+    try {
+      dispatch({ type: types.GET_GRUPOFAMILIAR_START })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.get(
+        `/familiar/?id_ejecutivo=${id_ejecutivo}`,
+        {
+          headers: {
+            Authorization: Token,
+            'content-type': 'multipart/form-data',
+          },
+        }
+      )
+      console.log(response, 'response')
+      const result = response.data
+
+      dispatch({ type: types.GET_GRUPOFAMILIAR_SUCCESS, payload: result })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_GRUPOFAMILIAR_FAILED })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+
+// Create Vinculo Familiar
+export const createNewFamiliarAction = data => async dispatch => {
   try {
-    dispatch({ type: types.UPDATE_EJECUTIVO_START })
+    dispatch({ type: types.POST_GRUPOFAMILIAR_START })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await httpRequest.patch('/ejecutivo/', data, {
+    const response = await httpRequest.post('/familiar/', data, {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
+
+    dispatch({ type: types.POST_GRUPOFAMILIAR_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
     progress.finish()
-    dispatch({ type: types.UPDATE_EJECUTIVO_SUCCESS, payload: result })
-  } catch (err) {
+  } catch (error) {
+    dispatch({ type: types.POST_GRUPOFAMILIAR_FAILED })
+    dispatch(setToast('error', error.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
-    dispatch({ type: types.UPDATE_EJECUTIVO_FAILED })
   }
 }
 

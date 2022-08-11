@@ -1,63 +1,149 @@
-import React from 'react'
-import { AdminAuthorized, CreateEjecutivo, EjectivosTable, FamilyTable, Header, ICONS, RedirectWithoutLogin } from '../../components'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  AdminAuthorized,
+  CreateEjecutivo,
+  DeleteEjecutivo,
+  EditEjecutivo,
+  EjectivosTable,
+  FamilyTable,
+  Header,
+  ICONS,
+  RedirectWithoutLogin,
+} from '../../components'
+import VinculoFamiliarTable from '../../components/RecursosTable/VinculoFamiliarTable'
+import {
+  createNewFamiliarAction,
+  getGrupoFamiliarAction,
+} from '../../store/actions'
 
-const GrupoFamiliar = () =>{
+const GrupoFamiliar = () => {
+  const dispatch = useDispatch()
+  const [openEditModal, setOpenEditModal] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
+  const [itemEditar, setItemEditar] = useState('')
+  const [itemEliminar, setItemEliminar] = useState('')
 
+  useEffect(() => {
+    dispatch(getGrupoFamiliarAction())
+  }, [dispatch])
 
+  const familiaData = useSelector(state => state.recursos.grupoFamiliar)
+  console.log(familiaData, 'familiaData')
+  const handleGuardarNuevoFamiliar = familiar => {
+    dispatch(createNewFamiliarAction(familiar))
+  }
 
-    return(
-        <div className='h-screen'>
-            
-            <RedirectWithoutLogin/>
+  const handleEditarGrupoFamiliar = grupoFamiliar => {
+    const familiarActualizado = { ...grupoFamiliar, id: itemEditar.id }
+    // dispatch(UpdateGrupoFamiliarAction(grupoFamiliarActualizado))
+    setOpenEditModal(false)
+  }
 
-            {
-                AdminAuthorized()==-1?
-                <div className='z-50 h-screen bg-white flex flex-col justify-center'>
-                    <h1 className='font-bold text-3xl text-center'>No tiene permisos para acceder a esta página</h1>
-                </div>
-            :
-            <div>
-            <Header items="all"/>
-                <div className='flex items-center bg-slate-100 shadow-sm py-2'>
-                    <ICONS.HomeIconS className="h-6 ml-10 text-gray-600"/>
-                    <p className=' ml-1'>Recursos</p>
-                    <ICONS.ChevronRightIconO className='h-3  ml-1'/>
-                    <p className=' ml-1'>Grupo Familiar</p>
-                </div>
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
 
+  const handleOpenEditModal = itemEditar => {
+    setOpenEditModal(true)
+    setItemEditar(itemEditar)
+  }
 
-                <div className='flex ml-11 mt-4'>
-                    <h4 className='font-semibold'>Grupo Familiar</h4>
-                    <ICONS.ChevronDoubleRightIconO className="h-3 mt-1.5 ml-1"/>
-                </div>
-                {/* <div onClick={()=>setCreate(true)}>
-                <h3 className='ml-11 mt-3 bg-blue-500 w-32 text-center font-semibold rounded-sm
-                 text-white hover:cursor-pointer'>Crear Ejecutivo</h3>
-                </div> */}
-                 
-                 <div className='flex justify-end mr-16'>
-                    <p className="text-blue-500 hover:cursor-pointer">Export as PDF</p>
-                    <ICONS.ChevronDownIconO className="h-3 mt-1.5 mr-4" color="blue"/>
-                    <input
-                        placeholder='Buscar'
-                        className='border-[1px] outline-none pl-3 rounded-sm'
-                    />
-                    <ICONS.SearchIconS className="h-5 pr-2 mt-0.5 hover:cursor-pointer absolute text-gray-400"/>
-                </div>
+  const handleOpenDeleteModal = itemEliminar => {
+    setOpenDeleteModal(true)
+    setItemEliminar(itemEliminar)
+  }
 
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
 
-            <div className=' pt-4 w-screen p-16 flex flex-col justify-center  '>
-                {/* <div className='md:w-fit w-screen justify-center'> */}
-                    <FamilyTable name="Familiar"/>
-                {/* </div> */}
-            </div>
-            
-            </div>
-                
-            }
+  const handleDeleteGrupoFamiliar = () => {
+    // dispatch(DeleteGrupoFamiliarAction(itemEliminar))
+    setOpenDeleteModal(false)
+  }
+  return (
+    <div>
+      <RedirectWithoutLogin />
+      {AdminAuthorized() == -1 ? (
+        <div className='bg-white flex flex-col justify-center'>
+          <h1 className='font-bold text-3xl text-center'>
+            No tiene permisos para acceder a esta página
+          </h1>
         </div>
-    )
+      ) : (
+        <>
+          <Header />
+          <div className='flex items-center bg-slate-100 py-2'>
+            <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
+            <p className=' ml-1'>Recursos</p>
+            <ICONS.ChevronRightIconO className='h-3  ml-1' />
+            <p className=' ml-1'>Grupo Familiar</p>
+          </div>
+
+          <div className='bg-white mx-10 py-10'>
+            <div className='flex mx-10 justify-between'>
+              <div className=''>
+                {/* Modal Guardar hACERLO Más generico */}
+                <CreateEjecutivo
+                  tituloModal={'Crear Familiar'}
+                  descripcionModal={''}
+                  handleAction={handleGuardarNuevoFamiliar}
+                />
+              </div>
+
+              <div className='flex'>
+                <div className='flex'>
+                  <p className='text-blue-800 hover:cursor-pointer'>
+                    Exportar a PDF
+                  </p>
+                  <ICONS.ChevronDownIconO
+                    className='w-3 mb-1.5 ml-2'
+                    color='blue'
+                  />
+                </div>
+                <div className='flex flex-col ml-4'>
+                  <input
+                    placeholder='Buscar'
+                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className=' pt-4 p-16 flex flex-col'>
+              <VinculoFamiliarTable
+                data={familiaData}
+                handleOpenEditModal={handleOpenEditModal}
+                handleOpenDeleteModal={handleOpenDeleteModal}
+              />
+            </div>
+          </div>
+          {/* Modales CAMBIAR NOMBRE para hacer del componente más generico */}
+          <EditEjecutivo
+            tituloModal={'Editar Familiar del Ejecutivo'}
+            descripcionModal={''}
+            openModal={openEditModal}
+            handleClose={handleCloseEditModal}
+            handleAction={handleEditarGrupoFamiliar}
+            itemEditar={itemEditar}
+          />
+          <DeleteEjecutivo
+            tipo='Familiar'
+            tituloModal={'Eliminar Familiar de Ejecutivo'}
+            descripcionModal={
+              'Estas por eliminar a familiar vinculado a un ejecutivo'
+            }
+            openModal={openDeleteModal}
+            handleClose={handleCloseDeleteModal}
+            handleAction={handleDeleteGrupoFamiliar}
+            itemEliminar={itemEliminar}
+          />
+        </>
+      )}
+    </div>
+  )
 }
 
 export default GrupoFamiliar

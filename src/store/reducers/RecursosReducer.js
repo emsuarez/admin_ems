@@ -1,9 +1,12 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { types } from '../actionTypes'
 
 const initialState = {
   isLoading: false,
   ejecutivo: {},
+  grupoFamiliar: {},
   lugares: {},
+  message: {},
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -18,8 +21,15 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_EJECUTIVO_START:
       return { ...state, isLoading: true }
     case types.POST_EJECUTIVO_SUCCESS:
-      return { ...state, isLoading: false }
+      return { ...state, isLoading: false, message: payload }
     case types.POST_EJECUTIVO_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_EJECUTIVO_START:
+      return { ...state, isLoading: true }
+    case types.UPDATE_EJECUTIVO_SUCCESS:
+      return { ...state, isLoading: false }
+    case types.UPDATE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
     case types.DELETE_EJECUTIVO_START:
@@ -29,11 +39,32 @@ export default (state = initialState, { type, payload }) => {
     case types.DELETE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
-    case types.UPDATE_EJECUTIVO_START:
+    case types.GET_GRUPOFAMILIAR_START:
       return { ...state, isLoading: true }
-    case types.UPDATE_EJECUTIVO_SUCCESS:
+    case types.GET_GRUPOFAMILIAR_SUCCESS:
+      return { ...state, isLoading: false, grupoFamiliar: payload }
+    case types.GET_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
-    case types.UPDATE_EJECUTIVO_FAILED:
+
+    case types.POST_GRUPOFAMILIAR_START:
+      return { ...state, isLoading: true }
+    case types.POST_GRUPOFAMILIAR_SUCCESS:
+      return { ...state, isLoading: false, message: payload }
+    case types.POST_GRUPOFAMILIAR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_GRUPOFAMILIAR_START:
+      return { ...state, isLoading: true }
+    case types.UPDATE_GRUPOFAMILIAR_SUCCESS:
+      return { ...state, isLoading: false }
+    case types.UPDATE_GRUPOFAMILIAR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.DELETE_GRUPOFAMILIAR_START:
+      return { ...state, isLoading: true }
+    case types.DELETE_GRUPOFAMILIAR_SUCCESS:
+      return { ...state, isLoading: false }
+    case types.DELETE_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
 
     case types.GET_LUGARES_START:

@@ -1,70 +1,173 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { AdminAuthorized, EjectivosTable, Header, ICONS, RedirectWithoutLogin } from '../../components'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  AdminAuthorized,
+  CreateEjecutivo,
+  DeleteEjecutivo,
+  EditEjecutivo,
+  Header,
+  ICONS,
+  RedirectWithoutLogin,
+} from '../../components'
+import EditFamilyModal from '../../components/RecursosModals/EditFamilyModal'
+import EjecutivosTable from '../../components/RecursosTable/EjecutivosTable'
+import {
+  createNewEjecutivoAction,
+  DeleteEjecutivoAction,
+  getEjecutivoAction,
+  getGrupoFamiliarAction,
+  UpdateEjecutivoAction,
+} from '../../store/actions'
 
-const Ejecutivos = (props) =>{
+const Ejecutivos = () => {
+  const dispatch = useDispatch()
+  const [openEditModal, setOpenEditModal] = React.useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false)
+  const [openEditFamiliarModal, setOpenEditFamiliarModal] =
+    React.useState(false)
 
+  const [itemEditar, setItemEditar] = useState('')
+  const [itemEliminar, setItemEliminar] = useState('')
+  const [itemEditarFamily, setItemEditarFamily] = useState('')
 
-// window.onload = function(props){
-//     alert("hihi")
-//     props.GetEjecutivo();
-// }
-// // useEffect(()=>{
-// //     handleGetEjecutivo()
-// // },[])
+  useEffect(() => {
+    dispatch(getEjecutivoAction())
+  }, [dispatch])
 
+  const ejecutivoData = useSelector(state => state.recursos.ejecutivo)
 
+  const handleGuardarEjecutivo = ejecutivo => {
+    dispatch(createNewEjecutivoAction(ejecutivo))
+  }
 
-    return(
-        <div className='h-screen'>
-            
-            <RedirectWithoutLogin/>
+  const handleEditarEjecutivo = ejecutivo => {
+    const ejecutivoActualizado = { ...ejecutivo, id: itemEditar.id }
+    dispatch(UpdateEjecutivoAction(ejecutivoActualizado))
+    setOpenEditModal(false)
+  }
 
-            {
-                AdminAuthorized()==-1?
-                <div className='z-50 h-screen bg-white flex flex-col justify-center'>
-                    <h1 className='font-bold text-3xl text-center'>No tiene permisos para acceder a esta página</h1>
-                </div>
-            :
-            <div>
-            <Header items="all"/>
-                <div className='flex items-center bg-slate-100 shadow-sm py-2'>
-                    <ICONS.HomeIconS className="h-6 ml-10 text-gray-600"/>
-                    <p className=' ml-1'>Recursos</p>
-                    <ICONS.ChevronRightIconO className='h-3  ml-1'/>
-                    <p className=' ml-1'>Ejecutivos</p>
-                </div>
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
 
+  const handleCloseEditFamiliarModal = () => {
+    setOpenEditFamiliarModal(false)
+  }
 
-                <div className='flex ml-11 mt-4'>
-                    <h4 className='font-semibold'>Ejectivos</h4>
-                    <ICONS.ChevronDoubleRightIconO className="h-3 mt-1.5 ml-1"/>
-                </div>
-                 
-                 <div className='flex justify-end mr-16'>
-                    <p className="text-blue-500 hover:cursor-pointer">Export as PDF</p>
-                    <ICONS.ChevronDownIconO className="h-3 mt-1.5 mr-4" color="blue"/>
-                    <input
-                        placeholder='Buscar'
-                        className='border-[1px] outline-none pl-3 rounded-sm'
-                    />
-                    <ICONS.SearchIconS className="h-5 pr-2 mt-0.5 hover:cursor-pointer absolute text-gray-400"/>
-                </div>
+  const handleOpenEditModal = itemEditar => {
+    setOpenEditModal(true)
+    setItemEditar(itemEditar)
+  }
 
+  const handleOpenEditFamilyModal = itemEditar => {
+    setOpenEditFamiliarModal(true)
+    setItemEditarFamily(itemEditar)
+    dispatch(getGrupoFamiliarAction(itemEditar.id))
+  }
 
-            <div className=' pt-4 w-screen p-16 flex flex-col justify-center  '>
-                    <EjectivosTable  />
-            </div>
-            
-            </div>
-                
-            }
+  const handleOpenDeleteModal = itemEliminar => {
+    setOpenDeleteModal(true)
+    setItemEliminar(itemEliminar)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleDeleteEjecutivo = ejecutivo => {
+    dispatch(DeleteEjecutivoAction({ id: ejecutivo.id }))
+    setOpenDeleteModal(false)
+  }
+
+  return (
+    <div>
+      <RedirectWithoutLogin />
+      {AdminAuthorized() == -1 ? (
+        <div className='bg-white flex flex-col justify-center'>
+          <h1 className='font-bold text-3xl text-center'>
+            No tiene permisos para acceder a esta página
+          </h1>
         </div>
-    )
+      ) : (
+        <>
+          <Header />
+          <div className='flex items-center bg-slate-100 py-2'>
+            <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
+            <p className=' ml-1'>Recursos</p>
+            <ICONS.ChevronRightIconO className='h-3  ml-1' />
+            <p className=' ml-1'>Ejecutivo</p>
+          </div>
+
+          <div className='bg-white mx-10 py-10'>
+            <div className='flex mx-10 justify-between'>
+              <div className=''>
+                <CreateEjecutivo
+                  tituloModal={'Crear Ejecutivo'}
+                  descripcionModal={
+                    'Crea a un ejecutivo con su sobrenombre clave.'
+                  }
+                  handleAction={handleGuardarEjecutivo}
+                />
+              </div>
+
+              <div className='flex'>
+                <div className='flex'>
+                  <p className='text-blue-800 hover:cursor-pointer'>
+                    Exportar a PDF
+                  </p>
+                  <ICONS.ChevronDownIconO
+                    className='w-3 mb-1.5 ml-2'
+                    color='blue'
+                  />
+                </div>
+                <div className='flex flex-col ml-4'>
+                  <input
+                    placeholder='Buscar'
+                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className=' pt-4 p-16 flex flex-col'>
+              <EjecutivosTable
+                data={ejecutivoData}
+                handleOpenEditModal={handleOpenEditModal}
+                handleOpenDeleteModal={handleOpenDeleteModal}
+                handleOpenEditFamilyModal={handleOpenEditFamilyModal}
+              />
+            </div>
+          </div>
+          {/* Modales */}
+          <EditEjecutivo
+            tituloModal={'Editar Ejecutivo'}
+            descripcionModal={'Edita los datos del ejecutivo seleccionado.'}
+            openModal={openEditModal}
+            handleClose={handleCloseEditModal}
+            handleAction={handleEditarEjecutivo}
+            itemEditar={itemEditar}
+          />
+          <DeleteEjecutivo
+            tipo='Ejecutivo'
+            tituloModal={'Eliminar Ejecutivo'}
+            descripcionModal={
+              'Estas seguro de la eliminación de los datos del ejecutivo, se eliminarán tambien datos asociados con el ejecutivo como:'
+            }
+            openModal={openDeleteModal}
+            handleClose={handleCloseDeleteModal}
+            handleAction={handleDeleteEjecutivo}
+            itemEliminar={itemEliminar}
+          />
+          <EditFamilyModal
+            tituloModal={'Editar Vínculo Familiar'}
+            openModal={openEditFamiliarModal}
+            handleClose={handleCloseEditFamiliarModal}
+            itemEditarFamily={itemEditarFamily}
+          />
+        </>
+      )}
+    </div>
+  )
 }
-const mapStateToProps = (props) =>{
-    return{
-        ejecutivo:props.recursos.ejecutivo
-}
-}
-export default connect(mapStateToProps,{})(Ejecutivos)
+
+export default Ejecutivos
