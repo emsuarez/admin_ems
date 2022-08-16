@@ -2,7 +2,10 @@ import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { getGrupoFamiliarAction } from '../../store/actions'
+import {
+  getGrupoFamiliarAction,
+  UpdateEstadoFamiliarAction,
+} from '../../store/actions'
 
 const VinculoFamiliarTable = ({
   data,
@@ -31,6 +34,16 @@ const VinculoFamiliarTable = ({
 
   const handleNextPage = newPage => {
     dispatch(getGrupoFamiliarAction(newPage))
+  }
+
+  const handleChangeStatusFamiliar = data => {
+    const { id, is_active } = data
+    const nuevoStatus = {
+      clasificador: 'familiar',
+      id: id,
+      estado: is_active === true ? false : true,
+    }
+    dispatch(UpdateEstadoFamiliarAction(nuevoStatus))
   }
 
   return (
@@ -69,7 +82,7 @@ const VinculoFamiliarTable = ({
                   </td>
                   <button
                     className='mt-2'
-                    //   onClick={() => confirmarCerrarConsigna(item)}
+                    onClick={() => handleChangeStatusFamiliar(item)}
                   >
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
                       {item.is_active ? (

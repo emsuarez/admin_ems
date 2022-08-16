@@ -23,7 +23,7 @@ export const getEjecutivoAction =
         headers: { Authorization: Token },
       })
       const result = response.data
-
+      console.log(result, 'result getEjecutivoAction')
       dispatch({ type: types.GET_EJECUTIVO_SUCCESS, payload: result })
       progress.finish()
     } catch (error) {
@@ -106,6 +106,29 @@ export const DeleteEjecutivoAction = data => async dispatch => {
   }
 }
 
+// update Estado de ejecutivo
+export const UpdateEstadoEjecutivoAction = data => async dispatch => {
+  try {
+    dispatch({ type: types.UPDATE_ESTADOEJECUTIVO_START, payload: data.id })
+    progress.start()
+    console.log(data, 'data')
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.post('/estado/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({ type: types.UPDATE_ESTADOEJECUTIVO_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_ESTADOEJECUTIVO_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
+
 // Get Vinculo Familiar
 export const getGrupoFamiliarAction =
   (id_ejecutivo = '') =>
@@ -154,6 +177,29 @@ export const createNewFamiliarAction = data => async dispatch => {
     progress.finish()
   } catch (error) {
     dispatch({ type: types.POST_GRUPOFAMILIAR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
+
+// update Estado de ejecutivo
+export const UpdateEstadoFamiliarAction = data => async dispatch => {
+  try {
+    dispatch({ type: types.UPDATE_ESTADOFAMILIAR_START, payload: data.id })
+    progress.start()
+    console.log(data, 'data')
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.post('/estado/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({ type: types.UPDATE_ESTADOFAMILIAR_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_ESTADOFAMILIAR_FAILED })
     dispatch(setToast('error', error.message))
     progress.finish()
   }
@@ -340,6 +386,31 @@ export const UpdateProtectorRecord = data => async dispatch => {
   }
 }
 
+export const getVehiculoEjecutivoAction =
+  (enlacePaginacion = '/vehiculoejecutivo/') =>
+  async dispatch => {
+    try {
+      dispatch({ type: types.GET_VEHICULOEJECUTIVO_START })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.get(enlacePaginacion, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+      const result = response.data
+      console.log(result, 'result get Vehiculo Ejecutivo')
+      dispatch({ type: types.GET_VEHICULOEJECUTIVO_SUCCESS, payload: result })
+      progress.finish()
+    } catch (error) {
+      dispatch(setToast('error', error.message))
+      dispatch({ type: types.GET_VEHICULOEJECUTIVO_FAILED })
+      progress.finish()
+    }
+  }
+
 //Create Vehicle Ejecutivo
 export const CreateNewVehicleEjecutivo = data => async dispatch => {
   try {
@@ -416,6 +487,34 @@ export const UpdateVehicleEjecutivoRecord = data => async dispatch => {
       err
     )
     dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_FAILED })
+  }
+}
+
+// update Estado de vehiculo ejecutivo
+export const UpdateEstadoVehiculoEjecutivoAction = data => async dispatch => {
+  try {
+    dispatch({
+      type: types.UPDATE_ESTADO_VEHICULOEJECUTIVO_START,
+      payload: data,
+    })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.post('/estado/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({
+      type: types.UPDATE_ESTADO_VEHICULOEJECUTIVO_SUCCESS,
+      payload: result,
+    })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_ESTADO_VEHICULOEJECUTIVO_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 

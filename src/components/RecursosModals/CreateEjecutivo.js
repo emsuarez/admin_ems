@@ -34,7 +34,6 @@ const CreateEjecutivo = ({ tituloModal, descripcionModal, handleAction }) => {
         {tituloModal}
       </button>
       <Modal
-        hideBackdrop
         open={open}
         onClose={handleClose}
         aria-labelledby='child-modal-title'

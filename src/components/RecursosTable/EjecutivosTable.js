@@ -2,8 +2,10 @@ import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { getEjecutivoAction } from '../../store/actions'
-import { ICONS } from '../constants'
+import {
+  getEjecutivoAction,
+  UpdateEstadoEjecutivoAction,
+} from '../../store/actions'
 
 const EjecutivosTable = ({
   data,
@@ -11,6 +13,10 @@ const EjecutivosTable = ({
   handleOpenDeleteModal,
   handleOpenEditFamilyModal,
 }) => {
+  useEffect(() => {
+    console.log(data, 'data EjecutivosTable')
+  }, [])
+
   const { results, count } = data
   const [cantidadPaginas, setCantidadPaginas] = useState()
 
@@ -36,6 +42,17 @@ const EjecutivosTable = ({
     console.log(newPage, 'newPage')
     dispatch(getEjecutivoAction(newPage))
   }
+
+  const handleChangeStatusEjecutvo = data => {
+    const { id, is_active } = data
+    const nuevoStatus = {
+      clasificador: 'ejecutivo',
+      id: id,
+      estado: is_active === true ? false : true,
+    }
+    dispatch(UpdateEstadoEjecutivoAction(nuevoStatus))
+  }
+
   return (
     <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
       <div className='overflow-y-auto'>
@@ -62,7 +79,7 @@ const EjecutivosTable = ({
 
           {Object.keys(data).length > 0 ? (
             <tbody className='overflow-x-auto'>
-              {results.map((item, index) => (
+              {data.results.map((item, index) => (
                 <tr key={item.id}>
                   <th className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-left text-blueGray-700 '>
                     {item.nombres}
@@ -78,7 +95,7 @@ const EjecutivosTable = ({
                   </td>
                   <button
                     className='mt-2'
-                    //   onClick={() => confirmarCerrarConsigna(item)}
+                    onClick={() => handleChangeStatusEjecutvo(item)}
                   >
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
                       {item.is_active ? (

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGrupoFamiliarAction } from '../../store/actions'
 import VinculoFamiliarTable from '../RecursosTable/VinculoFamiliarTable'
+import CreateEjecutivo from './CreateEjecutivo'
 import DeleteEjecutivo from './DeleteEjecutivo'
 import EditEjecutivo from './EditEjecutivo'
 
@@ -44,10 +45,11 @@ const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
     // dispatch(DeleteGrupoFamiliarAction(itemEliminar))
     setOpenDeleteModal(false)
   }
+
+
   return (
     <>
       <Modal
-        hideBackdrop
         open={openModal}
         onClose={handleClose}
         aria-labelledby='child-modal-title'
@@ -58,7 +60,7 @@ const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
             id='defaultModal'
             tabindex='-1'
             aria-hidden='true'
-            className=' overflow-y-auto overflow-x-hidden fixed top-1/3 right-0 left-1/3 z-50 w-full inset-0 h-modal'
+            className='overflow-y-auto overflow-x-hidden fixed top-1/4 right-0 left-1/4 z-50 w-full inset-0 h-modal'
           >
             <div className='relative p-4 max-w-4xl'>
               <div className='relative bg-white rounded-lg shadow '>
@@ -72,6 +74,13 @@ const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
                   >
                     <span className='sr-only'>Cerrar modal</span>
                   </button>
+                </div>
+                <div className='p-4'>
+                  <CreateEjecutivo
+                    tituloModal={'Crear Familiar'}
+                    descripcionModal={''}
+                    // handleAction={handleGuardarNuevoFamiliar}
+                  />
                 </div>
                 <VinculoFamiliarTable
                   data={familiaData}

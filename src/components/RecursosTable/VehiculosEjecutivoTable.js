@@ -1,230 +1,245 @@
-import React,{useEffect, useRef, useState} from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { ICONS } from '../constants';
-import {CreateVehicle, DeleteVehicle, EditVehicle } from '../RecursosModals';
-import { ClickOutSide } from '../clickOutside/ClickOutSide';
+import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
+import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import {
+  getVehiculoEjecutivoAction,
+  UpdateEstadoVehiculoEjecutivoAction,
+} from '../../store/actions'
 
-interface Column {
-  id: 'Vehículo' | 'Alias' | 'Placas' | 'Tipo' | 'Ejecutivo' | 'Creado' | 'Opciones';
-  label: string;
-  minWidth?: number;
-  align?: 'right';
-  format?: (value: number) => string;
-}
+const VehiculosEjecutivoTable = ({
+  data,
+  handleOpenEditModal,
+  handleOpenDeleteModal,
+}) => {
+  const { results, count } = data
+  const dispatch = useDispatch()
 
-const columns: Column[] = [
-  { id: 'Vehículo', label: 'Vehículo', minWidth: 300 },
-  { id: 'Alias', label: 'Alias', minWidth: 250 },
-  { id: 'Placas', label: 'Placas', minWidth: 200 },
-  { id: 'Tipo', label: 'Tipo', minWidth: 200 },
-  { id: 'Ejecutivo', label: 'Ejecutivo', minWidth: 200 },
-
-  { id: 'Creado', label: 'Creado', minWidth: 200 },
-  { id: 'Opciones', label: 'Opciones', minWidth: 200 },
- 
-];
-
-interface Data {
-    Vehículo: string,
-    Alias: string,
-    Placas:String,
-    Tipo:string,
-    Ejecutivo:string,
-    Creado: string,
-    Opciones: string,
-
-}
-
-function createData(
-    Vehículo: string,
-    Alias: string,
-    Placas: string,
-    Tipo:string,
-    Ejecutivo:string,
-    Creado:string,
-    Opciones: string,
-): Data {
-  return { Vehículo, Alias, Placas,Tipo,Ejecutivo,Creado,Opciones };
-}
-
-const rows = [
-  createData('staging',"TR1",'PCB4512','Vehiculo','Ahbin','22/11/2021  10:35'),
-  createData('abhin/repo/api/allow_repo_updates',"TR2",'PCB4512','Moto','Luis','22/11/2021  10:35'),
-  createData('zdavis/BBCDEV-1577',"TR3",'PCB4512','camioneta','Pepe','22/11/2021  10:35'),
-  createData('tkells/BBCDEV-1631-fix-require-account=access',"TF3",'PCB4512','Vehiculo','Esposa','22/11/2021  10:35'),
-  createData('jmooring/BBDEV-1603',"TG2",'PCB4512','Vehiculo','Ahbin','22/11/2021  10:35'),
-
-];
-
-export default function VehiculosEjecutivoTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-
-  const [Edit,setEdit] = useState(false)
-  const [Delete,setDelete] = useState(false)
-  const [Create,setCreate] = useState(false)
-  const [data,setData] = useState([])
-  const [vehicleID,setVehicleID] = useState()
-
-  const [nombre,setNombre] = useState()
-  const [alias,setAlias] = useState()
-  const [placas,setPlacas] = useState()
-  const [tipo,setTipo] = useState()
-  const [ejecutivoID,setEjecutivoID] = useState()
-
-
-  const handleGetVehiculoE=async()=>{
-    data = await fetch('https://cloudbitakor.com/api/1.0/vehiculoejecutivo/', { 
-      method: 'get', 
-      headers: new Headers({
-        "Authorization":"Token "+window.localStorage.getItem('token')
-      })
-    }).then(response => response.json())
-    .then(data => setData(data));
+  const handlePreviousPage = newPage => {
+    console.log(newPage, 'newPage')
+    dispatch(getVehiculoEjecutivoAction(newPage))
   }
-  useEffect(()=>{
-    handleGetVehiculoE();
-  },[data])
 
+  const handleNextPage = newPage => {
+    console.log(newPage, 'newPage')
+    dispatch(getVehiculoEjecutivoAction(newPage))
+  }
 
-
-
-  // CLICK OUTSIDE MODEL CLOSE
-const wrapperRef = useRef(null);
-ClickOutSide(wrapperRef,setEdit);
-ClickOutSide(wrapperRef,setDelete);
-ClickOutSide(wrapperRef,setCreate);
-
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
+  const handleChangeStatusVehiculo = data => {
+    console.log(data, 'data')
+    const { id, is_active } = data
+    const nuevoStatus = {
+      clasificador: 'vehiculoejecutivo',
+      id: id,
+      estado: is_active === true ? false : true,
+    }
+    console.log(nuevoStatus, 'nuevoStatus')
+    dispatch(UpdateEstadoVehiculoEjecutivoAction(nuevoStatus))
+  }
   return (
-    <div>
+    <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
+      <div className='overflow-y-auto'>
+        <table className='items-center bg-transparent w-full border-collapse'>
+          <thead className='border-gray-200'>
+            <tr>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Vehículo
+              </th>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Alias
+              </th>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Placas
+              </th>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Tipo
+              </th>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Ejecutivo
+              </th>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Creado
+              </th>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Opciones
+              </th>
+            </tr>
+          </thead>
 
-    <div onClick={()=>setCreate(true)} className="bg-red-400 w-fit mb-10  -mt-10">
-                <h3 className=' mt-3 bg-blue-500 w-fit px-2 text-center font-semibold rounded-sm
-                 text-white hover:cursor-pointer'>Crear vehiculo de Ejecutivo</h3>
-    </div>
+          {Object.keys(data).length > 0 ? (
+            <tbody className='overflow-x-auto'>
+              {data.results.map((item, index) => (
+                <tr key={item.id}>
+                  <th className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-left text-blueGray-700 '>
+                    {item.ejecutivo}
+                  </th>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
+                    {item.alias}
+                  </td>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
+                    {item.placas}
+                  </td>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
+                    {item.tipo}
+                  </td>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
+                    {item.ejecutivo}
+                  </td>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
+                    {item.created}
+                  </td>
+                  <button
+                    className='mt-2'
+                    onClick={() => handleChangeStatusVehiculo(item)}
+                  >
+                    <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
+                      {item.is_active ? (
+                        <svg
+                          width='23'
+                          height='24'
+                          viewBox='0 0 23 24'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                          className='h-5'
+                        >
+                          <path
+                            d='M11.0858 0.930908C4.96611 0.930908 -0.000610352 5.98223 -0.000610352 12.2062C-0.000610352 18.4301 4.96611 23.4815 11.0858 23.4815C17.2055 23.4815 22.1723 18.4301 22.1723 12.2062C22.1723 5.98223 17.2055 0.930908 11.0858 0.930908ZM8.86854 17.8438L3.32532 12.2062L4.88851 10.6164L8.86854 14.6529L17.2831 6.09498L18.8463 7.69607L8.86854 17.8438Z'
+                            fill='#128868'
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          width='23'
+                          height='23'
+                          viewBox='0 0 23 23'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                          className='h-5'
+                        >
+                          <path
+                            d='M11.0858 0.208252C4.96611 0.208252 -0.000610352 5.25957 -0.000610352 11.4835C-0.000610352 17.7075 4.96611 22.7588 11.0858 22.7588C17.2055 22.7588 22.1723 17.7075 22.1723 11.4835C22.1723 5.25957 17.2055 0.208252 11.0858 0.208252ZM8.86854 17.1212L3.32532 11.4835L4.88851 9.89371L8.86854 13.9303L17.2831 5.37233L18.8463 6.97342L8.86854 17.1212Z'
+                            fill='#D61601'
+                          />
+                        </svg>
+                      )}
+                    </td>
+                  </button>
 
-    <Paper sx={{ width: '100%' }}>
-      <TableContainer sx={{ maxHeight: 700 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ top: 0, minWidth: column.minWidth,backgroundColor:'#F8F9FA',fontWeight:'bold' }}
-                >
-                  {column.label}
-                </TableCell>
+                  <button onClick={() => handleOpenEditModal(item)}>
+                    <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
+                      <svg
+                        width='17'
+                        height='15'
+                        viewBox='0 0 17 15'
+                        fill='none'
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-5'
+                      >
+                        <path
+                          d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
+                          fill='#128868'
+                        />
+                      </svg>
+                    </td>
+                  </button>
+                  <button onClick={() => handleOpenDeleteModal(item)}>
+                    <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded'>
+                      <svg
+                        width='13'
+                        height='17'
+                        viewBox='0 0 13 17'
+                        fill='none'
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-5'
+                      >
+                        <path
+                          d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
+                          fill='#D61601'
+                        />
+                      </svg>
+                    </td>
+                  </button>
+                </tr>
               ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((data) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={data.code}>
-                    {columns.map((column) => {
-                      const value = data[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {
-                            [column.id] == 'Opciones'&&
-                            <div className='flex gap-2 -ml-2'>
-                                <ICONS.CheckCircleIconS className="h-5 hover:cursor-pointer" color="red"/>
-                                <ICONS.PencilIconS onClick={()=>{
-                                  setNombre(data.nombre)
-                                  setAlias(data.alias)
-                                  setPlacas(data.placas)
-                                  setTipo(data.tipo)
-                                  setEjecutivoID(data.ejecutivo.id)
-                                  setEdit(true)
-                                  
-                                  }} className="h-5 hover:cursor-pointer " color="#86AD6C" />
-                                <ICONS.ArchiveIconS onClick={()=>{
-                                  setVehicleID(data.id)
-                                  setDelete(true)
-                                  
-                                  }} className="h-5 hover:cursor-pointer" color="#A70045"/>
+            </tbody>
+          ) : null}
+        </table>
+      </div>
 
-                            </div>
-                          }
-                          {
-                            [column.id] == 'Vehiculo'&&
-                            data.nombres
-                          }
-                          {
-                            [column.id] == 'Alias'&&
-                            data.alias
-                          }
-                          {
-                            [column.id] == 'Placas'&&
-                            data.placas
-                          }
-                          {
-                            [column.id] == 'Tipo'&&
-                            data.tipo
-                          }
-                          {
-                            [column.id] == 'Ejecutivo'&&
-                            data.ejecutivo.nombres
-                          }
-                          {
-                            [column.id] == 'Creado'&&
-                            data.created
-                          }
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-     
-     <div className='justify-start flex flex-col' ref={wrapperRef}>
-      {
-        Create&&<CreateVehicle Create={Create}  setCreate={setCreate}/>
-      }
-      {
-        Edit&&<EditVehicle Edit={Edit} nombre={nombre} alias={alias} placas={placas} tipo={tipo} ejecutivoID={ejecutivoID}  setEdit={setEdit}/>
-      }
-      {
-        Delete&&<DeleteVehicle vehicleID={vehicleID} Delete={Delete} setDelete={setDelete} />
-      }
+      {/* Paginación */}
+      <div className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'>
+        <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
+          <div>
+            <p className='text-sm text-gray-700'>
+              Mostrando <span className='font-medium'>1</span> -{' '}
+              <span className='font-medium'>
+                {Object.keys(data).length > 0 ? results.length : null}
+              </span>{' '}
+              de{' '}
+              <span className='font-medium'>
+                {Object.keys(data).length > 0 ? count : null}
+              </span>{' '}
+              resultados
+            </p>
+          </div>
+          <div>
+            <nav
+              className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
+              aria-label='Pagination'
+            >
+              <button
+                disabled={data.previous === null ? true : false}
+                className={data.previous !== null ? 'cursor-pointer' : null}
+                onClick={() => handlePreviousPage(data.previous)}
+              >
+                <div
+                  className={
+                    data.previous === null
+                      ? 'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium text-blue-900 bg-gray-300'
+                      : 'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-blue-900 hover:bg-gray-50'
+                  }
+                >
+                  <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
+                  {/* <span className='sr-only'> */}
+                  Anterior
+                  {/* </span> */}
+                </div>
+              </button>
+
+              {/* {data.next || data.previous
+            ? cantidadPaginas.map(pagina => (
+                <a
+                  href='#'
+                  class='py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                >
+                  {pagina}
+                </a>
+              ))
+            : null} */}
+              <button
+                disabled={data.next === null ? true : false}
+                className={data.next !== null ? 'cursor-pointer' : null}
+                onClick={() => handleNextPage(data.next)}
+              >
+                <div
+                  className={
+                    data.next === null
+                      ? 'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 text-sm font-medium text-blue-900 bg-gray-300'
+                      : 'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-blue-900 hover:bg-gray-50'
+                  }
+                >
+                  {/* <span className='sr-only'> */}
+                  Siguiente
+                  <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
+                  {/* </span> */}
+                </div>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-  );
+  )
 }
-             
+
+export default VehiculosEjecutivoTable

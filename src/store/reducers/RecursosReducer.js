@@ -5,8 +5,12 @@ const initialState = {
   isLoading: false,
   ejecutivo: {},
   grupoFamiliar: {},
+  vehiculosEjecutivos: {},
   lugares: {},
   message: {},
+  ejecutivoModificar: 0,
+  familiarModificar: 0,
+  vehiculoEjecutivoModificar: {},
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -39,6 +43,26 @@ export default (state = initialState, { type, payload }) => {
     case types.DELETE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
+    case types.UPDATE_ESTADOEJECUTIVO_START:
+      return { ...state, isLoading: true, ejecutivoModificar: payload }
+
+    case types.UPDATE_ESTADOEJECUTIVO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        ejecutivo: {
+          ...state.ejecutivo,
+          results: state.ejecutivo.results.map(dato => {
+            return dato.id === state.ejecutivoModificar
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+        ejecutivoModificar: 0,
+      }
+    case types.UPDATE_ESTADOEJECUTIVO_FAILED:
+      return { ...state, isLoading: false }
+
     case types.GET_GRUPOFAMILIAR_START:
       return { ...state, isLoading: true }
     case types.GET_GRUPOFAMILIAR_SUCCESS:
@@ -66,6 +90,23 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
     case types.DELETE_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
+
+    case types.UPDATE_ESTADOFAMILIAR_START:
+      return { ...state, isLoading: true, familiarModificar: payload }
+    case types.UPDATE_ESTADOFAMILIAR_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        grupoFamiliar: {
+          ...state.grupoFamiliar,
+          results: state.grupoFamiliar.results.map(dato => {
+            return dato.id === state.familiarModificar
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+        familiarModificar: 0,
+      }
 
     case types.GET_LUGARES_START:
       return { ...state, isLoading: true }
@@ -116,6 +157,13 @@ export default (state = initialState, { type, payload }) => {
     case types.UPDATE_PROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
+    case types.GET_VEHICULOEJECUTIVO_START:
+      return { ...state, isLoading: true }
+    case types.GET_VEHICULOEJECUTIVO_SUCCESS:
+      return { ...state, isLoading: false, vehiculosEjecutivos: payload }
+    case types.GET_VEHICULOEJECUTIVO_FAILED:
+      return { ...state, isLoading: false }
+
     case types.POST_VEHICLE_EJECUTIVO_START:
       return { ...state, isLoading: true }
     case types.POST_VEHICLE_EJECUTIVO_SUCCESS:
@@ -135,6 +183,26 @@ export default (state = initialState, { type, payload }) => {
     case types.UPDATE_VEHICLE_EJECUTIVO_SUCCESS:
       return { ...state, isLoading: false }
     case types.UPDATE_VEHICLE_EJECUTIVO_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_ESTADO_VEHICULOEJECUTIVO_START:
+      return { ...state, isLoading: true, vehiculoEjecutivoModificar: payload }
+
+    case types.UPDATE_ESTADO_VEHICULOEJECUTIVO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosEjecutivos: {
+          ...state.vehiculosEjecutivos,
+          results: state.vehiculosEjecutivos.results.map(dato => {
+            return dato.id === state.vehiculoEjecutivoModificar.id
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+        vehiculoEjecutivoModificar: {},
+      }
+    case types.UPDATE_ESTADO_VEHICULOEJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
     case types.POST_VEHICLE_PROTECTOR_START:

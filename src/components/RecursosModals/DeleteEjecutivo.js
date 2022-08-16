@@ -19,7 +19,6 @@ const DeleteEjecutivo = ({
   return (
     <>
       <Modal
-        hideBackdrop
         open={openModal}
         onClose={handleClose}
         aria-labelledby='child-modal-title'
