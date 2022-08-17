@@ -1,13 +1,22 @@
 import { Box, Modal } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getGrupoFamiliarAction } from '../../store/actions'
+import {
+  DeleteFamiliarAction,
+  getGrupoFamiliarAction,
+  UpdateFamiliarAction,
+} from '../../store/actions'
 import VinculoFamiliarTable from '../RecursosTable/VinculoFamiliarTable'
 import CreateEjecutivo from './CreateEjecutivo'
 import DeleteEjecutivo from './DeleteEjecutivo'
 import EditEjecutivo from './EditEjecutivo'
 
-const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
+const EditFamilyModal = ({
+  openModal,
+  handleClose,
+  tituloModal,
+  id_ejecutivo,
+}) => {
   const dispatch = useDispatch()
   const [openEditModal, setOpenEditModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -22,8 +31,14 @@ const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
   }
 
   const handleEditarGrupoFamiliar = grupoFamiliar => {
-    const familiarActualizado = { ...grupoFamiliar, id: itemEditar.id }
-    // dispatch(UpdateGrupoFamiliarAction(grupoFamiliarActualizado))
+    console.log(grupoFamiliar, 'grupoFamiliar')
+    console.log(itemEditar, 'itemEditar')
+    const familiarActualizado = {
+      ...grupoFamiliar,
+      id: itemEditar.id,
+      id_ejecutivo: itemEditar.id_ejecutivo,
+    }
+    dispatch(UpdateFamiliarAction(familiarActualizado))
     setOpenEditModal(false)
   }
 
@@ -42,10 +57,9 @@ const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
   }
 
   const handleDeleteGrupoFamiliar = () => {
-    // dispatch(DeleteGrupoFamiliarAction(itemEliminar))
+    dispatch(DeleteFamiliarAction(itemEliminar))
     setOpenDeleteModal(false)
   }
-
 
   return (
     <>
@@ -74,6 +88,16 @@ const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
                   >
                     <span className='sr-only'>Cerrar modal</span>
                   </button>
+                  <div className='flex flex-col justify-center items-center'>
+                    <div>
+                      <label className='font-semibold'>Ejecutivo:</label>{' '}
+                      {id_ejecutivo.nombres}
+                    </div>
+                    <div>
+                      <label className='font-semibold'>Alias:</label>{' '}
+                      {id_ejecutivo.alias}
+                    </div>
+                  </div>
                 </div>
                 <div className='p-4'>
                   <CreateEjecutivo
@@ -86,6 +110,7 @@ const EditFamilyModal = ({ openModal, handleClose, tituloModal }) => {
                   data={familiaData}
                   handleOpenEditModal={handleOpenEditModal}
                   handleOpenDeleteModal={handleOpenDeleteModal}
+                  tipo='modal'
                 />
 
                 {/* Modales CAMBIAR NOMBRE para hacer del componente más generico */}

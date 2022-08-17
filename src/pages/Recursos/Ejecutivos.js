@@ -16,6 +16,7 @@ import {
   DeleteEjecutivoAction,
   getEjecutivoAction,
   getGrupoFamiliarAction,
+  getGrupoFamiliarByIdAction,
   UpdateEjecutivoAction,
 } from '../../store/actions'
 
@@ -62,7 +63,8 @@ const Ejecutivos = () => {
   const handleOpenEditFamilyModal = itemEditar => {
     setOpenEditFamiliarModal(true)
     setItemEditarFamily(itemEditar)
-    dispatch(getGrupoFamiliarAction(itemEditar.id))
+    console.log(itemEditar, 'itemEditar')
+    dispatch(getGrupoFamiliarByIdAction(itemEditar))
   }
 
   const handleOpenDeleteModal = itemEliminar => {
@@ -162,7 +164,7 @@ const Ejecutivos = () => {
             tituloModal={'Editar Vínculo Familiar'}
             openModal={openEditFamiliarModal}
             handleClose={handleCloseEditFamiliarModal}
-            itemEditarFamily={itemEditarFamily}
+            id_ejecutivo={itemEditarFamily}
           />
         </>
       )}

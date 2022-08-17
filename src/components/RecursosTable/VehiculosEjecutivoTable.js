@@ -26,12 +26,10 @@ const VehiculosEjecutivoTable = ({
   }
 
   const handleChangeStatusVehiculo = data => {
-    console.log(data, 'data')
-    const { id, is_active } = data
     const nuevoStatus = {
       clasificador: 'vehiculoejecutivo',
-      id: id,
-      estado: is_active === true ? false : true,
+      id: data.id,
+      estado: data.is_active === true ? false : true,
     }
     console.log(nuevoStatus, 'nuevoStatus')
     dispatch(UpdateEstadoVehiculoEjecutivoAction(nuevoStatus))

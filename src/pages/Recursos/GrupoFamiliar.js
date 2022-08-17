@@ -14,7 +14,9 @@ import {
 import VinculoFamiliarTable from '../../components/RecursosTable/VinculoFamiliarTable'
 import {
   createNewFamiliarAction,
+  DeleteFamiliarAction,
   getGrupoFamiliarAction,
+  UpdateFamiliarAction,
 } from '../../store/actions'
 
 const GrupoFamiliar = () => {
@@ -30,14 +32,16 @@ const GrupoFamiliar = () => {
   }, [dispatch])
 
   const familiaData = useSelector(state => state.recursos.grupoFamiliar)
-  console.log(familiaData, 'familiaData')
-  const handleGuardarNuevoFamiliar = familiar => {
-    dispatch(createNewFamiliarAction(familiar))
-  }
 
   const handleEditarGrupoFamiliar = grupoFamiliar => {
-    const familiarActualizado = { ...grupoFamiliar, id: itemEditar.id }
-    // dispatch(UpdateGrupoFamiliarAction(grupoFamiliarActualizado))
+    console.log(grupoFamiliar, 'grupoFamiliar')
+    console.log(itemEditar, 'itemEditar')
+    const familiarActualizado = {
+      ...grupoFamiliar,
+      id: itemEditar.id,
+      id_ejecutivo: itemEditar.id_ejecutivo,
+    }
+    dispatch(UpdateFamiliarAction(familiarActualizado))
     setOpenEditModal(false)
   }
 
@@ -59,8 +63,8 @@ const GrupoFamiliar = () => {
     setOpenDeleteModal(false)
   }
 
-  const handleDeleteGrupoFamiliar = () => {
-    // dispatch(DeleteGrupoFamiliarAction(itemEliminar))
+  const handleDeleteGrupoFamiliar = itemEliminar => {
+    dispatch(DeleteFamiliarAction(itemEliminar))
     setOpenDeleteModal(false)
   }
   return (
@@ -86,11 +90,11 @@ const GrupoFamiliar = () => {
             <div className='flex mx-10 justify-between'>
               <div className=''>
                 {/* Modal Guardar hACERLO Más generico */}
-                <CreateEjecutivo
+                {/* <CreateEjecutivo
                   tituloModal={'Crear Familiar'}
                   descripcionModal={''}
                   handleAction={handleGuardarNuevoFamiliar}
-                />
+                /> */}
               </div>
 
               <div className='flex'>
@@ -117,6 +121,7 @@ const GrupoFamiliar = () => {
                 data={familiaData}
                 handleOpenEditModal={handleOpenEditModal}
                 handleOpenDeleteModal={handleOpenDeleteModal}
+                tipo='general'
               />
             </div>
           </div>

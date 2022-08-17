@@ -58,7 +58,7 @@ export const createNewEjecutivoAction = data => async dispatch => {
 //Update ejecutivo
 export const UpdateEjecutivoAction = data => async dispatch => {
   try {
-    dispatch({ type: types.UPDATE_EJECUTIVO_START })
+    dispatch({ type: types.UPDATE_EJECUTIVO_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
@@ -131,23 +131,19 @@ export const UpdateEstadoEjecutivoAction = data => async dispatch => {
 
 // Get Vinculo Familiar
 export const getGrupoFamiliarAction =
-  (id_ejecutivo = '') =>
+  (enlacePaginacion = '/familiar/') =>
   async dispatch => {
-    console.log(id_ejecutivo, 'id')
     try {
       dispatch({ type: types.GET_GRUPOFAMILIAR_START })
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const response = await httpRequest.get(
-        `/familiar/?id_ejecutivo=${id_ejecutivo}`,
-        {
-          headers: {
-            Authorization: Token,
-            'content-type': 'multipart/form-data',
-          },
-        }
-      )
+      const response = await httpRequest.get(enlacePaginacion, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
       console.log(response, 'response')
       const result = response.data
 
@@ -159,6 +155,35 @@ export const getGrupoFamiliarAction =
       progress.finish()
     }
   }
+
+// Get Vinculo Familiar por id
+export const getGrupoFamiliarByIdAction = data => async dispatch => {
+  try {
+    dispatch({ type: types.GET_GRUPOFAMILIAR_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+
+    const urlGet = `/familiar/?id_ejecutivo=${data.id}`
+    console.log(urlGet)
+    const response = await httpRequest.get(urlGet, {
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
+    })
+
+    console.log(response, 'response')
+    const result = response.data
+
+    dispatch({ type: types.GET_GRUPOFAMILIAR_SUCCESS, payload: result })
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.GET_GRUPOFAMILIAR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
 
 // Create Vinculo Familiar
 export const createNewFamiliarAction = data => async dispatch => {
@@ -182,10 +207,55 @@ export const createNewFamiliarAction = data => async dispatch => {
   }
 }
 
+//Update familiar de ejecutivo
+export const UpdateFamiliarAction = data => async dispatch => {
+  try {
+    dispatch({ type: types.UPDATE_GRUPOFAMILIAR_START, payload: data })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.patch('/familiar/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({ type: types.UPDATE_GRUPOFAMILIAR_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_GRUPOFAMILIAR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
+
+//Delete familiar de ejecutivo
+export const DeleteFamiliarAction = data => async dispatch => {
+  try {
+    dispatch({ type: types.DELETE_GRUPOFAMILIAR_START, payload: data })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.delete('/familiar/', {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+      data: data,
+    })
+    const result = response.data
+
+    dispatch({ type: types.DELETE_GRUPOFAMILIAR_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.DELETE_GRUPOFAMILIAR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
+
 // update Estado de ejecutivo
 export const UpdateEstadoFamiliarAction = data => async dispatch => {
   try {
-    dispatch({ type: types.UPDATE_ESTADOFAMILIAR_START, payload: data.id })
+    dispatch({ type: types.UPDATE_ESTADOFAMILIAR_START, payload: data })
     progress.start()
     console.log(data, 'data')
     let token = window.localStorage.getItem('token')
@@ -401,7 +471,6 @@ export const getVehiculoEjecutivoAction =
         },
       })
       const result = response.data
-      console.log(result, 'result get Vehiculo Ejecutivo')
       dispatch({ type: types.GET_VEHICULOEJECUTIVO_SUCCESS, payload: result })
       progress.finish()
     } catch (error) {
@@ -412,7 +481,7 @@ export const getVehiculoEjecutivoAction =
   }
 
 //Create Vehicle Ejecutivo
-export const CreateNewVehicleEjecutivo = data => async dispatch => {
+export const createNewVehicleEjecutivoAction = data => async dispatch => {
   try {
     dispatch({ type: types.POST_VEHICLE_EJECUTIVO_START })
     progress.start()
@@ -422,16 +491,13 @@ export const CreateNewVehicleEjecutivo = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
     dispatch({ type: types.POST_VEHICLE_EJECUTIVO_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (error) {
+    dispatch(setToast('error', error.message))
     dispatch({ type: types.POST_VEHICLE_EJECUTIVO_FAILED })
+    progress.finish()
   }
 }
 
@@ -467,26 +533,41 @@ export const DeleteVehicleEjecutivoRecord = data => async dispatch => {
 }
 
 //Update Vehicle Ejecutivo
-export const UpdateVehicleEjecutivoRecord = data => async dispatch => {
+export const UpdateVehicleEjecutivoAction = data => async dispatch => {
   try {
-    dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_START })
+    console.log(data,'data PRUEBA')
+    dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await httpRequest.patch('/vehiculoejecutivo/', data, {
-      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
-    })
-    const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
-    dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_SUCCESS, payload: result })
-  } catch (err) {
-    progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
+
+    const ejecutivoActualizado = {
+      id_ejecutivo: data.propietario,
+      id: data.idVehiculo,
+      placas: data.placas,
+      alias: data.alias,
+      tipo: data.tipo,
+    }
+
+    const response = await httpRequest.patch(
+      '/vehiculoejecutivo/',
+      ejecutivoActualizado,
+      {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      }
     )
+    const result = response.data
+
+    dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch(setToast('error', error.message))
     dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_FAILED })
+    progress.finish()
   }
 }
 

@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
-  CreateEjecutivo,
-  CreateVehicle,
+  EditEjecutivo,
+  EditVehicle,
   Header,
   ICONS,
   RedirectWithoutLogin,
   VehiculosEjecutivoTable,
 } from '../../components'
-import { getVehiculoEjecutivoAction } from '../../store/actions'
+import CreateVehiculo from '../../components/RecursosModals/CreateVehiculo'
+import {
+  getEjecutivoAction,
+  getVehiculoEjecutivoAction,
+  UpdateVehicleEjecutivoAction,
+} from '../../store/actions'
+import { createNewVehicleEjecutivoAction } from '../../store/actions'
 
 const VehicleEjectivos = () => {
   const dispatch = useDispatch()
@@ -30,12 +36,39 @@ const VehicleEjectivos = () => {
 
   const handleOpenEditModal = itemEditar => {
     setOpenEditModal(true)
+
     setItemEditar(itemEditar)
   }
 
   const handleOpenDeleteModal = itemEliminar => {
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
+  }
+
+  const handleGuardarVehículoEjecutivo = vehiculoEjecutivo => {
+    const nuevoVehiculo = {
+      id_ejecutivo: vehiculoEjecutivo.propietario,
+      placas: vehiculoEjecutivo.placas,
+      alias: vehiculoEjecutivo.alias,
+      tipo: vehiculoEjecutivo.tipo,
+    }
+    console.log(nuevoVehiculo, 'nuevoVehiculo')
+    dispatch(createNewVehicleEjecutivoAction(nuevoVehiculo))
+    setOpenEditModal(false)
+  }
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
+
+  const handleEditarVehiculoEjecutivo = vehiculo => {
+    const ejecutivoActualizado = {
+      ...vehiculo,
+      id: itemEditar.idVehiculo,
+    }
+    console.log(ejecutivoActualizado)
+    dispatch(UpdateVehicleEjecutivoAction(ejecutivoActualizado))
+    setOpenEditModal(false)
   }
 
   return (
@@ -60,12 +93,12 @@ const VehicleEjectivos = () => {
           <div className='bg-white mx-10 py-10'>
             <div className='flex mx-10 justify-between'>
               <div className=''>
-                <CreateVehicle
+                <CreateVehiculo
                   tituloModal={'Crear un vehículo'}
                   descripcionModal={
                     'Aquí puedes crear un vehículo y asociarlo a un ejecutivo.'
                   }
-                  //   handleAction={handleGuardarVehículoEjecutivo}
+                  handleAction={handleGuardarVehículoEjecutivo}
                 />
               </div>
 
@@ -97,15 +130,17 @@ const VehicleEjectivos = () => {
             </div>
           </div>
           {/* Modales */}
-          {/* <EditEjecutivo
-            tituloModal={'Editar Ejecutivo'}
-            descripcionModal={'Edita los datos del ejecutivo seleccionado.'}
+          <EditVehicle
+            tituloModal={'Editar un vehículo'}
+            descripcionModal={
+              'Aqui puedes editar un vehículo asociado a un Ejecutivo.'
+            }
             openModal={openEditModal}
             handleClose={handleCloseEditModal}
-            handleAction={handleEditarEjecutivo}
+            handleAction={handleEditarVehiculoEjecutivo}
             itemEditar={itemEditar}
           />
-          <DeleteEjecutivo
+          {/* <DeleteEjecutivo
             tipo='Ejecutivo'
             tituloModal={'Eliminar Ejecutivo'}
             descripcionModal={
@@ -115,12 +150,6 @@ const VehicleEjectivos = () => {
             handleClose={handleCloseDeleteModal}
             handleAction={handleDeleteEjecutivo}
             itemEliminar={itemEliminar}
-          />
-          <EditFamilyModal
-            tituloModal={'Editar Vínculo Familiar'}
-            openModal={openEditFamiliarModal}
-            handleClose={handleCloseEditFamiliarModal}
-            itemEditarFamily={itemEditarFamily}
           /> */}
         </>
       )}

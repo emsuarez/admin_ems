@@ -8,9 +8,9 @@ const initialState = {
   vehiculosEjecutivos: {},
   lugares: {},
   message: {},
-  ejecutivoModificar: 0,
-  familiarModificar: 0,
-  vehiculoEjecutivoModificar: {},
+  ejecutivoSeleccionado: {},
+  familiarSeleccionado: {},
+  vehiculoEjecutivoSeleccionado: {},
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -30,9 +30,21 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.UPDATE_EJECUTIVO_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, ejecutivoSeleccionado: payload }
     case types.UPDATE_EJECUTIVO_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        ejecutivo: {
+          ...state.ejecutivo,
+          results: state.ejecutivo.results.map(dato => {
+            return dato.id === state.ejecutivoSeleccionado.id
+              ? { ...dato, ...state.ejecutivoSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+        ejecutivoSeleccionado: {},
+      }
     case types.UPDATE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
@@ -44,7 +56,7 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.UPDATE_ESTADOEJECUTIVO_START:
-      return { ...state, isLoading: true, ejecutivoModificar: payload }
+      return { ...state, isLoading: true, ejecutivoSeleccionado: payload }
 
     case types.UPDATE_ESTADOEJECUTIVO_SUCCESS:
       return {
@@ -53,7 +65,7 @@ export default (state = initialState, { type, payload }) => {
         ejecutivo: {
           ...state.ejecutivo,
           results: state.ejecutivo.results.map(dato => {
-            return dato.id === state.ejecutivoModificar
+            return dato.id === state.ejecutivoSeleccionado
               ? { ...dato, is_active: !dato.is_active }
               : { ...dato, dato }
           }),
@@ -78,21 +90,42 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.UPDATE_GRUPOFAMILIAR_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, familiarSeleccionado: payload }
     case types.UPDATE_GRUPOFAMILIAR_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        grupoFamiliar: {
+          ...state.grupoFamiliar,
+          results: state.grupoFamiliar.results.map(dato => {
+            return dato.id === state.familiarSeleccionado.id
+              ? { ...dato, ...state.familiarSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+      }
     case types.UPDATE_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
 
     case types.DELETE_GRUPOFAMILIAR_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, familiarSeleccionado: payload }
     case types.DELETE_GRUPOFAMILIAR_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        grupoFamiliar: {
+          ...state.grupoFamiliar,
+          results: state.grupoFamiliar.results.filter(
+            dato => dato.id !== state.familiarSeleccionado.id
+          ),
+        },
+        familiarSeleccionado: {},
+      }
     case types.DELETE_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
 
     case types.UPDATE_ESTADOFAMILIAR_START:
-      return { ...state, isLoading: true, familiarModificar: payload }
+      return { ...state, isLoading: true, familiarSeleccionado: payload }
     case types.UPDATE_ESTADOFAMILIAR_SUCCESS:
       return {
         ...state,
@@ -100,13 +133,15 @@ export default (state = initialState, { type, payload }) => {
         grupoFamiliar: {
           ...state.grupoFamiliar,
           results: state.grupoFamiliar.results.map(dato => {
-            return dato.id === state.familiarModificar
+            return dato.id === state.familiarSeleccionado.id
               ? { ...dato, is_active: !dato.is_active }
               : { ...dato, dato }
           }),
         },
         familiarModificar: 0,
       }
+    case types.UPDATE_ESTADOFAMILIAR_FAILED:
+      return { ...state, isLoading: false }
 
     case types.GET_LUGARES_START:
       return { ...state, isLoading: true }
@@ -179,14 +214,33 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.UPDATE_VEHICLE_EJECUTIVO_START:
-      return { ...state, isLoading: true }
+      return {
+        ...state,
+        isLoading: true,
+        vehiculoEjecutivoSeleccionado: payload,
+      }
     case types.UPDATE_VEHICLE_EJECUTIVO_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosEjecutivos: {
+          ...state.vehiculosEjecutivos,
+          results: state.vehiculosEjecutivos.results.map(dato => {
+            return dato.id === state.vehiculoEjecutivoSeleccionado.idVehiculo
+              ? { ...dato, ...state.vehiculoEjecutivoSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+      }
     case types.UPDATE_VEHICLE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
     case types.UPDATE_ESTADO_VEHICULOEJECUTIVO_START:
-      return { ...state, isLoading: true, vehiculoEjecutivoModificar: payload }
+      return {
+        ...state,
+        isLoading: true,
+        vehiculoEjecutivoSeleccionado: payload,
+      }
 
     case types.UPDATE_ESTADO_VEHICULOEJECUTIVO_SUCCESS:
       return {
@@ -195,7 +249,7 @@ export default (state = initialState, { type, payload }) => {
         vehiculosEjecutivos: {
           ...state.vehiculosEjecutivos,
           results: state.vehiculosEjecutivos.results.map(dato => {
-            return dato.id === state.vehiculoEjecutivoModificar.id
+            return dato.id === state.vehiculoEjecutivoSeleccionado.id
               ? { ...dato, is_active: !dato.is_active }
               : { ...dato, dato }
           }),
