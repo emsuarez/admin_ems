@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
   CreateVehicleProtect,
+  DeleteEjecutivo,
+  EditVehicle,
   Header,
   ICONS,
   RedirectWithoutLogin,
@@ -11,7 +13,10 @@ import {
 } from '../../components'
 import {
   CreateNewVehicleProtectorAction,
+  DeleteVehicleProtectorAction,
+  DeleteVehiculoEjecutivoAction,
   getVehiculoProtectorAction,
+  UpdateVehicleProtectorAction,
 } from '../../store/actions'
 
 const VehicleProtectores = () => {
@@ -53,6 +58,32 @@ const VehicleProtectores = () => {
     dispatch(CreateNewVehicleProtectorAction(nuevoVehiculo))
     setOpenEditModal(false)
   }
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
+
+  const handleEditarVehiculoProtector = vehiculo => {
+    console.log(vehiculo, 'vehiculo')
+    const vehiculoProtectorActualizado = {
+      ...vehiculo,
+      id: vehiculo.idVehiculo,
+    }
+    console.log(vehiculoProtectorActualizado, 'vehiculoProtectorActualizado')
+    dispatch(UpdateVehicleProtectorAction(vehiculoProtectorActualizado))
+    setOpenEditModal(false)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleDeleteVehiculoProtector = vehiculo => {
+    dispatch(DeleteVehicleProtectorAction(vehiculo))
+    setOpenDeleteModal(false)
+  }
+
+  
   return (
     <div>
       <RedirectWithoutLogin />
@@ -112,27 +143,26 @@ const VehicleProtectores = () => {
             </div>
           </div>
           {/* Modales */}
-          {/* <EditVehicle
+          <EditVehicle
+            tipoComponente={'vehiculoProtector'}
             tituloModal={'Editar un vehículo'}
             descripcionModal={
-              'Aqui puedes editar un vehículo asociado a un Ejecutivo.'
+              'Aqui puedes editar un vehículo'
             }
             openModal={openEditModal}
             handleClose={handleCloseEditModal}
-            handleAction={handleEditarVehiculoEjecutivo}
+            handleAction={handleEditarVehiculoProtector}
             itemEditar={itemEditar}
           />
           <DeleteEjecutivo
             tipo='Vehiculo'
-            tituloModal={'Eliminar vehículo de ejecutivo'}
-            descripcionModal={
-              'Estas por eliminar un vehículo vinculado a un ejecutivo.'
-            }
+            tituloModal={'Eliminar vehículo'}
+            descripcionModal={'Estas por eliminar un vehículo.'}
             openModal={openDeleteModal}
             handleClose={handleCloseDeleteModal}
-            handleAction={handleDeleteVehiculoEjecutivo}
+            handleAction={handleDeleteVehiculoProtector}
             itemEliminar={itemEliminar}
-          /> */}
+          />
         </>
       )}
     </div>

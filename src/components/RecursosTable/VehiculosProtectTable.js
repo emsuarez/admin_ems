@@ -2,7 +2,10 @@ import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { getVehiculoProtectorAction } from '../../store/actions'
+import {
+  getVehiculoProtectorAction,
+  UpdateEstadoVehiculoProtectorAction,
+} from '../../store/actions'
 
 const VehiculosProtectTable = ({
   data,
@@ -26,12 +29,12 @@ const VehiculosProtectTable = ({
 
   const handleChangeStatusVehiculo = data => {
     const nuevoStatus = {
-      clasificador: 'vehiculoejecutivo',
+      clasificador: 'vehiculoprotector',
       id: data.id,
       estado: data.is_active === true ? false : true,
     }
     console.log(nuevoStatus, 'nuevoStatus')
-    // dispatch(UpdateEstadoVehiculoProtectorAction(nuevoStatus))
+    dispatch(UpdateEstadoVehiculoProtectorAction(nuevoStatus))
   }
   return (
     <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>

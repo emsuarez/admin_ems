@@ -14,6 +14,7 @@ const initialState = {
   familiarSeleccionado: {},
   protectorSeleccionado: {},
   vehiculoEjecutivoSeleccionado: {},
+  vehiculoProtectorSeleccionado: {},
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -106,6 +107,7 @@ export default (state = initialState, { type, payload }) => {
               : { ...dato, dato }
           }),
         },
+        familiarSeleccionado: {},
       }
     case types.UPDATE_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
@@ -161,21 +163,43 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.DELETE_PROTECTOR_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, protectorSeleccionado: payload }
     case types.DELETE_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        protectores: {
+          ...state.protectores,
+          results: state.protectores.results.filter(
+            dato => dato.id !== state.protectorSeleccionado.id
+          ),
+        },
+        protectorSeleccionado: {},
+      }
     case types.DELETE_PROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
     case types.UPDATE_PROTECTOR_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, protectorSeleccionado: payload }
     case types.UPDATE_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        protectores: {
+          ...state.protectores,
+          results: state.protectores.results.map(dato => {
+            return dato.id === state.protectorSeleccionado.id
+              ? { ...dato, ...state.protectorSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+        protectorSeleccionado: {},
+      }
     case types.UPDATE_PROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
     case types.UPDATE_ESTADOPROTECTOR_START:
-      return { ...state, isLoading: true, ejecutivoSeleccionado: payload }
+      return { ...state, isLoading: true, protectorSeleccionado: payload }
 
     case types.UPDATE_ESTADOPROTECTOR_SUCCESS:
       return {
@@ -204,22 +228,64 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_LUGARES_START:
       return { ...state, isLoading: true }
     case types.POST_LUGARES_SUCCESS:
-      return { ...state, isLoading: false, lugares: payload }
+      return { ...state, isLoading: false }
     case types.POST_LUGARES_FAILED:
       return { ...state, isLoading: false }
 
     case types.DELETE_LUGARES_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, lugarSeleccionado: payload }
     case types.DELETE_LUGARES_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        lugares: {
+          ...state.lugares,
+          results: state.lugares.results.filter(
+            dato => dato.id !== state.lugarSeleccionado.id
+          ),
+        },
+        lugarSeleccionado: {},
+      }
     case types.DELETE_LUGARES_FAILED:
       return { ...state, isLoading: false }
 
     case types.UPDATE_LUGARES_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, lugarSeleccionado: payload }
     case types.UPDATE_LUGARES_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        lugares: {
+          ...state.lugares,
+          results: state.lugares.results.map(dato => {
+            return dato.id === state.lugarSeleccionado.id
+              ? { ...dato, ...state.lugarSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+        lugarSeleccionado: {},
+      }
+
     case types.UPDATE_LUGARES_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_ESTADOLUGAR_START:
+      return { ...state, isLoading: true, lugarSeleccionado: payload }
+    case types.UPDATE_ESTADOLUGAR_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        lugares: {
+          ...state.lugares,
+          results: state.lugares.results.map(dato => {
+            return dato.id === state.lugarSeleccionado.id
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+        lugarSeleccionado: {},
+      }
+    case types.UPDATE_ESTADOLUGAR_FAILED:
       return { ...state, isLoading: false }
 
     case types.GET_VEHICULOEJECUTIVO_START:
@@ -318,16 +384,46 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.DELETE_VEHICLE_PROTECTOR_START:
-      return { ...state, isLoading: true }
+      return {
+        ...state,
+        isLoading: true,
+        vehiculoProtectorSeleccionado: payload,
+      }
     case types.DELETE_VEHICLE_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosProtectores: {
+          ...state.vehiculosProtectores,
+          results: state.vehiculosProtectores.results.filter(
+            dato => dato.id !== state.vehiculoProtectorSeleccionado.id
+          ),
+        },
+        vehiculoProtectorSeleccionado: {},
+      }
     case types.DELETE_VEHICLE_PROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
     case types.UPDATE_VEHICLE_PROTECTOR_START:
-      return { ...state, isLoading: true }
+      return {
+        ...state,
+        isLoading: true,
+        vehiculoProtectorSeleccionado: payload,
+      }
     case types.UPDATE_VEHICLE_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosProtectores: {
+          ...state.vehiculosProtectores,
+          results: state.vehiculosProtectores.results.map(dato => {
+            return dato.id === state.vehiculoProtectorSeleccionado.id
+              ? { ...dato, ...state.vehiculoProtectorSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+        vehiculoProtectorSeleccionado: {},
+      }
     case types.UPDATE_VEHICLE_PROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
@@ -335,22 +431,22 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: true,
-        vehiculoEjecutivoSeleccionado: payload,
+        vehiculoProtectorSeleccionado: payload,
       }
 
     case types.UPDATE_ESTADO_VEHICULOPROTECTOR_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        vehiculosEjecutivos: {
-          ...state.vehiculosEjecutivos,
-          results: state.vehiculosEjecutivos.results.map(dato => {
-            return dato.id === state.vehiculoEjecutivoSeleccionado.id
+        vehiculosProtectores: {
+          ...state.vehiculosProtectores,
+          results: state.vehiculosProtectores.results.map(dato => {
+            return dato.id === state.vehiculoProtectorSeleccionado.id
               ? { ...dato, is_active: !dato.is_active }
               : { ...dato, dato }
           }),
         },
-        vehiculoEjecutivoModificar: {},
+        vehiculoProtectorSeleccionado: {},
       }
     case types.UPDATE_ESTADO_VEHICULOPROTECTOR_FAILED:
       return { ...state, isLoading: false }

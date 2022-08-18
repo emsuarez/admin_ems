@@ -2,7 +2,7 @@ import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { GetLugaresAction } from '../../store/actions'
+import { GetLugaresAction, UpdateEstadoLugarAction } from '../../store/actions'
 
 const LugaresTable = ({ data, handleOpenEditModal, handleOpenDeleteModal }) => {
   const { results, count } = data
@@ -20,14 +20,14 @@ const LugaresTable = ({ data, handleOpenEditModal, handleOpenDeleteModal }) => {
     dispatch(GetLugaresAction(newPage))
   }
 
-  const handleChangeStatusVehiculo = data => {
+  const handleChangeStatusLugar = data => {
     const nuevoStatus = {
-      clasificador: 'vehiculoejecutivo',
+      clasificador: 'lugares',
       id: data.id,
       estado: data.is_active === true ? false : true,
     }
     console.log(nuevoStatus, 'nuevoStatus')
-    // dispatch(UpdateEstadoVehiculoProtectorAction(nuevoStatus))
+    dispatch(UpdateEstadoLugarAction(nuevoStatus))
   }
   return (
     <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
@@ -53,7 +53,7 @@ const LugaresTable = ({ data, handleOpenEditModal, handleOpenDeleteModal }) => {
 
           {Object.keys(data).length > 0 ? (
             <tbody className='overflow-x-auto'>
-              {data.results.map((item, index) => (
+              {data.results.map(item => (
                 <tr key={item.id}>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.lugar}
@@ -66,7 +66,7 @@ const LugaresTable = ({ data, handleOpenEditModal, handleOpenDeleteModal }) => {
                   </td>
                   <button
                     className='mt-2'
-                    onClick={() => handleChangeStatusVehiculo(item)}
+                    onClick={() => handleChangeStatusLugar(item)}
                   >
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
                       {item.is_active ? (

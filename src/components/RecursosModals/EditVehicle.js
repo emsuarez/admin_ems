@@ -6,6 +6,7 @@ import { getEjecutivoAction } from '../../store/actions'
 import { ICONS } from '../constants'
 
 const EditVehicle = ({
+  tipoComponente,
   openModal,
   handleClose,
   tituloModal,
@@ -16,14 +17,13 @@ const EditVehicle = ({
   const dispatch = useDispatch()
 
   const [idVehiculo, setidVehiculo] = useState()
-  const [nombreVehiculo, setNombreVehiculo] = useState()
   const [placas, setPlacas] = useState()
   const [alias, setAlias] = useState()
   const [tipo, setTipo] = useState()
   const [propietario, setPropietario] = useState()
 
   useEffect(() => {
-    dispatch(getEjecutivoAction())
+    if (tipoComponente !== 'vehiculoProtector') dispatch(getEjecutivoAction())
   }, [])
 
   const propietarios = useSelector(state => state.recursos.ejecutivo)
@@ -31,15 +31,17 @@ const EditVehicle = ({
   useEffect(() => {
     const cargarPropietarioSeleccionado = async () => {
       setidVehiculo(itemEditar.id)
-      setNombreVehiculo(itemEditar.ejecutivo)
       setPlacas(itemEditar.placas)
       setAlias(itemEditar.alias)
       setTipo(itemEditar.tipo)
-      await setPropietario(
-        propietarios.results.filter(
-          propietario => propietario.alias === itemEditar.ejecutivo
-        )[0].id
-      )
+      if (tipoComponente !== 'vehiculoProtector') {
+        await setPropietario(
+          propietarios.results.filter(
+            propietario => propietario.alias === itemEditar.ejecutivo
+          )[0].id
+        )
+      }
+
       //   setPropietario(itemEditar.ejecutivo) //alias
     }
     cargarPropietarioSeleccionado()
@@ -48,7 +50,6 @@ const EditVehicle = ({
   const handleEjectAndClean = () => {
     const datos = {
       idVehiculo,
-      nombreVehiculo,
       placas,
       alias,
       tipo,
@@ -56,7 +57,6 @@ const EditVehicle = ({
     }
 
     handleAction(datos)
-    setNombreVehiculo('')
     setPlacas('')
     setAlias('')
     setTipo('')
@@ -106,24 +106,7 @@ const EditVehicle = ({
 
                 <div className='px-6 pt-2 space-y-3'>
                   <h2>{descripcionModal}</h2>
-                  <div className='mx-3'>
-                    <label
-                      for='nombre'
-                      className='block text-sm font-medium text-gray-900 '
-                    >
-                      Nombre del vehículo:
-                    </label>
-                    <input
-                      type='text'
-                      name='nombre'
-                      id='nombre'
-                      className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
-                      placeholder='Nombre del vehículo'
-                      value={nombreVehiculo}
-                      onChange={e => setNombreVehiculo(e.target.value)}
-                      required
-                    />
-                  </div>
+
                   <div className='flex flex-col mx-3'>
                     <div className='flex justify-between'>
                       <label
@@ -182,7 +165,7 @@ const EditVehicle = ({
                         type='text'
                         name='tipo'
                         id='tipo'
-                        className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
+                        className='mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
                         placeholder='Tipo'
                         value={tipo}
                         onChange={e => setTipo(e.target.value)}
@@ -190,31 +173,33 @@ const EditVehicle = ({
                       />
                     </div>
                   </div>
-                  <div className='flex flex-col mx-3'>
-                    <div className='flex justify-between'>
-                      <label
-                        for='propietario'
-                        className='block text-sm font-medium text-gray-900 '
-                      >
-                        PROPIETARIO<span className='text-red-600'>*</span>:
-                      </label>
+                  {tipoComponente !== 'vehiculoProtector' ? (
+                    <div className='flex flex-col mx-3'>
+                      <div className='flex justify-between'>
+                        <label
+                          for='propietario'
+                          className='block text-sm font-medium text-gray-900 '
+                        >
+                          PROPIETARIO<span className='text-red-600'>*</span>:
+                        </label>
+                      </div>
+                      <div>
+                        {/* Select Propietarios */}
+                        <select
+                          className='mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-900 focus:border-blue-900 block w-full p-2.5 outline-blue-900'
+                          id={propietario}
+                          value={propietario}
+                          onChange={e => setPropietario(e.target.value)}
+                        >
+                          {propietarios.results.map(propie => (
+                            <option key={propie.id} value={propie.id}>
+                              {propie.nombres}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
-                    <div>
-                      {/* Select Propietarios */}
-                      <select
-                        className='mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-900 focus:border-blue-900 block w-full p-2.5 outline-blue-900'
-                        id={propietario}
-                        value={propietario}
-                        onChange={e => setPropietario(e.target.value)}
-                      >
-                        {propietarios.results.map(propie => (
-                          <option key={propie.id} value={propie.id}>
-                            {propie.nombres}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
+                  ) : null}
                 </div>
 
                 <div className='flex items-end justify-end px-6 py-3 space-x-2 rounded-b border-t border-gray-200 '>

@@ -2,13 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
+  CreateEjecutivo,
+  DeleteEjecutivo,
+  EditEjecutivo,
+  EditLugar,
   Header,
   ICONS,
   LugaresTable,
   ProtectoresTable,
   RedirectWithoutLogin,
 } from '../../components'
-import { GetLugaresAction } from '../../store/actions'
+import {
+  CreateNewLugarAction,
+  DeleteLugaresAction,
+  GetLugaresAction,
+  UpdateLugarAction,
+} from '../../store/actions'
 
 const Lugares = () => {
   const dispatch = useDispatch()
@@ -32,6 +41,36 @@ const Lugares = () => {
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
   }
+
+  const handleGuardarLugar = lugar => {
+    console.log(lugar)
+    const nuevoLugar = {
+      ...lugar,
+      lugar: lugar.nombres,
+    }
+    console.log(nuevoLugar, 'nuevoLugar')
+    dispatch(CreateNewLugarAction(nuevoLugar))
+  }
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
+
+  const handleEditarLugar = lugar => {
+    const lugarActualizado = { ...lugar, id: itemEditar.id }
+    dispatch(UpdateLugarAction(lugarActualizado))
+    setOpenEditModal(false)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleDeleteLugar = lugar => {
+    dispatch(DeleteLugaresAction({ id: lugar.id }))
+    setOpenDeleteModal(false)
+  }
+
   return (
     <div>
       <RedirectWithoutLogin />
@@ -54,13 +93,13 @@ const Lugares = () => {
           <div className='bg-white mx-10 py-10'>
             <div className='flex mx-10 justify-between'>
               <div className=''>
-                {/* <CreateEjecutivo
-                  tituloModal={'Crear Ejecutivo'}
+                <CreateEjecutivo
+                  tituloModal={'Crear un Lugar'}
                   descripcionModal={
-                    'Crea a un ejecutivo con su sobrenombre clave.'
+                    'Los lugares son las ubicaciones que servira para los registros de movimiento.'
                   }
-                  handleAction={handleGuardarEjecutivo}
-                /> */}
+                  handleAction={handleGuardarLugar}
+                />
               </div>
 
               <div className='flex'>
@@ -91,31 +130,23 @@ const Lugares = () => {
             </div>
           </div>
           {/* Modales */}
-          {/* <EditEjecutivo
-            tituloModal={'Editar Ejecutivo'}
-            descripcionModal={'Edita los datos del ejecutivo seleccionado.'}
+          <EditLugar
+            tituloModal={'Editar Lugar'}
+            descripcionModal={'Edita los datos del lugar seleccionado.'}
             openModal={openEditModal}
             handleClose={handleCloseEditModal}
-            handleAction={handleEditarEjecutivo}
+            handleAction={handleEditarLugar}
             itemEditar={itemEditar}
           />
           <DeleteEjecutivo
-            tipo='Ejecutivo'
-            tituloModal={'Eliminar Ejecutivo'}
-            descripcionModal={
-              'Estas seguro de la eliminación de los datos del ejecutivo, se eliminarán tambien datos asociados con el ejecutivo como:'
-            }
+            tipo='lugares'
+            tituloModal={'Eliminar Lugar'}
+            descripcionModal={'Estas por eliminar un lugar'}
             openModal={openDeleteModal}
             handleClose={handleCloseDeleteModal}
-            handleAction={handleDeleteEjecutivo}
+            handleAction={handleDeleteLugar}
             itemEliminar={itemEliminar}
           />
-          <EditFamilyModal
-            tituloModal={'Editar Vínculo Familiar'}
-            openModal={openEditFamiliarModal}
-            handleClose={handleCloseEditFamiliarModal}
-            id_ejecutivo={itemEditarFamily}
-          /> */}
         </>
       )}
     </div>

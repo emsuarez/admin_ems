@@ -275,29 +275,34 @@ export const UpdateEstadoFamiliarAction = data => async dispatch => {
 }
 
 //Get lugares
-export const GetLugaresAction = () => async dispatch => {
-  try {
-    dispatch({ type: types.GET_LUGARES_START })
-    progress.start()
-    let token = window.localStorage.getItem('token')
-    const Token = 'Token ' + token
-    const response = await httpRequest.get('/lugares/', {
-      headers: { Authorization: Token },
-    })
-    const result = response.data
+export const GetLugaresAction =
+  (enlacePaginacion = '/lugares/') =>
+  async dispatch => {
+    try {
+      dispatch({ type: types.GET_LUGARES_START })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.get(enlacePaginacion, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+      const result = response.data
 
-    dispatch({ type: types.GET_LUGARES_SUCCESS, payload: result })
-    dispatch(setToast('', result.message))
-    progress.finish()
-  } catch (error) {
-    dispatch({ type: types.GET_LUGARES_FAILED })
-    dispatch(setToast('error', error.message))
-    progress.finish()
+      dispatch({ type: types.GET_LUGARES_SUCCESS, payload: result })
+      dispatch(setToast('', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_LUGARES_FAILED })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
   }
-}
 
 //Create Lugar
-export const CreateNewLugar = data => async dispatch => {
+export const CreateNewLugarAction = data => async dispatch => {
   try {
     dispatch({ type: types.POST_LUGARES_START })
     progress.start()
@@ -307,54 +312,48 @@ export const CreateNewLugar = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.POST_LUGARES_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (err) {
     dispatch({ type: types.POST_LUGARES_FAILED })
+    dispatch(setToast('error', err.message))
+    progress.finish()
   }
 }
 
 //Delete Lugares
-export const DeleteLugaresRecord = data => async dispatch => {
+export const DeleteLugaresAction = data => async dispatch => {
   try {
-    dispatch({ type: types.DELETE_LUGARES_START })
+    dispatch({ type: types.DELETE_LUGARES_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await axios.delete(
-      'https://cloudbitakor.com/api/1.0/lugares/',
-      {
-        headers: {
-          Authorization: Token,
-          'content-type': 'multipart/form-data',
-        },
-        data: data,
-      }
-    )
+    const response = await httpRequest.delete('/lugares/', {
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
+      data: data,
+    })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.DELETE_LUGARES_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
+
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (err) {
     dispatch({ type: types.DELETE_LUGARES_FAILED })
+    dispatch(setToast('error', err.message))
+    progress.finish()
   }
 }
 
 //Update LUGAR
-export const UpdateLugarRecord = data => async dispatch => {
+export const UpdateLugarAction = data => async dispatch => {
   try {
-    dispatch({ type: types.UPDATE_LUGARES_START })
+    dispatch({ type: types.UPDATE_LUGARES_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
@@ -362,16 +361,35 @@ export const UpdateLugarRecord = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.UPDATE_LUGARES_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (err) {
     dispatch({ type: types.UPDATE_LUGARES_FAILED })
+    dispatch(setToast('error', err.message))
+    progress.finish()
+  }
+}
+
+export const UpdateEstadoLugarAction = data => async dispatch => {
+  try {
+    dispatch({ type: types.UPDATE_ESTADOLUGAR_START, payload: data })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.post('/estado/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({ type: types.UPDATE_ESTADOLUGAR_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_ESTADOLUGAR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 
@@ -398,40 +416,35 @@ export const createNewProtectorAction = data => async dispatch => {
 }
 
 //Delete Protector
-export const DeleteProtectorRecord = data => async dispatch => {
+export const DeleteProtectorAction = data => async dispatch => {
   try {
-    dispatch({ type: types.DELETE_PROTECTOR_START })
+    dispatch({ type: types.DELETE_PROTECTOR_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await axios.delete(
-      'https://cloudbitakor.com/api/1.0/protector/',
-      {
-        headers: {
-          Authorization: Token,
-          'content-type': 'multipart/form-data',
-        },
-        data: data,
-      }
-    )
+    const response = await httpRequest.delete('/protector/', {
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
+      data: data,
+    })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.DELETE_PROTECTOR_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (err) {
     dispatch({ type: types.DELETE_PROTECTOR_FAILED })
+    dispatch(setToast('error', err.message))
+    progress.finish()
   }
 }
 
 //Update Protector
-export const UpdateProtectorRecord = data => async dispatch => {
+export const UpdateProtectorAction = data => async dispatch => {
   try {
-    dispatch({ type: types.UPDATE_PROTECTOR_START })
+    dispatch({ type: types.UPDATE_PROTECTOR_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
@@ -664,40 +677,35 @@ export const CreateNewVehicleProtectorAction = data => async dispatch => {
 }
 
 //Delete Vehicle Ejecutivo
-export const DeleteVehicleProtectorRecord = data => async dispatch => {
+export const DeleteVehicleProtectorAction = data => async dispatch => {
   try {
-    dispatch({ type: types.DELETE_VEHICLE_PROTECTOR_START })
+    dispatch({ type: types.DELETE_VEHICLE_PROTECTOR_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await axios.delete(
-      'https://cloudbitakor.com/api/1.0/vehiculoprotector/',
-      {
-        headers: {
-          Authorization: Token,
-          'content-type': 'multipart/form-data',
-        },
-        data: data,
-      }
-    )
+    const response = await httpRequest.delete('/vehiculoprotector/', {
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
+      data: data,
+    })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.DELETE_VEHICLE_PROTECTOR_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (err) {
     dispatch({ type: types.DELETE_VEHICLE_PROTECTOR_FAILED })
+    dispatch(setToast('error', err.message))
+    progress.finish()
   }
 }
 
 //Update Vehicle Ejecutivo
-export const UpdateVehicleProtectorRecord = data => async dispatch => {
+export const UpdateVehicleProtectorAction = data => async dispatch => {
   try {
-    dispatch({ type: types.UPDATE_VEHICLE_PROTECTOR_START })
+    dispatch({ type: types.UPDATE_VEHICLE_PROTECTOR_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
@@ -705,16 +713,41 @@ export const UpdateVehicleProtectorRecord = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.UPDATE_VEHICLE_PROTECTOR_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (err) {
     dispatch({ type: types.UPDATE_VEHICLE_PROTECTOR_FAILED })
+    dispatch(setToast('error', err.message))
+    progress.finish()
+  }
+}
+
+export const UpdateEstadoVehiculoProtectorAction = data => async dispatch => {
+  try {
+    dispatch({
+      type: types.UPDATE_ESTADO_VEHICULOPROTECTOR_START,
+      payload: data,
+    })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.post('/estado/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({
+      type: types.UPDATE_ESTADO_VEHICULOPROTECTOR_SUCCESS,
+      payload: result,
+    })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_ESTADO_VEHICULOPROTECTOR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 

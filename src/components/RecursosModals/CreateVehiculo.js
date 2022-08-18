@@ -15,7 +15,7 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
   const [open, setOpen] = React.useState(false)
   useEffect(() => {
     dispatch(getEjecutivoAction())
-  }, [dispatch])
+  }, [])
 
   const propietarios = useSelector(state => state.recursos.ejecutivo)
 
@@ -193,12 +193,9 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
                         onChange={e => setPropietario(e.target.value)}
                       >
                         {Object.keys(propietarios) > 0
-                          ? propietarios.results.map(propietario => (
-                              <option
-                                key={propietario.id}
-                                value={propietario.id}
-                              >
-                                {propietario.nombres}
+                          ? propietarios.results.map(propie => (
+                              <option key={propie.id} value={propie.id}>
+                                {propie.nombres}
                               </option>
                             ))
                           : null}

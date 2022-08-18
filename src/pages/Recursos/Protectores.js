@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
   CreateEjecutivo,
+  DeleteEjecutivo,
+  EditEjecutivo,
   Header,
   ICONS,
   ProtectoresTable,
@@ -10,7 +12,9 @@ import {
 } from '../../components'
 import {
   createNewProtectorAction,
+  DeleteProtectorAction,
   getProtectoresAction,
+  UpdateProtectorAction,
 } from '../../store/actions'
 
 const Protectores = () => {
@@ -31,6 +35,10 @@ const Protectores = () => {
     dispatch(createNewProtectorAction(ejecutivo))
   }
 
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
+
   const handleOpenEditModal = itemEditar => {
     setOpenEditModal(true)
     setItemEditar(itemEditar)
@@ -39,6 +47,21 @@ const Protectores = () => {
   const handleOpenDeleteModal = itemEliminar => {
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
+  }
+
+  const handleEditarProtector = protector => {
+    const protectorActualizado = { ...protector, id: itemEditar.id }
+    dispatch(UpdateProtectorAction(protectorActualizado))
+    setOpenEditModal(false)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleDeleteProtector = protector => {
+    dispatch(DeleteProtectorAction({ id: protector.id }))
+    setOpenDeleteModal(false)
   }
   return (
     <div>
@@ -97,31 +120,23 @@ const Protectores = () => {
             </div>
           </div>
           {/* Modales */}
-          {/* <EditEjecutivo
-            tituloModal={'Editar Ejecutivo'}
+          <EditEjecutivo
+            tituloModal={'Editar Protector'}
             descripcionModal={'Edita los datos del ejecutivo seleccionado.'}
             openModal={openEditModal}
             handleClose={handleCloseEditModal}
-            handleAction={handleEditarEjecutivo}
+            handleAction={handleEditarProtector}
             itemEditar={itemEditar}
           />
           <DeleteEjecutivo
-            tipo='Ejecutivo'
-            tituloModal={'Eliminar Ejecutivo'}
-            descripcionModal={
-              'Estas seguro de la eliminación de los datos del ejecutivo, se eliminarán tambien datos asociados con el ejecutivo como:'
-            }
+            tipo='Protector'
+            tituloModal={'Eliminar protector'}
+            descripcionModal={'Estas por eliminar a un protector:'}
             openModal={openDeleteModal}
             handleClose={handleCloseDeleteModal}
-            handleAction={handleDeleteEjecutivo}
+            handleAction={handleDeleteProtector}
             itemEliminar={itemEliminar}
           />
-          <EditFamilyModal
-            tituloModal={'Editar Vínculo Familiar'}
-            openModal={openEditFamiliarModal}
-            handleClose={handleCloseEditFamiliarModal}
-            id_ejecutivo={itemEditarFamily}
-          /> */}
         </>
       )}
     </div>

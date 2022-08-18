@@ -69,7 +69,7 @@ const VehiculosEjecutivoTable = ({
           {Object.keys(data).length > 0 ? (
             <tbody className='overflow-x-auto'>
               {data.results.map((item, index) => (
-                <tr key={item.id}>
+                <tr key={item.index}>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.alias}
                   </td>
@@ -80,7 +80,7 @@ const VehiculosEjecutivoTable = ({
                     {item.tipo}
                   </td>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
-                    item.ejecutivo
+                    {item.ejecutivo}
                   </td>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.created}
