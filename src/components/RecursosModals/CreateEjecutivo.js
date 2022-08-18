@@ -119,20 +119,20 @@ const CreateEjecutivo = ({ tituloModal, descripcionModal, handleAction }) => {
                   <button
                     data-modal-toggle='defaultModal'
                     type='button'
-                    className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
-                    onClick={handleClose}
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    data-modal-toggle='defaultModal'
-                    type='button'
                     className=' text-white bg-blue-900 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
                     onClick={() => {
                       handleEjectAndClean()
                     }}
                   >
                     Crear
+                  </button>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
+                    onClick={handleClose}
+                  >
+                    Cancelar
                   </button>
                 </div>
               </div>

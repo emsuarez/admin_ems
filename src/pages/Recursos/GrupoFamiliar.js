@@ -5,7 +5,6 @@ import {
   CreateEjecutivo,
   DeleteEjecutivo,
   EditEjecutivo,
-  EjectivosTable,
   FamilyTable,
   Header,
   ICONS,

@@ -6,10 +6,13 @@ const initialState = {
   ejecutivo: {},
   grupoFamiliar: {},
   vehiculosEjecutivos: {},
+  protectores: {},
+  vehiculosProtectores: {},
   lugares: {},
   message: {},
   ejecutivoSeleccionado: {},
   familiarSeleccionado: {},
+  protectorSeleccionado: {},
   vehiculoEjecutivoSeleccionado: {},
 }
 
@@ -70,7 +73,7 @@ export default (state = initialState, { type, payload }) => {
               : { ...dato, dato }
           }),
         },
-        ejecutivoModificar: 0,
+        ejecutivoSeleccionado: {},
       }
     case types.UPDATE_ESTADOEJECUTIVO_FAILED:
       return { ...state, isLoading: false }
@@ -138,9 +141,57 @@ export default (state = initialState, { type, payload }) => {
               : { ...dato, dato }
           }),
         },
-        familiarModificar: 0,
+        familiarSeleccionado: {},
       }
     case types.UPDATE_ESTADOFAMILIAR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_PROTECTOR_START:
+      return { ...state, isLoading: true }
+    case types.GET_PROTECTOR_SUCCESS:
+      return { ...state, isLoading: false, protectores: payload }
+    case types.GET_PROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.POST_PROTECTOR_START:
+      return { ...state, isLoading: true }
+    case types.POST_PROTECTOR_SUCCESS:
+      return { ...state, isLoading: false, message: payload }
+    case types.POST_PROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.DELETE_PROTECTOR_START:
+      return { ...state, isLoading: true }
+    case types.DELETE_PROTECTOR_SUCCESS:
+      return { ...state, isLoading: false }
+    case types.DELETE_PROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_PROTECTOR_START:
+      return { ...state, isLoading: true }
+    case types.UPDATE_PROTECTOR_SUCCESS:
+      return { ...state, isLoading: false }
+    case types.UPDATE_PROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_ESTADOPROTECTOR_START:
+      return { ...state, isLoading: true, ejecutivoSeleccionado: payload }
+
+    case types.UPDATE_ESTADOPROTECTOR_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        protectores: {
+          ...state.protectores,
+          results: state.protectores.results.map(dato => {
+            return dato.id === state.protectorSeleccionado.id
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+        protectorSeleccionado: {},
+      }
+    case types.UPDATE_ESTADOPROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
     case types.GET_LUGARES_START:
@@ -171,27 +222,6 @@ export default (state = initialState, { type, payload }) => {
     case types.UPDATE_LUGARES_FAILED:
       return { ...state, isLoading: false }
 
-    case types.POST_PROTECTOR_START:
-      return { ...state, isLoading: true }
-    case types.POST_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
-    case types.POST_PROTECTOR_FAILED:
-      return { ...state, isLoading: false }
-
-    case types.DELETE_PROTECTOR_START:
-      return { ...state, isLoading: true }
-    case types.DELETE_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
-    case types.DELETE_PROTECTOR_FAILED:
-      return { ...state, isLoading: false }
-
-    case types.UPDATE_PROTECTOR_START:
-      return { ...state, isLoading: true }
-    case types.UPDATE_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
-    case types.UPDATE_PROTECTOR_FAILED:
-      return { ...state, isLoading: false }
-
     case types.GET_VEHICULOEJECUTIVO_START:
       return { ...state, isLoading: true }
     case types.GET_VEHICULOEJECUTIVO_SUCCESS:
@@ -207,9 +237,23 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.DELETE_VEHICLE_EJECUTIVO_START:
-      return { ...state, isLoading: true }
+      return {
+        ...state,
+        isLoading: true,
+        vehiculoEjecutivoSeleccionado: payload,
+      }
     case types.DELETE_VEHICLE_EJECUTIVO_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosEjecutivos: {
+          ...state.vehiculosEjecutivos,
+          results: state.vehiculosEjecutivos.results.filter(
+            dato => dato.id !== state.vehiculoEjecutivoSeleccionado.id
+          ),
+        },
+        vehiculoEjecutivoSeleccionado: {},
+      }
     case types.DELETE_VEHICLE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
@@ -259,6 +303,13 @@ export default (state = initialState, { type, payload }) => {
     case types.UPDATE_ESTADO_VEHICULOEJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
+    case types.GET_VEHICULOEPROTECTOR_START:
+      return { ...state, isLoading: true }
+    case types.GET_VEHICULOEPROTECTOR_SUCCESS:
+      return { ...state, isLoading: false, vehiculosProtectores: payload }
+    case types.GET_VEHICULOEPROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
     case types.POST_VEHICLE_PROTECTOR_START:
       return { ...state, isLoading: true }
     case types.POST_VEHICLE_PROTECTOR_SUCCESS:
@@ -278,6 +329,30 @@ export default (state = initialState, { type, payload }) => {
     case types.UPDATE_VEHICLE_PROTECTOR_SUCCESS:
       return { ...state, isLoading: false }
     case types.UPDATE_VEHICLE_PROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_ESTADO_VEHICULOPROTECTOR_START:
+      return {
+        ...state,
+        isLoading: true,
+        vehiculoEjecutivoSeleccionado: payload,
+      }
+
+    case types.UPDATE_ESTADO_VEHICULOPROTECTOR_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosEjecutivos: {
+          ...state.vehiculosEjecutivos,
+          results: state.vehiculosEjecutivos.results.map(dato => {
+            return dato.id === state.vehiculoEjecutivoSeleccionado.id
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+        vehiculoEjecutivoModificar: {},
+      }
+    case types.UPDATE_ESTADO_VEHICULOPROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
     default:

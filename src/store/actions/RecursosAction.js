@@ -23,7 +23,6 @@ export const getEjecutivoAction =
         headers: { Authorization: Token },
       })
       const result = response.data
-      console.log(result, 'result getEjecutivoAction')
       dispatch({ type: types.GET_EJECUTIVO_SUCCESS, payload: result })
       progress.finish()
     } catch (error) {
@@ -276,7 +275,7 @@ export const UpdateEstadoFamiliarAction = data => async dispatch => {
 }
 
 //Get lugares
-export const GetLugares = () => async dispatch => {
+export const GetLugaresAction = () => async dispatch => {
   try {
     dispatch({ type: types.GET_LUGARES_START })
     progress.start()
@@ -286,15 +285,14 @@ export const GetLugares = () => async dispatch => {
       headers: { Authorization: Token },
     })
     const result = response.data
-    progress.finish()
+
     dispatch({ type: types.GET_LUGARES_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (error) {
     dispatch({ type: types.GET_LUGARES_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 
@@ -378,7 +376,7 @@ export const UpdateLugarRecord = data => async dispatch => {
 }
 
 //Create Protector
-export const CreateNewProtector = data => async dispatch => {
+export const createNewProtectorAction = data => async dispatch => {
   try {
     dispatch({ type: types.POST_PROTECTOR_START })
     progress.start()
@@ -388,16 +386,14 @@ export const CreateNewProtector = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.POST_PROTECTOR_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (error) {
     dispatch({ type: types.POST_PROTECTOR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 
@@ -502,40 +498,35 @@ export const createNewVehicleEjecutivoAction = data => async dispatch => {
 }
 
 //Delete Vehicle Ejecutivo
-export const DeleteVehicleEjecutivoRecord = data => async dispatch => {
+export const DeleteVehiculoEjecutivoAction = data => async dispatch => {
   try {
-    dispatch({ type: types.DELETE_VEHICLE_EJECUTIVO_START })
+    dispatch({ type: types.DELETE_VEHICLE_EJECUTIVO_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await axios.delete(
-      'https://cloudbitakor.com/api/1.0/vehiculoejecutivo/',
-      {
-        headers: {
-          Authorization: Token,
-          'content-type': 'multipart/form-data',
-        },
-        data: data,
-      }
-    )
+    const response = await httpRequest.delete('/vehiculoejecutivo/', {
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
+      data: data,
+    })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.DELETE_VEHICLE_EJECUTIVO_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (error) {
+    dispatch(setToast('error', error.message))
     dispatch({ type: types.DELETE_VEHICLE_EJECUTIVO_FAILED })
+    progress.finish()
   }
 }
 
 //Update Vehicle Ejecutivo
 export const UpdateVehicleEjecutivoAction = data => async dispatch => {
   try {
-    console.log(data,'data PRUEBA')
+    console.log(data, 'data PRUEBA')
     dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
@@ -599,8 +590,59 @@ export const UpdateEstadoVehiculoEjecutivoAction = data => async dispatch => {
   }
 }
 
+export const getProtectoresAction =
+  (enlacePaginacion = '/protector/') =>
+  async dispatch => {
+    try {
+      dispatch({ type: types.GET_PROTECTOR_START })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.get(enlacePaginacion, {
+        headers: { Authorization: Token },
+      })
+      const result = response.data
+      console.log(result, 'result')
+      dispatch({ type: types.GET_PROTECTOR_SUCCESS, payload: result })
+      dispatch(setToast('', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_PROTECTOR_FAILED })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+
+// update Estado de PROTECTOR
+export const UpdateEstadoProtectorAction = data => async dispatch => {
+  try {
+    dispatch({
+      type: types.UPDATE_ESTADOPROTECTOR_START,
+      payload: data,
+    })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.post('/estado/', data, {
+      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+    })
+    const result = response.data
+
+    dispatch({
+      type: types.UPDATE_ESTADOPROTECTOR_SUCCESS,
+      payload: result,
+    })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.UPDATE_ESTADOPROTECTOR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
+
 //Create Vehicle Protector
-export const CreateNewVehicleProtector = data => async dispatch => {
+export const CreateNewVehicleProtectorAction = data => async dispatch => {
   try {
     dispatch({ type: types.POST_VEHICLE_PROTECTOR_START })
     progress.start()
@@ -610,16 +652,14 @@ export const CreateNewVehicleProtector = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
-    progress.finish()
+
     dispatch({ type: types.POST_VEHICLE_PROTECTOR_SUCCESS, payload: result })
-  } catch (err) {
+    dispatch(setToast('', result.message))
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+  } catch (error) {
     dispatch({ type: types.POST_VEHICLE_PROTECTOR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
   }
 }
 
@@ -677,3 +717,27 @@ export const UpdateVehicleProtectorRecord = data => async dispatch => {
     dispatch({ type: types.UPDATE_VEHICLE_PROTECTOR_FAILED })
   }
 }
+
+export const getVehiculoProtectorAction =
+  (enlacePaginacion = '/vehiculoprotector/') =>
+  async dispatch => {
+    try {
+      dispatch({ type: types.GET_VEHICULOEPROTECTOR_START })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.get(enlacePaginacion, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+      const result = response.data
+      dispatch({ type: types.GET_VEHICULOEPROTECTOR_SUCCESS, payload: result })
+      progress.finish()
+    } catch (error) {
+      dispatch(setToast('error', error.message))
+      dispatch({ type: types.GET_VEHICULOEPROTECTOR_FAILED })
+      progress.finish()
+    }
+  }

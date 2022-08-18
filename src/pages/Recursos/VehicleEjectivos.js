@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
+  DeleteEjecutivo,
   EditEjecutivo,
   EditVehicle,
   Header,
@@ -11,6 +12,7 @@ import {
 } from '../../components'
 import CreateVehiculo from '../../components/RecursosModals/CreateVehiculo'
 import {
+  DeleteVehiculoEjecutivoAction,
   getEjecutivoAction,
   getVehiculoEjecutivoAction,
   UpdateVehicleEjecutivoAction,
@@ -71,6 +73,15 @@ const VehicleEjectivos = () => {
     setOpenEditModal(false)
   }
 
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleDeleteVehiculoEjecutivo = vehiculo => {
+    dispatch(DeleteVehiculoEjecutivoAction(vehiculo))
+    setOpenDeleteModal(false)
+  }
+
   return (
     <div>
       <RedirectWithoutLogin />
@@ -87,7 +98,7 @@ const VehicleEjectivos = () => {
             <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
             <p className=' ml-1'>Recursos</p>
             <ICONS.ChevronRightIconO className='h-3  ml-1' />
-            <p className=' ml-1'>Vehiculo de ejecutivos</p>
+            <p className=' ml-1'>Vehiculos ejecutivos</p>
           </div>
 
           <div className='bg-white mx-10 py-10'>
@@ -140,17 +151,17 @@ const VehicleEjectivos = () => {
             handleAction={handleEditarVehiculoEjecutivo}
             itemEditar={itemEditar}
           />
-          {/* <DeleteEjecutivo
-            tipo='Ejecutivo'
-            tituloModal={'Eliminar Ejecutivo'}
+          <DeleteEjecutivo
+            tipo='Vehiculo'
+            tituloModal={'Eliminar vehículo de ejecutivo'}
             descripcionModal={
-              'Estas seguro de la eliminación de los datos del ejecutivo, se eliminarán tambien datos asociados con el ejecutivo como:'
+              'Estas por eliminar un vehículo vinculado a un ejecutivo.'
             }
             openModal={openDeleteModal}
             handleClose={handleCloseDeleteModal}
-            handleAction={handleDeleteEjecutivo}
+            handleAction={handleDeleteVehiculoEjecutivo}
             itemEliminar={itemEliminar}
-          /> */}
+          />
         </>
       )}
     </div>

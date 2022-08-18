@@ -4,6 +4,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import {
   getVehiculoEjecutivoAction,
+  getVehiculoProtectorAction,
   UpdateEstadoVehiculoEjecutivoAction,
 } from '../../store/actions'
 
@@ -17,11 +18,13 @@ const VehiculosEjecutivoTable = ({
 
   const handlePreviousPage = newPage => {
     console.log(newPage, 'newPage')
+
     dispatch(getVehiculoEjecutivoAction(newPage))
   }
 
   const handleNextPage = newPage => {
     console.log(newPage, 'newPage')
+
     dispatch(getVehiculoEjecutivoAction(newPage))
   }
 
@@ -41,9 +44,6 @@ const VehiculosEjecutivoTable = ({
           <thead className='border-gray-200'>
             <tr>
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
-                Vehículo
-              </th>
-              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
                 Alias
               </th>
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
@@ -52,9 +52,11 @@ const VehiculosEjecutivoTable = ({
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
                 Tipo
               </th>
+
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
                 Ejecutivo
               </th>
+
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
                 Creado
               </th>
@@ -68,9 +70,6 @@ const VehiculosEjecutivoTable = ({
             <tbody className='overflow-x-auto'>
               {data.results.map((item, index) => (
                 <tr key={item.id}>
-                  <th className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-left text-blueGray-700 '>
-                    {item.ejecutivo}
-                  </th>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.alias}
                   </td>
@@ -81,7 +80,7 @@ const VehiculosEjecutivoTable = ({
                     {item.tipo}
                   </td>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
-                    {item.ejecutivo}
+                    item.ejecutivo
                   </td>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.created}
