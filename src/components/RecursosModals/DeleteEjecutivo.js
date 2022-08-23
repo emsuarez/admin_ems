@@ -27,7 +27,7 @@ const DeleteEjecutivo = ({
         <Box>
           <div
             id='defaultModal'
-            tabindex='-1'
+            tabIndex='-1'
             aria-hidden='true'
             className=' overflow-y-auto overflow-x-hidden fixed top-1/3 right-0 left-1/3 z-50 w-full inset-0 h-modal'
           >
@@ -60,18 +60,18 @@ const DeleteEjecutivo = ({
                   <button
                     data-modal-toggle='defaultModal'
                     type='button'
-                    className=' text-white bg-blue-900 hover:bg-blue-700  focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
-                    onClick={handleClose}
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    data-modal-toggle='defaultModal'
-                    type='button'
                     className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
                     onClick={handleEjectAction}
                   >
                     Eliminar
+                  </button>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-blue-900 hover:bg-blue-700  focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
+                    onClick={handleClose}
+                  >
+                    Cancelar
                   </button>
                 </div>
               </div>

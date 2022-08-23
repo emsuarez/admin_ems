@@ -1,4 +1,4 @@
-import { Box, Modal } from '@mui/material'
+import { Box, Dialog } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEjecutivoAction } from '../../store/actions'
@@ -13,15 +13,17 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
   const [propietario, setPropietario] = useState()
 
   const [open, setOpen] = React.useState(false)
+  const cargarPropietarios = () => dispatch(getEjecutivoAction('allEjecutivos'))
+
   useEffect(() => {
-    dispatch(getEjecutivoAction())
-  }, [])
+    cargarPropietarios()
+  }, [dispatch])
 
-  const propietarios = useSelector(state => state.recursos.ejecutivo)
-
-  const handleOpen = () => {
+  const handleOpen = async () => {
+    await cargarPropietarios()
     setOpen(true)
   }
+  const propietarios = useSelector(state => state.recursos.ejecutivo)
 
   const handleClose = () => {
     setOpen(false)
@@ -42,31 +44,31 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
   }
 
   return (
-    <>
+    <div>
       <button
         className='bg-blue-900 hover:bg-blue-800 text-white font-bold  p-2 rounded'
-        onClick={handleOpen}
+        onClick={() => handleOpen()}
       >
         {tituloModal}
       </button>
-      <Modal
+      <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={(_, reason) => reason === 'backdropClick' && handleClose()}
         aria-labelledby='child-modal-title'
         aria-describedby='child-modal-description'
       >
         <Box>
           <div
             id='defaultModal'
-            tabindex='-1'
+            tabIndex='-1'
             aria-hidden='true'
-            className=' overflow-y-auto overflow-x-hidden fixed top-1/4 right-0 left-1/3 z-50 w-full inset-0 h-modal'
+            className=' overflow-y-auto overflow-x-hidden fixed top-1/4 left-1/3 '
           >
             <div className='relative p-4 max-w-lg'>
               <div className='relative bg-white rounded-lg shadow '>
                 <div className='flex justify-between items-start px-4 py-2 rounded-t border-b'>
                   <h1 className='text-2xl font-bold'>{tituloModal}</h1>
-                  <button
+                  {/* <button
                     type='button'
                     className='bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center'
                     data-modal-toggle='defaultModal'
@@ -86,28 +88,32 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
                       ></path>
                     </svg>
                     <span className='sr-only'>Cerrar modal</span>
-                  </button>
+                  </button> */}
                 </div>
 
                 <div className='px-6 pt-2 space-y-3'>
                   <h2>{descripcionModal}</h2>
-                  <div className='mx-3'>
-                    <label
-                      for='nombre'
-                      className='block text-sm font-medium text-gray-900 '
-                    >
-                      Nombre del vehículo:
-                    </label>
-                    <input
-                      type='text'
-                      name='nombre'
-                      id='nombre'
-                      className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
-                      placeholder='Nombre del vehículo'
-                      value={nombreVehiculo}
-                      onChange={e => setNombreVehiculo(e.target.value)}
-                      required
-                    />
+                  <div className='flex flex-col mx-3'>
+                    <div className='flex justify-between'>
+                      <label
+                        for='alias'
+                        className='block text-sm font-medium text-gray-900 '
+                      >
+                        Alias<span className='text-red-600'>*</span>:
+                      </label>
+                    </div>
+                    <div>
+                      <input
+                        type='text'
+                        name='alias'
+                        id='alias'
+                        className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
+                        placeholder='Alias'
+                        value={alias}
+                        onChange={e => setAlias(e.target.value)}
+                        required
+                      />
+                    </div>
                   </div>
                   <div className='flex flex-col mx-3'>
                     <div className='flex justify-between'>
@@ -131,28 +137,7 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
                       />
                     </div>
                   </div>
-                  <div className='flex flex-col mx-3'>
-                    <div className='flex justify-between'>
-                      <label
-                        for='alias'
-                        className='block text-sm font-medium text-gray-900 '
-                      >
-                        Alias<span className='text-red-600'>*</span>:
-                      </label>
-                    </div>
-                    <div>
-                      <input
-                        type='text'
-                        name='alias'
-                        id='alias'
-                        className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
-                        placeholder='Alias'
-                        value={alias}
-                        onChange={e => setAlias(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
+
                   <div className='flex flex-col mx-3'>
                     <div className='flex justify-between'>
                       <label
@@ -192,7 +177,7 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
                         value={propietario}
                         onChange={e => setPropietario(e.target.value)}
                       >
-                        {Object.keys(propietarios) > 0
+                        {propietarios.results.length > 0
                           ? propietarios.results.map(propie => (
                               <option key={propie.id} value={propie.id}>
                                 {propie.nombres}
@@ -228,8 +213,8 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
             </div>
           </div>
         </Box>
-      </Modal>
-    </>
+      </Dialog>
+    </div>
   )
 }
 
