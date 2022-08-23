@@ -11,9 +11,11 @@ import {
   RedirectWithoutLogin,
 } from '../../components'
 import VinculoFamiliarTable from '../../components/RecursosTable/VinculoFamiliarTable'
+import grupoFamiliarReportPDF from '../../reports/Recursos/grupoFamiliarReportPDF'
 import {
   createNewFamiliarAction,
   DeleteFamiliarAction,
+  getAllFamiliaresAction,
   getGrupoFamiliarAction,
   UpdateFamiliarAction,
 } from '../../store/actions'
@@ -26,11 +28,16 @@ const GrupoFamiliar = () => {
   const [itemEditar, setItemEditar] = useState('')
   const [itemEliminar, setItemEliminar] = useState('')
 
+  const [textoBusqueda, setTextoBusqueda] = useState('')
+  const [familiaresBuscador, setFamiliaresBuscador] = useState({})
+
   useEffect(() => {
     dispatch(getGrupoFamiliarAction())
+    dispatch(getAllFamiliaresAction())
   }, [dispatch])
 
   const familiaData = useSelector(state => state.recursos.grupoFamiliar)
+  const allFamiliarData = useSelector(state => state.recursos.allFamiliares)
 
   const handleEditarGrupoFamiliar = grupoFamiliar => {
     console.log(grupoFamiliar, 'grupoFamiliar')
@@ -66,6 +73,22 @@ const GrupoFamiliar = () => {
     dispatch(DeleteFamiliarAction(itemEliminar))
     setOpenDeleteModal(false)
   }
+
+  const handleSearch = async e => {
+    setTextoBusqueda(e.target.value)
+    if (e.target.value === '') {
+      setFamiliaresBuscador({ ...familiaData, familiares: [] })
+      return
+    }
+    const familiaresSearch = allFamiliarData.results.filter(familiar => {
+      return familiar.nombres
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase())
+    })
+
+    setFamiliaresBuscador({ ...familiaresBuscador, results: familiaresSearch })
+  }
+
   return (
     <div>
       <RedirectWithoutLogin />
@@ -97,17 +120,26 @@ const GrupoFamiliar = () => {
               </div>
 
               <div className='flex'>
-                <div className='flex'>
-                  <p className='text-blue-800 hover:cursor-pointer'>
-                    Exportar a PDF
-                  </p>
-                  <ICONS.ChevronDownIconO
-                    className='w-3 mb-1.5 ml-2'
-                    color='blue'
-                  />
-                </div>
+                <button
+                  onClick={() =>
+                    grupoFamiliarReportPDF(allFamiliarData.results)
+                  }
+                >
+                  <div className='flex'>
+                    <p className='text-blue-800 hover:cursor-pointer'>
+                      Exportar a PDF
+                    </p>
+                    <ICONS.ChevronDownIconO
+                      className='w-3 mb-1.5 ml-2'
+                      color='blue'
+                    />
+                  </div>
+                </button>
                 <div className='flex flex-col ml-4'>
                   <input
+                    onChange={e => {
+                      handleSearch(e)
+                    }}
                     placeholder='Buscar'
                     className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
                   />
@@ -117,7 +149,7 @@ const GrupoFamiliar = () => {
 
             <div className=' pt-4 p-16 flex flex-col'>
               <VinculoFamiliarTable
-                data={familiaData}
+                data={textoBusqueda === '' ? familiaData : familiaresBuscador}
                 handleOpenEditModal={handleOpenEditModal}
                 handleOpenDeleteModal={handleOpenDeleteModal}
                 tipo='general'

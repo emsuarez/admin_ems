@@ -16,6 +16,9 @@ const VinculoFamiliarTable = ({
   const { results, count } = data
   const [cantidadPaginas, setCantidadPaginas] = useState()
 
+  const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
+  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(10)
+
   const dispatch = useDispatch()
   useEffect(() => {
     const calculoPaginas = () => {
@@ -31,10 +34,18 @@ const VinculoFamiliarTable = ({
 
   const handlePreviousPage = newPage => {
     dispatch(getGrupoFamiliarAction(newPage))
+    setCuentaDesdePagina(
+      cuentaDesdePagina - 10 < 0 ? 1 : cuentaDesdePagina - 10
+    )
+    setCuentaHastaPagina(cuentaHastaPagina - 10)
   }
 
   const handleNextPage = newPage => {
     dispatch(getGrupoFamiliarAction(newPage))
+    setCuentaDesdePagina(cuentaDesdePagina + 10)
+    setCuentaHastaPagina(
+      cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
+    )
   }
 
   const handleChangeStatusFamiliar = data => {
@@ -60,6 +71,9 @@ const VinculoFamiliarTable = ({
                 Alias
               </th>
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+                Ejecutivo
+              </th>
+              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
                 Creado
               </th>
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
@@ -77,6 +91,9 @@ const VinculoFamiliarTable = ({
                   </th>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.alias}
+                  </td>
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
+                    {item.id_ejecutivo}
                   </td>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.created}
@@ -202,9 +219,10 @@ const VinculoFamiliarTable = ({
         <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
           <div>
             <p className='text-sm text-gray-700'>
-              Mostrando <span className='font-medium'>1</span> -{' '}
+              Mostrando <span className='font-medium'>{cuentaDesdePagina}</span>{' '}
+              -{' '}
               <span className='font-medium'>
-                {Object.keys(data).length > 0 ? results.length : null}
+                {Object.keys(data).length > 0 ? cuentaHastaPagina : null}
               </span>{' '}
               de{' '}
               <span className='font-medium'>
