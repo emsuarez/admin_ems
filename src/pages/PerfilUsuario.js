@@ -148,11 +148,11 @@ const PerfilUsuario = () => {
                       ? 'CCTV'
                       : 'TRS'}
                   </div>
-                  <div className='mt-5 '>
+                  {/* <div className='mt-5 '>
                     <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'>
                       Ver Notificaciones
                     </button>
-                  </div>
+                  </div> */}
                 </div>
                 <div className='basis-1/2 flex flex-col items-center'>
                   <div className='grid grid-cols-2 gap-x-36 place-content-center'>
@@ -221,17 +221,16 @@ const PerfilUsuario = () => {
                     <div className='mt-28'>
                       <div className='grid grid-cols-2  place-content-center ml-16 gap-x-12'>
                         <button
-                          className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
-                          onClick={() => handleCancelar()}
-                        >
-                          Cancelar
-                        </button>
-
-                        <button
                           className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
                           onClick={() => setModal(true)}
                         >
                           Guardar
+                        </button>
+                        <button
+                          className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                          onClick={() => handleCancelar()}
+                        >
+                          Cancelar
                         </button>
                       </div>
                     </div>
