@@ -12,9 +12,11 @@ import {
   ProtectoresTable,
   RedirectWithoutLogin,
 } from '../../components'
+import lugaresReportPDF from '../../reports/Recursos/lugaresReportPDF'
 import {
   CreateNewLugarAction,
   DeleteLugaresAction,
+  GetAllLugaresAction,
   GetLugaresAction,
   UpdateLugarAction,
 } from '../../store/actions'
@@ -29,9 +31,11 @@ const Lugares = () => {
 
   useEffect(() => {
     dispatch(GetLugaresAction())
+    dispatch(GetAllLugaresAction())
   }, [dispatch])
 
   const lugaresData = useSelector(state => state.recursos.lugares)
+  const allLugaresData = useSelector(state => state.recursos.allLugares)
 
   const handleOpenEditModal = itemEditar => {
     setOpenEditModal(true)
@@ -101,24 +105,25 @@ const Lugares = () => {
                   handleAction={handleGuardarLugar}
                 />
               </div>
-
-              <div className='flex'>
+              <button onClick={() => lugaresReportPDF(allLugaresData.results)}>
                 <div className='flex'>
-                  <p className='text-blue-800 hover:cursor-pointer'>
-                    Exportar a PDF
-                  </p>
-                  <ICONS.ChevronDownIconO
-                    className='w-3 mb-1.5 ml-2'
-                    color='blue'
-                  />
+                  <div className='flex'>
+                    <p className='text-blue-800 hover:cursor-pointer'>
+                      Exportar a PDF
+                    </p>
+                    <ICONS.ChevronDownIconO
+                      className='w-3 mb-1.5 ml-2'
+                      color='blue'
+                    />
+                  </div>
+                  <div className='flex flex-col ml-4'>
+                    <input
+                      placeholder='Buscar'
+                      className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                    />
+                  </div>
                 </div>
-                <div className='flex flex-col ml-4'>
-                  <input
-                    placeholder='Buscar'
-                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                  />
-                </div>
-              </div>
+              </button>
             </div>
 
             <div className=' pt-4 p-16 flex flex-col'>
