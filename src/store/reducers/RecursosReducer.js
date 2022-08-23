@@ -4,11 +4,17 @@ import { types } from '../actionTypes'
 const initialState = {
   isLoading: false,
   ejecutivo: {},
+  allEjecutivos: {},
   grupoFamiliar: {},
+  allFamiliares: {},
   vehiculosEjecutivos: {},
+  allVehiculosEjecutivos: {},
   protectores: {},
+  allProtectores: {},
   vehiculosProtectores: {},
+  allVehiculosProtectores: {},
   lugares: {},
+  allLugares: {},
   message: {},
   ejecutivoSeleccionado: {},
   familiarSeleccionado: {},
@@ -24,6 +30,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_EJECUTIVO_SUCCESS:
       return { ...state, isLoading: false, ejecutivo: payload }
     case types.GET_EJECUTIVO_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_ALLEJECUTIVO_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLEJECUTIVO_SUCCESS:
+      return { ...state, isLoading: false, allEjecutivos: payload }
+    case types.GET_ALLEJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
     case types.POST_EJECUTIVO_START:
@@ -84,6 +97,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_GRUPOFAMILIAR_SUCCESS:
       return { ...state, isLoading: false, grupoFamiliar: payload }
     case types.GET_GRUPOFAMILIAR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_ALLGRUPOFAMILIAR_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLGRUPOFAMILIAR_SUCCESS:
+      return { ...state, isLoading: false, allFamiliares: payload }
+    case types.GET_ALLGRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
 
     case types.POST_GRUPOFAMILIAR_START:
@@ -153,6 +173,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_PROTECTOR_SUCCESS:
       return { ...state, isLoading: false, protectores: payload }
     case types.GET_PROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_ALLPROTECTOR_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLPROTECTOR_SUCCESS:
+      return { ...state, isLoading: false, allProtectores: payload }
+    case types.GET_ALLPROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
     case types.POST_PROTECTOR_START:
@@ -225,6 +252,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_LUGARES_FAILED:
       return { ...state, isLoading: false }
 
+    case types.GET_ALLLUGARES_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLLUGARES_SUCCESS:
+      return { ...state, isLoading: false, allLugares: payload }
+    case types.GET_ALLLUGARES_FAILED:
+      return { ...state, isLoading: false }
+
     case types.POST_LUGARES_START:
       return { ...state, isLoading: true }
     case types.POST_LUGARES_SUCCESS:
@@ -293,6 +327,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_VEHICULOEJECUTIVO_SUCCESS:
       return { ...state, isLoading: false, vehiculosEjecutivos: payload }
     case types.GET_VEHICULOEJECUTIVO_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_ALLVEHICULOEJECUTIVO_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLVEHICULOEJECUTIVO_SUCCESS:
+      return { ...state, isLoading: false, allVehiculosEjecutivos: payload }
+    case types.GET_ALLVEHICULOEJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
     case types.POST_VEHICLE_EJECUTIVO_START:
@@ -374,6 +415,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_VEHICULOEPROTECTOR_SUCCESS:
       return { ...state, isLoading: false, vehiculosProtectores: payload }
     case types.GET_VEHICULOEPROTECTOR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_ALLVEHICULOEPROTECTOR_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLVEHICULOEPROTECTOR_SUCCESS:
+      return { ...state, isLoading: false, allVehiculosProtectores: payload }
+    case types.GET_ALLVEHICULOEPROTECTOR_FAILED:
       return { ...state, isLoading: false }
 
     case types.POST_VEHICLE_PROTECTOR_START:

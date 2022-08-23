@@ -4,7 +4,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Toast = props => {
-  console.log('Toast', props)
   const { message } = props
 
   useEffect(() => {

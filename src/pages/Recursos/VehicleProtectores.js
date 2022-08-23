@@ -11,10 +11,12 @@ import {
   VehiculosEjecutivoTable,
   VehiculosProtectTable,
 } from '../../components'
+import vehiculosProtectoresReportPDF from '../../reports/Recursos/vehiculosProtectoresReportPDF'
 import {
   CreateNewVehicleProtectorAction,
   DeleteVehicleProtectorAction,
   DeleteVehiculoEjecutivoAction,
+  getAllVehiculoProtectorAction,
   getVehiculoProtectorAction,
   UpdateVehicleProtectorAction,
 } from '../../store/actions'
@@ -30,10 +32,15 @@ const VehicleProtectores = () => {
 
   useEffect(() => {
     dispatch(getVehiculoProtectorAction())
+    dispatch(getAllVehiculoProtectorAction())
   }, [dispatch])
 
   const vehiculosProtectoresData = useSelector(
     state => state.recursos.vehiculosProtectores
+  )
+
+  const allVehiculosProtectores = useSelector(
+    state => state.recursos.allVehiculosProtectores
   )
 
   const handleOpenEditModal = itemEditar => {
@@ -83,7 +90,6 @@ const VehicleProtectores = () => {
     setOpenDeleteModal(false)
   }
 
-  
   return (
     <div>
       <RedirectWithoutLogin />
@@ -114,24 +120,29 @@ const VehicleProtectores = () => {
                   handleAction={handleGuardarVehículoProtector}
                 />
               </div>
-
-              <div className='flex'>
+              <button
+                onClick={() =>
+                  vehiculosProtectoresReportPDF(allVehiculosProtectores.results)
+                }
+              >
                 <div className='flex'>
-                  <p className='text-blue-800 hover:cursor-pointer'>
-                    Exportar a PDF
-                  </p>
-                  <ICONS.ChevronDownIconO
-                    className='w-3 mb-1.5 ml-2'
-                    color='blue'
-                  />
+                  <div className='flex'>
+                    <p className='text-blue-800 hover:cursor-pointer'>
+                      Exportar a PDF
+                    </p>
+                    <ICONS.ChevronDownIconO
+                      className='w-3 mb-1.5 ml-2'
+                      color='blue'
+                    />
+                  </div>
+                  <div className='flex flex-col ml-4'>
+                    <input
+                      placeholder='Buscar'
+                      className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                    />
+                  </div>
                 </div>
-                <div className='flex flex-col ml-4'>
-                  <input
-                    placeholder='Buscar'
-                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                  />
-                </div>
-              </div>
+              </button>
             </div>
 
             <div className=' pt-4 p-16 flex flex-col'>
@@ -146,9 +157,7 @@ const VehicleProtectores = () => {
           <EditVehicle
             tipoComponente={'vehiculoProtector'}
             tituloModal={'Editar un vehículo'}
-            descripcionModal={
-              'Aqui puedes editar un vehículo'
-            }
+            descripcionModal={'Aqui puedes editar un vehículo'}
             openModal={openEditModal}
             handleClose={handleCloseEditModal}
             handleAction={handleEditarVehiculoProtector}

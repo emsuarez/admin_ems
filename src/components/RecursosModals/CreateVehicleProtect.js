@@ -53,7 +53,7 @@ const CreateVehicleProtect = ({
         <Box>
           <div
             id='defaultModal'
-            tabindex='-1'
+            tabIndex='-1'
             aria-hidden='true'
             className=' overflow-y-auto overflow-x-hidden fixed top-1/4 right-0 left-1/3 z-50 w-full inset-0 h-modal'
           >

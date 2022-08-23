@@ -19,17 +19,59 @@ export const getEjecutivoAction =
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const response = await httpRequest.get(enlacePaginacion, {
-        headers: { Authorization: Token },
-      })
-      const result = response.data
-      dispatch({ type: types.GET_EJECUTIVO_SUCCESS, payload: result })
-      progress.finish()
+
+      if (enlacePaginacion === 'allEjecutivos') {
+        const response = await httpRequest.get('/ejecutivo/', {
+          headers: { Authorization: Token },
+        })
+        console.log(response, 'response', enlacePaginacion)
+        const responseAll = await httpRequest.get(
+          `/ejecutivo/?limit=${response.data.count}&offset=1`,
+          {
+            headers: { Authorization: Token },
+          }
+        )
+
+        const resultAll = responseAll.data
+        dispatch({ type: types.GET_EJECUTIVO_SUCCESS, payload: resultAll })
+        progress.finish()
+      } else {
+        const responsePaginacion = await httpRequest.get(enlacePaginacion, {
+          headers: { Authorization: Token },
+        })
+        const resultPaginacion = responsePaginacion.data
+        dispatch({
+          type: types.GET_EJECUTIVO_SUCCESS,
+          payload: resultPaginacion,
+        })
+        console.log(resultPaginacion, 'response getEjecutivoAction')
+        progress.finish()
+      }
     } catch (error) {
       dispatch({ type: types.GET_EJECUTIVO_FAILED })
       progress.finish()
     }
   }
+
+export const getAllEjecutivosAction = () => async dispatch => {
+  try {
+    dispatch({ type: types.GET_ALLEJECUTIVO_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+
+    const response = await httpRequest.get('/ejecutivo/?limit=1000&offset=1', {
+      headers: { Authorization: Token },
+    })
+    const result = response.data
+    dispatch({ type: types.GET_ALLEJECUTIVO_SUCCESS, payload: result })
+    console.log(result, 'response getAllEjecutivosAction')
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.GET_ALLEJECUTIVO_FAILED })
+    progress.finish()
+  }
+}
 
 //Create ejecutivo
 export const createNewEjecutivoAction = data => async dispatch => {
@@ -38,7 +80,7 @@ export const createNewEjecutivoAction = data => async dispatch => {
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    console.log(data, 'data')
+
     const response = await httpRequest.post('/ejecutivo/', data, {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
@@ -110,7 +152,7 @@ export const UpdateEstadoEjecutivoAction = data => async dispatch => {
   try {
     dispatch({ type: types.UPDATE_ESTADOEJECUTIVO_START, payload: data.id })
     progress.start()
-    console.log(data, 'data')
+
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
     const response = await httpRequest.post('/estado/', data, {
@@ -143,10 +185,11 @@ export const getGrupoFamiliarAction =
           'content-type': 'multipart/form-data',
         },
       })
-      console.log(response, 'response')
+
       const result = response.data
 
       dispatch({ type: types.GET_GRUPOFAMILIAR_SUCCESS, payload: result })
+
       progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_GRUPOFAMILIAR_FAILED })
@@ -154,6 +197,32 @@ export const getGrupoFamiliarAction =
       progress.finish()
     }
   }
+
+// Get Vinculo Familiar
+export const getAllFamiliaresAction = () => async dispatch => {
+  try {
+    dispatch({ type: types.GET_ALLGRUPOFAMILIAR_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.get('/familiar/?limit=1000&offset=1', {
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
+    })
+
+    const result = response.data
+
+    dispatch({ type: types.GET_ALLGRUPOFAMILIAR_SUCCESS, payload: result })
+
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.GET_ALLGRUPOFAMILIAR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
 
 // Get Vinculo Familiar por id
 export const getGrupoFamiliarByIdAction = data => async dispatch => {
@@ -164,7 +233,7 @@ export const getGrupoFamiliarByIdAction = data => async dispatch => {
     const Token = 'Token ' + token
 
     const urlGet = `/familiar/?id_ejecutivo=${data.id}`
-    console.log(urlGet)
+
     const response = await httpRequest.get(urlGet, {
       headers: {
         Authorization: Token,
@@ -172,7 +241,6 @@ export const getGrupoFamiliarByIdAction = data => async dispatch => {
       },
     })
 
-    console.log(response, 'response')
     const result = response.data
 
     dispatch({ type: types.GET_GRUPOFAMILIAR_SUCCESS, payload: result })
@@ -256,7 +324,6 @@ export const UpdateEstadoFamiliarAction = data => async dispatch => {
   try {
     dispatch({ type: types.UPDATE_ESTADOFAMILIAR_START, payload: data })
     progress.start()
-    console.log(data, 'data')
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
     const response = await httpRequest.post('/estado/', data, {
@@ -300,6 +367,30 @@ export const GetLugaresAction =
       progress.finish()
     }
   }
+
+export const GetAllLugaresAction = () => async dispatch => {
+  try {
+    dispatch({ type: types.GET_ALLLUGARES_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.get('/lugares/?limit=1000&offset=1', {
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
+    })
+    const result = response.data
+
+    dispatch({ type: types.GET_ALLLUGARES_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.GET_ALLLUGARES_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
 
 //Create Lugar
 export const CreateNewLugarAction = data => async dispatch => {
@@ -489,6 +580,31 @@ export const getVehiculoEjecutivoAction =
     }
   }
 
+export const getAllVehiculosEjecutivoAction = () => async dispatch => {
+  try {
+    dispatch({ type: types.GET_ALLVEHICULOEJECUTIVO_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.get(
+      'vehiculoejecutivo/?limit=1000&offset=1',
+      {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      }
+    )
+    const result = response.data
+    dispatch({ type: types.GET_ALLVEHICULOEJECUTIVO_SUCCESS, payload: result })
+    progress.finish()
+  } catch (error) {
+    dispatch(setToast('error', error.message))
+    dispatch({ type: types.GET_ALLVEHICULOEJECUTIVO_FAILED })
+    progress.finish()
+  }
+}
+
 //Create Vehicle Ejecutivo
 export const createNewVehicleEjecutivoAction = data => async dispatch => {
   try {
@@ -539,7 +655,6 @@ export const DeleteVehiculoEjecutivoAction = data => async dispatch => {
 //Update Vehicle Ejecutivo
 export const UpdateVehicleEjecutivoAction = data => async dispatch => {
   try {
-    console.log(data, 'data PRUEBA')
     dispatch({ type: types.UPDATE_VEHICLE_EJECUTIVO_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
@@ -615,7 +730,7 @@ export const getProtectoresAction =
         headers: { Authorization: Token },
       })
       const result = response.data
-      console.log(result, 'result')
+
       dispatch({ type: types.GET_PROTECTOR_SUCCESS, payload: result })
       dispatch(setToast('', result.message))
       progress.finish()
@@ -625,6 +740,27 @@ export const getProtectoresAction =
       progress.finish()
     }
   }
+
+export const getAllProtectoresAction = () => async dispatch => {
+  try {
+    dispatch({ type: types.GET_ALLPROTECTOR_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.get('/protector/?limit=1000&offset=1', {
+      headers: { Authorization: Token },
+    })
+    const result = response.data
+
+    dispatch({ type: types.GET_ALLPROTECTOR_SUCCESS, payload: result })
+    dispatch(setToast('', result.message))
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.GET_ALLPROTECTOR_FAILED })
+    dispatch(setToast('error', error.message))
+    progress.finish()
+  }
+}
 
 // update Estado de PROTECTOR
 export const UpdateEstadoProtectorAction = data => async dispatch => {
@@ -774,3 +910,28 @@ export const getVehiculoProtectorAction =
       progress.finish()
     }
   }
+
+export const getAllVehiculoProtectorAction = () => async dispatch => {
+  try {
+    dispatch({ type: types.GET_ALLVEHICULOEPROTECTOR_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+    const response = await httpRequest.get(
+      '/vehiculoprotector/?limit=1000&offset=1',
+      {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      }
+    )
+    const result = response.data
+    dispatch({ type: types.GET_ALLVEHICULOEPROTECTOR_SUCCESS, payload: result })
+    progress.finish()
+  } catch (error) {
+    dispatch(setToast('error', error.message))
+    dispatch({ type: types.GET_ALLVEHICULOEPROTECTOR_FAILED })
+    progress.finish()
+  }
+}

@@ -1,6 +1,6 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   getVehiculoEjecutivoAction,
@@ -16,16 +16,23 @@ const VehiculosEjecutivoTable = ({
   const { results, count } = data
   const dispatch = useDispatch()
 
-  const handlePreviousPage = newPage => {
-    console.log(newPage, 'newPage')
+  const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
+  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(10)
 
+  const handlePreviousPage = newPage => {
     dispatch(getVehiculoEjecutivoAction(newPage))
+    setCuentaDesdePagina(
+      cuentaDesdePagina - 10 < 0 ? 1 : cuentaDesdePagina - 10
+    )
+    setCuentaHastaPagina(cuentaHastaPagina - 10)
   }
 
   const handleNextPage = newPage => {
-    console.log(newPage, 'newPage')
-
     dispatch(getVehiculoEjecutivoAction(newPage))
+    setCuentaDesdePagina(cuentaDesdePagina + 10)
+    setCuentaHastaPagina(
+      cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
+    )
   }
 
   const handleChangeStatusVehiculo = data => {
@@ -37,6 +44,7 @@ const VehiculosEjecutivoTable = ({
     console.log(nuevoStatus, 'nuevoStatus')
     dispatch(UpdateEstadoVehiculoEjecutivoAction(nuevoStatus))
   }
+
   return (
     <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
       <div className='overflow-y-auto'>
@@ -168,9 +176,10 @@ const VehiculosEjecutivoTable = ({
         <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
           <div>
             <p className='text-sm text-gray-700'>
-              Mostrando <span className='font-medium'>1</span> -{' '}
+              Mostrando <span className='font-medium'>{cuentaDesdePagina}</span>{' '}
+              -{' '}
               <span className='font-medium'>
-                {Object.keys(data).length > 0 ? results.length : null}
+                {Object.keys(data).length > 0 ? cuentaHastaPagina : null}
               </span>{' '}
               de{' '}
               <span className='font-medium'>

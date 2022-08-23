@@ -44,4 +44,4 @@ export const store = configureStore({
     }),
 })
 
-//   applyMiddleware(thunk)
+applyMiddleware(thunk)

@@ -11,8 +11,10 @@ import {
   VehiculosEjecutivoTable,
 } from '../../components'
 import CreateVehiculo from '../../components/RecursosModals/CreateVehiculo'
+import vehiculosEjecutivosReportPDF from '../../reports/Recursos/vehiculosEjecutivosReportPDF'
 import {
   DeleteVehiculoEjecutivoAction,
+  getAllVehiculosEjecutivoAction,
   getEjecutivoAction,
   getVehiculoEjecutivoAction,
   UpdateVehicleEjecutivoAction,
@@ -30,10 +32,15 @@ const VehicleEjectivos = () => {
 
   useEffect(() => {
     dispatch(getVehiculoEjecutivoAction())
+    dispatch(getAllVehiculosEjecutivoAction())
   }, [dispatch])
 
   const vehiculoEjecutivoData = useSelector(
     state => state.recursos.vehiculosEjecutivos
+  )
+
+  const allVehiculosEjecutivosData = useSelector(
+    state => state.recursos.allVehiculosEjecutivos
   )
 
   const handleOpenEditModal = itemEditar => {
@@ -112,24 +119,31 @@ const VehicleEjectivos = () => {
                   handleAction={handleGuardarVehículoEjecutivo}
                 />
               </div>
-
-              <div className='flex'>
+              <button
+                onClick={() =>
+                  vehiculosEjecutivosReportPDF(
+                    allVehiculosEjecutivosData.results
+                  )
+                }
+              >
                 <div className='flex'>
-                  <p className='text-blue-800 hover:cursor-pointer'>
-                    Exportar a PDF
-                  </p>
-                  <ICONS.ChevronDownIconO
-                    className='w-3 mb-1.5 ml-2'
-                    color='blue'
-                  />
+                  <div className='flex'>
+                    <p className='text-blue-800 hover:cursor-pointer'>
+                      Exportar a PDF
+                    </p>
+                    <ICONS.ChevronDownIconO
+                      className='w-3 mb-1.5 ml-2'
+                      color='blue'
+                    />
+                  </div>
+                  <div className='flex flex-col ml-4'>
+                    <input
+                      placeholder='Buscar'
+                      className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                    />
+                  </div>
                 </div>
-                <div className='flex flex-col ml-4'>
-                  <input
-                    placeholder='Buscar'
-                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                  />
-                </div>
-              </div>
+              </button>
             </div>
 
             <div className=' pt-4 p-16 flex flex-col'>
