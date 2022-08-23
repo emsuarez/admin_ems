@@ -47,12 +47,12 @@ const Registration = props => {
       usuario,
       nombres,
       apellidos,
-      email,
+      email: 'temporal@mail.com',
       contraseña,
       tipo,
     }
 
-    if (usuario && contraseña && nombres && apellidos && email) {
+    if (usuario && contraseña && nombres && apellidos) {
       if (contraseña !== confirmPassword) {
         alert('[ERROR]. Las contraseñas no coinciden!')
       } else {
