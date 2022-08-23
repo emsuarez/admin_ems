@@ -14,39 +14,23 @@ const progress = new ProgressBar({
 export const getEjecutivoAction =
   (enlacePaginacion = '/ejecutivo/') =>
   async dispatch => {
+    console.log(enlacePaginacion, 'enlacePaginacion')
     try {
       dispatch({ type: types.GET_EJECUTIVO_START })
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
 
-      if (enlacePaginacion === 'allEjecutivos') {
-        const response = await httpRequest.get('/ejecutivo/', {
-          headers: { Authorization: Token },
-        })
-        console.log(response, 'response', enlacePaginacion)
-        const responseAll = await httpRequest.get(
-          `/ejecutivo/?limit=${response.data.count}&offset=1`,
-          {
-            headers: { Authorization: Token },
-          }
-        )
-
-        const resultAll = responseAll.data
-        dispatch({ type: types.GET_EJECUTIVO_SUCCESS, payload: resultAll })
-        progress.finish()
-      } else {
-        const responsePaginacion = await httpRequest.get(enlacePaginacion, {
-          headers: { Authorization: Token },
-        })
-        const resultPaginacion = responsePaginacion.data
-        dispatch({
-          type: types.GET_EJECUTIVO_SUCCESS,
-          payload: resultPaginacion,
-        })
-        console.log(resultPaginacion, 'response getEjecutivoAction')
-        progress.finish()
-      }
+      const responsePaginacion = await httpRequest.get(enlacePaginacion, {
+        headers: { Authorization: Token },
+      })
+      const resultPaginacion = responsePaginacion.data
+      dispatch({
+        type: types.GET_EJECUTIVO_SUCCESS,
+        payload: resultPaginacion,
+      })
+      console.log(resultPaginacion, 'response getEjecutivoAction')
+      progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_EJECUTIVO_FAILED })
       progress.finish()

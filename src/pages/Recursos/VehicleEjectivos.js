@@ -89,6 +89,12 @@ const VehicleEjectivos = () => {
     setOpenDeleteModal(false)
   }
 
+  const handleSearch = e => {
+    dispatch(
+      getVehiculoEjecutivoAction('/vehiculoejecutivo/?query=' + e.target.value)
+    )
+  }
+
   return (
     <div>
       <RedirectWithoutLogin />
@@ -119,14 +125,15 @@ const VehicleEjectivos = () => {
                   handleAction={handleGuardarVehículoEjecutivo}
                 />
               </div>
-              <button
-                onClick={() =>
-                  vehiculosEjecutivosReportPDF(
-                    allVehiculosEjecutivosData.results
-                  )
-                }
-              >
-                <div className='flex'>
+
+              <div className='flex'>
+                <button
+                  onClick={() =>
+                    vehiculosEjecutivosReportPDF(
+                      allVehiculosEjecutivosData.results
+                    )
+                  }
+                >
                   <div className='flex'>
                     <p className='text-blue-800 hover:cursor-pointer'>
                       Exportar a PDF
@@ -136,14 +143,17 @@ const VehicleEjectivos = () => {
                       color='blue'
                     />
                   </div>
-                  <div className='flex flex-col ml-4'>
-                    <input
-                      placeholder='Buscar'
-                      className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                    />
-                  </div>
+                </button>
+                <div className='flex flex-col ml-4'>
+                  <input
+                    placeholder='Buscar'
+                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                    onChange={e => {
+                      handleSearch(e)
+                    }}
+                  />
                 </div>
-              </button>
+              </div>
             </div>
 
             <div className=' pt-4 p-16 flex flex-col'>

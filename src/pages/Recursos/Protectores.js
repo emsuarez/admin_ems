@@ -15,6 +15,7 @@ import {
   createNewProtectorAction,
   DeleteProtectorAction,
   getAllProtectoresAction,
+  GetLugaresAction,
   getProtectoresAction,
   UpdateProtectorAction,
 } from '../../store/actions'
@@ -67,6 +68,10 @@ const Protectores = () => {
     dispatch(DeleteProtectorAction({ id: protector.id }))
     setOpenDeleteModal(false)
   }
+
+  const handleSearch = e => {
+    dispatch(getProtectoresAction('/protector/?query=' + e.target.value))
+  }
   return (
     <div>
       <RedirectWithoutLogin />
@@ -95,10 +100,13 @@ const Protectores = () => {
                   handleAction={handleGuardarProtector}
                 />
               </div>
-              <button
-                onClick={() => protectoresReportPDF(allProtectoresData.results)}
-              >
-                <div className='flex'>
+
+              <div className='flex'>
+                <button
+                  onClick={() =>
+                    protectoresReportPDF(allProtectoresData.results)
+                  }
+                >
                   <div className='flex'>
                     <p className='text-blue-800 hover:cursor-pointer'>
                       Exportar a PDF
@@ -108,14 +116,17 @@ const Protectores = () => {
                       color='blue'
                     />
                   </div>
-                  <div className='flex flex-col ml-4'>
-                    <input
-                      placeholder='Buscar'
-                      className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                    />
-                  </div>
+                </button>
+                <div className='flex flex-col ml-4'>
+                  <input
+                    placeholder='Buscar'
+                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                    onChange={e => {
+                      handleSearch(e)
+                    }}
+                  />
                 </div>
-              </button>
+              </div>
             </div>
 
             <div className=' pt-4 p-16 flex flex-col'>

@@ -74,19 +74,8 @@ const GrupoFamiliar = () => {
     setOpenDeleteModal(false)
   }
 
-  const handleSearch = async e => {
-    setTextoBusqueda(e.target.value)
-    if (e.target.value === '') {
-      setFamiliaresBuscador({ ...familiaData, familiares: [] })
-      return
-    }
-    const familiaresSearch = allFamiliarData.results.filter(familiar => {
-      return familiar.nombres
-        .toLowerCase()
-        .includes(e.target.value.toLowerCase())
-    })
-
-    setFamiliaresBuscador({ ...familiaresBuscador, results: familiaresSearch })
+  const handleSearch = e => {
+    dispatch(getGrupoFamiliarAction('/familiar/?query=' + e.target.value))
   }
 
   return (

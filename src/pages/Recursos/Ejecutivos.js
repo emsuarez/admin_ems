@@ -89,19 +89,8 @@ const Ejecutivos = () => {
     setOpenDeleteModal(false)
   }
 
-  const handleSearch = async e => {
-    setTextoBusqueda(e.target.value)
-    if (e.target.value === '') {
-      setEjecutivosBuscador({ ...ejecutivoData, ejecutivos: [] })
-      return
-    }
-    const ejecutivosSearch = allEjecutivosData.results.filter(ejecutivo => {
-      return ejecutivo.nombres
-        .toLowerCase()
-        .includes(e.target.value.toLowerCase())
-    })
-
-    setEjecutivosBuscador({ ...ejecutivosBuscador, results: ejecutivosSearch })
+  const handleSearch = e => {
+    dispatch(getEjecutivoAction('/ejecutivo/?query=' + e.target.value))
   }
 
   return (
@@ -166,9 +155,7 @@ const Ejecutivos = () => {
 
               <div className=' pt-4 p-16 flex flex-col'>
                 <EjecutivosTable
-                  data={
-                    textoBusqueda === '' ? ejecutivoData : ejecutivosBuscador
-                  }
+                  data={ejecutivoData}
                   handleOpenEditModal={handleOpenEditModal}
                   handleOpenDeleteModal={handleOpenDeleteModal}
                   handleOpenEditFamilyModal={handleOpenEditFamilyModal}
