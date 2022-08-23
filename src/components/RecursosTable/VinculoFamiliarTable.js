@@ -12,8 +12,14 @@ const VinculoFamiliarTable = ({
   handleOpenEditModal,
   handleOpenDeleteModal,
   tipo,
+  handleOpenEditFamilyModal,
 }) => {
+  useEffect(() => {
+    console.log(data, 'data obtenida en la tabla de vinculofamiliar')
+  }, [])
+
   const { results, count } = data
+
   const [cantidadPaginas, setCantidadPaginas] = useState()
 
   const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
@@ -82,7 +88,7 @@ const VinculoFamiliarTable = ({
             </tr>
           </thead>
 
-          {Object.keys(data).length > 0 ? (
+          {JSON.stringify(data) !== '{}' ? (
             <tbody className='overflow-x-auto'>
               {results.map((item, index) => (
                 <tr key={item.id}>
@@ -137,9 +143,7 @@ const VinculoFamiliarTable = ({
                   </button>
 
                   {tipo !== 'modal' ? (
-                    <button
-                    //   onClick={() => confirmarCerrarConsigna(item)}
-                    >
+                    <button onClick={() => handleOpenEditFamilyModal(item)}>
                       <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  mx-auto hover:bg-gray-300 hover:rounded'>
                         <svg
                           width='25'

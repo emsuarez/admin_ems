@@ -72,8 +72,10 @@ const Ejecutivos = () => {
     setOpenEditFamiliarModal(true)
     setItemEditarFamily(itemEditar)
     console.log(itemEditar, 'itemEditar')
-    dispatch(getGrupoFamiliarByIdAction(itemEditar))
+    dispatch(getGrupoFamiliarByIdAction(itemEditar.id))
   }
+
+  
 
   const handleOpenDeleteModal = itemEliminar => {
     setOpenDeleteModal(true)

@@ -10,6 +10,7 @@ import {
   ICONS,
   RedirectWithoutLogin,
 } from '../../components'
+import EditFamilyModal from '../../components/RecursosModals/EditFamilyModal'
 import VinculoFamiliarTable from '../../components/RecursosTable/VinculoFamiliarTable'
 import grupoFamiliarReportPDF from '../../reports/Recursos/grupoFamiliarReportPDF'
 import {
@@ -17,6 +18,7 @@ import {
   DeleteFamiliarAction,
   getAllFamiliaresAction,
   getGrupoFamiliarAction,
+  getGrupoFamiliarByIdAction,
   UpdateFamiliarAction,
 } from '../../store/actions'
 
@@ -24,9 +26,12 @@ const GrupoFamiliar = () => {
   const dispatch = useDispatch()
   const [openEditModal, setOpenEditModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [openEditFamiliarModal, setOpenEditFamiliarModal] =
+    React.useState(false)
 
   const [itemEditar, setItemEditar] = useState('')
   const [itemEliminar, setItemEliminar] = useState('')
+  const [itemEditarFamily, setItemEditarFamily] = useState('')
 
   const [textoBusqueda, setTextoBusqueda] = useState('')
   const [familiaresBuscador, setFamiliaresBuscador] = useState({})
@@ -58,6 +63,17 @@ const GrupoFamiliar = () => {
   const handleOpenEditModal = itemEditar => {
     setOpenEditModal(true)
     setItemEditar(itemEditar)
+  }
+
+  const handleOpenEditFamilyModal = itemEditar => {
+    setOpenEditFamiliarModal(true)
+    setItemEditarFamily(itemEditar)
+    console.log(itemEditar, 'itemEditar')
+    dispatch(getGrupoFamiliarByIdAction(itemEditar.id_ejecutivo))
+  }
+
+  const handleCloseEditFamiliarModal = () => {
+    setOpenEditFamiliarModal(false)
   }
 
   const handleOpenDeleteModal = itemEliminar => {
@@ -138,10 +154,11 @@ const GrupoFamiliar = () => {
 
             <div className=' pt-4 p-16 flex flex-col'>
               <VinculoFamiliarTable
-                data={textoBusqueda === '' ? familiaData : familiaresBuscador}
+                data={familiaData}
                 handleOpenEditModal={handleOpenEditModal}
                 handleOpenDeleteModal={handleOpenDeleteModal}
                 tipo='general'
+                handleOpenEditFamilyModal={handleOpenEditFamilyModal}
               />
             </div>
           </div>
@@ -164,6 +181,12 @@ const GrupoFamiliar = () => {
             handleClose={handleCloseDeleteModal}
             handleAction={handleDeleteGrupoFamiliar}
             itemEliminar={itemEliminar}
+          />
+          <EditFamilyModal
+            tituloModal={'Editar Vínculo Familiar'}
+            openModal={openEditFamiliarModal}
+            handleClose={handleCloseEditFamiliarModal}
+            id_ejecutivo={itemEditarFamily}
           />
         </>
       )}

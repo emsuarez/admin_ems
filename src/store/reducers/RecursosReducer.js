@@ -7,6 +7,7 @@ const initialState = {
   allEjecutivos: {},
   grupoFamiliar: {},
   allFamiliares: {},
+  grupoFamiliarByEjecutivo: {},
   vehiculosEjecutivos: {},
   allVehiculosEjecutivos: {},
   protectores: {},
@@ -104,6 +105,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_ALLGRUPOFAMILIAR_SUCCESS:
       return { ...state, isLoading: false, allFamiliares: payload }
     case types.GET_ALLGRUPOFAMILIAR_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_GRUPOFAMILIARBYEJECUTIVO_START:
+      return { ...state, isLoading: true }
+    case types.GET_GRUPOFAMILIARBYEJECUTIVO_SUCCESS:
+      return { ...state, isLoading: false, grupoFamiliarByEjecutivo: payload }
+    case types.GET_GRUPOFAMILIARBYEJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
     case types.POST_GRUPOFAMILIAR_START:

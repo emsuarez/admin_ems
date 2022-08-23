@@ -211,12 +211,12 @@ export const getAllFamiliaresAction = () => async dispatch => {
 // Get Vinculo Familiar por id
 export const getGrupoFamiliarByIdAction = data => async dispatch => {
   try {
-    dispatch({ type: types.GET_GRUPOFAMILIAR_START })
+    dispatch({ type: types.GET_GRUPOFAMILIARBYEJECUTIVO_START })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
 
-    const urlGet = `/familiar/?id_ejecutivo=${data.id}`
+    const urlGet = `/familiar/?id_ejecutivo=${data}`
 
     const response = await httpRequest.get(urlGet, {
       headers: {
@@ -227,10 +227,13 @@ export const getGrupoFamiliarByIdAction = data => async dispatch => {
 
     const result = response.data
 
-    dispatch({ type: types.GET_GRUPOFAMILIAR_SUCCESS, payload: result })
+    dispatch({
+      type: types.GET_GRUPOFAMILIARBYEJECUTIVO_SUCCESS,
+      payload: result,
+    })
     progress.finish()
   } catch (error) {
-    dispatch({ type: types.GET_GRUPOFAMILIAR_FAILED })
+    dispatch({ type: types.GET_GRUPOFAMILIARBYEJECUTIVO_FAILED })
     dispatch(setToast('error', error.message))
     progress.finish()
   }
