@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { ICONS } from '../constants'
-import { connect } from 'react-redux'
-import { UpdateEjecutivoRecord } from '../../store/actions'
 import { Box, Modal } from '@mui/material'
 
 const EditEjecutivo = ({
@@ -30,22 +27,22 @@ const EditEjecutivo = ({
     <>
       <Modal
         open={openModal}
-        onClose={handleClose}
+        onClose={(_, reason) => reason === 'backdropClick' && handleClose()}
         aria-labelledby='child-modal-title'
         aria-describedby='child-modal-description'
       >
         <Box>
           <div
             id='defaultModal'
-            tabindex='-1'
+            tabIndex='-1'
             aria-hidden='true'
-            className=' overflow-y-auto overflow-x-hidden fixed top-1/3 right-0 left-1/3 z-50 w-full inset-0 h-modal'
+            className=' overflow-y-auto overflow-x-hidden fixed top-1/3 left-1/3'
           >
             <div className='relative p-4 max-w-lg'>
               <div className='relative bg-white rounded-lg shadow '>
                 <div className='flex justify-between items-start px-4 py-2 rounded-t border-b'>
                   <h1 className='text-2xl font-bold'>{tituloModal}</h1>
-                  <button
+                  {/* <button
                     type='button'
                     className='bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center'
                     data-modal-toggle='defaultModal'
@@ -65,7 +62,7 @@ const EditEjecutivo = ({
                       ></path>
                     </svg>
                     <span className='sr-only'>Cerrar modal</span>
-                  </button>
+                  </button> */}
                 </div>
 
                 <div className='px-6 pt-2 space-y-3'>
