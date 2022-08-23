@@ -10,9 +10,11 @@ import {
   ProtectoresTable,
   RedirectWithoutLogin,
 } from '../../components'
+import protectoresReportPDF from '../../reports/Recursos/protectoresReportPDF'
 import {
   createNewProtectorAction,
   DeleteProtectorAction,
+  getAllProtectoresAction,
   getProtectoresAction,
   UpdateProtectorAction,
 } from '../../store/actions'
@@ -27,9 +29,11 @@ const Protectores = () => {
 
   useEffect(() => {
     dispatch(getProtectoresAction())
+    dispatch(getAllProtectoresAction())
   }, [dispatch])
 
   const protectoresData = useSelector(state => state.recursos.protectores)
+  const allProtectoresData = useSelector(state => state.recursos.allProtectores)
 
   const handleGuardarProtector = ejecutivo => {
     dispatch(createNewProtectorAction(ejecutivo))
@@ -91,24 +95,27 @@ const Protectores = () => {
                   handleAction={handleGuardarProtector}
                 />
               </div>
-
-              <div className='flex'>
+              <button
+                onClick={() => protectoresReportPDF(allProtectoresData.results)}
+              >
                 <div className='flex'>
-                  <p className='text-blue-800 hover:cursor-pointer'>
-                    Exportar a PDF
-                  </p>
-                  <ICONS.ChevronDownIconO
-                    className='w-3 mb-1.5 ml-2'
-                    color='blue'
-                  />
+                  <div className='flex'>
+                    <p className='text-blue-800 hover:cursor-pointer'>
+                      Exportar a PDF
+                    </p>
+                    <ICONS.ChevronDownIconO
+                      className='w-3 mb-1.5 ml-2'
+                      color='blue'
+                    />
+                  </div>
+                  <div className='flex flex-col ml-4'>
+                    <input
+                      placeholder='Buscar'
+                      className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
+                    />
+                  </div>
                 </div>
-                <div className='flex flex-col ml-4'>
-                  <input
-                    placeholder='Buscar'
-                    className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                  />
-                </div>
-              </div>
+              </button>
             </div>
 
             <div className=' pt-4 p-16 flex flex-col'>
@@ -122,7 +129,7 @@ const Protectores = () => {
           {/* Modales */}
           <EditEjecutivo
             tituloModal={'Editar Protector'}
-            descripcionModal={'Edita los datos del ejecutivo seleccionado.'}
+            descripcionModal={'Edita los datos del protector seleccionado.'}
             openModal={openEditModal}
             handleClose={handleCloseEditModal}
             handleAction={handleEditarProtector}
