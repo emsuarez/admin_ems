@@ -17,6 +17,15 @@ export const config = {
   },
 }
 
+httpRequest.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response.status === 401) {
+      window.localStorage.removeItem('token')
+    }
+  }
+)
+
 // export const mediaConfig = token => {
 //   const userToken = store.getState()?.auth?.User?.Token || token
 //   return {

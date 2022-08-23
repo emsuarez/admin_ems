@@ -33,7 +33,6 @@ function App(props) {
 
       <Routes>
         <Route path='/' element={<Login />} />
-
         <Route path='register' element={<Registration />} />
 
         {/* ADMIN */}

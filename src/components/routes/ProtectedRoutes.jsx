@@ -8,7 +8,6 @@ const ProtectedRoutes = () => {
     const logeado = window.localStorage.getItem('token')
     if (logeado) {
       setIsAuth(true)
-      console.log('logeado', logeado)
     }
   }, [])
 
