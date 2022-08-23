@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ICONS } from '../constants'
 import { styled } from '@mui/material/styles'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
@@ -16,7 +16,11 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }))
 
-const TRS = () => {
+const TRS = ({ item }) => {
+  useEffect(() => {
+    console.log(item)
+  }, [])
+
   const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
@@ -37,9 +41,11 @@ const TRS = () => {
       title={
         <React.Fragment>
           <ul className='w-full' ref={wrapperRef}>
-            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
-              <p className='text-sm my-1 ml-3 '>Control de movimiento</p>
-            </li>
+            {item === 'trs' ? (
+              <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+                <p className='text-sm my-1 ml-3 '>Control de movimiento</p>
+              </li>
+            ) : null}
 
             <li
               onClick={() => {
@@ -59,10 +65,13 @@ const TRS = () => {
                 Historial Control de movimiento
               </p>
             </li>
-
-            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
-              <p className='text-sm my-1 ml-3 '>Entrega y recepción de turno</p>
-            </li>
+            {item === 'trs' ? (
+              <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+                <p className='text-sm my-1 ml-3 '>
+                  Entrega y recepción de turno
+                </p>
+              </li>
+            ) : null}
 
             <li
               onClick={() => {

@@ -44,9 +44,13 @@ const CCTV = ({ item }) => {
       title={
         <React.Fragment>
           <ul className='w-full' ref={wrapperRef}>
-            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
-              <p className='text-sm my-1 ml-3 '>Entrega y recepción de turno</p>
-            </li>
+            {item === 'cctv' ? (
+              <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+                <p className='text-sm my-1 ml-3 '>
+                  Entrega y recepción de turno
+                </p>
+              </li>
+            ) : null}
 
             <li
               onClick={() => {
