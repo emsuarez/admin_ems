@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import logo from '../../assets/logo.png'
-import { DropDown } from '../constants'
+
 import CCTV from './CCTV'
 import Recursos from './Recursos'
 import RightImage from './RightImage'
 import TRS from './TRS'
 import Usuarios from './Usuarios'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserInfoAction } from '../../store/actions'
-import CerrarSesionModal from '../alerts/CerrarSesionModal'
+
+import { getUserInfoAction } from '../../store/actions/AuthAction'
 
 const Header = () => {
   const dispatch = useDispatch()

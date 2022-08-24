@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { ICONS } from '../constants'
 import { styled } from '@mui/material/styles'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ClickOutSide } from '../clickOutside/ClickOutSide'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -42,10 +42,12 @@ const Usuarios = ({ item }) => {
       title={
         <React.Fragment>
           <ul className='w-36' ref={wrapperRef}>
-            <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10 '>
-              {/* <ICONS.PencilAltIconS className="h-4 mt-3 ml-3" color="blue"/> */}
-              <p className='text-sm  mt-3 ml-3'>Administrar</p>
-            </li>
+            <Link to={'/usuarios'}>
+              <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10'>
+                {/* <ICONS.PencilAltIconS className="h-4 mt-3 ml-3" color="blue"/> */}
+                <p className='text-sm  mt-3 ml-3'>Administrar</p>
+              </li>
+            </Link>
           </ul>
         </React.Fragment>
       }

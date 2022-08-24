@@ -215,3 +215,96 @@ const updateUserInfoFailed = estadoError => ({
   type: types.UPDATE_USERINFO_FAILED,
   payload: estadoError,
 })
+
+// Funcion obtener todos los usuarios
+export const getUsersAction = (enlacePaginacion = '/user/') => {
+  return async dispatch => {
+    await dispatch(getAllUsers())
+    try {
+      progress.start()
+      const token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(enlacePaginacion, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+
+      dispatch(getAllUsersSuccess(result))
+      progress.finish()
+    } catch (error) {
+      dispatch(getAllUsersFailed(true))
+      dispatch(setToast('error', error))
+      progress.finish()
+    }
+  }
+}
+
+const getAllUsers = () => ({
+  type: types.GET_ALLUSERS_START,
+  payload: true,
+})
+
+const getAllUsersSuccess = users => ({
+  type: types.GET_ALLUSERS_SUCCESS,
+  payload: users,
+})
+
+const getAllUsersFailed = estadoError => ({
+  type: types.GET_ALLUSERS_FAILED,
+  payload: estadoError,
+})
+
+export const UpdateEstadoUsuariosAction = data => {
+  return async dispatch => {
+    try {
+      dispatch({ type: types.UPDATE_ESTADOUSUARIO_START, payload: data })
+      progress.start()
+
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.post('/estado/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+      const result = response.data
+
+      dispatch({ type: types.UPDATE_ESTADOUSUARIO_SUCCESS, payload: result })
+      dispatch(setToast('', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.UPDATE_ESTADOUSUARIO_FAILED })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const UpdateUserAction = data => {
+  return async dispatch => {
+    try {
+      console.log(data, 'DATA')
+      dispatch({ type: types.UPDATE_USUARIO_START, payload: data })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.patch('/usuario/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+      const result = response.data
+
+      dispatch({ type: types.UPDATE_USUARIO_SUCCESS, payload: result })
+      dispatch(setToast('', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.UPDATE_USUARIO_FAILED })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}

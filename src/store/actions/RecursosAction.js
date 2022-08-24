@@ -29,7 +29,6 @@ export const getEjecutivoAction =
         type: types.GET_EJECUTIVO_SUCCESS,
         payload: resultPaginacion,
       })
-      console.log(resultPaginacion, 'response getEjecutivoAction')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_EJECUTIVO_FAILED })

@@ -40,7 +40,6 @@ const PerfilUsuario = () => {
   }
 
   const handleUpdateDataUser = usuarioState => {
-    console.log(imagenNueva, 'Imagen nueva')
     const usuario = {
       id: usuarioState.user_id,
       usuario: usuarioState.username,
@@ -50,7 +49,7 @@ const PerfilUsuario = () => {
       tipo: usuarioState.tipo,
       imagen: imagenNueva ? imagenNueva : usuarioState.imagen,
     }
-    console.log(usuario, 'DATA QUE SE ENVIARA')
+
     setNuevoUsuario(usuario)
     dispatch(updateUserInfoAction(usuario))
     console.log(nuevoUsuario)

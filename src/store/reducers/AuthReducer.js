@@ -5,6 +5,8 @@ const initialState = {
   isLoading: false,
   user: {},
   roles: [],
+  users: {},
+  usuarioSeleccionado: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -48,6 +50,52 @@ export default (state = initialState, { type, payload }) => {
       }
     case types.UPDATE_USERINFO_FAILED:
       return { ...state, isLoading: false }
+
+    case types.GET_ALLUSERS_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLUSERS_SUCCESS:
+      return { ...state, isLoading: false, users: payload }
+    case types.GET_ALLUSERS_FAILED:
+      return { ...state, isLoading: false }
+
+    case type.UPDATE_USUARIO_START:
+      return { ...state, isLoading: true, usuarioSeleccionado: payload }
+    case type.UPDATE_USUARIO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        users: {
+          ...state.users,
+          results: state.users.results.map(dato => {
+            return dato.user_id === state.usuarioSeleccionado.id
+              ? { ...dato, ...state.usuarioSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+        usuarioSeleccionado: {},
+      }
+    case type.UPDATE_USUARIO_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_ESTADOUSUARIO_START:
+      return { ...state, isLoading: true, usuarioSeleccionado: payload }
+    case types.UPDATE_ESTADOUSUARIO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        users: {
+          ...state.users,
+          results: state.usuarios.results.map(dato => {
+            return dato.user_id === state.usuarioSeleccionado.id
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+        usuarioSeleccionado: {},
+      }
+    case types.UPDATE_ESTADOUSUARIO_FAILED:
+      return { ...state, isLoading: false }
+
     default:
       return state
   }

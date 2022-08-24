@@ -17,6 +17,7 @@ import HistorialCCTV from './pages/CCTVAdmin/HistorialCCTV'
 import { TRSDashboard } from './pages/TRSUSER'
 import PerfilUsuario from './pages/PerfilUsuario'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
+import Usuarios from './pages/Usuarios'
 
 function App(props) {
   const usuarioLogeado = useSelector(state => state.auth.user)
@@ -47,7 +48,7 @@ function App(props) {
           <Route path='vehiculosprotectores' element={<VehicleProtectores />} />
           <Route path='lugares' element={<Lugares />} />
           <Route path='admin/historial' element={<HistorialCCTV />} />
-
+          <Route path='usuarios' element={<Usuarios />} />
           {/* TRS */}
           <Route path='historialmovimiento' element={<HistorialMovimiento />} />
           <Route path='recepcionturno' element={<RecepcionTurno />} />

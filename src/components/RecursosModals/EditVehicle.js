@@ -3,7 +3,6 @@ import {} from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEjecutivoAction } from '../../store/actions'
-import { ICONS } from '../constants'
 
 const EditVehicle = ({
   tipoComponente,

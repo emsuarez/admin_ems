@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ICONS } from '../constants'
 import { styled } from '@mui/material/styles'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
@@ -17,10 +17,6 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }))
 
 const TRS = ({ item }) => {
-  useEffect(() => {
-    console.log(item)
-  }, [])
-
   const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
