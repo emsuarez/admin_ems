@@ -8,31 +8,36 @@ import {
 } from '../components'
 import UsuariosTable from '../components/Usuarios/UsuariosTable'
 import EditUsuario from '../components/UsuariosModals/EditUsuario'
-import { getUsersAction, UpdateUserAction } from '../store/actions'
+import ResetearPassword from '../components/UsuariosModals/ResetearPassword'
+import usuariosReportPDF from '../reports/Usuarios/usuariosReportPDF'
+import {
+  getAllUsersReportAction,
+  getUsersAction,
+  UpdatePasswordAction,
+  UpdateUserAction,
+} from '../store/actions'
 
 const Usuarios = () => {
   const dispatch = useDispatch()
   const [openEditModal, setOpenEditModal] = useState(false)
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [openResetearPasswordModal, setOpenResetearPasswordModal] =
+    useState(false)
 
   const [itemEditar, setItemEditar] = useState('')
   const [itemEliminar, setItemEliminar] = useState('')
 
   useEffect(() => {
     dispatch(getUsersAction())
+    dispatch(getAllUsersReportAction())
   }, [dispatch])
 
   const usuariosData = useSelector(state => state.auth.users)
-  // const allUsuariosData = useSelector(state => state.recursos.allUsers)
+  const allUsuariosData = useSelector(state => state.auth.allUsers)
 
   const handleOpenEditModal = itemEditar => {
     setOpenEditModal(true)
 
     setItemEditar(itemEditar)
-  }
-  const handleOpenDeleteModal = itemEliminar => {
-    setOpenDeleteModal(true)
-    setItemEliminar(itemEliminar)
   }
 
   const handleCloseEditModal = () => {
@@ -40,18 +45,28 @@ const Usuarios = () => {
   }
 
   const handleEditarUsuario = usuario => {
-    console.log(usuario, 'usuario')
     dispatch(UpdateUserAction(usuario))
     setOpenEditModal(false)
   }
 
-  const handleCloseDeleteModal = () => {
-    setOpenDeleteModal(false)
+  const handleOpenResetearPasswordModal = itemEditar => {
+    setOpenResetearPasswordModal(true)
+    setItemEditar(itemEditar)
+  }
+
+  const handleResetearPasswordUsuario = usuario => {
+    dispatch(UpdatePasswordAction(usuario))
+    setOpenResetearPasswordModal(false)
+  }
+
+  const handleCloseResetearPasswordModal = () => {
+    setOpenResetearPasswordModal(false)
   }
 
   const handleSearch = e => {
-    dispatch(getUsersAction('/users/?query=' + e.target.value))
+    dispatch(getUsersAction('/user/?query=' + e.target.value))
   }
+
   return (
     <>
       <div>
@@ -78,9 +93,7 @@ const Usuarios = () => {
 
                 <div className='flex'>
                   <button
-                  // onClick={() =>
-                  //   ejecutivosReportPDF(allEjecutivosData.results)
-                  // }
+                    onClick={() => usuariosReportPDF(allUsuariosData.results)}
                   >
                     <div className='flex'>
                       <p className='text-blue-800 hover:cursor-pointer'>
@@ -96,9 +109,9 @@ const Usuarios = () => {
                     <input
                       placeholder='Buscar'
                       className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                      // onChange={e => {
-                      //   handleSearch(e)
-                      // }}
+                      onChange={e => {
+                        handleSearch(e)
+                      }}
                     />
                   </div>
                 </div>
@@ -108,7 +121,9 @@ const Usuarios = () => {
                 <UsuariosTable
                   data={usuariosData}
                   handleOpenEditModal={handleOpenEditModal}
-                  handleOpenDeleteModal={handleOpenDeleteModal}
+                  handleOpenResetearPasswordModal={
+                    handleOpenResetearPasswordModal
+                  }
                 />
               </div>
             </div>
@@ -119,6 +134,14 @@ const Usuarios = () => {
               openModal={openEditModal}
               handleClose={handleCloseEditModal}
               handleAction={handleEditarUsuario}
+              itemEditar={itemEditar}
+            />
+            <ResetearPassword
+              tituloModal={'Resetear contraseña'}
+              descripcionModal={'Resetear contraseña del usuario.'}
+              openModal={openResetearPasswordModal}
+              handleClose={handleCloseResetearPasswordModal}
+              handleAction={handleResetearPasswordUsuario}
               itemEditar={itemEditar}
             />
           </>

@@ -10,7 +10,7 @@ import {
 const UsuariosTable = ({
   data,
   handleOpenEditModal,
-  handleOpenDeleteModal,
+  handleOpenResetearPasswordModal,
 }) => {
   const { results, count } = data
   const dispatch = useDispatch()
@@ -89,7 +89,7 @@ const UsuariosTable = ({
                     {item.created}
                   </td>
                   <td>
-                    <button onClick={() => handleOpenEditModal(item)}>
+                    <button onClick={() => handleOpenResetearPasswordModal(item)}>
                       <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
                         <svg
                           width='23'

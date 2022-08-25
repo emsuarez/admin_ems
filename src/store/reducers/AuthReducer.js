@@ -7,6 +7,7 @@ const initialState = {
   roles: [],
   users: {},
   usuarioSeleccionado: {},
+  allUsers: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -58,6 +59,13 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_ALLUSERS_FAILED:
       return { ...state, isLoading: false }
 
+    case types.GET_ALLUSERSREPORT_START:
+      return { ...state, isLoading: true }
+    case types.GET_ALLUSERSREPORT_SUCCESS:
+      return { ...state, isLoading: false, allUsers: payload }
+    case types.GET_ALLUSERSREPORT_FAILED:
+      return { ...state, isLoading: false }
+
     case type.UPDATE_USUARIO_START:
       return { ...state, isLoading: true, usuarioSeleccionado: payload }
     case type.UPDATE_USUARIO_SUCCESS:
@@ -94,6 +102,13 @@ export default (state = initialState, { type, payload }) => {
         usuarioSeleccionado: {},
       }
     case types.UPDATE_ESTADOUSUARIO_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_PASSWORD_START:
+      return { ...state, isLoading: true }
+    case types.UPDATE_PASSWORD_SUCCESS:
+      return { ...state, isLoading: false }
+    case types.UPDATE_PASSWORD_FAILED:
       return { ...state, isLoading: false }
 
     default:

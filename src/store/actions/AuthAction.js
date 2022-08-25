@@ -308,3 +308,50 @@ export const UpdateUserAction = data => {
     }
   }
 }
+
+export const UpdatePasswordAction = data => {
+  return async dispatch => {
+    try {
+      console.log(data, 'DATA')
+      dispatch({ type: types.UPDATE_PASSWORD_START })
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const response = await httpRequest.post('/usuario/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+      const result = response.data
+
+      dispatch({ type: types.UPDATE_USUARIO_SUCCESS, payload: result })
+      dispatch(setToast('', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.UPDATE_USUARIO_FAILED })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const getAllUsersReportAction = () => async dispatch => {
+  try {
+    dispatch({ type: types.GET_ALLUSERSREPORT_START })
+    progress.start()
+    let token = window.localStorage.getItem('token')
+    const Token = 'Token ' + token
+
+    const response = await httpRequest.get('/user/?limit=1000&offset=1', {
+      headers: { Authorization: Token },
+    })
+    const result = response.data
+    dispatch({ type: types.GET_ALLUSERSREPORT_SUCCESS, payload: result })
+    console.log(result, 'response getAllEjecutivosAction')
+    progress.finish()
+  } catch (error) {
+    dispatch({ type: types.GET_ALLUSERSREPORT_FAILED })
+    progress.finish()
+  }
+}
