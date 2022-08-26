@@ -34,8 +34,6 @@ const Ejecutivos = () => {
   const [itemEliminar, setItemEliminar] = useState('')
   const [itemEditarFamily, setItemEditarFamily] = useState('')
 
-  const [textoBusqueda, setTextoBusqueda] = useState('')
-  const [ejecutivosBuscador, setEjecutivosBuscador] = useState({})
 
   useEffect(() => {
     dispatch(getEjecutivoAction())
