@@ -6,14 +6,18 @@ import {
   RedirectWithoutLogin,
 } from '../../components'
 import logo from '../../assets/logo.png'
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 
-const ViewRecepcion = ({ dataInforme }) => {
+const ViewRecepcion = () => {
+  const navigate = useNavigate()
   const location = useLocation()
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
   const [novedades, setNovedades] = useState([])
   const [consignas, setConsignas] = useState([])
+  const [agenteSaliente, setAgenteSaliente] = useState('')
+  const [agenteEntrante, setAgenteEntrante] = useState('')
+
   useEffect(() => {
     console.log(location.state, 'dataInforme')
     setProtectores(
@@ -28,7 +32,13 @@ const ViewRecepcion = ({ dataInforme }) => {
     )
     setNovedades(location.state.trsnovedad || [])
     setConsignas(location.state.trsconsigna || [])
+    setAgenteSaliente(location.state.agente_saliente || '')
+    setAgenteEntrante(location.state.agente_entrante || '')
   }, [])
+
+  const handleSalir = () => {
+    navigate(-1)
+  }
 
   return (
     <>
@@ -240,12 +250,12 @@ const ViewRecepcion = ({ dataInforme }) => {
                     <div className='flex border-b-2 border-gray-500'>
                       <div className=' w-1/2 text-center py-4 border-r-2 border-gray-500'>
                         <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
-                        <p>Nombre del Agente</p>
+                        <p>{agenteSaliente}</p>
                       </div>
 
                       <div className='w-1/2 text-center my-4'>
-                        <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
-                        <p>Nombre del Agente</p>
+                        <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
+                        <p>{agenteEntrante}</p>
                       </div>
                     </div>
 
@@ -283,6 +293,12 @@ const ViewRecepcion = ({ dataInforme }) => {
                   />
                 </svg>
               </div>
+              <button
+                className='self-end mb-20 bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
+                onClick={() => handleSalir()}
+              >
+                Salir
+              </button>
             </div>
           </>
         )}

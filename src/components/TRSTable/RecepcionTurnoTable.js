@@ -8,7 +8,11 @@ import {
   UpdateEstadoFamiliarAction,
 } from '../../store/actions'
 
-const RecepcionTurnoTable = ({ data, handleOpenViewInforme }) => {
+const RecepcionTurnoTable = ({
+  data,
+  handleOpenViewInforme,
+  handleOpenEditInforme,
+}) => {
   useEffect(() => {
     console.log(data, 'data obtenida en la tabla de ifnormes trs')
   }, [])
@@ -89,9 +93,7 @@ const RecepcionTurnoTable = ({ data, handleOpenViewInforme }) => {
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.turno === 0 ? 'Nocturno' : 'Diurno'}
                   </td>
-                  <button
-                  // onClick={() => handleOpenEditModal(item)}
-                  >
+                  <button onClick={() => handleOpenEditInforme(item)}>
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
                       <svg
                         width='17'
@@ -118,7 +120,7 @@ const RecepcionTurnoTable = ({ data, handleOpenViewInforme }) => {
                     </td>
                   </button>
                   <button
-                  // onClick={() => handleOpenDeleteModal(item)}
+                  // onClick={() => handleOpenEditInforme(item)}
                   >
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded'>
                       <svg

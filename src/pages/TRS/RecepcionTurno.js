@@ -44,7 +44,12 @@ const RecepcionTurno = () => {
 
   const handleOpenViewInforme = informe => {
     console.log(informe)
-    navigate('/ViewRecepcion', { state: informe })
+    navigate('/viewrecepcion', { state: informe })
+  }
+
+  const handleOpenEditInforme = informe => {
+    console.log(informe)
+    navigate('/editrecepcion', { state: informe })
   }
 
   return (
@@ -192,7 +197,7 @@ const RecepcionTurno = () => {
                 <RecepcionTurnoTable
                   data={recepcionesTurnoData}
                   handleOpenViewInforme={handleOpenViewInforme}
-                  //   handleOpenDeleteModal={handleOpenDeleteModal}
+                  handleOpenEditInforme={handleOpenEditInforme}
                 />
               </div>
             </div>
