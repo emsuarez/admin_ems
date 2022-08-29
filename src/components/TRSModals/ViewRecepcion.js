@@ -13,21 +13,21 @@ const ViewRecepcion = ({ dataInforme }) => {
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
   const [novedades, setNovedades] = useState([])
+  const [consignas, setConsignas] = useState([])
   useEffect(() => {
     console.log(location.state, 'dataInforme')
-    console.log(location.state.protectores.split(','), 'protectores')
-    console.log(location.state.centralistas.split(','), 'centralistas')
     setProtectores(
-      location.state.protectores.length > 0
+      location.state.protectores !== null
         ? location.state.protectores.split(',') || []
         : []
     )
     setCentralistas(
-      location.state.centralistas.length > 0
+      location.state.centralistas !== null
         ? location.state.centralistas.split(',') || []
         : []
     )
     setNovedades(location.state.trsnovedad || [])
+    setConsignas(location.state.trsconsigna || [])
   }, [])
 
   return (
@@ -190,31 +190,6 @@ const ViewRecepcion = ({ dataInforme }) => {
                               </div>
                             </li>
                           ))}
-
-                          {/* <li className='w-full p-2 border-b-2'>
-                            <div className='flex'>
-                              <p className='text-blue-900 '>
-                                <b className='text-black'>16:04</b> But I must
-                                explain to you how all this mistaken idea of
-                              </p>
-                            </div>
-                          </li>
-                          <li className='w-full p-2 border-b-2'>
-                            <div className='flex'>
-                              <p className='text-blue-900 '>
-                                <b className='text-black'>16:04</b> But I must
-                                explain to you how all this mistaken idea of
-                              </p>
-                            </div>
-                          </li>
-                          <li className='w-full p-2 border-b-2'>
-                            <div className='flex'>
-                              <p className='text-blue-900 '>
-                                <b className='text-black'>16:04</b> But I must
-                                explain to you how all this mistaken idea of
-                              </p>
-                            </div>
-                          </li> */}
                         </ol>
                       </div>
                     </div>
@@ -225,45 +200,38 @@ const ViewRecepcion = ({ dataInforme }) => {
                         CONSIGNAS ESPECIALES
                       </h2>
 
-                      {/* <div>
-                        <ol className='pl-2'>
-                          <li className='w-full px-2 py-2 text-blue-500 border-[1px] border-gray-500 mt-0.5'>
-                            <div className='flex'>
-                              <p>
-                                <b className='text-black'>16:04</b> But I must
-                                explain to you how all this mistaken idea of
-                              </p>
-                            </div>
-
-                            <div className='group'>
-                              <div className='flex justify-center group  hover:cursor-pointer'>
-                                <p className='text-black text-sm font-semibold'>
-                                  Cierre: 22/11/2021 16:02
-                                </p>
-                                <ICONS.ChevronDownIconO className='h-4 text-black' />
-                              </div>
-                              <div className=' px-2 py-2 text-blue-500  flex border-[1px] border-blue-500 mt-0.5'>
+                      <div className='ml-4'>
+                        <ol className=''>
+                          {consignas.map((consigna, index) => (
+                            <li
+                              key={index}
+                              className='w-full text-blue-500 border-2 border-gray-500'
+                            >
+                              <div className='flex justify-center flex-col items-center mt-2'>
                                 <p>
-                                  But I must explain to you how all this
-                                  mistaken idea of
+                                  <b className='text-black'>
+                                    {consigna.created}
+                                  </b>{' '}
+                                  {consigna.obs_creacion}
                                 </p>
+
+                                <div className='flex'>
+                                  <p className='text-black font-semibold text-center mr-2'>
+                                    Cierre: {consigna.fecha_obs_cierre}
+                                  </p>
+                                  <ICONS.ChevronDownIconO className='h-4 text-black pt-2' />
+                                </div>
                               </div>
-                            </div>
-                          </li>
-                          <li className='w-full px-2 py-2 text-gray-500 border-[1px] border-gray-500 mt-0.5'>
-                            <b className='text-black'>16:04</b> But I must
-                            explain to you how all this mistaken idea of
-                          </li>
-                          <li className='w-full px-2 py-2 text-gray-500 border-[1px] border-gray-500 mt-0.5'>
-                            <b className='text-black'>16:04</b> But I must
-                            explain to you how all this mistaken idea of
-                          </li>
-                          <li className='w-full px-2 py-2 text-gray-500 border-[1px] border-gray-500 mt-0.5'>
-                            <b className='text-black'>16:04</b> But I must
-                            explain to you how all this mistaken idea of
-                          </li>
+
+                              <div className='group'>
+                                <div className='text-blue-500 flex border-t-2 border-l-2 border-gray-500 justify-end py-8 ml-32 mt-4 px-8'>
+                                  <p>{consigna.obs_cierre}</p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
                         </ol>
-                      </div> */}
+                      </div>
                     </div>
                   </div>
 
