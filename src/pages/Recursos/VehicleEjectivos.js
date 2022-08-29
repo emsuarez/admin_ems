@@ -15,7 +15,6 @@ import vehiculosEjecutivosReportPDF from '../../reports/Recursos/vehiculosEjecut
 import {
   DeleteVehiculoEjecutivoAction,
   getAllVehiculosEjecutivoAction,
-  getEjecutivoAction,
   getVehiculoEjecutivoAction,
   UpdateVehicleEjecutivoAction,
 } from '../../store/actions'

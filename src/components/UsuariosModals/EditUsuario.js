@@ -92,10 +92,11 @@ const EditUsuario = ({
                     </div>
                     <div>
                       <input
+                        autoComplete='off'
                         type='text'
                         name='username'
                         id='username'
-                        className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
+                        className=' bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
                         placeholder='Usuario'
                         value={username}
                         onChange={e => setUsername(e.target.value)}
@@ -114,6 +115,7 @@ const EditUsuario = ({
                     </div>
                     <div>
                       <input
+                        autoComplete='off'
                         type='text'
                         name='nombres'
                         id='nombres'
@@ -136,6 +138,7 @@ const EditUsuario = ({
                     </div>
                     <div>
                       <input
+                       autoComplete='off'
                         type='text'
                         name='apellidos'
                         id='apellidos'

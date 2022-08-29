@@ -107,6 +107,9 @@ const Usuarios = () => {
                   </button>
                   <div className='flex flex-col ml-4'>
                     <input
+                      autoComplete='off'
+                      id='search'
+                      name='search'
                       placeholder='Buscar'
                       className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
                       onChange={e => {

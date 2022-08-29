@@ -1,7 +1,7 @@
 import { Box, Dialog } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getEjecutivoAction } from '../../store/actions'
+import { getAllEjecutivosAction } from '../../store/actions'
 
 const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
   const dispatch = useDispatch()
@@ -13,7 +13,7 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
   const [propietario, setPropietario] = useState()
 
   const [open, setOpen] = React.useState(false)
-  const cargarPropietarios = () => dispatch(getEjecutivoAction('allEjecutivos'))
+  const cargarPropietarios = () => dispatch(getAllEjecutivosAction())
 
   useEffect(() => {
     cargarPropietarios()
@@ -23,7 +23,7 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
     await cargarPropietarios()
     setOpen(true)
   }
-  const propietarios = useSelector(state => state.recursos.ejecutivo)
+  const propietarios = useSelector(state => state.recursos.allEjecutivos)
 
   const handleClose = () => {
     setOpen(false)

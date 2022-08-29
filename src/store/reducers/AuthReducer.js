@@ -93,7 +93,7 @@ export default (state = initialState, { type, payload }) => {
         isLoading: false,
         users: {
           ...state.users,
-          results: state.usuarios.results.map(dato => {
+          results: state.users.results.map(dato => {
             return dato.user_id === state.usuarioSeleccionado.id
               ? { ...dato, is_active: !dato.is_active }
               : { ...dato, dato }

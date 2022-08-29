@@ -9,7 +9,7 @@ import {
   RedirectWithoutLogin,
 } from '../../components'
 
-import { getInformeTrs } from '../../store/actions'
+import { getAllEjecutivosAction, getInformeTrs } from '../../store/actions'
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -17,11 +17,16 @@ import TextField from '@mui/material/TextField'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router-dom'
 const RecepcionTurno = () => {
   const dispatch = useDispatch()
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     dispatch(getInformeTrs())
+
+    dispatch(getAllEjecutivosAction())
   }, [dispatch])
 
   const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
@@ -31,6 +36,16 @@ const RecepcionTurno = () => {
   }
 
   const recepcionesTurnoData = useSelector(state => state.informes.informesTrs)
+  const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
+
+  const handleSearch = e => {
+    dispatch(getInformeTrs('/informetrs/?query=' + e.target.value))
+  }
+
+  const handleOpenViewInforme = informe => {
+    console.log(informe)
+    navigate('/ViewRecepcion', { state: informe })
+  }
 
   return (
     <>
@@ -57,78 +72,89 @@ const RecepcionTurno = () => {
                 <div>
                   <div className='flex justify-between align-middle text-center mt-4'>
                     <div className='ml-10 mt-2 mr-4 font-semibold'>Desde:</div>
-
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DateTimePicker
-                        inputProps={{
-                          style: {
-                            padding: `0.5rem 10px`,
-                            buttonColor: 'blue',
-                          },
-                          className:
-                            ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
-                        }}
-                        // label='Date Time picker'
-                        value={value}
-                        onChange={handleChange}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              svg: { color: '#26346E' },
-                              // input: { color },
-                              // label: { color },
-                            }}
-                          />
-                        )}
-                      />
-                    </LocalizationProvider>
+                    <div className='w-60'>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateTimePicker
+                          inputProps={{
+                            style: {
+                              padding: `0.5rem 10px`,
+                              buttonColor: 'blue',
+                            },
+                            className:
+                              ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
+                          }}
+                          // label='Date Time picker'
+                          value={value}
+                          onChange={handleChange}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              sx={{
+                                svg: { color: '#26346E' },
+                                // input: { color },
+                                // label: { color },
+                              }}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </div>
                   </div>
                   <div className='flex justify-between align-middle text-center mt-4'>
                     <div className='ml-10 mt-2 mr-4 font-semibold'>Hasta:</div>
-
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DateTimePicker
-                        inputProps={{
-                          style: {
-                            padding: `0.5rem 10px`,
-                            buttonColor: 'blue',
-                          },
-                          className:
-                            ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
-                        }}
-                        // label='Date Time picker'
-                        value={value}
-                        onChange={handleChange}
-                        renderInput={params => (
-                          <TextField
-                            {...params}
-                            sx={{
-                              svg: { color: '#26346E' },
-                              // input: { color },
-                              // label: { color },
-                            }}
-                          />
-                        )}
-                      />
-                    </LocalizationProvider>
+                    <div className='w-60'>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateTimePicker
+                          inputProps={{
+                            style: {
+                              padding: `0.5rem 10px`,
+                              buttonColor: 'blue',
+                            },
+                            className:
+                              ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
+                          }}
+                          // label='Date Time picker'
+                          value={value}
+                          onChange={handleChange}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              sx={{
+                                svg: { color: '#26346E' },
+                                // input: { color },
+                                // label: { color },
+                              }}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </div>
                   </div>
                   <div className='flex justify-between text-center mt-4'>
                     <div className='ml-10 mt-2 mr-4 font-semibold'>
                       Ejecutivo:
                     </div>
-                    <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
-                      <option value='cctv'>Cctv</option>
-                    </select>
+                    <div className='w-60'>
+                      <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
+                        {allEjecutivos.results.length > 0
+                          ? allEjecutivos.results.map(ejecutivo => (
+                              <option value={ejecutivo.id}>
+                                {ejecutivo.nombres}
+                              </option>
+                            ))
+                          : null}
+                      </select>
+                    </div>
                   </div>
                   <div className='flex justify-between align-middle text-center mt-4'>
                     <span className='ml-10 mt-2 mr-4 font-semibold text-white cursor-default'>
                       Buscar:
                     </span>
-
-                    <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base px-3 rounded-md w-full'>
-                      Buscar
-                    </button>
+                    <div className='w-60'>
+                      <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'>
+                        Buscar
+                      </button>
+                    </div>
                   </div>
                   <div></div>
                 </div>
@@ -155,9 +181,9 @@ const RecepcionTurno = () => {
                     <input
                       placeholder='Buscar'
                       className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
-                      // onChange={e => {
-                      //   handleSearch(e)
-                      // }}
+                      onChange={e => {
+                        handleSearch(e)
+                      }}
                     />
                   </div>
                 </div>
@@ -165,7 +191,7 @@ const RecepcionTurno = () => {
               <div className=' pt-4 p-16 flex flex-col'>
                 <RecepcionTurnoTable
                   data={recepcionesTurnoData}
-                  //   handleOpenEditModal={handleOpenEditModal}
+                  handleOpenViewInforme={handleOpenViewInforme}
                   //   handleOpenDeleteModal={handleOpenDeleteModal}
                 />
               </div>

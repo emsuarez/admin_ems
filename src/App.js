@@ -59,6 +59,7 @@ function App(props) {
           <Route path='trsdashboard' element={<TRSDashboard />} />
 
           <Route path='cctvdashboard' element={<CCTVDashboard />} />
+
           <Route path='cctv/diurno' element={<Diurno />} />
           <Route path='cctv/nocturno' element={<Nocturno />} />
           <Route path='cctv/historial' element={<Historial />} />

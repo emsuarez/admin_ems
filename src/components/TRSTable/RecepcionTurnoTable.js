@@ -2,20 +2,13 @@ import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   getGrupoFamiliarAction,
   UpdateEstadoFamiliarAction,
 } from '../../store/actions'
 
-
-
-const RecepcionTurnoTable = ({
-  data,
-  handleOpenEditModal,
-  handleOpenDeleteModal,
-  tipo,
-  handleOpenEditFamilyModal,
-}) => {
+const RecepcionTurnoTable = ({ data, handleOpenViewInforme }) => {
   useEffect(() => {
     console.log(data, 'data obtenida en la tabla de ifnormes trs')
   }, [])
@@ -54,16 +47,6 @@ const RecepcionTurnoTable = ({
     setCuentaHastaPagina(
       cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
     )
-  }
-
-  const handleChangeStatusFamiliar = data => {
-    const { id, is_active } = data
-    const nuevoStatus = {
-      clasificador: 'familiar',
-      id: id,
-      estado: is_active === true ? false : true,
-    }
-    dispatch(UpdateEstadoFamiliarAction(nuevoStatus))
   }
 
   return (
@@ -106,80 +89,9 @@ const RecepcionTurnoTable = ({
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.turno === 0 ? 'Nocturno' : 'Diurno'}
                   </td>
-
                   <button
-                    className='mt-2'
-                    onClick={() => handleChangeStatusFamiliar(item)}
+                  // onClick={() => handleOpenEditModal(item)}
                   >
-                    <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
-                      {item.is_active ? (
-                        <svg
-                          width='23'
-                          height='24'
-                          viewBox='0 0 23 24'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-5'
-                        >
-                          <path
-                            d='M11.0858 0.930908C4.96611 0.930908 -0.000610352 5.98223 -0.000610352 12.2062C-0.000610352 18.4301 4.96611 23.4815 11.0858 23.4815C17.2055 23.4815 22.1723 18.4301 22.1723 12.2062C22.1723 5.98223 17.2055 0.930908 11.0858 0.930908ZM8.86854 17.8438L3.32532 12.2062L4.88851 10.6164L8.86854 14.6529L17.2831 6.09498L18.8463 7.69607L8.86854 17.8438Z'
-                            fill='#128868'
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          width='23'
-                          height='23'
-                          viewBox='0 0 23 23'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-5'
-                        >
-                          <path
-                            d='M11.0858 0.208252C4.96611 0.208252 -0.000610352 5.25957 -0.000610352 11.4835C-0.000610352 17.7075 4.96611 22.7588 11.0858 22.7588C17.2055 22.7588 22.1723 17.7075 22.1723 11.4835C22.1723 5.25957 17.2055 0.208252 11.0858 0.208252ZM8.86854 17.1212L3.32532 11.4835L4.88851 9.89371L8.86854 13.9303L17.2831 5.37233L18.8463 6.97342L8.86854 17.1212Z'
-                            fill='#D61601'
-                          />
-                        </svg>
-                      )}
-                    </td>
-                  </button>
-
-                  {tipo !== 'modal' ? (
-                    <button onClick={() => handleOpenEditFamilyModal(item)}>
-                      <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  mx-auto hover:bg-gray-300 hover:rounded'>
-                        <svg
-                          width='25'
-                          height='18'
-                          viewBox='0 0 25 18'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-5'
-                        >
-                          <path
-                            d='M22.1729 5.35877V3.21526H20.1572V5.35877H18.1414V7.50228H20.1572V9.64579H22.1729V7.50228H24.1886V5.35877H22.1729Z'
-                            fill='black'
-                          />
-                          <path
-                            d='M8.06287 8.57403C10.2902 8.57403 12.0943 6.65559 12.0943 4.28702C12.0943 1.91844 10.2902 0 8.06287 0C5.8355 0 4.03143 1.91844 4.03143 4.28702C4.03143 6.65559 5.8355 8.57403 8.06287 8.57403ZM8.06287 2.14351C9.17151 2.14351 10.0786 3.10809 10.0786 4.28702C10.0786 5.46595 9.17151 6.43052 8.06287 6.43052C6.95422 6.43052 6.04715 5.46595 6.04715 4.28702C6.04715 3.10809 6.95422 2.14351 8.06287 2.14351Z'
-                            fill='black'
-                          />
-                          <path
-                            d='M8.06287 9.64579C5.37188 9.64579 0 11.0819 0 13.9328V17.1481H16.1257V13.9328C16.1257 11.0819 10.7538 9.64579 8.06287 9.64579ZM14.11 15.0046H2.01572V13.9435C2.21729 13.1719 5.34165 11.7893 8.06287 11.7893C10.7841 11.7893 13.9084 13.1719 14.11 13.9328V15.0046Z'
-                            fill='black'
-                          />
-                          <path
-                            d='M12.6083 0.0535879C13.5355 1.18965 14.11 2.66867 14.11 4.28702C14.11 5.90536 13.5355 7.38439 12.6083 8.52044C14.5837 8.25251 16.1257 6.47339 16.1257 4.28702C16.1257 2.10064 14.5837 0.321526 12.6083 0.0535879Z'
-                            fill='black'
-                          />
-                          <path
-                            d='M16.6599 10.5353C17.5569 11.4249 18.1414 12.5395 18.1414 13.9328V17.1481H20.1572V13.9328C20.1572 12.3788 18.5547 11.2427 16.6599 10.5353Z'
-                            fill='black'
-                          />
-                        </svg>
-                      </td>
-                    </button>
-                  ) : null}
-                  <button onClick={() => handleOpenEditModal(item)}>
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
                       <svg
                         width='17'
@@ -196,7 +108,18 @@ const RecepcionTurnoTable = ({
                       </svg>
                     </td>
                   </button>
-                  <button onClick={() => handleOpenDeleteModal(item)}>
+
+                  <button
+                    className='bg-blue-900 rounded-md mt-1 mx-1'
+                    onClick={() => handleOpenViewInforme(item)}
+                  >
+                    <td className='text-sm border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-blue-600 hover:rounded'>
+                      Ver
+                    </td>
+                  </button>
+                  <button
+                  // onClick={() => handleOpenDeleteModal(item)}
+                  >
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded'>
                       <svg
                         width='13'
