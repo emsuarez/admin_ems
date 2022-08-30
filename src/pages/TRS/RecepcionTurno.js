@@ -19,15 +19,16 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 const RecepcionTurno = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const navigate = useNavigate()
-
   useEffect(() => {
-    dispatch(getInformeTrs())
-
-    dispatch(getAllEjecutivosAction())
-  }, [dispatch])
+    const obtenerInfoVista = async () => {
+      await dispatch(getInformeTrs())
+      await dispatch(getAllEjecutivosAction())
+    }
+    obtenerInfoVista()
+  }, [])
 
   const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
 
@@ -141,7 +142,7 @@ const RecepcionTurno = () => {
                     </div>
                     <div className='w-60'>
                       <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
-                        {allEjecutivos.results.length > 0
+                        {Object.keys(allEjecutivos).length > 0
                           ? allEjecutivos.results.map(ejecutivo => (
                               <option value={ejecutivo.id}>
                                 {ejecutivo.nombres}
