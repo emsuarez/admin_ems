@@ -1,5 +1,4 @@
 import { Box, Dialog } from '@mui/material'
-import {} from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllEjecutivosAction, getEjecutivoAction } from '../../store/actions'
@@ -22,7 +21,8 @@ const EditVehicle = ({
   const [propietario, setPropietario] = useState()
 
   useEffect(() => {
-    if (tipoComponente !== 'vehiculoProtector') dispatch(getAllEjecutivosAction())
+    if (tipoComponente !== 'vehiculoProtector')
+      dispatch(getAllEjecutivosAction())
   }, [])
 
   const propietarios = useSelector(state => state.recursos.allEjecutivos)

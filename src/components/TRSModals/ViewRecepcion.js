@@ -7,6 +7,7 @@ import {
 } from '../../components'
 import logo from '../../assets/logo.png'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 
 const ViewRecepcion = () => {
   const navigate = useNavigate()
@@ -299,6 +300,9 @@ const ViewRecepcion = () => {
                 Salir
               </button>
             </div>
+            <CrearEditarModalGenerico
+            
+            />
           </>
         )}
       </div>

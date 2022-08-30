@@ -8,6 +8,8 @@ import {
 import logo from '../../assets/logo.png'
 import { MetaTags } from 'react-meta-tags'
 import { useLocation, useNavigate } from 'react-router-dom'
+import CrearEditarModalGenerico from './CrearEditarModalGenerico'
+import EliminarModalGenerico from './EliminarModalGenerico'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()
@@ -18,6 +20,31 @@ const EditRecepcion = () => {
   const [consignas, setConsignas] = useState([])
   const [agenteSaliente, setAgenteSaliente] = useState('')
   const [agenteEntrante, setAgenteEntrante] = useState('')
+
+  const [openModalAgregarProtector, setOpenModalAgregarProtector] =
+    useState(false)
+  const [openModalEditarProtector, setOpenModalEditarProtector] =
+    useState(false)
+  const [openModalEliminarProtector, setOpenModalEliminarProtector] =
+    useState(false)
+
+  const [openModalAgregarCentralista, setOpenModalAgregarCentralista] =
+    useState(false)
+  const [openModalEditarCentralista, setOpenModalEditarCentralista] =
+    useState(false)
+  const [openModalEliminarCentralista, setOpenModalEliminarCentralista] =
+    useState(false)
+
+  const [openModalAgregarNovedad, setOpenModalAgregarNovedad] = useState(false)
+  const [openModalEditarNovedad, setOpenModalEditarNovedad] = useState(false)
+  const [openModalEliminarNovedad, setOpenModalEliminarNovedad] =
+    useState(false)
+
+  const [openModalAgregarConsigna, setOpenModalAgregarConsigna] =
+    useState(false)
+  const [openModalEditarConsigna, setOpenModalEditarConsigna] = useState(false)
+  const [openModalEliminarConsigna, setOpenModalEliminarConsigna] =
+    useState(false)
 
   useEffect(() => {
     console.log(location.state, 'dataInforme')
@@ -40,6 +67,155 @@ const EditRecepcion = () => {
   const handleSalir = () => {
     navigate(-1)
   }
+
+  // CRUD Protectores
+  const handleOpenAgregarProtector = () => {
+    setOpenModalAgregarProtector(true)
+  }
+
+  const handleCloseAgregarProtector = () => {
+    setOpenModalAgregarProtector(false)
+  }
+
+  const handleAgregarProtector = () => {
+    setOpenModalAgregarProtector(false)
+  }
+
+  const handleOpenEditarProtector = () => {
+    setOpenModalEditarProtector(true)
+  }
+
+  const handleCloseEditarProtector = () => {
+    setOpenModalEditarProtector(false)
+  }
+
+  const handleEditarProtector = () => {
+    setOpenModalEditarProtector(false)
+  }
+
+  const handleOpenEliminarProtector = () => {
+    setOpenModalEliminarProtector(true)
+  }
+
+  const handleCloseEliminarProtector = () => {
+    setOpenModalEliminarProtector(false)
+  }
+
+  const handleEliminarProtector = () => {
+    setOpenModalEliminarProtector(false)
+  }
+
+  // CRUD Centralistas
+  const handleOpenAgregarCentralista = () => {
+    setOpenModalAgregarCentralista(true)
+  }
+
+  const handleCloseAgregarCentralista = () => {
+    setOpenModalAgregarCentralista(false)
+  }
+
+  const handleAgregarCentralista = () => {
+    setOpenModalAgregarCentralista(false)
+  }
+
+  const handleOpenEditarCentralista = () => {
+    setOpenModalEditarCentralista(true)
+  }
+
+  const handleCloseEditarCentralista = () => {
+    setOpenModalEditarCentralista(false)
+  }
+
+  const handleEditarCentralista = () => {
+    setOpenModalEditarCentralista(false)
+  }
+
+  const handleOpenEliminarCentralista = () => {
+    setOpenModalEliminarCentralista(true)
+  }
+
+  const handleCloseEliminarCentralista = () => {
+    setOpenModalEliminarCentralista(false)
+  }
+
+  const handleEliminarCentralista = () => {
+    setOpenModalEliminarCentralista(false)
+  }
+
+  // CRUD Novedades
+  const handleOpenAgregarNovedad = () => {
+    setOpenModalAgregarNovedad(true)
+  }
+
+  const handleCloseAgregarNovedad = () => {
+    setOpenModalAgregarNovedad(false)
+  }
+
+  const handleAgregarNovedad = () => {
+    setOpenModalAgregarNovedad(false)
+  }
+
+  const handleOpenEditarNovedad = () => {
+    setOpenModalEditarNovedad(true)
+  }
+
+  const handleCloseEditarNovedad = () => {
+    setOpenModalEditarNovedad(false)
+  }
+
+  const handleEditarNovedad = () => {
+    setOpenModalEditarNovedad(false)
+  }
+
+  const handleOpenEliminarNovedad = () => {
+    setOpenModalEliminarNovedad(true)
+  }
+
+  const handleCloseEliminarNovedad = () => {
+    setOpenModalEliminarNovedad(false)
+  }
+
+  const handleEliminarNovedad = () => {
+    setOpenModalEliminarNovedad(false)
+  }
+
+  // CRUD Consignas
+  const handleOpenAgregarConsigna = () => {
+    setOpenModalAgregarConsigna(true)
+  }
+
+  const handleCloseAgregarConsigna = () => {
+    setOpenModalAgregarConsigna(false)
+  }
+
+  const handleAgregarConsigna = () => {
+    setOpenModalAgregarConsigna(false)
+  }
+
+  const handleOpenEditarConsigna = () => {
+    setOpenModalEditarConsigna(true)
+  }
+
+  const handleCloseEditarConsigna = () => {
+    setOpenModalEditarConsigna(false)
+  }
+
+  const handleEditarConsigna = () => {
+    setOpenModalEditarConsigna(false)
+  }
+
+  const handleOpenEliminarConsigna = () => {
+    setOpenModalEliminarConsigna(true)
+  }
+
+  const handleCloseEliminarConsigna = () => {
+    setOpenModalEliminarConsigna(false)
+  }
+
+  const handleEliminarConsigna = () => {
+    setOpenModalEliminarConsigna(false)
+  }
+
   return (
     <>
       <div>
@@ -63,7 +239,7 @@ const EditRecepcion = () => {
             <div className='flex justify-center items-center'>
               {/* <ICONS.ChevronDoubleLeftIconO className='h-14 mt-[32vh] mx-14 text-gray-400 hover:cursor-pointer' /> */}
               <div className='mx-14 text-gray-400 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                <svg
+                {/* <svg
                   width='73'
                   height='112'
                   viewBox='0 0 73 112'
@@ -76,7 +252,7 @@ const EditRecepcion = () => {
                     stroke='black'
                     stroke-width='3'
                   />
-                </svg>
+                </svg> */}
               </div>
               <div className='flex justify-center bg-white'>
                 <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm py-8'>
@@ -120,8 +296,17 @@ const EditRecepcion = () => {
                         <h2 className='font-semibold text-center mx-auto'>
                           GRUPO DE PROTECCION GUARDIA
                         </h2>
-
-                        <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        <button onClick={handleOpenAgregarProtector}>
+                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        </button>
+                        <CrearEditarModalGenerico
+                          tipoModal='crear'
+                          openModal={openModalAgregarProtector}
+                          handleClose={handleCloseAgregarProtector}
+                          tituloModal='Crear personal de Protección Guardia'
+                          descripcionModal='A continuación escriba el nombre del agente:'
+                          handleAction={handleAgregarProtector}
+                        />
                       </div>
 
                       <div>
@@ -139,36 +324,44 @@ const EditRecepcion = () => {
                                   <div className='flex flex-row justify-between'>
                                     <p className='font-semibold'>{protector}</p>
                                     <div className='flex flex-row '>
-                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                        <svg
-                                          width='17'
-                                          height='15'
-                                          viewBox='0 0 17 15'
-                                          fill='none'
-                                          xmlns='http://www.w3.org/2000/svg'
-                                          className='h-5 mx-1 '
-                                        >
-                                          <path
-                                            d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                                            fill='#128868'
-                                          />
-                                        </svg>
-                                      </div>
-                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                        <svg
-                                          width='13'
-                                          height='17'
-                                          viewBox='0 0 13 17'
-                                          fill='none'
-                                          xmlns='http://www.w3.org/2000/svg'
-                                          className='h-5 mx-1'
-                                        >
-                                          <path
-                                            d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                                            fill='#D61601'
-                                          />
-                                        </svg>
-                                      </div>
+                                      <button
+                                        onClick={handleOpenEditarProtector}
+                                      >
+                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                          <svg
+                                            width='17'
+                                            height='15'
+                                            viewBox='0 0 17 15'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-5 mx-1 '
+                                          >
+                                            <path
+                                              d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
+                                              fill='#128868'
+                                            />
+                                          </svg>
+                                        </div>
+                                      </button>
+                                      <button
+                                        onClick={handleOpenEliminarProtector}
+                                      >
+                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                          <svg
+                                            width='13'
+                                            height='17'
+                                            viewBox='0 0 13 17'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-5 mx-1'
+                                          >
+                                            <path
+                                              d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
+                                              fill='#D61601'
+                                            />
+                                          </svg>
+                                        </div>
+                                      </button>
                                     </div>
                                   </div>
                                 </li>
@@ -180,6 +373,21 @@ const EditRecepcion = () => {
                                 </p>
                               </li>
                             )}
+                            <CrearEditarModalGenerico
+                              tipoModal='actualizar'
+                              openModal={openModalEditarProtector}
+                              handleClose={handleCloseEditarProtector}
+                              tituloModal='Editar personal de Grupo de protección Guardia'
+                              descripcionModal='Edite el nombre del agente:'
+                              handleAction={handleEditarProtector}
+                            />
+                            <EliminarModalGenerico
+                              openModal={openModalEliminarProtector}
+                              handleClose={handleCloseEliminarProtector}
+                              tituloModal='Eliminar agente de Grupo de protección Guardia'
+                              descripcionModal='Al eliminar un agente, sera de forma definitiva y sin posiblidad de recuperación'
+                              handleAction={handleEliminarProtector}
+                            />
                           </div>
                         </ol>
                       </div>
@@ -191,7 +399,17 @@ const EditRecepcion = () => {
                         <h2 className='font-semibold text-center mx-auto'>
                           GRUPO DE TRABAJO
                         </h2>{' '}
-                        <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        <button onClick={handleOpenAgregarCentralista}>
+                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        </button>
+                        <CrearEditarModalGenerico
+                          tipoModal='crear'
+                          openModal={openModalAgregarCentralista}
+                          handleClose={handleCloseAgregarCentralista}
+                          tituloModal='Crear personal de Trabajo'
+                          descripcionModal='A continuación escriba el nombre del agente:'
+                          handleAction={handleAgregarCentralista}
+                        />
                       </div>
                       <div>
                         <ol
@@ -210,36 +428,44 @@ const EditRecepcion = () => {
                                       {centralista}
                                     </p>
                                     <div className='flex flex-row'>
-                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                        <svg
-                                          width='17'
-                                          height='15'
-                                          viewBox='0 0 17 15'
-                                          fill='none'
-                                          xmlns='http://www.w3.org/2000/svg'
-                                          className='h-5 mx-1'
-                                        >
-                                          <path
-                                            d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                                            fill='#128868'
-                                          />
-                                        </svg>
-                                      </div>
-                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                        <svg
-                                          width='13'
-                                          height='17'
-                                          viewBox='0 0 13 17'
-                                          fill='none'
-                                          xmlns='http://www.w3.org/2000/svg'
-                                          className='h-5 mx-1'
-                                        >
-                                          <path
-                                            d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                                            fill='#D61601'
-                                          />
-                                        </svg>
-                                      </div>
+                                      <button
+                                        onClick={handleOpenEditarCentralista}
+                                      >
+                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                          <svg
+                                            width='17'
+                                            height='15'
+                                            viewBox='0 0 17 15'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-5 mx-1'
+                                          >
+                                            <path
+                                              d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
+                                              fill='#128868'
+                                            />
+                                          </svg>
+                                        </div>
+                                      </button>
+                                      <button
+                                        onClick={handleOpenEliminarCentralista}
+                                      >
+                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                          <svg
+                                            width='13'
+                                            height='17'
+                                            viewBox='0 0 13 17'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-5 mx-1'
+                                          >
+                                            <path
+                                              d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
+                                              fill='#D61601'
+                                            />
+                                          </svg>
+                                        </div>
+                                      </button>
                                     </div>
                                   </div>
                                 </li>
@@ -249,6 +475,21 @@ const EditRecepcion = () => {
                                 <p>No se han registrado centralistas</p>
                               </li>
                             )}
+                            <CrearEditarModalGenerico
+                              tipoModal='actualizar'
+                              openModal={openModalEditarCentralista}
+                              handleClose={handleCloseEditarCentralista}
+                              tituloModal='Editar personal de Grupo de trabajo'
+                              descripcionModal='Edite el nombre del agente:'
+                              handleAction={handleEditarCentralista}
+                            />
+                            <EliminarModalGenerico
+                              openModal={openModalEliminarCentralista}
+                              handleClose={handleCloseEliminarCentralista}
+                              tituloModal='Eliminar agente de Grupo de Trabajo'
+                              descripcionModal='Al eliminar un agente, sera de forma definitiva y sin posiblidad de recuperación'
+                              handleAction={handleEliminarCentralista}
+                            />
                           </div>
                         </ol>
                       </div>
@@ -263,7 +504,17 @@ const EditRecepcion = () => {
                         <h2 className='font-semibold text-center mx-auto'>
                           NOVEDADES ESPECIALES
                         </h2>
-                        <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        <button onClick={handleOpenAgregarNovedad}>
+                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        </button>
+                        <CrearEditarModalGenerico
+                          tipoModal='crearTextArea'
+                          openModal={openModalAgregarNovedad}
+                          handleClose={handleCloseAgregarNovedad}
+                          tituloModal='Crear Novedad Especial'
+                          descripcionModal='A continuación escriba la nueva novedad:'
+                          handleAction={handleAgregarNovedad}
+                        />
                       </div>
                       <div>
                         <ol className='border-2 border-gray-500'>
@@ -277,40 +528,59 @@ const EditRecepcion = () => {
                                   - {novedad.observacion}
                                 </p>
                                 <div className='flex flex-col'>
-                                  <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                    <svg
-                                      width='17'
-                                      height='15'
-                                      viewBox='0 0 17 15'
-                                      fill='none'
-                                      xmlns='http://www.w3.org/2000/svg'
-                                      className='h-5 mx-1'
-                                    >
-                                      <path
-                                        d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                                        fill='#128868'
-                                      />
-                                    </svg>
-                                  </div>
-                                  <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                    <svg
-                                      width='13'
-                                      height='17'
-                                      viewBox='0 0 13 17'
-                                      fill='none'
-                                      xmlns='http://www.w3.org/2000/svg'
-                                      className='h-5 mx-1'
-                                    >
-                                      <path
-                                        d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                                        fill='#D61601'
-                                      />
-                                    </svg>
-                                  </div>
+                                  <button onClick={handleOpenEditarNovedad}>
+                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                      <svg
+                                        width='17'
+                                        height='15'
+                                        viewBox='0 0 17 15'
+                                        fill='none'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        className='h-5 mx-1'
+                                      >
+                                        <path
+                                          d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
+                                          fill='#128868'
+                                        />
+                                      </svg>
+                                    </div>
+                                  </button>
+                                  <button onClick={handleOpenEliminarNovedad}>
+                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                      <svg
+                                        width='13'
+                                        height='17'
+                                        viewBox='0 0 13 17'
+                                        fill='none'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        className='h-5 mx-1'
+                                      >
+                                        <path
+                                          d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
+                                          fill='#D61601'
+                                        />
+                                      </svg>
+                                    </div>
+                                  </button>
                                 </div>
                               </div>
                             </li>
                           ))}
+                          <CrearEditarModalGenerico
+                            tipoModal='actualizarTextArea'
+                            openModal={openModalEditarNovedad}
+                            handleClose={handleCloseEditarNovedad}
+                            tituloModal='Editar Novedad Especial'
+                            descripcionModal='Edite la novedad especial:'
+                            handleAction={handleEditarNovedad}
+                          />
+                          <EliminarModalGenerico
+                            openModal={openModalEliminarNovedad}
+                            handleClose={handleCloseEliminarNovedad}
+                            tituloModal='Eliminar Novedad Especial'
+                            descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
+                            handleAction={handleEliminarNovedad}
+                          />
                         </ol>
                       </div>
                     </div>
@@ -321,7 +591,17 @@ const EditRecepcion = () => {
                         <h2 className='font-semibold text-center mx-auto'>
                           CONSIGNAS ESPECIALES
                         </h2>
-                        <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        <button onClick={handleOpenAgregarConsigna}>
+                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                        </button>
+                        <CrearEditarModalGenerico
+                          tipoModal='crearTextArea'
+                          openModal={openModalAgregarConsigna}
+                          handleClose={handleCloseAgregarConsigna}
+                          tituloModal='Crear Consigna Especial'
+                          descripcionModal='A continuación escriba la nueva consigna:'
+                          handleAction={handleAgregarConsigna}
+                        />
                       </div>
 
                       <div className='ml-4'>
@@ -338,36 +618,44 @@ const EditRecepcion = () => {
                                       {consigna.obs_creacion}
                                     </div>
                                     <div>
-                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                        <svg
-                                          width='17'
-                                          height='15'
-                                          viewBox='0 0 17 15'
-                                          fill='none'
-                                          xmlns='http://www.w3.org/2000/svg'
-                                          className='h-5 mx-1'
-                                        >
-                                          <path
-                                            d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                                            fill='#128868'
-                                          />
-                                        </svg>
-                                      </div>
-                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                        <svg
-                                          width='13'
-                                          height='17'
-                                          viewBox='0 0 13 17'
-                                          fill='none'
-                                          xmlns='http://www.w3.org/2000/svg'
-                                          className='h-5 mx-1'
-                                        >
-                                          <path
-                                            d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                                            fill='#D61601'
-                                          />
-                                        </svg>
-                                      </div>
+                                      <button
+                                        onClick={handleOpenEditarConsigna}
+                                      >
+                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                          <svg
+                                            width='17'
+                                            height='15'
+                                            viewBox='0 0 17 15'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-5 mx-1'
+                                          >
+                                            <path
+                                              d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
+                                              fill='#128868'
+                                            />
+                                          </svg>
+                                        </div>
+                                      </button>
+                                      <button
+                                        onClick={handleOpenEliminarConsigna}
+                                      >
+                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                          <svg
+                                            width='13'
+                                            height='17'
+                                            viewBox='0 0 13 17'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-5 mx-1'
+                                          >
+                                            <path
+                                              d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
+                                              fill='#D61601'
+                                            />
+                                          </svg>
+                                        </div>
+                                      </button>
                                     </div>
                                   </div>
                                   {consigna.obs_cierre ? (
@@ -462,6 +750,21 @@ const EditRecepcion = () => {
                               </div>
                             </li>
                           ))}
+                          <CrearEditarModalGenerico
+                            tipoModal='actualizarTextArea'
+                            openModal={openModalEditarConsigna}
+                            handleClose={handleCloseEditarConsigna}
+                            tituloModal='Editar Consigna Especial'
+                            descripcionModal='Edite la novedad especial:'
+                            handleAction={handleEditarNovedad}
+                          />
+                          <EliminarModalGenerico
+                            openModal={openModalEliminarConsigna}
+                            handleClose={handleCloseEliminarConsigna}
+                            tituloModal='Eliminar Consigna Especial'
+                            descripcionModal='Al eliminar una consigna, esta se eliminara con la observación de cierre de ser el caso, sera de forma definitiva y sin posiblidad de recuperación.'
+                            handleAction={handleEliminarConsigna}
+                          />
                         </ol>
                       </div>
                     </div>
@@ -500,7 +803,7 @@ const EditRecepcion = () => {
               </div>
               {/* <ICONS.ChevronDoubleRightIconO className='mx-14 h-14 mt-[32vh] text-gray-400 hover:cursor-pointer' /> */}
               <div className='mx-14 text-gray-400 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                <svg
+                {/* <svg
                   width='72'
                   height='112'
                   viewBox='0 0 72 112'
@@ -513,7 +816,7 @@ const EditRecepcion = () => {
                     stroke='black'
                     stroke-width='3'
                   />
-                </svg>
+                </svg> */}
               </div>
               <button
                 className='self-end mb-20 bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'

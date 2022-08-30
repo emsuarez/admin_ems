@@ -31,3 +31,31 @@ export const getInformeTrs = (enlacePaginacion = '/informetrs/') => {
     }
   }
 }
+
+export const deleteInformeTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.DELETE_INFORMETRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.delete('/informetrs/', {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+        data: data,
+      })
+
+      const result = respuesta.data
+      
+      dispatch({ type: types.DELETE_INFORMETRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Informe eliminado correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.DELETE_INFORMETRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}

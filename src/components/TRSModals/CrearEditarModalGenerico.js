@@ -1,5 +1,5 @@
-import { Dialog } from '@mui/material'
-import { Box } from '@mui/system'
+import { Dialog, Box } from '@mui/material'
+
 import React, { useState } from 'react'
 
 const CrearEditarModalGenerico = ({
@@ -12,6 +12,9 @@ const CrearEditarModalGenerico = ({
   itemSeleccionado,
 }) => {
   const [nuevoValor, setNuevoValor] = useState('')
+  const handleEjectAndClean = () => {
+    handleAction()
+  }
   return (
     <div>
       <Dialog
@@ -37,25 +40,39 @@ const CrearEditarModalGenerico = ({
                   <h2>{descripcionModal}</h2>
 
                   <div className='flex flex-col mx-3'>
-                    <div className='flex justify-between'>
+                    {/* <div className='flex justify-between'>
                       <label
                         for='alias'
                         className='block text-sm font-medium text-gray-900 '
                       >
                         Alias<span className='text-red-600'>*</span>:
                       </label>
-                    </div>
+                    </div> */}
                     <div>
-                      <input
-                        type='text'
-                        name='alias'
-                        id='alias'
-                        className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
-                        placeholder='Alias'
-                        value={nuevoValor}
-                        onChange={e => setNuevoValor(e.target.value)}
-                        required
-                      />
+                      {tipoModal === 'crearTextArea' ||
+                      tipoModal === 'actualizarTextArea' ? (
+                        <textarea
+                          type='text'
+                          name='alias'
+                          id='alias'
+                          className='mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
+                          placeholder=''
+                          value={nuevoValor}
+                          onChange={e => setNuevoValor(e.target.value)}
+                          required
+                        />
+                      ) : (
+                        <input
+                          type='text'
+                          name='alias'
+                          id='alias'
+                          className='mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
+                          placeholder=''
+                          value={nuevoValor}
+                          onChange={e => setNuevoValor(e.target.value)}
+                          required
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -65,17 +82,19 @@ const CrearEditarModalGenerico = ({
                     data-modal-toggle='defaultModal'
                     type='button'
                     className=' text-white bg-blue-900 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
-                    // onClick={() => {
-                    //   handleEjectAndClean()
-                    // }}
+                    onClick={() => {
+                      handleEjectAndClean()
+                    }}
                   >
-                    {tipoModal === 'crear' ? 'Crear' : 'Actualizar'}
+                    {tipoModal === 'crear' || tipoModal === 'crearTextArea'
+                      ? 'Crear'
+                      : 'Actualizar'}
                   </button>
                   <button
                     data-modal-toggle='defaultModal'
                     type='button'
                     className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
-                    onClick={handleClose}
+                    onClick={() => handleClose()}
                   >
                     Cancelar
                   </button>

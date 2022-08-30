@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
@@ -9,7 +9,11 @@ import {
   RedirectWithoutLogin,
 } from '../../components'
 
-import { getAllEjecutivosAction, getInformeTrs } from '../../store/actions'
+import {
+  deleteInformeTRSAction,
+  getAllEjecutivosAction,
+  getInformeTrs,
+} from '../../store/actions'
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -18,9 +22,13 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
+import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 const RecepcionTurno = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [itemEliminar, setItemEliminar] = useState('')
 
   useEffect(() => {
     const obtenerInfoVista = async () => {
@@ -51,6 +59,22 @@ const RecepcionTurno = () => {
   const handleOpenEditInforme = informe => {
     console.log(informe)
     navigate('/editrecepcion', { state: informe })
+  }
+
+  const handleOpenDeleteActa = itemEliminar => {
+    console.log(itemEliminar, 'itemEliminar')
+    setOpenDeleteModal(true)
+    setItemEliminar(itemEliminar)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleDeleteActa = acta => {
+    dispatch(deleteInformeTRSAction({ id: acta.id }))
+    console.log(acta, 'acta')
+    setOpenDeleteModal(false)
   }
 
   return (
@@ -199,35 +223,22 @@ const RecepcionTurno = () => {
                   data={recepcionesTurnoData}
                   handleOpenViewInforme={handleOpenViewInforme}
                   handleOpenEditInforme={handleOpenEditInforme}
+                  handleOpenDeleteActa={handleOpenDeleteActa}
                 />
               </div>
             </div>
             {/* Modales */}
-            {/* <EditEjecutivo
-              tituloModal={'Editar Ejecutivo'}
-              descripcionModal={'Edita los datos del ejecutivo seleccionado.'}
-              openModal={openEditModal}
-              handleClose={handleCloseEditModal}
-              handleAction={handleEditarEjecutivo}
-              itemEditar={itemEditar}
-            />
-            <DeleteEjecutivo
-              tipo='Ejecutivo'
-              tituloModal={'Eliminar Ejecutivo'}
+
+            <EliminarModalGenerico
+              tituloModal={'Eliminar Acta de Entrega y Recepción'}
               descripcionModal={
-                'Estas seguro de la eliminación de los datos del ejecutivo, se eliminarán tambien datos asociados con el ejecutivo como:'
+                ' Al eliminar una Acta, sera de forma definitiva y sin posibilidad de recuperación.'
               }
               openModal={openDeleteModal}
               handleClose={handleCloseDeleteModal}
-              handleAction={handleDeleteEjecutivo}
+              handleAction={handleDeleteActa}
               itemEliminar={itemEliminar}
             />
-            <EditFamilyModal
-              tituloModal={'Editar Vínculo Familiar'}
-              openModal={openEditFamiliarModal}
-              handleClose={handleCloseEditFamiliarModal}
-              id_ejecutivo={itemEditarFamily}
-            /> */}
           </>
         )}
       </div>

@@ -12,6 +12,7 @@ const RecepcionTurnoTable = ({
   data,
   handleOpenViewInforme,
   handleOpenEditInforme,
+  handleOpenDeleteActa,
 }) => {
   useEffect(() => {
     console.log(data, 'data obtenida en la tabla de ifnormes trs')
@@ -119,9 +120,7 @@ const RecepcionTurnoTable = ({
                       Ver
                     </td>
                   </button>
-                  <button
-                  // onClick={() => handleOpenEditInforme(item)}
-                  >
+                  <button onClick={() => handleOpenDeleteActa(item)}>
                     <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded'>
                       <svg
                         width='13'

@@ -11,6 +11,9 @@ const EliminarModalGenerico = ({
   handleAction,
   itemEliminar,
 }) => {
+  const handleEjectAction = () => {
+    handleAction(itemEliminar)
+  }
   return (
     <>
       <Modal
@@ -31,14 +34,6 @@ const EliminarModalGenerico = ({
                 <div className='flex justify-between items-start px-4 py-2 rounded-t border-b'>
                   <ICONS.ExclamationIconS className='w-14 pt-2 hover:cursor-pointer px-4 text-red-600 ' />
                   <h1 className='text-2xl font-bold'>{tituloModal}</h1>
-                  {/* <button
-              type='button'
-              className='bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center'
-              data-modal-toggle='defaultModal'
-              onClick={handleClose}
-            >
-              <span className='sr-only'>Cerrar modal</span>
-            </button> */}
                 </div>
 
                 <div className='px-6 pt-2 space-y-3'>
@@ -50,7 +45,7 @@ const EliminarModalGenerico = ({
                     data-modal-toggle='defaultModal'
                     type='button'
                     className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
-                    // onClick={handleEjectAction}
+                    onClick={handleEjectAction}
                   >
                     Eliminar
                   </button>
@@ -58,7 +53,7 @@ const EliminarModalGenerico = ({
                     data-modal-toggle='defaultModal'
                     type='button'
                     className=' text-white bg-blue-900 hover:bg-blue-700  focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
-                    // onClick={handleClose}
+                    onClick={handleClose}
                   >
                     Cancelar
                   </button>
