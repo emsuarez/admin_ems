@@ -19,7 +19,6 @@ const ViewRecepcion = () => {
   const [agenteEntrante, setAgenteEntrante] = useState('')
 
   useEffect(() => {
-    console.log(location.state, 'dataInforme')
     setProtectores(
       location.state.protectores !== null
         ? location.state.protectores.split(',') || []
@@ -126,7 +125,7 @@ const ViewRecepcion = () => {
                           className='pl-6'
                         >
                           <div className='border-2 border-gray-500 rounded-md'>
-                            {protectores.length > 0 ? (
+                            {protectores ? (
                               protectores.map((protector, index) => (
                                 <li
                                   key={index}
@@ -159,7 +158,7 @@ const ViewRecepcion = () => {
                           className='pl-6'
                         >
                           <div className='border-2 border-gray-500 rounded-md'>
-                            {centralistas.length > 0 ? (
+                            {centralistas ? (
                               centralistas.map((centralista, index) => (
                                 <li
                                   key={index}
