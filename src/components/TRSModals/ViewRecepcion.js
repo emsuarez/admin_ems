@@ -10,10 +10,13 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 
 import { format } from 'date-fns'
+import { useDispatch, useSelector } from 'react-redux'
+import { getInformeTrs } from '../../store/actions'
 
 const ViewRecepcion = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
   const [novedades, setNovedades] = useState([])
@@ -21,25 +24,48 @@ const ViewRecepcion = () => {
   const [agenteSaliente, setAgenteSaliente] = useState('')
   const [agenteEntrante, setAgenteEntrante] = useState('')
 
+  const [dataInformeActual, setDataInformeActual] = useState(location.state)
   useEffect(() => {
-    setProtectores(
-      location.state.protectores !== null
-        ? location.state.protectores.split(',') || []
-        : []
-    )
-    setCentralistas(
-      location.state.centralistas !== null
-        ? location.state.centralistas.split(',') || []
-        : []
-    )
-    setNovedades(location.state.trsnovedad || [])
-    setConsignas(location.state.trsconsigna || [])
-    setAgenteSaliente(location.state.agente_saliente || '')
-    setAgenteEntrante(location.state.agente_entrante || '')
-  }, [])
+    const obtenerInfoVista = () => {
+      setProtectores(
+        dataInformeActual.protectores !== null
+          ? dataInformeActual.protectores.split(',') || []
+          : []
+      )
+      setCentralistas(
+        dataInformeActual.centralistas !== null
+          ? dataInformeActual.centralistas.split(',') || []
+          : []
+      )
+      setNovedades(dataInformeActual.trsnovedad || [])
+      setConsignas(dataInformeActual.trsconsigna || [])
+      setAgenteSaliente(dataInformeActual.agente_saliente || '')
+      setAgenteEntrante(dataInformeActual.agente_entrante || '')
+    }
+    obtenerInfoVista()
+    console.log(dataInformeActual, 'dataInformeActual')
+    console.log(location.state, 'location.state')
+  }, [dataInformeActual])
 
   const handleSalir = () => {
     navigate(-1)
+  }
+
+  const handleInformeAnterior = () => {
+    dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=0`))
+    setDataInformeActual(informeActual.results[0])
+
+    console.log(informeActual.results[0], 'dataInformeActual PREVIOUS')
+  }
+
+  const informeActual = useSelector(state => state.informes.informesTrs)
+
+  const handleSiguienteInforme = () => {
+    dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=1`))
+
+    setDataInformeActual(informeActual.results[0])
+
+    console.log(informeActual.results[0], 'dataInformeActual NEXT')
   }
 
   return (
@@ -65,20 +91,22 @@ const ViewRecepcion = () => {
             <div className='flex justify-center items-center'>
               {/* <ICONS.ChevronDoubleLeftIconO className='h-14 mt-[32vh] mx-14 text-gray-400 hover:cursor-pointer' /> */}
               <div className='mx-auto text-gray-400 hover:cursor-pointer'>
-                <svg
-                  width='73'
-                  height='112'
-                  viewBox='0 0 73 112'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M3.71666 59.178C1.9906 57.7879 1.97474 55.1638 3.68386 53.7529L65.2718 2.91192C67.5544 1.02765 71 2.65123 71 5.61105L71 106.053C71 108.993 67.5945 110.623 65.3047 108.779L3.71666 59.178Z'
-                    fill='white'
-                    stroke='black'
-                    stroke-width='3'
-                  />
-                </svg>
+                <button onClick={() => handleInformeAnterior()}>
+                  <svg
+                    width='73'
+                    height='112'
+                    viewBox='0 0 73 112'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M3.71666 59.178C1.9906 57.7879 1.97474 55.1638 3.68386 53.7529L65.2718 2.91192C67.5544 1.02765 71 2.65123 71 5.61105L71 106.053C71 108.993 67.5945 110.623 65.3047 108.779L3.71666 59.178Z'
+                      fill='white'
+                      stroke='black'
+                      stroke-width='3'
+                    />
+                  </svg>
+                </button>
               </div>
               <div className='flex justify-center bg-white'>
                 <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm py-8 w-[67rem]'>
@@ -111,7 +139,10 @@ const ViewRecepcion = () => {
                     </p>
                     <p className='font-semibold'>
                       FECHA:{' '}
-                      {format(new Date(location.state.created), 'dd/MM/yyyy')}
+                      {/* {format(
+                        new Date(dataInformeActual.created),
+                        'dd/MM/yyyy'
+                      )} */}
                     </p>
                   </div>
 
@@ -287,22 +318,26 @@ const ViewRecepcion = () => {
                 </div>
               </div>
               {/* <ICONS.ChevronDoubleRightIconO className='mx-14 h-14 mt-[32vh] text-gray-400 hover:cursor-pointer' /> */}
+
               <div className='mx-auto text-gray-400 hover:cursor-pointer flex flex-col '>
-                <svg
-                  width='72'
-                  height='112'
-                  viewBox='0 0 72 112'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M69.0962 57.7738L7.73642 108.89C5.46229 110.785 2.00949 109.176 1.99624 106.217L1.54653 5.77548C1.53336 2.83541 4.93157 1.19024 7.22962 3.02411L69.0391 52.349C70.7713 53.7314 70.7989 56.3553 69.0962 57.7738Z'
-                    fill='white'
-                    stroke='black'
-                    stroke-width='3'
-                  />
-                </svg>
+                <button onClick={() => handleSiguienteInforme()}>
+                  <svg
+                    width='72'
+                    height='112'
+                    viewBox='0 0 72 112'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M69.0962 57.7738L7.73642 108.89C5.46229 110.785 2.00949 109.176 1.99624 106.217L1.54653 5.77548C1.53336 2.83541 4.93157 1.19024 7.22962 3.02411L69.0391 52.349C70.7713 53.7314 70.7989 56.3553 69.0962 57.7738Z'
+                      fill='white'
+                      stroke='black'
+                      stroke-width='3'
+                    />
+                  </svg>
+                </button>
               </div>
+
               <button
                 className='z-50 right-14 absolute mx-auto self-end bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800 my-'
                 onClick={() => handleSalir()}
