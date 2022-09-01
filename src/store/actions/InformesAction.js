@@ -243,3 +243,29 @@ export const deleteConsignaTRSAction = data => {
     }
   }
 }
+
+export const cerrarConsignaTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CERRAR_CONSIGNATRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.put('/consignatrs/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CERRAR_CONSIGNATRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Consigna cerrada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CERRAR_CONSIGNATRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
