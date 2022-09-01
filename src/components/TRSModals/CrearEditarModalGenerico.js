@@ -1,6 +1,6 @@
 import { Dialog, Box } from '@mui/material'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const CrearEditarModalGenerico = ({
   tipoModal,
@@ -12,8 +12,15 @@ const CrearEditarModalGenerico = ({
   itemSeleccionado,
 }) => {
   const [nuevoValor, setNuevoValor] = useState('')
+
+  useEffect(() => {
+    console.log(itemSeleccionado, 'itemSeleccionado')
+    setNuevoValor(itemSeleccionado)
+  }, [itemSeleccionado])
+
   const handleEjectAndClean = () => {
-    handleAction()
+    console.log(nuevoValor, 'nuevoValor')
+    handleAction(nuevoValor)
   }
   return (
     <div>

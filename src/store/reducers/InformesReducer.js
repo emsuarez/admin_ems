@@ -37,6 +37,56 @@ export default (state = initialState, { type, payload }) => {
     case types.DELETE_INFORMETRS_FAILED:
       return { ...state, isLoading: false }
 
+    case types.CREATE_NOVEDADTRS_START:
+      return { ...state, isLoading: true }
+
+    case types.CREATE_NOVEDADTRS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        informesTrs: {
+          ...state.informesTrs,
+          results: [payload, ...state.informesTrs.results],
+        },
+      }
+
+    case types.CREATE_NOVEDADTRS_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.CREATE_CONSIGNATRS_START:
+      return { ...state, isLoading: true }
+
+    case types.CREATE_CONSIGNATRS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        informesTrs: {
+          ...state.informesTrs,
+          results: [payload, ...state.informesTrs.results],
+        },
+      }
+
+    case types.CREATE_CONSIGNATRS_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.UPDATE_NOVEDADTRS_START:
+      return { ...state, isLoading: true }
+
+    case types.UPDATE_NOVEDADTRS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        informesTrs: {
+          ...state.informesTrs,
+          results: state.informesTrs.results.map(dato =>
+            dato.id === payload.id ? payload : dato
+          ),
+        },
+      }
+
+    case types.UPDATE_NOVEDADTRS_FAILED:
+      return { ...state, isLoading: false }
+
     default:
       return state
   }

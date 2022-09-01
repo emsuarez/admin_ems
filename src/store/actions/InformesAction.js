@@ -48,12 +48,170 @@ export const deleteInformeTRSAction = data => {
       })
 
       const result = respuesta.data
-      
+
       dispatch({ type: types.DELETE_INFORMETRS_SUCCESS, payload: result })
       dispatch(setToast('success', 'Informe eliminado correctamente'))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.DELETE_INFORMETRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const createNovedadTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CREATE_NOVEDADTRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.post('/novedadtrs/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CREATE_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Novedad ingresada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CREATE_NOVEDADTRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const updateNovedadTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.UPDATE_NOVEDADTRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch('/novedadtrs/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.UPDATE_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Novedad actualizada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.UPDATE_NOVEDADTRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const deleteNovedadTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.DELETE_NOVEDADTRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.delete('/novedadtrs/', {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+        data: data,
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.DELETE_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Novedad eliminada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.DELETE_NOVEDADTRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const createConsignaTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CREATE_CONSIGNATRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.post('/consignatrs/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CREATE_CONSIGNATRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Consigna ingresada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CREATE_CONSIGNATRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const updateConsignaTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.UPDATE_CONSIGNATRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch('/consignatrs/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.UPDATE_CONSIGNATRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Consigna actualizada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.UPDATE_CONSIGNATRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const deleteConsignaTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.DELETE_CONSIGNATRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.delete('/consignatrs/', {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+        data: data,
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.DELETE_CONSIGNATRS_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Consigna eliminada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.DELETE_CONSIGNATRS_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }

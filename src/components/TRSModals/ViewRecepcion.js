@@ -9,6 +9,8 @@ import logo from '../../assets/logo.png'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 
+import { format } from 'date-fns'
+
 const ViewRecepcion = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -62,7 +64,7 @@ const ViewRecepcion = () => {
 
             <div className='flex justify-center items-center'>
               {/* <ICONS.ChevronDoubleLeftIconO className='h-14 mt-[32vh] mx-14 text-gray-400 hover:cursor-pointer' /> */}
-              <div className='mx-14 text-gray-400 hover:cursor-pointer'>
+              <div className='mx-auto text-gray-400 hover:cursor-pointer'>
                 <svg
                   width='73'
                   height='112'
@@ -79,7 +81,7 @@ const ViewRecepcion = () => {
                 </svg>
               </div>
               <div className='flex justify-center bg-white'>
-                <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm py-8'>
+                <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm py-8 w-[67rem]'>
                   <div className='flex justify-center space-x-14 mb-8'>
                     <img src={logo} className='h-14' />
                     <h2 className='font-bold text-xl mt-2'>
@@ -277,7 +279,7 @@ const ViewRecepcion = () => {
                 </div>
               </div>
               {/* <ICONS.ChevronDoubleRightIconO className='mx-14 h-14 mt-[32vh] text-gray-400 hover:cursor-pointer' /> */}
-              <div className='mx-14 text-gray-400 hover:cursor-pointer'>
+              <div className='mx-auto text-gray-400 hover:cursor-pointer flex flex-col '>
                 <svg
                   width='72'
                   height='112'
@@ -294,15 +296,14 @@ const ViewRecepcion = () => {
                 </svg>
               </div>
               <button
-                className='self-end mb-20 bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
+                className='z-50 right-14 absolute mx-auto self-end bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800 my-'
                 onClick={() => handleSalir()}
               >
                 Salir
               </button>
             </div>
-            <CrearEditarModalGenerico
-            
-            />
+
+            <CrearEditarModalGenerico />
           </>
         )}
       </div>

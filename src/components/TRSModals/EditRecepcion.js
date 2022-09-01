@@ -11,9 +11,20 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 import EliminarModalGenerico from './EliminarModalGenerico'
 
+import { format } from 'date-fns'
+import { useDispatch } from 'react-redux'
+import {
+  createConsignaTRSAction,
+  createNovedadTRSAction,
+  updateConsignaTRSAction,
+  updateNovedadTRSAction,
+} from '../../store/actions'
+
 const EditRecepcion = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
+
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
   const [novedades, setNovedades] = useState([])
@@ -45,6 +56,13 @@ const EditRecepcion = () => {
   const [openModalEditarConsigna, setOpenModalEditarConsigna] = useState(false)
   const [openModalEliminarConsigna, setOpenModalEliminarConsigna] =
     useState(false)
+
+  const [novedadSeleccionada, setNovedadSeleccionada] = useState()
+  const [observacionNovedadSeleccionada, setObservacionNovedadSeleccionada] =
+    useState()
+  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
+  const [observacionConsignaSeleccionada, setObservacionConsignaSeleccionada] =
+    useState()
 
   useEffect(() => {
     console.log(location.state, 'dataInforme')
@@ -151,20 +169,39 @@ const EditRecepcion = () => {
     setOpenModalAgregarNovedad(false)
   }
 
-  const handleAgregarNovedad = () => {
+  const handleAgregarNovedad = novedad => {
     setOpenModalAgregarNovedad(false)
+    const newNovedad = {
+      informe_trs_id: location.state.id,
+      observacion: novedad,
+    }
+    console.log(newNovedad, 'newNovedad')
+    dispatch(createNovedadTRSAction(newNovedad))
+    setNovedades([
+      ...novedades,
+      { id: Date.now(), observacion: novedad, created: new Date() },
+    ])
   }
 
-  const handleOpenEditarNovedad = () => {
+  const handleOpenEditarNovedad = novedad => {
     setOpenModalEditarNovedad(true)
+    setNovedadSeleccionada(novedad)
+    setObservacionNovedadSeleccionada(novedad.observacion)
   }
 
   const handleCloseEditarNovedad = () => {
     setOpenModalEditarNovedad(false)
   }
 
-  const handleEditarNovedad = () => {
+  const handleEditarNovedad = novedad => {
     setOpenModalEditarNovedad(false)
+    const novedadEditada = {
+      id: novedadSeleccionada.id,
+      informe_trs_id: location.state.id,
+      observacion: novedad,
+    }
+    console.log(novedadEditada, 'novedadEditada')
+    dispatch(updateNovedadTRSAction(novedadEditada))
   }
 
   const handleOpenEliminarNovedad = () => {
@@ -188,20 +225,47 @@ const EditRecepcion = () => {
     setOpenModalAgregarConsigna(false)
   }
 
-  const handleAgregarConsigna = () => {
+  const handleAgregarConsigna = consigna => {
     setOpenModalAgregarConsigna(false)
+    const newConsigna = {
+      informe_trs_id: location.state.id,
+      obs_creacion: consigna,
+    }
+    console.log(newConsigna, 'newConsigna')
+    dispatch(createConsignaTRSAction(newConsigna))
+    setConsignas([
+      ...consignas,
+      {
+        id: Date.now(),
+        created: new Date(),
+        estado: 1,
+        fecha_obs_cierre: null,
+        obs_cierre: null,
+        obs_creacion: consigna,
+      },
+    ])
   }
 
-  const handleOpenEditarConsigna = () => {
+  const handleOpenEditarConsigna = consigna => {
     setOpenModalEditarConsigna(true)
+    setConsignaSeleccionada(consigna)
+    setObservacionNovedadSeleccionada(consigna.obs_creacion)
   }
 
   const handleCloseEditarConsigna = () => {
     setOpenModalEditarConsigna(false)
   }
 
-  const handleEditarConsigna = () => {
+  const handleEditarConsigna = consigna => {
     setOpenModalEditarConsigna(false)
+    setOpenModalEditarNovedad(false)
+    const consignaEditada = {
+      id: consignaSeleccionada.id,
+      informe_trs_id: location.state.id,
+      observacion: consigna,
+    }
+    console.log(consignaEditada, 'consignaEditada')
+    dispatch(updateConsignaTRSAction(consignaEditada))
   }
 
   const handleOpenEliminarConsigna = () => {
@@ -238,24 +302,9 @@ const EditRecepcion = () => {
 
             <div className='flex justify-center items-center'>
               {/* <ICONS.ChevronDoubleLeftIconO className='h-14 mt-[32vh] mx-14 text-gray-400 hover:cursor-pointer' /> */}
-              <div className='mx-14 text-gray-400 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                {/* <svg
-                  width='73'
-                  height='112'
-                  viewBox='0 0 73 112'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M3.71666 59.178C1.9906 57.7879 1.97474 55.1638 3.68386 53.7529L65.2718 2.91192C67.5544 1.02765 71 2.65123 71 5.61105L71 106.053C71 108.993 67.5945 110.623 65.3047 108.779L3.71666 59.178Z'
-                    fill='white'
-                    stroke='black'
-                    stroke-width='3'
-                  />
-                </svg> */}
-              </div>
+
               <div className='flex justify-center bg-white'>
-                <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm py-8'>
+                <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm py-8 w-[67rem]'>
                   <div className='flex justify-between mb-8 mx-10'>
                     <img src={logo} className='h-14' />
                     <h2 className='font-bold text-xl mt-2'>
@@ -284,7 +333,8 @@ const EditRecepcion = () => {
                       CENTRAL DE OPERACIONES: DIURNA
                     </p>
                     <p className='font-semibold'>
-                      FECHA: {location.state.created}
+                      FECHA:{' '}
+                      {format(new Date(location.state.created), 'dd/MM/yyyy')}
                     </p>
                   </div>
 
@@ -364,6 +414,14 @@ const EditRecepcion = () => {
                                       </button>
                                     </div>
                                   </div>
+                                  <CrearEditarModalGenerico
+                                    tipoModal='actualizar'
+                                    openModal={openModalEditarProtector}
+                                    handleClose={handleCloseEditarProtector}
+                                    tituloModal='Editar personal de Grupo de protección Guardia'
+                                    descripcionModal='Edite el nombre del agente:'
+                                    handleAction={handleEditarProtector}
+                                  />
                                 </li>
                               ))
                             ) : (
@@ -373,14 +431,7 @@ const EditRecepcion = () => {
                                 </p>
                               </li>
                             )}
-                            <CrearEditarModalGenerico
-                              tipoModal='actualizar'
-                              openModal={openModalEditarProtector}
-                              handleClose={handleCloseEditarProtector}
-                              tituloModal='Editar personal de Grupo de protección Guardia'
-                              descripcionModal='Edite el nombre del agente:'
-                              handleAction={handleEditarProtector}
-                            />
+
                             <EliminarModalGenerico
                               openModal={openModalEliminarProtector}
                               handleClose={handleCloseEliminarProtector}
@@ -519,16 +570,22 @@ const EditRecepcion = () => {
                       <div>
                         <ol className='border-2 border-gray-500'>
                           {novedades.map((novedad, index) => (
-                            <li className='w-full p-2 border-b-2'>
+                            <li key={index} className='w-full p-2 border-b-2'>
                               <div className='flex justify-between'>
-                                <p className='text-blue-900 '>
-                                  <b className='text-black'>
-                                    {novedad.created}
-                                  </b>{' '}
-                                  - {novedad.observacion}
-                                </p>
+                                <div className='flex flex-row items-center'>
+                                  <p className='font-semibold text-sm mx-4'>
+                                    {format(new Date(novedad.created), 'HH:mm')}
+                                  </p>
+                                  <p className='text-blue-900'>
+                                    {novedad.observacion}
+                                  </p>
+                                </div>
                                 <div className='flex flex-col'>
-                                  <button onClick={handleOpenEditarNovedad}>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenEditarNovedad(novedad)
+                                    }
+                                  >
                                     <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                       <svg
                                         width='17'
@@ -564,16 +621,20 @@ const EditRecepcion = () => {
                                   </button>
                                 </div>
                               </div>
+                              <CrearEditarModalGenerico
+                                tipoModal='actualizarTextArea'
+                                openModal={openModalEditarNovedad}
+                                handleClose={handleCloseEditarNovedad}
+                                tituloModal='Editar Novedad Especial'
+                                descripcionModal='Edite la novedad especial:'
+                                handleAction={handleEditarNovedad}
+                                itemSeleccionado={
+                                  observacionNovedadSeleccionada
+                                }
+                              />
                             </li>
                           ))}
-                          <CrearEditarModalGenerico
-                            tipoModal='actualizarTextArea'
-                            openModal={openModalEditarNovedad}
-                            handleClose={handleCloseEditarNovedad}
-                            tituloModal='Editar Novedad Especial'
-                            descripcionModal='Edite la novedad especial:'
-                            handleAction={handleEditarNovedad}
-                          />
+
                           <EliminarModalGenerico
                             openModal={openModalEliminarNovedad}
                             handleClose={handleCloseEliminarNovedad}
@@ -605,21 +666,28 @@ const EditRecepcion = () => {
                       </div>
 
                       <div className='ml-4'>
-                        <ol className=''>
+                        <ol>
                           {consignas.map((consigna, index) => (
-                            <li key={index} className='w-full'>
-                              <div className='flex flex-row items-center justify-center border-2 border-gray-500'>
-                                <div className='text-center self-stretch flex items-center'>
-                                  {consigna.created}
+                            <li key={index}>
+                              <div className='flex flex-row items-center border-2 border-gray-500'>
+                                <div className='flex items-center'>
+                                  <p className='font-semibold mx-6 text-sm'>
+                                    {format(
+                                      new Date(consigna.created),
+                                      'HH:mm'
+                                    )}
+                                  </p>
                                 </div>
-                                <div className='flex flex-col w-full border-l-2 border-gray-500'>
-                                  <div className='flex flex-row justify-between pr-2'>
+                                <div className='border-l-2 w-full'>
+                                  <div className='flex flex-row justify-between'>
                                     <div className='mx-auto'>
                                       {consigna.obs_creacion}
                                     </div>
-                                    <div>
+                                    <div className='flex flex-row justify-between'>
                                       <button
-                                        onClick={handleOpenEditarConsigna}
+                                        onClick={() =>
+                                          handleOpenEditarConsigna(consigna)
+                                        }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                           <svg
@@ -660,9 +728,14 @@ const EditRecepcion = () => {
                                   </div>
                                   {consigna.obs_cierre ? (
                                     <div className='border-b-2 border-gray-400'>
-                                      <p className='mx-auto text-center'>
+                                      <p className='mx-auto text-center font-semibold'>
                                         Cierre:{' '}
-                                        <span>{consigna.fecha_obs_cierre}</span>
+                                        <span>
+                                          {format(
+                                            new Date(consigna.fecha_obs_cierre),
+                                            'dd/MM/yyyy HH:mm'
+                                          )}
+                                        </span>
                                       </p>
                                     </div>
                                   ) : null}
@@ -748,16 +821,20 @@ const EditRecepcion = () => {
                                   )}
                                 </div>
                               </div>
+                              <CrearEditarModalGenerico
+                                tipoModal='actualizarTextArea'
+                                openModal={openModalEditarConsigna}
+                                handleClose={handleCloseEditarConsigna}
+                                tituloModal='Editar Consigna Especial'
+                                descripcionModal='Edite la novedad especial:'
+                                handleAction={handleEditarConsigna}
+                                itemSeleccionado={
+                                  observacionConsignaSeleccionada
+                                }
+                              />
                             </li>
                           ))}
-                          <CrearEditarModalGenerico
-                            tipoModal='actualizarTextArea'
-                            openModal={openModalEditarConsigna}
-                            handleClose={handleCloseEditarConsigna}
-                            tituloModal='Editar Consigna Especial'
-                            descripcionModal='Edite la novedad especial:'
-                            handleAction={handleEditarNovedad}
-                          />
+
                           <EliminarModalGenerico
                             openModal={openModalEliminarConsigna}
                             handleClose={handleCloseEliminarConsigna}
@@ -802,28 +879,14 @@ const EditRecepcion = () => {
                 </div>
               </div>
               {/* <ICONS.ChevronDoubleRightIconO className='mx-14 h-14 mt-[32vh] text-gray-400 hover:cursor-pointer' /> */}
-              <div className='mx-14 text-gray-400 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                {/* <svg
-                  width='72'
-                  height='112'
-                  viewBox='0 0 72 112'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
+              <div className='mx-14 text-gray-400 self-end'>
+                <button
+                  className='self-end mb-20 bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
+                  onClick={() => handleSalir()}
                 >
-                  <path
-                    d='M69.0962 57.7738L7.73642 108.89C5.46229 110.785 2.00949 109.176 1.99624 106.217L1.54653 5.77548C1.53336 2.83541 4.93157 1.19024 7.22962 3.02411L69.0391 52.349C70.7713 53.7314 70.7989 56.3553 69.0962 57.7738Z'
-                    fill='white'
-                    stroke='black'
-                    stroke-width='3'
-                  />
-                </svg> */}
+                  Salir
+                </button>
               </div>
-              <button
-                className='self-end mb-20 bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
-                onClick={() => handleSalir()}
-              >
-                Salir
-              </button>
             </div>
           </>
         )}
