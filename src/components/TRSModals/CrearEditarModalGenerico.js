@@ -21,6 +21,7 @@ const CrearEditarModalGenerico = ({
   const handleEjectAndClean = () => {
     console.log(nuevoValor, 'nuevoValor')
     handleAction(nuevoValor)
+    setNuevoValor('')
   }
   return (
     <div>

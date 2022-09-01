@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux'
 import {
   createConsignaTRSAction,
   createNovedadTRSAction,
+  crudPersonalActaAction,
   deleteConsignaTRSAction,
   deleteNovedadTRSAction,
   updateConsignaTRSAction,
@@ -59,6 +60,9 @@ const EditRecepcion = () => {
   const [openModalEliminarConsigna, setOpenModalEliminarConsigna] =
     useState(false)
 
+  const [protectorSeleccionado, setProtectorSeleccionado] = useState()
+  const [centralistaSeleccionado, setCentralistaSeleccionado] = useState()
+
   const [novedadSeleccionada, setNovedadSeleccionada] = useState()
   const [observacionNovedadSeleccionada, setObservacionNovedadSeleccionada] =
     useState()
@@ -97,24 +101,50 @@ const EditRecepcion = () => {
     setOpenModalAgregarProtector(false)
   }
 
-  const handleAgregarProtector = () => {
+  const handleAgregarProtector = protector => {
     setOpenModalAgregarProtector(false)
+    const newProtector = {
+      id: location.state.id,
+      protectores: String([...protectores, protector]),
+      centralistas: location.state.centralistas,
+      observacion: location.state.observacion,
+    }
+    console.log(newProtector, 'newProtector')
+    dispatch(crudPersonalActaAction(newProtector))
+
+    setProtectores([...protectores, protector])
   }
 
-  const handleOpenEditarProtector = () => {
+  const handleOpenEditarProtector = protector => {
     setOpenModalEditarProtector(true)
+    setProtectorSeleccionado(protector)
   }
 
   const handleCloseEditarProtector = () => {
     setOpenModalEditarProtector(false)
   }
 
-  const handleEditarProtector = () => {
+  const handleEditarProtector = protector => {
     setOpenModalEditarProtector(false)
+    const protectorEditado = {
+      id: location.state.id,
+      protectores: String(
+        protectores.map(p => (p === protectorSeleccionado ? protector : p))
+      ),
+      centralistas: location.state.centralistas,
+      observacion: location.state.observacion,
+    }
+    console.log(protectorEditado, 'protectorEditado')
+    dispatch(crudPersonalActaAction(protectorEditado))
+
+    setProtectores(
+      protectores.map(p => (p === protectorSeleccionado ? protector : p))
+    )
   }
 
-  const handleOpenEliminarProtector = () => {
+  const handleOpenEliminarProtector = protector => {
     setOpenModalEliminarProtector(true)
+    setProtectorSeleccionado(protector)
   }
 
   const handleCloseEliminarProtector = () => {
@@ -123,6 +153,16 @@ const EditRecepcion = () => {
 
   const handleEliminarProtector = () => {
     setOpenModalEliminarProtector(false)
+    const protectorEliminado = {
+      id: location.state.id,
+      protectores: String(protectores.filter(p => p !== protectorSeleccionado)),
+      centralistas: location.state.centralistas,
+      observacion: location.state.observacion,
+    }
+    console.log(protectorEliminado, 'protectorEliminado')
+    dispatch(crudPersonalActaAction(protectorEliminado))
+
+    setProtectores(protectores.filter(p => p !== protectorSeleccionado))
   }
 
   // CRUD Centralistas
@@ -134,24 +174,51 @@ const EditRecepcion = () => {
     setOpenModalAgregarCentralista(false)
   }
 
-  const handleAgregarCentralista = () => {
+  const handleAgregarCentralista = centralista => {
     setOpenModalAgregarCentralista(false)
+    setOpenModalAgregarProtector(false)
+    const newCentralista = {
+      id: location.state.id,
+      protectores: location.state.protectores,
+      centralistas: String([...centralistas, centralista]),
+      observacion: location.state.observacion,
+    }
+    console.log(newCentralista, 'newCentralista')
+    dispatch(crudPersonalActaAction(newCentralista))
+
+    setCentralistas([...centralistas, centralista])
   }
 
-  const handleOpenEditarCentralista = () => {
+  const handleOpenEditarCentralista = centralista => {
     setOpenModalEditarCentralista(true)
+    setCentralistaSeleccionado(centralista)
   }
 
   const handleCloseEditarCentralista = () => {
     setOpenModalEditarCentralista(false)
   }
 
-  const handleEditarCentralista = () => {
+  const handleEditarCentralista = centralista => {
     setOpenModalEditarCentralista(false)
+    const centralistaEditado = {
+      id: location.state.id,
+      protectores: location.state.protectores,
+      centralistas: String(
+        centralistas.map(c => (c === centralistaSeleccionado ? centralista : c))
+      ),
+      observacion: location.state.observacion,
+    }
+    console.log(centralistaEditado, 'centralistaEditado')
+    dispatch(crudPersonalActaAction(centralistaEditado))
+
+    setCentralistas(
+      centralistas.map(c => (c === centralistaSeleccionado ? centralista : c))
+    )
   }
 
-  const handleOpenEliminarCentralista = () => {
+  const handleOpenEliminarCentralista = centralista => {
     setOpenModalEliminarCentralista(true)
+    setCentralistaSeleccionado(centralista)
   }
 
   const handleCloseEliminarCentralista = () => {
@@ -160,6 +227,19 @@ const EditRecepcion = () => {
 
   const handleEliminarCentralista = () => {
     setOpenModalEliminarCentralista(false)
+    const centralistaEliminado = {
+      id: location.state.id,
+      protectores: location.state.protectores,
+      centralistas: String(
+        centralistas.filter(c => c !== centralistaSeleccionado)
+      ),
+      observacion: location.state.observacion,
+    }
+
+    console.log(centralistaEliminado, 'centralistaEliminado')
+    dispatch(crudPersonalActaAction(centralistaEliminado))
+
+    setCentralistas(centralistas.filter(c => c !== centralistaSeleccionado))
   }
 
   // CRUD Novedades
@@ -204,6 +284,11 @@ const EditRecepcion = () => {
     }
     console.log(novedadEditada, 'novedadEditada')
     dispatch(updateNovedadTRSAction(novedadEditada))
+    setNovedades(
+      novedades.map(n =>
+        n.id === novedadSeleccionada.id ? { ...n, observacion: novedad } : n
+      )
+    )
   }
 
   const handleOpenEliminarNovedad = novedad => {
@@ -217,7 +302,8 @@ const EditRecepcion = () => {
 
   const handleEliminarNovedad = () => {
     setOpenModalEliminarNovedad(false)
-    dispatch(deleteNovedadTRSAction(novedadSeleccionada.id))
+    dispatch(deleteNovedadTRSAction({ id: novedadSeleccionada.id }))
+    setNovedades(novedades.filter(n => n.id !== novedadSeleccionada.id))
   }
 
   // CRUD Consignas
@@ -251,9 +337,10 @@ const EditRecepcion = () => {
   }
 
   const handleOpenEditarConsigna = consigna => {
+    console.log(consigna, 'consigna')
     setOpenModalEditarConsigna(true)
     setConsignaSeleccionada(consigna)
-    setObservacionNovedadSeleccionada(consigna.obs_creacion)
+    setObservacionConsignaSeleccionada(consigna.obs_creacion)
   }
 
   const handleCloseEditarConsigna = () => {
@@ -262,14 +349,20 @@ const EditRecepcion = () => {
 
   const handleEditarConsigna = consigna => {
     setOpenModalEditarConsigna(false)
-    setOpenModalEditarNovedad(false)
     const consignaEditada = {
       id: consignaSeleccionada.id,
       informe_trs_id: location.state.id,
-      observacion: consigna,
+      obs_creacion: consigna,
+      obs_cierre: consignaSeleccionada.obs_cierre,
+      estado: consignaSeleccionada.estado,
     }
     console.log(consignaEditada, 'consignaEditada')
     dispatch(updateConsignaTRSAction(consignaEditada))
+    setConsignas(
+      consignas.map(c =>
+        c.id === consignaSeleccionada.id ? { ...c, obs_creacion: consigna } : c
+      )
+    )
   }
 
   const handleOpenEliminarConsigna = consigna => {
@@ -283,7 +376,8 @@ const EditRecepcion = () => {
 
   const handleEliminarConsigna = () => {
     setOpenModalEliminarConsigna(false)
-    dispatch(deleteConsignaTRSAction(consignaSeleccionada.id))
+    dispatch(deleteConsignaTRSAction({ id: consignaSeleccionada.id }))
+    setConsignas(consignas.filter(c => c.id !== consignaSeleccionada.id))
   }
 
   return (
@@ -381,7 +475,9 @@ const EditRecepcion = () => {
                                     <p className='font-semibold'>{protector}</p>
                                     <div className='flex flex-row '>
                                       <button
-                                        onClick={handleOpenEditarProtector}
+                                        onClick={() =>
+                                          handleOpenEditarProtector(protector)
+                                        }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                           <svg
@@ -400,7 +496,9 @@ const EditRecepcion = () => {
                                         </div>
                                       </button>
                                       <button
-                                        onClick={handleOpenEliminarProtector}
+                                        onClick={() =>
+                                          handleOpenEliminarProtector(protector)
+                                        }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                           <svg
@@ -427,6 +525,7 @@ const EditRecepcion = () => {
                                     tituloModal='Editar personal de Grupo de protección Guardia'
                                     descripcionModal='Edite el nombre del agente:'
                                     handleAction={handleEditarProtector}
+                                    itemSeleccionado={protectorSeleccionado}
                                   />
                                 </li>
                               ))
@@ -486,7 +585,11 @@ const EditRecepcion = () => {
                                     </p>
                                     <div className='flex flex-row'>
                                       <button
-                                        onClick={handleOpenEditarCentralista}
+                                        onClick={() =>
+                                          handleOpenEditarCentralista(
+                                            centralista
+                                          )
+                                        }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                           <svg
@@ -505,7 +608,11 @@ const EditRecepcion = () => {
                                         </div>
                                       </button>
                                       <button
-                                        onClick={handleOpenEliminarCentralista}
+                                        onClick={() =>
+                                          handleOpenEliminarCentralista(
+                                            centralista
+                                          )
+                                        }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                           <svg
@@ -539,6 +646,7 @@ const EditRecepcion = () => {
                               tituloModal='Editar personal de Grupo de trabajo'
                               descripcionModal='Edite el nombre del agente:'
                               handleAction={handleEditarCentralista}
+                              itemSeleccionado={centralistaSeleccionado}
                             />
                             <EliminarModalGenerico
                               openModal={openModalEliminarCentralista}
@@ -631,28 +739,26 @@ const EditRecepcion = () => {
                                   </button>
                                 </div>
                               </div>
-                              <CrearEditarModalGenerico
-                                tipoModal='actualizarTextArea'
-                                openModal={openModalEditarNovedad}
-                                handleClose={handleCloseEditarNovedad}
-                                tituloModal='Editar Novedad Especial'
-                                descripcionModal='Edite la novedad especial:'
-                                handleAction={handleEditarNovedad}
-                                itemSeleccionado={
-                                  observacionNovedadSeleccionada
-                                }
-                              />
-                              <EliminarModalGenerico
-                                openModal={openModalEliminarNovedad}
-                                handleClose={handleCloseEliminarNovedad}
-                                tituloModal='Eliminar Novedad Especial'
-                                descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
-                                handleAction={handleEliminarNovedad}
-                              />
                             </li>
                           ))}
                         </ol>
                       </div>
+                      <CrearEditarModalGenerico
+                        tipoModal='actualizarTextArea'
+                        openModal={openModalEditarNovedad}
+                        handleClose={handleCloseEditarNovedad}
+                        tituloModal='Editar Novedad Especial'
+                        descripcionModal='Edite la novedad especial:'
+                        handleAction={handleEditarNovedad}
+                        itemSeleccionado={observacionNovedadSeleccionada}
+                      />
+                      <EliminarModalGenerico
+                        openModal={openModalEliminarNovedad}
+                        handleClose={handleCloseEliminarNovedad}
+                        tituloModal='Eliminar Novedad Especial'
+                        descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
+                        handleAction={handleEliminarNovedad}
+                      />
                     </div>
 
                     {/* RIGHT */}
@@ -715,7 +821,9 @@ const EditRecepcion = () => {
                                         </div>
                                       </button>
                                       <button
-                                        onClick={handleOpenEliminarConsigna}
+                                        onClick={() =>
+                                          handleOpenEliminarConsigna(consigna)
+                                        }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                           <svg
@@ -830,30 +938,27 @@ const EditRecepcion = () => {
                                   )}
                                 </div>
                               </div>
-                              <CrearEditarModalGenerico
-                                tipoModal='actualizarTextArea'
-                                openModal={openModalEditarConsigna}
-                                handleClose={handleCloseEditarConsigna}
-                                tituloModal='Editar Consigna Especial'
-                                descripcionModal='Edite la novedad especial:'
-                                handleAction={handleEditarConsigna}
-                                itemSeleccionado={
-                                  observacionConsignaSeleccionada
-                                }
-                              />
                             </li>
                           ))}
-
-                          <EliminarModalGenerico
-                            openModal={openModalEliminarConsigna}
-                            handleClose={handleCloseEliminarConsigna}
-                            tituloModal='Eliminar Consigna Especial'
-                            descripcionModal='Al eliminar una consigna, esta se eliminara con la observación de cierre de ser el caso, sera de forma definitiva y sin posiblidad de recuperación.'
-                            handleAction={handleEliminarConsigna}
-                          />
                         </ol>
                       </div>
                     </div>
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalEditarConsigna}
+                      handleClose={handleCloseEditarConsigna}
+                      tituloModal='Editar Consigna Especial'
+                      descripcionModal='Edite la novedad especial:'
+                      handleAction={handleEditarConsigna}
+                      itemSeleccionado={observacionConsignaSeleccionada}
+                    />
+                    <EliminarModalGenerico
+                      openModal={openModalEliminarConsigna}
+                      handleClose={handleCloseEliminarConsigna}
+                      tituloModal='Eliminar Consigna Especial'
+                      descripcionModal='Al eliminar una consigna, esta se eliminara con la observación de cierre de ser el caso, sera de forma definitiva y sin posiblidad de recuperación.'
+                      handleAction={handleEliminarConsigna}
+                    />
                   </div>
 
                   {/* FOOTER SECTION */}

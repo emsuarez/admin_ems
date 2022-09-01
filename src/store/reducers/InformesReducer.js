@@ -37,6 +37,24 @@ export default (state = initialState, { type, payload }) => {
     case types.DELETE_INFORMETRS_FAILED:
       return { ...state, isLoading: false }
 
+    case types.CRUD_PERSONAL_ACTA_START:
+      return { ...state, isLoading: true }
+
+    case types.CRUD_PERSONAL_ACTA_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        informesTrs: {
+          ...state.informesTrs,
+          results: state.informesTrs.results.map(dato =>
+            dato.id === payload.id ? payload : dato
+          ),
+        },
+      }
+
+    case types.CRUD_PERSONAL_ACTA_FAILED:
+      return { ...state, isLoading: false }
+
     case types.CREATE_NOVEDADTRS_START:
       return { ...state, isLoading: true }
 

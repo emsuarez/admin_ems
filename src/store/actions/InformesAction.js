@@ -60,6 +60,32 @@ export const deleteInformeTRSAction = data => {
   }
 }
 
+export const crudPersonalActaAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CRUD_PERSONAL_ACTA_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch('/informetrs/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CRUD_PERSONAL_ACTA_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CRUD_PERSONAL_ACTA_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const createNovedadTRSAction = data => {
   return async dispatch => {
     try {
@@ -129,7 +155,7 @@ export const deleteNovedadTRSAction = data => {
 
       const result = respuesta.data
       dispatch({ type: types.DELETE_NOVEDADTRS_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Novedad eliminada correctamente'))
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.DELETE_NOVEDADTRS_FAILED, payload: true })
