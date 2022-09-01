@@ -16,6 +16,8 @@ import { useDispatch } from 'react-redux'
 import {
   createConsignaTRSAction,
   createNovedadTRSAction,
+  deleteConsignaTRSAction,
+  deleteNovedadTRSAction,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
@@ -204,8 +206,9 @@ const EditRecepcion = () => {
     dispatch(updateNovedadTRSAction(novedadEditada))
   }
 
-  const handleOpenEliminarNovedad = () => {
+  const handleOpenEliminarNovedad = novedad => {
     setOpenModalEliminarNovedad(true)
+    setNovedadSeleccionada(novedad)
   }
 
   const handleCloseEliminarNovedad = () => {
@@ -214,6 +217,7 @@ const EditRecepcion = () => {
 
   const handleEliminarNovedad = () => {
     setOpenModalEliminarNovedad(false)
+    dispatch(deleteNovedadTRSAction(novedadSeleccionada.id))
   }
 
   // CRUD Consignas
@@ -268,8 +272,9 @@ const EditRecepcion = () => {
     dispatch(updateConsignaTRSAction(consignaEditada))
   }
 
-  const handleOpenEliminarConsigna = () => {
+  const handleOpenEliminarConsigna = consigna => {
     setOpenModalEliminarConsigna(true)
+    setConsignaSeleccionada(consigna)
   }
 
   const handleCloseEliminarConsigna = () => {
@@ -278,6 +283,7 @@ const EditRecepcion = () => {
 
   const handleEliminarConsigna = () => {
     setOpenModalEliminarConsigna(false)
+    dispatch(deleteConsignaTRSAction(consignaSeleccionada.id))
   }
 
   return (
@@ -602,7 +608,11 @@ const EditRecepcion = () => {
                                       </svg>
                                     </div>
                                   </button>
-                                  <button onClick={handleOpenEliminarNovedad}>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenEliminarNovedad(novedad)
+                                    }
+                                  >
                                     <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                       <svg
                                         width='13'
@@ -632,16 +642,15 @@ const EditRecepcion = () => {
                                   observacionNovedadSeleccionada
                                 }
                               />
+                              <EliminarModalGenerico
+                                openModal={openModalEliminarNovedad}
+                                handleClose={handleCloseEliminarNovedad}
+                                tituloModal='Eliminar Novedad Especial'
+                                descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
+                                handleAction={handleEliminarNovedad}
+                              />
                             </li>
                           ))}
-
-                          <EliminarModalGenerico
-                            openModal={openModalEliminarNovedad}
-                            handleClose={handleCloseEliminarNovedad}
-                            tituloModal='Eliminar Novedad Especial'
-                            descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
-                            handleAction={handleEliminarNovedad}
-                          />
                         </ol>
                       </div>
                     </div>
