@@ -110,7 +110,8 @@ const ViewRecepcion = () => {
                       CENTRAL DE OPERACIONES DIURNA
                     </p>
                     <p className='font-semibold'>
-                      FECHA: {location.state.created}
+                      FECHA:{' '}
+                      {format(new Date(location.state.created), 'dd/MM/yyyy')}
                     </p>
                   </div>
 
@@ -195,7 +196,7 @@ const ViewRecepcion = () => {
                               <div className='flex'>
                                 <p className='text-blue-900 '>
                                   <b className='text-black'>
-                                    {novedad.created}
+                                    {format(new Date(novedad.created), 'HH:mm')}
                                   </b>{' '}
                                   - {novedad.observacion}
                                 </p>
@@ -222,14 +223,21 @@ const ViewRecepcion = () => {
                               <div className='flex justify-center flex-col items-center mt-2'>
                                 <p>
                                   <b className='text-black'>
-                                    {consigna.created}
+                                    {format(
+                                      new Date(consigna.created),
+                                      'HH:mm'
+                                    )}
                                   </b>{' '}
                                   {consigna.obs_creacion}
                                 </p>
 
                                 <div className='flex'>
                                   <p className='text-black font-semibold text-center mr-2'>
-                                    Cierre: {consigna.fecha_obs_cierre}
+                                    Cierre:{' '}
+                                    {format(
+                                      new Date(consigna.fecha_obs_cierre),
+                                      'dd/MM/yyyy HH:mm'
+                                    )}
                                   </p>
                                   <ICONS.ChevronDownIconO className='h-4 text-black pt-2' />
                                 </div>
