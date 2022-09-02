@@ -4,6 +4,7 @@ const initialState = {
   isLoading: false,
   informesTrs: {},
   actaSeleccionada: {},
+  historialMovimientos: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -141,6 +142,14 @@ export default (state = initialState, { type, payload }) => {
     case types.CERRAR_CONSIGNATRS_FAILED:
       return { ...state, isLoading: false }
 
+    case types.GET_HISTORIAL_MOVIMIENTOS_START:
+      return { ...state, isLoading: true }
+
+    case types.GET_HISTORIAL_MOVIMIENTOS_SUCCESS:
+      return { ...state, isLoading: false, historialMovimientos: payload }
+
+    case types.GET_HISTORIAL_MOVIMIENTOS_FAILED:
+      return { ...state, isLoading: false }
     default:
       return state
   }

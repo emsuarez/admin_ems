@@ -269,3 +269,34 @@ export const cerrarConsignaTRSAction = data => {
     }
   }
 }
+
+export const getHistorialMovimientosAction = (
+  enlacePaginacion = '/controlmovimiento/'
+) => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_HISTORIAL_MOVIMIENTOS_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(enlacePaginacion, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({
+        type: types.GET_HISTORIAL_MOVIMIENTOS_SUCCESS,
+        payload: result,
+      })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_HISTORIAL_MOVIMIENTOS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}

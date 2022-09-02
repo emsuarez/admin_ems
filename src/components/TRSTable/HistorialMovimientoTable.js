@@ -1,296 +1,274 @@
-import React,{useRef, useState} from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { ICONS } from '../constants';
-import { CreateEjecutivo, DeleteEjecutivo, EditEjecutivo } from '../RecursosModals';
-import EditFamilyModal from '../RecursosModals/EditFamilyModal';
-import { ClickOutSide } from '../clickOutside/ClickOutSide';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { DeleteMovimiento, EditMovimiento, LeaveMovimiento, PDFMovimiento } from '../TRSModals';
-import ReactToPrint, { useReactToPrint } from 'react-to-print';
+import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
+import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import Icon from '../../assets/Icon'
+import {
+  getGrupoFamiliarAction,
+  UpdateEstadoFamiliarAction,
+} from '../../store/actions'
 
+const HistorialMovimientoTable = ({
+  data,
+  handleOpenViewInforme,
+  handleOpenEditInforme,
+  handleOpenDeleteActa,
+}) => {
+  useEffect(() => {
+    console.log(data, 'data obtenida en la tabla de ifnormes trs')
+  }, [])
 
+  const { results, count } = data
 
-interface Column {
-  id: 'Ejectivo' | 'Salida' | '# Familiares' | 'Opciones';
-  label: string;
-  minWidth?: number;
-  align?: 'right';
-  format?: (value: number) => string;
-}
+  const [cantidadPaginas, setCantidadPaginas] = useState()
 
-const columns: Column[] = [
-  { id: 'Ejectivo', label: 'Ejectivos', minWidth: 100 },
-  { id: 'Salida', label: 'Salida', minWidth: 100 },
-  { id: 'Llegada', label: 'Llegada', minWidth: 150 },
-  { id: 'Ejectivop', label: 'Ejecutivo', minWidth: 150 },
-  { id: 'Protectorv', label: 'Protector', minWidth: 200 },
-  { id: 'Salidah', label: 'Salida', minWidth: 150 },
-  { id: 'Llegadah', label: 'Llegada', minWidth: 200 },
-  { id: 'Protector', label: 'Protector', minWidth: 100 },
-  { id: 'Observation', label: 'Observation', minWidth: 200 },
+  const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
+  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(10)
 
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const calculoPaginas = () => {
+      const cuantasPaginas = count / 10
+      const numeracionList = []
+      for (let index = 0; index < cuantasPaginas; index++) {
+        numeracionList.push(index + 1)
+      }
+      setCantidadPaginas(numeracionList)
+    }
+    calculoPaginas()
+  }, [])
 
-  { id: 'Opciones', label: 'Opciones', minWidth: 200 },
- 
-];
+  const handlePreviousPage = newPage => {
+    dispatch(getGrupoFamiliarAction(newPage))
+    setCuentaDesdePagina(
+      cuentaDesdePagina - 10 < 0 ? 1 : cuentaDesdePagina - 10
+    )
+    setCuentaHastaPagina(cuentaHastaPagina - 10)
+  }
 
-interface Data {
-    Ejectivo: string,
-    Salida: string,
-    Llegada: string,
-    Ejectivop:string,
-    Protectorv:string,
-    Salidah:string,
-    Llegadah:string,
-    Protector:string,
-    Observation:string,
-    Opciones: string,
-
-}
-
-function createData(
-    Ejectivo: string,
-    Salida: string,
-    Llegada: string,
-    Ejectivop:string,
-    Protectorv:String,
-    Salidah:string,
-    Llegadah:string,
-    Protector:string,
-    Observation:string,
-    Opciones: string,
-): Data {
-  return { Ejectivo, Salida, Llegada,Ejectivop,Protectorv,Salidah,Llegadah,Protector,Observation,Opciones };
-}
-
-const rows = [
-  createData('TR1','TR5','TR3','BMW','Plata','22/11/2021  10:35','22/11/2021  10:35','K4','obs demo'),
-  createData('TR2','TR3','TR2','BMW','Plata','22/11/2021  10:35','22/11/2021  10:35','K4','obs demo'),
-  createData('TR3','TR7','TR5','BMW','Plata','22/11/2021  10:35','22/11/2021  10:35','K4','obs demo'),
-  createData('TR8','TR8','TR1','BMW','Plata','22/11/2021  10:35','22/11/2021  10:35','K4','obs demo'),
-  createData('TR7','TR4','TR7','BMW','Plata','22/11/2021  10:35','22/11/2021  10:35','K4','obs demo'),
-
-];
-
-export default function HistorialMovimientoTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const componentRef = useRef();
-
-
-
-  const [Edit,setEdit] = useState(false)
-  const [Delete,setDelete] = useState(false)
-  const [leave,setLeave] = useState(false)
-  const [pdf,setPDF] = useState(false)
-  const [openDesde,setOpenDesde] = useState(false)
-  const [openHasta,setOpenHasta] = useState(false)
-  const [Desde, setDesde] = useState(new Date());
-  const [Hasta,setHasta] = useState(new Date());
-
-// CLICK OUTSIDE MODEL CLOSE
-const wrapperRef = useRef(null);
-ClickOutSide(wrapperRef,setOpenDesde);
-ClickOutSide(wrapperRef,setOpenHasta);
-ClickOutSide(wrapperRef,setEdit);
-ClickOutSide(wrapperRef,setDelete);
-ClickOutSide(wrapperRef,setPDF);
-
-
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+  const handleNextPage = newPage => {
+    dispatch(getGrupoFamiliarAction(newPage))
+    setCuentaDesdePagina(cuentaDesdePagina + 10)
+    setCuentaHastaPagina(
+      cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
+    )
+  }
 
   return (
-    <div>
-
-{/* DATES */}
-<div className=' flex justify-between'>
-   
-   <div>
-    <div className='pb-4 z-50 flex hover:cursor-pointer' >
-        <div className='flex space-x-8'>
-        <p className='font-semibold mt-2'>Desde</p>
-        <p onClick={()=>setOpenDesde(!openDesde)}><DatePicker open={openDesde} className='p-2 rounded-md border-2' selected={Desde} 
-            onChange={(date:Date) => setDesde(date)} /></p>
-        </div>
-        
-        <ICONS.CalendarIconS onClick={()=>setOpenDesde(!openDesde)} className="h-7 text-gray-600 ml-60 mt-2 z-50 absolute"/>
-        
-    </div>
-
-    <div className='pb-4 z-50 flex hover:cursor-pointer' >
-        <div className='flex space-x-8'>
-        <p className='font-semibold mt-2'>Hasta</p>
-        <p onClick={()=>setOpenHasta(!openHasta)}><DatePicker open={openHasta} className='p-2 ml-1 rounded-md border-2' selected={Hasta} 
-            onChange={(date:Date) => setHasta(date)} /></p>
-        </div>
-        
-        <ICONS.CalendarIconS onClick={()=>setOpenHasta(!openHasta)} className="h-7 text-gray-600 ml-60 mt-2 z-50 absolute"/>
-        
-    </div>
-    </div>
-
-    <div className='items-end flex flex-col'>
-        <div className='flex mr-5'>
-            <ICONS.SearchIconS className="h-5 ml-3 z-50 mt-1 text-gray-500"/>
-            <input className='absolute py-1 px-3 rounded-3xl'/>
-            <ICONS.ChevronDownIconO className="h-3 z-50 ml-36 mt-2 text-gray-500"/>
-        </div>
-        <div className='flex justify-end mt-32 mb-4'>
-                    <p onClick={()=>setPDF(true)} className="text-blue-500 hover:cursor-pointer">Export as PDF</p>
-                    <ICONS.ChevronDownIconO className="h-3 mt-1.5 mr-4" color="blue"/>
-                    <input
-                        placeholder='Buscar'
-                        className='border-[1px] outline-none pl-3 rounded-sm'
-                    />
-                    <ICONS.SearchIconS className="h-5 pr-2 mt-0.5 hover:cursor-pointer absolute text-gray-400"/>
-                </div>
-    </div>
-</div>
-
-
-
-    <h3 className='bg-blue-500 ml-48 w-fit px-4 text-lg mb-4 -mt-14 text-white rounded-md'>Buscar</h3>
-
-
-    <Paper sx={{ width: '100%',zIndex:100 }} >
-      <TableContainer sx={{ maxHeight: 700 }}>
-        <Table  aria-label=" table">
-          <TableHead>
-          <TableRow>
-              <TableCell align="center" colSpan={2}
-                  style={{ top: 0,fontWeight:'bold',backgroundColor:'#F8F9FA' }}
-                  
+    <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
+      <div className='overflow-y-auto'>
+        <table className='items-center bg-transparent w-full border-collapse'>
+          <thead className='border-gray-200'>
+            <tr>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'></th>
+              <th
+                colspan={2}
+                className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'
               >
-                <p className="text-lg">Lugares</p>
-              </TableCell>
+                Lugares
+              </th>
+              <th
+                colspan={2}
+                className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'
+              >
+                Vehículo
+              </th>
+              <th
+                colspan={2}
+                className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'
+              >
+                Hora
+              </th>
+              <th
+                colspan={6}
+                className='pbg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'
+              ></th>
+            </tr>
+            <tr>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Ejecutivo o familiar
+              </th>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Salida
+              </th>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Llegada
+              </th>
 
-              <TableCell align="center" colSpan={3}
-                  style={{ top: 0,fontWeight:'bold',backgroundColor:'#F8F9FA' }}
-                >
-                <p className="text-lg">Vehiculo</p>
-              </TableCell>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Ejecutivo
+              </th>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Protector
+              </th>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Salida
+              </th>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Llegada
+              </th>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Protector
+              </th>
+              <th className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'>
+                Observación
+              </th>
+              <th
+                colspan={4}
+                className='bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'
+              >
+                Opciones
+              </th>
+            </tr>
+          </thead>
 
-              <TableCell align="center" colSpan={1}
-                  style={{ top: 0,fontWeight:'bold',backgroundColor:'#F8F9FA' }}
-                >
-                <p className=' ml-20 text-lg'>Hora</p>
-              </TableCell>
+          {JSON.stringify(data) !== '{}' ? (
+            <tbody className='overflow-x-auto'>
+              {results.map((item, index) => (
+                <tr key={item.id}>
+                  <td className='border-t-0  align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center text-blueGray-700 '>
+                    {item.ejecutivo} o {item.familiar}
+                  </td>
 
+                  <td className='border-t-0  align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.lugar_salida}
+                  </td>
+                  <td className='border-t-0  align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.lugar_llegada}
+                  </td>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.vehiculo_ejecutivo}
+                  </td>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.vehiculo_protector}
+                  </td>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.hora_salida}
+                  </td>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.hora_llegada}
+                  </td>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.protector}
+                  </td>
 
-              <TableCell align="center" colSpan={1}
-                  style={{ top: 0,fontWeight:'bold',backgroundColor:'#F8F9FA' }}
-                >
-                <p className=' ml-20 text-lg'></p>
-              </TableCell>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-center'>
+                    {item.observacion}
+                  </td>
 
-              <TableCell align="center" colSpan={1}
-                  style={{ top: 0,fontWeight:'bold',backgroundColor:'#F8F9FA' }}
-                >
-                <p className=' ml-20 text-lg'></p>
-              </TableCell>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap text-white mx-aut text-center'>
+                    {item.estado === 1 ? (
+                      <Icon svgName='luzVerde' className='h-4' />
+                    ) : item.estado === 2 ? (
+                      <Icon svgName='luzNaranja' className='h-4' />
+                    ) : (
+                      <Icon svgName='luzRoja' className='h-4' />
+                    )}
+                  </td>
 
-              <TableCell align="center" colSpan={1}
-                  style={{ top: 0,fontWeight:'bold',backgroundColor:'#F8F9FA' }}
-                >
-                <p className=' ml-20 text-lg bg-red-500 '></p>
-              </TableCell>
-              <TableCell align="center" colSpan={1}
-                  style={{ top: 0,fontWeight:'bold',backgroundColor:'#F8F9FA' }}
-                >
-                <p className=' ml-20 text-lg'></p>
-              </TableCell>
-              
-            </TableRow>
-            
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ top: 0, minWidth: column.minWidth,backgroundColor:'#F8F9FA',fontWeight:'bold' }}
-                >
-                  <p className='text-gray-600'>{column.label}</p>
-                </TableCell>
+                  <td className='border-t-0 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-0 hover:bg-gray-300 hover:rounded text-center'>
+                    <button onClick={() => handleOpenEditInforme(item)}>
+                      <Icon svgName='ib_editar' className='h-4' />
+                    </button>
+                  </td>
+
+                  <td className='text-sm text-white text-center'>
+                    <button
+                      className='bg-blue-900 rounded-md hover:bg-blue-600 px-2'
+                      onClick={() => handleOpenViewInforme(item)}
+                    >
+                      Ver
+                    </button>
+                  </td>
+
+                  <td className='border-t-0  align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded text-center'>
+                    <button onClick={() => handleOpenDeleteActa(item)}>
+                      <Icon svgName='ib_eliminar' className='h-4' />
+                    </button>
+                  </td>
+                </tr>
               ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {
-                            [column.id] == 'Opciones'?
-                            <div className='flex gap-2 -ml-2'>
-                                <ICONS.CheckCircleIconS className="h-5 hover:cursor-pointer" color="red"/>
-                                <ICONS.PencilIconS onClick={()=>setEdit(true)} className="h-5 hover:cursor-pointer " color="black" />
-                                <p onClick={()=>setLeave(true)} className='text-white px-2 rounded-md bg-blue-600 hover:cursor-pointer'>Ver</p>
-                                <ICONS.ArchiveIconS onClick={()=>setDelete(true)} className="h-5 hover:cursor-pointer" color="#A70045"/>
+            </tbody>
+          ) : null}
+        </table>
+      </div>
 
-                            </div>
-                            :
-                            value
-                          }
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-     
-     <div className='justify-start flex flex-col' ref={wrapperRef}>
-      {
-        leave&&<LeaveMovimiento leave={leave}  setLeave={setLeave}/>
-      }
-      {
-        Edit&&<EditMovimiento Edit={Edit}  setEdit={setEdit}/>
-      }
-      {
-        Delete&&<DeleteMovimiento Delete={Delete} setDelete={setDelete} />
-      }
-      {
-        pdf&&<PDFMovimiento pdf={pdf} ref={componentRef} handlePrint={handlePrint} setPDF={setPDF}/>
-      }
+      {/* Paginación */}
+      <div className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'>
+        <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
+          <div>
+            <p className='text-sm text-gray-700'>
+              Mostrando <span className='font-medium'>{cuentaDesdePagina}</span>{' '}
+              -{' '}
+              <span className='font-medium'>
+                {Object.keys(data).length > 0 ? cuentaHastaPagina : null}
+              </span>{' '}
+              de{' '}
+              <span className='font-medium'>
+                {Object.keys(data).length > 0 ? count : null}
+              </span>{' '}
+              resultados
+            </p>
+          </div>
+          <div>
+            <nav
+              className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
+              aria-label='Pagination'
+            >
+              <button
+                disabled={data.previous === null ? true : false}
+                className={data.previous !== null ? 'cursor-pointer' : null}
+                onClick={() => handlePreviousPage(data.previous)}
+              >
+                <div
+                  className={
+                    data.previous === null
+                      ? 'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium text-blue-900 bg-gray-300'
+                      : 'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-blue-900 hover:bg-gray-50'
+                  }
+                >
+                  <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
+                  {/* <span className='sr-only'> */}
+                  Anterior
+                  {/* </span> */}
+                </div>
+              </button>
 
+              {/* {data.next || data.previous
+              ? cantidadPaginas.map(pagina => (
+                  <a
+                    href='#'
+                    class='py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                  >
+                    {pagina}
+                  </a>
+                ))
+              : null} */}
+              <button
+                disabled={data.next === null ? true : false}
+                className={data.next !== null ? 'cursor-pointer' : null}
+                onClick={() => handleNextPage(data.next)}
+              >
+                <div
+                  className={
+                    data.next === null
+                      ? 'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 text-sm font-medium text-blue-900 bg-gray-300'
+                      : 'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-blue-900 hover:bg-gray-50'
+                  }
+                >
+                  {/* <span className='sr-only'> */}
+                  Siguiente
+                  <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
+                  {/* </span> */}
+                </div>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-  );
+  )
 }
+
+export default HistorialMovimientoTable
