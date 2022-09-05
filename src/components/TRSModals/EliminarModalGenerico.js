@@ -31,7 +31,7 @@ const EliminarModalGenerico = ({
           >
             <div className='relative p-4 max-w-lg'>
               <div className='relative bg-white rounded-lg shadow '>
-                <div className='flex justify-between items-start px-4 py-2 rounded-t border-b'>
+                <div className='flex justify-start items-start px-4 py-2 rounded-t border-b'>
                   <ICONS.ExclamationIconS className='w-14 pt-2 hover:cursor-pointer px-4 text-red-600 ' />
                   <h1 className='text-2xl font-bold'>{tituloModal}</h1>
                 </div>

@@ -13,7 +13,7 @@ const HistorialMovimientoTable = ({
   data,
   handleOpenViewInforme,
   handleOpenEditInforme,
-  handleOpenDeleteActa,
+  handleOpenDelete,
 }) => {
   useEffect(() => {
     console.log(data, 'data obtenida en la tabla de ifnormes trs')
@@ -183,7 +183,7 @@ const HistorialMovimientoTable = ({
                   </td>
 
                   <td className='border-t-0  align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded text-center'>
-                    <button onClick={() => handleOpenDeleteActa(item)}>
+                    <button onClick={() => handleOpenDelete(item)}>
                       <Icon svgName='ib_eliminar' className='h-4' />
                     </button>
                   </td>

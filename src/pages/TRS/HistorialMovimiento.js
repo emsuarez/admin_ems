@@ -25,11 +25,15 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 import Icon from '../../assets/Icon'
+import VerEventoModal from '../../components/TRSModals/VerEventoModal'
 const HistorialMovimiento = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [openViewModal, setOpenViewModal] = useState(false)
+
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [itemVisualizar, setItemVisualizar] = useState({})
   const [itemEliminar, setItemEliminar] = useState('')
 
   useEffect(() => {
@@ -55,7 +59,12 @@ const HistorialMovimiento = () => {
 
   const handleOpenViewInforme = informe => {
     console.log(informe)
-    // navigate('/viewrecepcion', { state: informe })
+    setOpenViewModal(true)
+    setItemVisualizar(informe)
+  }
+
+  const handleCloseViewModal = () => {
+    setOpenViewModal(false)
   }
 
   const handleOpenEditInforme = informe => {
@@ -63,7 +72,7 @@ const HistorialMovimiento = () => {
     // navigate('/editrecepcion', { state: informe })
   }
 
-  const handleOpenDeleteActa = itemEliminar => {
+  const handleOpenDeleteEvento = itemEliminar => {
     console.log(itemEliminar, 'itemEliminar')
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
@@ -73,7 +82,7 @@ const HistorialMovimiento = () => {
     setOpenDeleteModal(false)
   }
 
-  const handleDeleteActa = acta => {
+  const handleDeleteEvento = acta => {
     // dispatch(deleteInformeTRSAction({ id: acta.id }))
     console.log(acta, 'acta')
     setOpenDeleteModal(false)
@@ -250,20 +259,24 @@ const HistorialMovimiento = () => {
                   data={historiales}
                   handleOpenViewInforme={handleOpenViewInforme}
                   handleOpenEditInforme={handleOpenEditInforme}
-                  handleOpenDeleteActa={handleOpenDeleteActa}
+                  handleOpenDelete={handleOpenDeleteEvento}
                 />
               </div>
             </div>
             {/* Modales */}
-
+            <VerEventoModal
+              openModal={openViewModal}
+              handleClose={handleCloseViewModal}
+              dataSeleccionada={itemVisualizar}
+            />
             <EliminarModalGenerico
-              tituloModal={'Eliminar Acta de Entrega y Recepción'}
+              tituloModal={'Eliminar Evento'}
               descripcionModal={
-                ' Al eliminar una Acta, sera de forma definitiva y sin posibilidad de recuperación.'
+                'Al eliminar este evento, sera de forma definitiva y sin posibilidad de recuperación.'
               }
               openModal={openDeleteModal}
               handleClose={handleCloseDeleteModal}
-              handleAction={handleDeleteActa}
+              handleAction={handleDeleteEvento}
               itemEliminar={itemEliminar}
             />
           </>
