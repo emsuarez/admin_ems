@@ -13,10 +13,6 @@ const VerEventoModal = ({
   handleAction,
   dataSeleccionada,
 }) => {
-  useEffect(() => {
-    console.log('dataSeleccionada', dataSeleccionada)
-  }, [dataSeleccionada])
-
   return (
     <>
       <Modal
@@ -54,19 +50,21 @@ const VerEventoModal = ({
                         <label className='font-semibold text-sm pr-4 w-36'>
                           Fecha Creación:
                         </label>
-                        {format(
-                          new Date(dataSeleccionada?.created),
-                          'dd/MM/yyyy HH:mm'
-                        )}
+                        {dataSeleccionada.created &&
+                          format(
+                            new Date(dataSeleccionada?.created),
+                            'dd/MM/yyyy HH:mm'
+                          )}
                       </p>
                       <p className='text-sm flex justify-end'>
                         <label className='font-semibold text-sm pr-4 w-36'>
                           Fecha Modificación:
                         </label>
-                        {format(
-                          new Date(dataSeleccionada?.updated),
-                          'dd/MM/yyyy HH:mm'
-                        )}
+                        {dataSeleccionada.updated &&
+                          format(
+                            new Date(dataSeleccionada?.updated),
+                            'dd/MM/yyyy HH:mm'
+                          )}
                       </p>
                     </div>
                     <div className='flex flex-col'>
@@ -153,10 +151,11 @@ const VerEventoModal = ({
                         <span className='font-semibold text-sm pr-4 w-36'>
                           Fecha Salida:
                         </span>
-                        {format(
-                          new Date(dataSeleccionada?.hora_salida),
-                          'dd/MM/yyyy HH:mm'
-                        )}
+                        {dataSeleccionada.hora_salida &&
+                          format(
+                            new Date(dataSeleccionada?.hora_salida),
+                            'dd/MM/yyyy HH:mm'
+                          )}
                       </p>
                       <p className='text-sm flex justify-start'>
                         <span className='font-semibold text-sm pr-4 w-36'>

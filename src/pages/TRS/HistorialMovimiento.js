@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
+  EditMovimiento,
   Header,
   HistorialMovimientoTable,
   ICONS,
@@ -12,6 +13,10 @@ import {
 import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
+  GetAllLugaresAction,
+  getAllProtectoresAction,
+  getAllVehiculoProtectorAction,
+  getAllVehiculosEjecutivoAction,
   getHistorialMovimientosAction,
   getInformeTrs,
 } from '../../store/actions'
@@ -31,15 +36,22 @@ const HistorialMovimiento = () => {
   const dispatch = useDispatch()
 
   const [openViewModal, setOpenViewModal] = useState(false)
+  const [openEditModal, setOpenEditModal] = useState(false)
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [itemVisualizar, setItemVisualizar] = useState({})
+  const [itemEditar, setItemEditar] = useState({})
+
   const [itemEliminar, setItemEliminar] = useState('')
 
   useEffect(() => {
     const obtenerInfoVista = async () => {
       await dispatch(getHistorialMovimientosAction())
       await dispatch(getAllEjecutivosAction())
+      await dispatch(getAllVehiculosEjecutivoAction())
+      await dispatch(getAllProtectoresAction())
+      await dispatch(getAllVehiculoProtectorAction())
+      await dispatch(GetAllLugaresAction())
     }
     obtenerInfoVista()
   }, [])
@@ -52,13 +64,20 @@ const HistorialMovimiento = () => {
 
   const historiales = useSelector(state => state.informes.historialMovimientos)
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
+  const allVehiculosEjecutivos = useSelector(
+    state => state.recursos.allVehiculosEjecutivos
+  )
+  const allProtectores = useSelector(state => state.recursos.allProtectores)
+  const allVehiculosProtectores = useSelector(
+    state => state.recursos.allVehiculosProtectores
+  )
+  const allLugares = useSelector(state => state.recursos.allLugares)
 
   const handleSearch = e => {
     dispatch(getInformeTrs('/controlmovimiento/?query=' + e.target.value))
   }
 
   const handleOpenViewInforme = informe => {
-    console.log(informe)
     setOpenViewModal(true)
     setItemVisualizar(informe)
   }
@@ -68,8 +87,12 @@ const HistorialMovimiento = () => {
   }
 
   const handleOpenEditInforme = informe => {
-    console.log(informe)
-    // navigate('/editrecepcion', { state: informe })
+    setItemEditar(informe)
+    setOpenEditModal(true)
+  }
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
   }
 
   const handleOpenDeleteEvento = itemEliminar => {
@@ -268,6 +291,16 @@ const HistorialMovimiento = () => {
               openModal={openViewModal}
               handleClose={handleCloseViewModal}
               dataSeleccionada={itemVisualizar}
+            />
+            <EditMovimiento
+              openModal={openEditModal}
+              handleClose={handleCloseEditModal}
+              dataSeleccionada={itemEditar}
+              ejecutivos={allEjecutivos}
+              vehiculosEjecutivo={allVehiculosEjecutivos}
+              protectores={allProtectores}
+              vehiculosProtector={allVehiculosProtectores}
+              lugares={allLugares}
             />
             <EliminarModalGenerico
               tituloModal={'Eliminar Evento'}
