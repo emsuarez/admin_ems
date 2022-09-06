@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import logo from '../../assets/logo.png'
 import {
   AdminAuthorized,
   Header,
   ICONS,
   RedirectWithoutLogin,
 } from '../../components'
-import logo from '../../assets/logo.png'
-import { MetaTags } from 'react-meta-tags'
-import { useLocation, useNavigate } from 'react-router-dom'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 import EliminarModalGenerico from './EliminarModalGenerico'
 
 import { format } from 'date-fns'
 import { useDispatch } from 'react-redux'
+import Icon from '../../assets/Icon'
 import {
   cerrarConsignaTRSAction,
   createConsignaTRSAction,
@@ -23,7 +23,6 @@ import {
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
-import Icon from '../../assets/Icon'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()
@@ -272,7 +271,7 @@ const EditRecepcion = () => {
   const handleOpenEditarNovedad = novedad => {
     setOpenModalEditarNovedad(true)
     setNovedadSeleccionada(novedad)
-    setObservacionNovedadSeleccionada(novedad.observacion)
+    setObservacionNovedadSeleccionada(novedad.obs_creacion)
   }
 
   const handleCloseEditarNovedad = () => {
@@ -284,13 +283,13 @@ const EditRecepcion = () => {
     const novedadEditada = {
       id: novedadSeleccionada.id,
       informe_trs_id: location.state.id,
-      observacion: novedad,
+      obs_creacion: novedad,
     }
     console.log(novedadEditada, 'novedadEditada')
     dispatch(updateNovedadTRSAction(novedadEditada))
     setNovedades(
       novedades.map(n =>
-        n.id === novedadSeleccionada.id ? { ...n, observacion: novedad } : n
+        n.id === novedadSeleccionada.id ? { ...n, obs_creacion: novedad } : n
       )
     )
   }
@@ -436,13 +435,11 @@ const EditRecepcion = () => {
             </div>
 
             <div className='flex justify-center items-center'>
-              {/* <ICONS.ChevronDoubleLeftIconO className='h-14 mt-[32vh] mx-14 text-gray-400 hover:cursor-pointer' /> */}
-
               <div className='flex justify-center bg-white'>
-                <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm py-8 w-[67rem]'>
-                  <div className='flex justify-between mb-8 mx-10'>
+                <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm pt-2 w-[67rem]'>
+                  <div className='flex justify-between mb-2 mx-10'>
                     <img src={logo} className='h-14' />
-                    <h2 className='font-bold text-xl mt-2'>
+                    <h2 className='font-bold text-lg'>
                       ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
                     </h2>
 
@@ -464,21 +461,21 @@ const EditRecepcion = () => {
                   </div>
 
                   <div className='flex justify-between px-20'>
-                    <p className='font-semibold'>
-                      CENTRAL DE OPERACIONES: DIURNA
+                    <p className='font-semibold text-sm'>
+                      CENTRAL DE OPERACIONES: DIURNA <span className='text-blue-800'>{agenteSaliente}</span>
                     </p>
-                    <p className='font-semibold'>
+                    <p className='font-semibold text-sm'>
                       FECHA:{' '}
                       {format(new Date(location.state.created), 'dd/MM/yyyy')}
                     </p>
                   </div>
 
                   {/* FOUR LINES */}
-                  <div className='flex mt-12'>
+                  <div className='flex mt-5'>
                     {/* LEFT */}
                     <div className='w-1/2'>
                       <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto'>
+                        <h2 className='font-semibold text-center mx-auto text-sm'>
                           GRUPO DE PROTECCION GUARDIA
                         </h2>
                         <button onClick={handleOpenAgregarProtector}>
@@ -506,7 +503,7 @@ const EditRecepcion = () => {
                                   key={index}
                                   className='px-2 border-b-2 border-gray-500'
                                 >
-                                  <div className='flex flex-row justify-between'>
+                                  <div className='flex flex-row justify-between text-xs'>
                                     <p className='font-semibold'>{protector}</p>
                                     <div className='flex flex-row '>
                                       <button
@@ -515,19 +512,10 @@ const EditRecepcion = () => {
                                         }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <svg
-                                            width='17'
-                                            height='15'
-                                            viewBox='0 0 17 15'
-                                            fill='none'
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            className='h-5 mx-1 '
-                                          >
-                                            <path
-                                              d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                                              fill='#128868'
-                                            />
-                                          </svg>
+                                          <Icon
+                                            svgName='ib_editar'
+                                            className='h-3 mx-1'
+                                          />
                                         </div>
                                       </button>
                                       <button
@@ -536,19 +524,10 @@ const EditRecepcion = () => {
                                         }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <svg
-                                            width='13'
-                                            height='17'
-                                            viewBox='0 0 13 17'
-                                            fill='none'
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            className='h-5 mx-1'
-                                          >
-                                            <path
-                                              d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                                              fill='#D61601'
-                                            />
-                                          </svg>
+                                          <Icon
+                                            svgName='ib_eliminar'
+                                            className='h-3 mx-1'
+                                          />
                                         </div>
                                       </button>
                                     </div>
@@ -587,7 +566,7 @@ const EditRecepcion = () => {
                     {/* RIGHT */}
                     <div className='w-1/2'>
                       <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto'>
+                        <h2 className='font-semibold text-center mx-auto text-sm'>
                           GRUPO DE TRABAJO
                         </h2>{' '}
                         <button onClick={handleOpenAgregarCentralista}>
@@ -615,7 +594,7 @@ const EditRecepcion = () => {
                                   className='pl-2 border-b-2 border-gray-500'
                                 >
                                   <div className='flex flex-row justify-between'>
-                                    <p className='font-semibold'>
+                                    <p className='font-semibold text-xs'>
                                       {centralista}
                                     </p>
                                     <div className='flex flex-row'>
@@ -627,19 +606,10 @@ const EditRecepcion = () => {
                                         }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <svg
-                                            width='17'
-                                            height='15'
-                                            viewBox='0 0 17 15'
-                                            fill='none'
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            className='h-5 mx-1'
-                                          >
-                                            <path
-                                              d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                                              fill='#128868'
-                                            />
-                                          </svg>
+                                          <Icon
+                                            svgName='ib_editar'
+                                            className='h-3 mx-1'
+                                          />
                                         </div>
                                       </button>
                                       <button
@@ -650,19 +620,10 @@ const EditRecepcion = () => {
                                         }
                                       >
                                         <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <svg
-                                            width='13'
-                                            height='17'
-                                            viewBox='0 0 13 17'
-                                            fill='none'
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            className='h-5 mx-1'
-                                          >
-                                            <path
-                                              d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                                              fill='#D61601'
-                                            />
-                                          </svg>
+                                          <Icon
+                                            svgName='ib_eliminar'
+                                            className='h-3 mx-1'
+                                          />
                                         </div>
                                       </button>
                                     </div>
@@ -697,11 +658,11 @@ const EditRecepcion = () => {
                   </div>
 
                   {/* NEW SECTION */}
-                  <div className='flex mt-12 mb-32'>
+                  <div className='flex mt-2'>
                     {/* LEFT */}
                     <div className='w-1/2'>
                       <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto'>
+                        <h2 className='font-semibold text-center mx-auto text-sm'>
                           NOVEDADES ESPECIALES
                         </h2>
                         <button onClick={handleOpenAgregarNovedad}>
@@ -716,63 +677,105 @@ const EditRecepcion = () => {
                           handleAction={handleAgregarNovedad}
                         />
                       </div>
-                      <div>
-                        <ol className='border-2 border-gray-500'>
+                      <div className='ml-4'>
+                        <ol>
                           {novedades.map((novedad, index) => (
-                            <li key={index} className='w-full p-2 border-b-2'>
-                              <div className='flex justify-between'>
-                                <div className='flex flex-row items-center'>
-                                  <p className='font-semibold text-sm mx-4'>
-                                    {format(new Date(novedad.created), 'HH:mm')}
-                                  </p>
-                                  <p className='text-blue-900'>
-                                    {novedad.observacion}
-                                  </p>
-                                </div>
-                                <div className='flex flex-col'>
-                                  <button
-                                    onClick={() =>
-                                      handleOpenEditarNovedad(novedad)
+                            <li key={index} className='my-1'>
+                              <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
+                                <div className='item1 col-span-2 border-b-2'>
+                                  <div
+                                    className={
+                                      novedad.obs_cierre === null
+                                        ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
+                                        : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
                                     }
                                   >
-                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                      <svg
-                                        width='17'
-                                        height='15'
-                                        viewBox='0 0 17 15'
-                                        fill='none'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                        className='h-5 mx-1'
-                                      >
-                                        <path
-                                          d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                                          fill='#128868'
-                                        />
-                                      </svg>
-                                    </div>
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      handleOpenEliminarNovedad(novedad)
-                                    }
-                                  >
-                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                      <svg
-                                        width='13'
-                                        height='17'
-                                        viewBox='0 0 13 17'
-                                        fill='none'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                        className='h-5 mx-1'
-                                      >
-                                        <path
-                                          d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                                          fill='#D61601'
-                                        />
-                                      </svg>
-                                    </div>
-                                  </button>
+                                    <span>Creado</span>
+                                    <span>
+                                      {format(
+                                        new Date(novedad.created),
+                                        'dd/MM/yyyy'
+                                      )}
+                                    </span>
+                                    <span>
+                                      {format(
+                                        new Date(novedad.created),
+                                        'HH:mm'
+                                      )}
+                                    </span>
+                                  </div>
                                 </div>
+                                <div className='item2 col-span-9 border-b-2 text-xs text-center'>
+                                  {novedad.obs_creacion}
+                                </div>
+                                <div className='item3 border-b-2 border-l-2'>
+                                  <div className='flex items-center flex-col'>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEditarNovedad(novedad)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_editar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEliminarNovedad(novedad)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_eliminar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                    {novedad.obs_cierre === null && (
+                                      <Icon
+                                        svgName='ib_cerrar'
+                                        className='h-3 my-1'
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                                {novedad.obs_cierre && (
+                                  <>
+                                    <div className='item-4 col-span-2'>
+                                      <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
+                                        <span>Cerrado</span>
+                                        <span>
+                                          {format(
+                                            new Date(novedad.fecha_obs_cierre),
+                                            'dd/MM/yyyy'
+                                          )}
+                                        </span>
+                                        <span>
+                                          {format(
+                                            new Date(novedad.fecha_obs_cierre),
+                                            'HH:mm'
+                                          )}
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div className='item-5 col-span-9 text-xs text-center'>
+                                      {novedad.obs_cierre}
+                                    </div>
+                                    <div className='item-6 col-span-1 border-l-2'>
+                                      <div className='flex items-center flex-col'>
+                                        <Icon
+                                          svgName='ib_editar'
+                                          className='h-3 my-1'
+                                        />
+                                        <Icon
+                                          svgName='ib_eliminar'
+                                          className='h-3 my-1'
+                                        />
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
                               </div>
                             </li>
                           ))}
@@ -799,7 +802,7 @@ const EditRecepcion = () => {
                     {/* RIGHT */}
                     <div className='w-1/2'>
                       <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto'>
+                        <h2 className='font-semibold text-center mx-auto text-sm'>
                           CONSIGNAS ESPECIALES
                         </h2>
                         <button onClick={handleOpenAgregarConsigna}>
@@ -819,14 +822,20 @@ const EditRecepcion = () => {
                         <ol>
                           {consignas.map((consigna, index) => (
                             <li key={index} className='my-1'>
-                              <div className='grid grid-row-2 grid-cols-5 border-2 border-gray-700'>
-                                <div className='item1 col-span-1 border-b-2'>
-                                  <div className='flex flex-col items-center'>
+                              <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
+                                <div className='item1 col-span-2 border-b-2'>
+                                  <div
+                                    className={
+                                      consigna.obs_cierre === null
+                                        ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
+                                        : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
+                                    }
+                                  >
                                     <span>Creado</span>
                                     <span>
                                       {format(
                                         new Date(consigna.created),
-                                        'dd/mm/yyyy'
+                                        'dd/MM/yyyy'
                                       )}
                                     </span>
                                     <span>
@@ -837,53 +846,84 @@ const EditRecepcion = () => {
                                     </span>
                                   </div>
                                 </div>
-                                <div className='item2 col-span-3 border-b-2'>
+                                <div className='item2 col-span-9 border-b-2 text-xs text-center'>
                                   {consigna.obs_creacion}
                                 </div>
-                                <div className='item3 border-b-2'>
-                                  <div className='flex items-center flex-col'>
-                                    <Icon
-                                      svgName='ib_editar'
-                                      className='h-4 my-2'
-                                    />
-                                    <Icon
-                                      svgName='ib_eliminar'
-                                      className='h-4'
-                                    />
+                                <div className='item3 border-b-2 border-l-2'>
+                                  <div className='flex items-center flex-col '>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEditarConsigna(consigna)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_editar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEliminarConsigna(consigna)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_eliminar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                    {consigna.obs_cierre === null && (
+                                      <button
+                                        onClick={() =>
+                                          handleOpenCerrarConsigna(consigna)
+                                        }
+                                        className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                      >
+                                        <Icon
+                                          svgName='ib_cerrar'
+                                          className='h-3 my-1'
+                                        />
+                                      </button>
+                                    )}
                                   </div>
                                 </div>
-                                <div className='item-4'>
-                                  <div className='flex flex-col items-center'>
-                                    <span>Cerrado</span>
-                                    <span>
-                                      {format(
-                                        new Date(consigna.fecha_obs_cierre),
-                                        'dd/mm/yyyy'
-                                      )}
-                                    </span>
-                                    <span>
-                                      {format(
-                                        new Date(consigna.fecha_obs_cierre),
-                                        'HH:mm'
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className='item-5 col-span-3'>
-                                  {consigna.obs_cierre}
-                                </div>
-                                <div className='item-6 col-span-1'>
-                                  <div className='flex items-center flex-col'>
-                                    <Icon
-                                      svgName='ib_editar'
-                                      className='h-4 my-2'
-                                    />
-                                    <Icon
-                                      svgName='ib_eliminar'
-                                      className='h-4'
-                                    />
-                                  </div>
-                                </div>
+                                {consigna.obs_cierre && (
+                                  <>
+                                    <div className='item-4 col-span-2'>
+                                      <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
+                                        <span>Cerrado</span>
+                                        <span>
+                                          {format(
+                                            new Date(consigna.fecha_obs_cierre),
+                                            'dd/MM/yyyy'
+                                          )}
+                                        </span>
+                                        <span>
+                                          {format(
+                                            new Date(consigna.fecha_obs_cierre),
+                                            'HH:mm'
+                                          )}
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div className='item-5 col-span-9 text-xs text-center'>
+                                      {consigna.obs_cierre}
+                                    </div>
+                                    <div className='item-6 col-span-1 border-l-2'>
+                                      <div className='flex items-center flex-col'>
+                                        <Icon
+                                          svgName='ib_editar'
+                                          className='h-3 my-1'
+                                        />
+                                        <Icon
+                                          svgName='ib_eliminar'
+                                          className='h-3 my-1'
+                                        />
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
                               </div>
                             </li>
                           ))}
@@ -920,18 +960,18 @@ const EditRecepcion = () => {
                   {/* FOOTER SECTION */}
                   <div className='border-2'>
                     <div className='flex border-b-2 border-gray-500'>
-                      <div className=' w-1/2 text-center py-4 border-r-2 border-gray-500 font-semibold'>
+                      <div className='p-1 w-1/2 border-r-2 border-gray-500 font-semibold text-sm'>
                         <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
-                        <p>{agenteSaliente}</p>
+                        <p className='text-blue-800'>{agenteSaliente}</p>
                       </div>
 
-                      <div className='w-1/2 text-center my-4 font-semibold'>
+                      <div className='w-1/2 font-semibold p-1 text-sm'>
                         <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
-                        <p>{agenteEntrante}</p>
+                        <p className='text-blue-800'>{agenteEntrante}</p>
                       </div>
                     </div>
 
-                    <div className='flex'>
+                    <div className='flex text-sm'>
                       <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
                         Firma:
                       </p>
@@ -948,10 +988,10 @@ const EditRecepcion = () => {
                   </div>
                 </div>
               </div>
-              {/* <ICONS.ChevronDoubleRightIconO className='mx-14 h-14 mt-[32vh] text-gray-400 hover:cursor-pointer' /> */}
+
               <div className='mx-14 text-gray-400 self-end'>
                 <button
-                  className='self-end mb-20 bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
+                  className='self-end bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
                   onClick={() => handleSalir()}
                 >
                   Salir

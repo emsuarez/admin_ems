@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import logo from '../../assets/logo.png'
 import {
   AdminAuthorized,
   Header,
   ICONS,
   RedirectWithoutLogin,
 } from '../../components'
-import logo from '../../assets/logo.png'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 
 import { format } from 'date-fns'

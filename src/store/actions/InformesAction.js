@@ -102,7 +102,7 @@ export const createNovedadTRSAction = data => {
 
       const result = respuesta.data
       dispatch({ type: types.CREATE_NOVEDADTRS_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Novedad ingresada correctamente'))
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CREATE_NOVEDADTRS_FAILED, payload: true })
@@ -128,7 +128,7 @@ export const updateNovedadTRSAction = data => {
 
       const result = respuesta.data
       dispatch({ type: types.UPDATE_NOVEDADTRS_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Novedad actualizada correctamente'))
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.UPDATE_NOVEDADTRS_FAILED, payload: true })
