@@ -95,6 +95,8 @@ const HistorialMovimiento = () => {
     setOpenEditModal(false)
   }
 
+  const handleEditInformeModal = informe => {}
+
   const handleOpenDeleteEvento = itemEliminar => {
     console.log(itemEliminar, 'itemEliminar')
     setOpenDeleteModal(true)
@@ -301,6 +303,7 @@ const HistorialMovimiento = () => {
               protectores={allProtectores}
               vehiculosProtector={allVehiculosProtectores}
               lugares={allLugares}
+              handleAction={handleEditInformeModal}
             />
             <EliminarModalGenerico
               tituloModal={'Eliminar Evento'}
