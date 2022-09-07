@@ -11,15 +11,17 @@ import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 import EliminarModalGenerico from './EliminarModalGenerico'
 
 import { format } from 'date-fns'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Icon from '../../assets/Icon'
 import {
   cerrarConsignaTRSAction,
+  cerrarNovedadTRSAction,
   createConsignaTRSAction,
   createNovedadTRSAction,
   crudPersonalActaAction,
   deleteConsignaTRSAction,
   deleteNovedadTRSAction,
+  getInformeTrs,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
@@ -29,6 +31,7 @@ const EditRecepcion = () => {
   const location = useLocation()
   const dispatch = useDispatch()
 
+  // #region STATE_INICIAL
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
   const [novedades, setNovedades] = useState([])
@@ -52,6 +55,8 @@ const EditRecepcion = () => {
 
   const [openModalAgregarNovedad, setOpenModalAgregarNovedad] = useState(false)
   const [openModalEditarNovedad, setOpenModalEditarNovedad] = useState(false)
+  const [openModalEditarNovedadCerrada, setOpenModalEditarNovedadCerrada] =
+    useState(false)
   const [openModalEliminarNovedad, setOpenModalEliminarNovedad] =
     useState(false)
 
@@ -61,6 +66,7 @@ const EditRecepcion = () => {
   const [openModalEliminarConsigna, setOpenModalEliminarConsigna] =
     useState(false)
 
+  const [openModalCerrarNovedad, setOpenModalCerrarNovedad] = useState(false)
   const [openModalCerrarConsigna, setOpenModalCerrarConsigna] = useState(false)
 
   const [protectorSeleccionado, setProtectorSeleccionado] = useState()
@@ -72,6 +78,9 @@ const EditRecepcion = () => {
   const [consignaSeleccionada, setConsignaSeleccionada] = useState()
   const [observacionConsignaSeleccionada, setObservacionConsignaSeleccionada] =
     useState()
+
+  const [dataInformeActual, setDataInformeActual] = useState(location.state)
+  //#endregion
 
   useEffect(() => {
     console.log(location.state, 'dataInforme')
@@ -91,11 +100,7 @@ const EditRecepcion = () => {
     setAgenteEntrante(location.state.agente_entrante || '')
   }, [])
 
-  const handleSalir = () => {
-    navigate(-1)
-  }
-
-  // CRUD Protectores
+  // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
     setOpenModalAgregarProtector(true)
   }
@@ -167,8 +172,9 @@ const EditRecepcion = () => {
 
     setProtectores(protectores.filter(p => p !== protectorSeleccionado))
   }
+  //#endregion
 
-  // CRUD Centralistas
+  // #region CRUD_CENTRALISTAS
   const handleOpenAgregarCentralista = () => {
     setOpenModalAgregarCentralista(true)
   }
@@ -244,8 +250,9 @@ const EditRecepcion = () => {
 
     setCentralistas(centralistas.filter(c => c !== centralistaSeleccionado))
   }
+  //#endregion
 
-  // CRUD Novedades
+  // #region CRUD_NOVEDADES
   const handleOpenAgregarNovedad = () => {
     setOpenModalAgregarNovedad(true)
   }
@@ -309,7 +316,67 @@ const EditRecepcion = () => {
     setNovedades(novedades.filter(n => n.id !== novedadSeleccionada.id))
   }
 
-  // CRUD Consignas
+  const handleOpenEditarNovedadCerrada = novedad => {
+    setOpenModalEditarNovedadCerrada(true)
+    setNovedadSeleccionada(novedad)
+    setObservacionNovedadSeleccionada(novedad.obs_cierre)
+  }
+
+  const handleCloseEditarNovedadCerrada = () => {
+    setOpenModalEditarNovedadCerrada(false)
+  }
+
+  const handleEditarNovedadCerrada = novedad => {
+    setOpenModalEditarNovedadCerrada(false)
+    const novedadEditada = {
+      id: novedadSeleccionada.id,
+      informe_trs_id: location.state.id,
+      obs_cierre: novedad,
+    }
+    console.log(novedadEditada, 'novedadEditada')
+    dispatch(updateNovedadTRSAction(novedadEditada))
+    setNovedades(
+      novedades.map(n =>
+        n.id === novedadSeleccionada.id ? { ...n, obs_cierre: novedad } : n
+      )
+    )
+  }
+
+  //TODO: Falta funcionalidad cierre de novedades
+  const handleOpenCerrarNovedad = novedad => {
+    setOpenModalCerrarNovedad(true)
+    setNovedadSeleccionada(novedad)
+  }
+
+  const handleCloseCerrarNovedad = () => {
+    setOpenModalCerrarNovedad(false)
+  }
+
+  const handleCerrarNovedad = novedad => {
+    setOpenModalCerrarNovedad(false)
+    const novedadCerrada = {
+      id: novedadSeleccionada.id,
+      informe_trs_id: location.state.id,
+      obs_cierre: novedad,
+    }
+    console.log(novedadCerrada, 'novedadCerrada')
+    dispatch(cerrarNovedadTRSAction(novedadCerrada))
+    setNovedades(
+      novedades.map(n =>
+        n.id === novedadSeleccionada.id
+          ? {
+              ...n,
+              obs_cierre: novedad,
+              estado: 0,
+              fecha_obs_cierre: new Date(),
+            }
+          : n
+      )
+    )
+  }
+  //#endregion
+
+  // #region CRUD_CONSIGNAS
   const handleOpenAgregarConsigna = () => {
     setOpenModalAgregarConsigna(true)
   }
@@ -396,6 +463,7 @@ const EditRecepcion = () => {
     setOpenModalCerrarConsigna(false)
     const consignaCerrada = {
       id: consignaSeleccionada.id,
+      informe_trs_id: location.state.id,
       obs_cierre: consigna,
     }
     console.log(consignaCerrada, 'consignaCerrada')
@@ -413,7 +481,30 @@ const EditRecepcion = () => {
       )
     )
   }
+  // #endregion
 
+  // #region FUNCIONES_ADICIONALES
+  const handleSalir = () => {
+    navigate(-1)
+  }
+
+  const handleInformeAnterior = () => {
+    dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=0`))
+    setDataInformeActual(informeActual.results[0])
+
+    console.log(informeActual.results[0], 'dataInformeActual PREVIOUS')
+  }
+
+  const informeActual = useSelector(state => state.informes.informesTrs)
+
+  const handleSiguienteInforme = () => {
+    dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=1`))
+
+    setDataInformeActual(informeActual.results[0])
+
+    console.log(informeActual.results[0], 'dataInformeActual NEXT')
+  }
+  // #endregion
   return (
     <>
       <div>
@@ -435,6 +526,12 @@ const EditRecepcion = () => {
             </div>
 
             <div className='flex justify-center items-center'>
+              <button onClick={() => handleInformeAnterior()}>
+                <Icon
+                  svgName='ib_flechaizq'
+                  className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+                />
+              </button>
               <div className='flex justify-center bg-white'>
                 <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm pt-2 w-[67rem]'>
                   <div className='flex justify-between mb-2 mx-10'>
@@ -443,11 +540,7 @@ const EditRecepcion = () => {
                       ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
                     </h2>
 
-                    <button
-                    // onClick={() =>
-                    //   ejecutivosReportPDF(allEjecutivosData.results)
-                    // }
-                    >
+                    <button>
                       <div className='flex'>
                         <p className='text-blue-800 hover:cursor-pointer'>
                           Exportar a PDF
@@ -462,7 +555,10 @@ const EditRecepcion = () => {
 
                   <div className='flex justify-between px-20'>
                     <p className='font-semibold text-sm'>
-                      CENTRAL DE OPERACIONES: DIURNA <span className='text-blue-800'>{agenteSaliente}</span>
+                      CENTRAL DE OPERACIONES: DIURNA
+                      <span className='text-blue-800 ml-2'>
+                        {agenteSaliente}
+                      </span>
                     </p>
                     <p className='font-semibold text-sm'>
                       FECHA:{' '}
@@ -733,10 +829,17 @@ const EditRecepcion = () => {
                                       />
                                     </button>
                                     {novedad.obs_cierre === null && (
-                                      <Icon
-                                        svgName='ib_cerrar'
-                                        className='h-3 my-1'
-                                      />
+                                      <button
+                                        onClick={() =>
+                                          handleOpenCerrarNovedad(novedad)
+                                        }
+                                        className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                      >
+                                        <Icon
+                                          svgName='ib_cerrar'
+                                          className='h-3 my-1'
+                                        />
+                                      </button>
                                     )}
                                   </div>
                                 </div>
@@ -763,15 +866,20 @@ const EditRecepcion = () => {
                                       {novedad.obs_cierre}
                                     </div>
                                     <div className='item-6 col-span-1 border-l-2'>
-                                      <div className='flex items-center flex-col'>
-                                        <Icon
-                                          svgName='ib_editar'
-                                          className='h-3 my-1'
-                                        />
-                                        <Icon
-                                          svgName='ib_eliminar'
-                                          className='h-3 my-1'
-                                        />
+                                      <div className='flex items-center flex-col mt-3'>
+                                        <button
+                                          onClick={() =>
+                                            handleOpenEditarNovedadCerrada(
+                                              novedad
+                                            )
+                                          }
+                                          className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                        >
+                                          <Icon
+                                            svgName='ib_editar'
+                                            className='h-3 my-1'
+                                          />
+                                        </button>
                                       </div>
                                     </div>
                                   </>
@@ -796,6 +904,25 @@ const EditRecepcion = () => {
                         tituloModal='Eliminar Novedad Especial'
                         descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
                         handleAction={handleEliminarNovedad}
+                      />
+                      {/* CIERRE DE NOVEDAD MODAL */}
+                      <CrearEditarModalGenerico
+                        tipoModal='actualizarTextArea'
+                        openModal={openModalCerrarNovedad}
+                        handleClose={handleCloseCerrarNovedad}
+                        tituloModal='Crear cierre de Novedad Especial'
+                        descripcionModal='Escriba una observación para cerar la novedad especial:'
+                        handleAction={handleCerrarNovedad}
+                      />
+                      {/* EDITAR NOVEDAD CERRADA MODAL */}
+                      <CrearEditarModalGenerico
+                        tipoModal='actualizarTextArea'
+                        openModal={openModalEditarNovedadCerrada}
+                        handleClose={handleCloseEditarNovedadCerrada}
+                        tituloModal='Editar cierre de Novedad Especial'
+                        descripcionModal='Edite el cierre de la novedad especial:'
+                        handleAction={handleEditarNovedadCerrada}
+                        itemSeleccionado={observacionNovedadSeleccionada}
                       />
                     </div>
 
@@ -911,13 +1038,9 @@ const EditRecepcion = () => {
                                       {consigna.obs_cierre}
                                     </div>
                                     <div className='item-6 col-span-1 border-l-2'>
-                                      <div className='flex items-center flex-col'>
+                                      <div className='flex items-center flex-col mt-3'>
                                         <Icon
                                           svgName='ib_editar'
-                                          className='h-3 my-1'
-                                        />
-                                        <Icon
-                                          svgName='ib_eliminar'
                                           className='h-3 my-1'
                                         />
                                       </div>
@@ -988,7 +1111,12 @@ const EditRecepcion = () => {
                   </div>
                 </div>
               </div>
-
+              <button onClick={() => handleSiguienteInforme()}>
+                <Icon
+                  svgName='ib_flechader'
+                  className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+                />
+              </button>
               <div className='mx-14 text-gray-400 self-end'>
                 <button
                   className='self-end bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'

@@ -165,6 +165,32 @@ export const deleteNovedadTRSAction = data => {
   }
 }
 
+export const cerrarNovedadTRSAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CERRAR_NOVEDADTRS_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.put('/novedadtrs/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CERRAR_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CERRAR_NOVEDADTRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const createConsignaTRSAction = data => {
   return async dispatch => {
     try {
@@ -260,7 +286,7 @@ export const cerrarConsignaTRSAction = data => {
 
       const result = respuesta.data
       dispatch({ type: types.CERRAR_CONSIGNATRS_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Consigna cerrada correctamente'))
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CERRAR_CONSIGNATRS_FAILED, payload: true })

@@ -12,6 +12,7 @@ import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 import { format } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux'
 import { getInformeTrs } from '../../store/actions'
+import Icon from '../../assets/Icon'
 
 const ViewRecepcion = () => {
   const navigate = useNavigate()
@@ -92,20 +93,10 @@ const ViewRecepcion = () => {
               {/* <ICONS.ChevronDoubleLeftIconO className='h-14 mt-[32vh] mx-14 text-gray-400 hover:cursor-pointer' /> */}
               <div className='mx-auto text-gray-400 hover:cursor-pointer'>
                 <button onClick={() => handleInformeAnterior()}>
-                  <svg
-                    width='73'
-                    height='112'
-                    viewBox='0 0 73 112'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M3.71666 59.178C1.9906 57.7879 1.97474 55.1638 3.68386 53.7529L65.2718 2.91192C67.5544 1.02765 71 2.65123 71 5.61105L71 106.053C71 108.993 67.5945 110.623 65.3047 108.779L3.71666 59.178Z'
-                      fill='white'
-                      stroke='black'
-                      stroke-width='3'
-                    />
-                  </svg>
+                  <Icon
+                    svgName='ib_flechaizq'
+                    className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+                  />
                 </button>
               </div>
               <div className='flex justify-center bg-white'>

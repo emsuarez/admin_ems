@@ -106,6 +106,24 @@ export default (state = initialState, { type, payload }) => {
     case types.UPDATE_NOVEDADTRS_FAILED:
       return { ...state, isLoading: false }
 
+    case types.CERRAR_NOVEDADTRS_START:
+      return { ...state, isLoading: true }
+
+    case types.CERRAR_NOVEDADTRS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        informesTrs: {
+          ...state.informesTrs,
+          results: state.informesTrs.results.map(dato =>
+            dato.id === payload.id ? payload : dato
+          ),
+        },
+      }
+
+    case types.CERRAR_NOVEDADTRS_FAILED:
+      return { ...state, isLoading: false }
+
     case types.UPDATE_CONSIGNATRS_START:
       return { ...state, isLoading: true }
 
