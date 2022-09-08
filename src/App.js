@@ -53,7 +53,7 @@ function App(props) {
           <Route path='historialmovimiento' element={<HistorialMovimiento />} />
           <Route path='recepcionturno' element={<RecepcionTurno />} />
           <Route path='editrecepcion' element={<EditRecepcion />} />
-          <Route path='viewrecepcion' element={<ViewRecepcion />} />
+          <Route path='viewrecepcion' element={<EditRecepcion />} />
 
           {/* TRSUSER */}
           <Route path='trsdashboard' element={<TRSDashboard />} />

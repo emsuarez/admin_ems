@@ -32,6 +32,60 @@ export const getInformeTrs = (enlacePaginacion = '/informetrs/') => {
   }
 }
 
+export const getInformeTrsById = informeActual => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_INFORMETRS_BY_ID_START })
+
+      dispatch({
+        type: types.GET_INFORMETRS_BY_ID_SUCCESS,
+        payload: informeActual,
+      })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_INFORMETRS_BY_ID_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const getInformeTrsNavegacion = (informeActual, navega) => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_INFORMETRS_BY_ID_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(
+        `/informetrs/?id=${informeActual}&next=${navega}`,
+        {
+          headers: { Authorization: Token },
+        }
+      )
+
+      const result = respuesta.data
+      console.log(result, 'result informe navegacion')
+      if (result.results.length === 0) {
+        dispatch(setToast('error', 'Ah llegado al final de la lista'))
+        progress.finish()
+        return
+      }
+
+      dispatch({
+        type: types.GET_INFORMETRS_BY_ID_SUCCESS,
+        payload: result.results[0],
+      })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_INFORMETRS_BY_ID_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const deleteInformeTRSAction = data => {
   return async dispatch => {
     try {
@@ -233,7 +287,7 @@ export const updateConsignaTRSAction = data => {
 
       const result = respuesta.data
       dispatch({ type: types.UPDATE_CONSIGNATRS_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Consigna actualizada correctamente'))
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.UPDATE_CONSIGNATRS_FAILED, payload: true })

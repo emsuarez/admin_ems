@@ -22,14 +22,17 @@ import {
   deleteConsignaTRSAction,
   deleteNovedadTRSAction,
   getInformeTrs,
+  getInformeTrsNavegacion,
+  setToast,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()
-  const location = useLocation()
   const dispatch = useDispatch()
+
+  const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
 
   // #region STATE_INICIAL
   const [protectores, setProtectores] = useState([])
@@ -63,6 +66,8 @@ const EditRecepcion = () => {
   const [openModalAgregarConsigna, setOpenModalAgregarConsigna] =
     useState(false)
   const [openModalEditarConsigna, setOpenModalEditarConsigna] = useState(false)
+  const [openModalEditarConsignaCerrada, setOpenModalEditarConsignaCerrada] =
+    useState(false)
   const [openModalEliminarConsigna, setOpenModalEliminarConsigna] =
     useState(false)
 
@@ -79,26 +84,30 @@ const EditRecepcion = () => {
   const [observacionConsignaSeleccionada, setObservacionConsignaSeleccionada] =
     useState()
 
-  const [dataInformeActual, setDataInformeActual] = useState(location.state)
   //#endregion
 
   useEffect(() => {
-    console.log(location.state, 'dataInforme')
-    setProtectores(
-      location.state.protectores !== null
-        ? location.state.protectores.split(',') || []
-        : []
-    )
-    setCentralistas(
-      location.state.centralistas !== null
-        ? location.state.centralistas.split(',') || []
-        : []
-    )
-    setNovedades(location.state.trsnovedad || [])
-    setConsignas(location.state.trsconsigna || [])
-    setAgenteSaliente(location.state.agente_saliente || '')
-    setAgenteEntrante(location.state.agente_entrante || '')
-  }, [])
+    const obtenerInfoVista = () => {
+      setProtectores(
+        actaSeleccionada.protectores !== null
+          ? actaSeleccionada.protectores.split(',') || []
+          : []
+      )
+      setCentralistas(
+        actaSeleccionada.centralistas !== null
+          ? actaSeleccionada.centralistas.split(',') || []
+          : []
+      )
+      setNovedades(actaSeleccionada.trsnovedad || [])
+      setConsignas(actaSeleccionada.trsconsigna || [])
+      setAgenteSaliente(actaSeleccionada.agente_saliente || '')
+      setAgenteEntrante(actaSeleccionada.agente_entrante || '')
+    }
+
+    obtenerInfoVista()
+
+    console.log(actaSeleccionada, 'actaSeleccionada')
+  }, [actaSeleccionada])
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
@@ -112,10 +121,10 @@ const EditRecepcion = () => {
   const handleAgregarProtector = protector => {
     setOpenModalAgregarProtector(false)
     const newProtector = {
-      id: location.state.id,
+      id: actaSeleccionada.id,
       protectores: String([...protectores, protector]),
-      centralistas: location.state.centralistas,
-      observacion: location.state.observacion,
+      centralistas: actaSeleccionada.centralistas,
+      observacion: actaSeleccionada.observacion,
     }
     console.log(newProtector, 'newProtector')
     dispatch(crudPersonalActaAction(newProtector))
@@ -135,12 +144,12 @@ const EditRecepcion = () => {
   const handleEditarProtector = protector => {
     setOpenModalEditarProtector(false)
     const protectorEditado = {
-      id: location.state.id,
+      id: actaSeleccionada.id,
       protectores: String(
         protectores.map(p => (p === protectorSeleccionado ? protector : p))
       ),
-      centralistas: location.state.centralistas,
-      observacion: location.state.observacion,
+      centralistas: actaSeleccionada.centralistas,
+      observacion: actaSeleccionada.observacion,
     }
     console.log(protectorEditado, 'protectorEditado')
     dispatch(crudPersonalActaAction(protectorEditado))
@@ -162,10 +171,10 @@ const EditRecepcion = () => {
   const handleEliminarProtector = () => {
     setOpenModalEliminarProtector(false)
     const protectorEliminado = {
-      id: location.state.id,
+      id: actaSeleccionada.id,
       protectores: String(protectores.filter(p => p !== protectorSeleccionado)),
-      centralistas: location.state.centralistas,
-      observacion: location.state.observacion,
+      centralistas: actaSeleccionada.centralistas,
+      observacion: actaSeleccionada.observacion,
     }
     console.log(protectorEliminado, 'protectorEliminado')
     dispatch(crudPersonalActaAction(protectorEliminado))
@@ -187,10 +196,10 @@ const EditRecepcion = () => {
     setOpenModalAgregarCentralista(false)
     setOpenModalAgregarProtector(false)
     const newCentralista = {
-      id: location.state.id,
-      protectores: location.state.protectores,
+      id: actaSeleccionada.id,
+      protectores: actaSeleccionada.protectores,
       centralistas: String([...centralistas, centralista]),
-      observacion: location.state.observacion,
+      observacion: actaSeleccionada.observacion,
     }
     console.log(newCentralista, 'newCentralista')
     dispatch(crudPersonalActaAction(newCentralista))
@@ -210,12 +219,12 @@ const EditRecepcion = () => {
   const handleEditarCentralista = centralista => {
     setOpenModalEditarCentralista(false)
     const centralistaEditado = {
-      id: location.state.id,
-      protectores: location.state.protectores,
+      id: actaSeleccionada.id,
+      protectores: actaSeleccionada.protectores,
       centralistas: String(
         centralistas.map(c => (c === centralistaSeleccionado ? centralista : c))
       ),
-      observacion: location.state.observacion,
+      observacion: actaSeleccionada.observacion,
     }
     console.log(centralistaEditado, 'centralistaEditado')
     dispatch(crudPersonalActaAction(centralistaEditado))
@@ -237,12 +246,12 @@ const EditRecepcion = () => {
   const handleEliminarCentralista = () => {
     setOpenModalEliminarCentralista(false)
     const centralistaEliminado = {
-      id: location.state.id,
-      protectores: location.state.protectores,
+      id: actaSeleccionada.id,
+      protectores: actaSeleccionada.protectores,
       centralistas: String(
         centralistas.filter(c => c !== centralistaSeleccionado)
       ),
-      observacion: location.state.observacion,
+      observacion: actaSeleccionada.observacion,
     }
 
     console.log(centralistaEliminado, 'centralistaEliminado')
@@ -264,14 +273,14 @@ const EditRecepcion = () => {
   const handleAgregarNovedad = novedad => {
     setOpenModalAgregarNovedad(false)
     const newNovedad = {
-      informe_trs_id: location.state.id,
-      observacion: novedad,
+      informe_trs_id: actaSeleccionada.id,
+      obs_creacion: novedad,
     }
     console.log(newNovedad, 'newNovedad')
     dispatch(createNovedadTRSAction(newNovedad))
     setNovedades([
       ...novedades,
-      { id: Date.now(), observacion: novedad, created: new Date() },
+      { id: Date.now(), obs_creacion: novedad, created: new Date(), estado: 1 },
     ])
   }
 
@@ -289,7 +298,7 @@ const EditRecepcion = () => {
     setOpenModalEditarNovedad(false)
     const novedadEditada = {
       id: novedadSeleccionada.id,
-      informe_trs_id: location.state.id,
+      informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
     console.log(novedadEditada, 'novedadEditada')
@@ -330,7 +339,7 @@ const EditRecepcion = () => {
     setOpenModalEditarNovedadCerrada(false)
     const novedadEditada = {
       id: novedadSeleccionada.id,
-      informe_trs_id: location.state.id,
+      informe_trs_id: actaSeleccionada.id,
       obs_cierre: novedad,
     }
     console.log(novedadEditada, 'novedadEditada')
@@ -342,7 +351,6 @@ const EditRecepcion = () => {
     )
   }
 
-  //TODO: Falta funcionalidad cierre de novedades
   const handleOpenCerrarNovedad = novedad => {
     setOpenModalCerrarNovedad(true)
     setNovedadSeleccionada(novedad)
@@ -356,7 +364,7 @@ const EditRecepcion = () => {
     setOpenModalCerrarNovedad(false)
     const novedadCerrada = {
       id: novedadSeleccionada.id,
-      informe_trs_id: location.state.id,
+      informe_trs_id: actaSeleccionada.id,
       obs_cierre: novedad,
     }
     console.log(novedadCerrada, 'novedadCerrada')
@@ -388,7 +396,7 @@ const EditRecepcion = () => {
   const handleAgregarConsigna = consigna => {
     setOpenModalAgregarConsigna(false)
     const newConsigna = {
-      informe_trs_id: location.state.id,
+      informe_trs_id: actaSeleccionada.id,
       obs_creacion: consigna,
     }
     console.log(newConsigna, 'newConsigna')
@@ -421,7 +429,7 @@ const EditRecepcion = () => {
     setOpenModalEditarConsigna(false)
     const consignaEditada = {
       id: consignaSeleccionada.id,
-      informe_trs_id: location.state.id,
+      informe_trs_id: actaSeleccionada.id,
       obs_creacion: consigna,
       obs_cierre: consignaSeleccionada.obs_cierre,
       estado: consignaSeleccionada.estado,
@@ -450,6 +458,32 @@ const EditRecepcion = () => {
     setConsignas(consignas.filter(c => c.id !== consignaSeleccionada.id))
   }
 
+  const handleOpenEditarConsignaCerrada = consigna => {
+    setOpenModalEditarConsignaCerrada(true)
+    setConsignaSeleccionada(consigna)
+    setObservacionConsignaSeleccionada(consigna.obs_cierre)
+  }
+
+  const handleCloseEditarConsignaCerrada = () => {
+    setOpenModalEditarConsignaCerrada(false)
+  }
+
+  const handleEditarConsignaCerrada = consigna => {
+    setOpenModalEditarConsignaCerrada(false)
+    const consignaEditada = {
+      id: consignaSeleccionada.id,
+      informe_trs_id: actaSeleccionada.id,
+      obs_cierre: consigna,
+    }
+    console.log(consignaEditada, 'consignaEditada')
+    dispatch(updateConsignaTRSAction(consignaEditada))
+    setNovedades(
+      consignas.map(c =>
+        c.id === consignaSeleccionada.id ? { ...c, obs_cierre: consigna } : c
+      )
+    )
+  }
+
   const handleOpenCerrarConsigna = consigna => {
     setOpenModalCerrarConsigna(true)
     setConsignaSeleccionada(consigna)
@@ -463,7 +497,7 @@ const EditRecepcion = () => {
     setOpenModalCerrarConsigna(false)
     const consignaCerrada = {
       id: consignaSeleccionada.id,
-      informe_trs_id: location.state.id,
+      informe_trs_id: actaSeleccionada.id,
       obs_cierre: consigna,
     }
     console.log(consignaCerrada, 'consignaCerrada')
@@ -481,6 +515,7 @@ const EditRecepcion = () => {
       )
     )
   }
+
   // #endregion
 
   // #region FUNCIONES_ADICIONALES
@@ -488,21 +523,12 @@ const EditRecepcion = () => {
     navigate(-1)
   }
 
-  const handleInformeAnterior = () => {
-    dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=0`))
-    setDataInformeActual(informeActual.results[0])
-
-    console.log(informeActual.results[0], 'dataInformeActual PREVIOUS')
+  const handleInformeAnterior = async () => {
+    dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 0))
   }
 
-  const informeActual = useSelector(state => state.informes.informesTrs)
-
   const handleSiguienteInforme = () => {
-    dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=1`))
-
-    setDataInformeActual(informeActual.results[0])
-
-    console.log(informeActual.results[0], 'dataInformeActual NEXT')
+    dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 1))
   }
   // #endregion
   return (
@@ -562,7 +588,7 @@ const EditRecepcion = () => {
                     </p>
                     <p className='font-semibold text-sm'>
                       FECHA:{' '}
-                      {format(new Date(location.state.created), 'dd/MM/yyyy')}
+                      {format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
                     </p>
                   </div>
 
@@ -781,7 +807,7 @@ const EditRecepcion = () => {
                                 <div className='item1 col-span-2 border-b-2'>
                                   <div
                                     className={
-                                      novedad.obs_cierre === null
+                                      novedad.estado === 1
                                         ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
                                         : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
                                     }
@@ -953,7 +979,7 @@ const EditRecepcion = () => {
                                 <div className='item1 col-span-2 border-b-2'>
                                   <div
                                     className={
-                                      consigna.obs_cierre === null
+                                      consigna.estado === 1
                                         ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
                                         : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
                                     }
@@ -1039,10 +1065,19 @@ const EditRecepcion = () => {
                                     </div>
                                     <div className='item-6 col-span-1 border-l-2'>
                                       <div className='flex items-center flex-col mt-3'>
-                                        <Icon
-                                          svgName='ib_editar'
-                                          className='h-3 my-1'
-                                        />
+                                        <button
+                                          onClick={() =>
+                                            handleOpenEditarConsignaCerrada(
+                                              consigna
+                                            )
+                                          }
+                                          className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                        >
+                                          <Icon
+                                            svgName='ib_editar'
+                                            className='h-3 my-1'
+                                          />
+                                        </button>
                                       </div>
                                     </div>
                                   </>
@@ -1077,6 +1112,16 @@ const EditRecepcion = () => {
                       tituloModal='Crear cierre de Consigna Especial'
                       descripcionModal='Escriba una observación para cerar la consigna especial:'
                       handleAction={handleCerrarConsigna}
+                    />
+                    {/* EDITAR CONSIGNA CERRADA MODAL */}
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalEditarConsignaCerrada}
+                      handleClose={handleCloseEditarConsignaCerrada}
+                      tituloModal='Editar cierre de Consigna Especial'
+                      descripcionModal='Edite el cierre de la consigna especial:'
+                      handleAction={handleEditarConsignaCerrada}
+                      itemSeleccionado={observacionConsignaSeleccionada}
                     />
                   </div>
 

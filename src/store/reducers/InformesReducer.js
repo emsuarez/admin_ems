@@ -19,6 +19,15 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_INFORMETRS_FAILED:
       return { ...state, isLoading: false }
 
+    case types.GET_INFORMETRS_BY_ID_START:
+      return { ...state, isLoading: true }
+
+    case types.GET_INFORMETRS_BY_ID_SUCCESS:
+      return { ...state, isLoading: false, actaSeleccionada: payload }
+
+    case types.GET_INFORMETRS_BY_ID_FAILED:
+      return { ...state, isLoading: false }
+
     case types.DELETE_INFORMETRS_START:
       return { ...state, isLoading: true }
 

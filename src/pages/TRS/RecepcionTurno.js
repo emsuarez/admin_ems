@@ -13,6 +13,7 @@ import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeTrs,
+  getInformeTrsById,
 } from '../../store/actions'
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -58,7 +59,8 @@ const RecepcionTurno = () => {
 
   const handleOpenEditInforme = informe => {
     console.log(informe)
-    navigate('/editrecepcion', { state: informe })
+    navigate('/editrecepcion')
+    dispatch(getInformeTrsById(informe))
   }
 
   const handleOpenDeleteActa = itemEliminar => {
