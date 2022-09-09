@@ -23,16 +23,19 @@ import {
 
 const Lugares = () => {
   const dispatch = useDispatch()
-  const [openEditModal, setOpenEditModal] = React.useState(false)
-  const [openDeleteModal, setOpenDeleteModal] = React.useState(false)
+  const [openEditModal, setOpenEditModal] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
   const [itemEditar, setItemEditar] = useState('')
   const [itemEliminar, setItemEliminar] = useState('')
 
   useEffect(() => {
-    dispatch(GetLugaresAction())
-    dispatch(GetAllLugaresAction())
-  }, [dispatch])
+    const obtenerLugares = () => {
+      dispatch(GetLugaresAction())
+      dispatch(GetAllLugaresAction())
+    }
+    obtenerLugares()
+  }, [])
 
   const lugaresData = useSelector(state => state.recursos.lugares)
   const allLugaresData = useSelector(state => state.recursos.allLugares)
@@ -75,8 +78,13 @@ const Lugares = () => {
     setOpenDeleteModal(false)
   }
 
+  const [seBusco, setSeBusco] = useState(false)
   const handleSearch = e => {
     dispatch(GetLugaresAction('/lugares/?query=' + e.target.value))
+    if (e.target.value !== '') {
+      setSeBusco(false)
+    }
+    setSeBusco(true)
   }
 
   return (
@@ -139,6 +147,7 @@ const Lugares = () => {
                 data={lugaresData}
                 handleOpenEditModal={handleOpenEditModal}
                 handleOpenDeleteModal={handleOpenDeleteModal}
+                seBusco={seBusco}
               />
             </div>
           </div>

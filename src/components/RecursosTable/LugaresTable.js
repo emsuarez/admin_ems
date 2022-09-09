@@ -1,27 +1,49 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import React, { useState } from 'react'
+import { stepButtonClasses } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { GetLugaresAction, UpdateEstadoLugarAction } from '../../store/actions'
 
-const LugaresTable = ({ data, handleOpenEditModal, handleOpenDeleteModal }) => {
+const LugaresTable = ({
+  data,
+  handleOpenEditModal,
+  handleOpenDeleteModal,
+  seBuco,
+}) => {
   const { results, count } = data
   const dispatch = useDispatch()
 
   const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
-  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(10)
+  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(
+    data.results.length
+  )
+
+  useEffect(() => {
+    console.log(data, 'data')
+    if (!seBuco) {
+      setCuentaDesdePagina(1)
+      setCuentaHastaPagina(data.results.length)
+    }
+
+    setCuentaHastaPagina(data.results.length)
+    if (count < 10) {
+      setCuentaDesdePagina(1)
+      setCuentaHastaPagina(count)
+    }
+  }, [count])
 
   const handlePreviousPage = newPage => {
     dispatch(GetLugaresAction(newPage))
     setCuentaDesdePagina(
       cuentaDesdePagina - 10 < 0 ? 1 : cuentaDesdePagina - 10
     )
-    setCuentaHastaPagina(cuentaHastaPagina - 10)
+    setCuentaHastaPagina(cuentaHastaPagina - data.results.length)
   }
 
   const handleNextPage = newPage => {
     dispatch(GetLugaresAction(newPage))
-    setCuentaDesdePagina(cuentaDesdePagina + 10)
+    setCuentaDesdePagina(cuentaDesdePagina + data.results.length)
     setCuentaHastaPagina(
       cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
     )
