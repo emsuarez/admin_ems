@@ -40,7 +40,7 @@ const Dashboard = props => {
 
   const consignas = useSelector(state => state.consignas)
 
-  const handleTimeConsignas = async consigna => {
+  const handleTimeGraficas = async consigna => {
     setIdConsigna(consigna)
     await dispatch(obtenerConsignasGrafica(consigna))
   }
@@ -82,43 +82,67 @@ const Dashboard = props => {
               <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
             </div>
 
-            <div className='flex mt-4 justify-center mb-8'>
-              <div className='mx-8 w-3/6'>
+            <div className='flex mt-4 mb-8'>
+              <div className='w-1/2 ml-12 mr-3'>
                 <Piechart
-                  data={consignas.consignasGrafica}
-                  handleTimeConsignas={handleTimeConsignas}
+                  data={consignas.consignasGrafica.datos.trs}
+                  handleTimeConsignas={handleTimeGraficas}
+                  rol='TRS'
                 />
               </div>
-              <AlertCerrarConsigna
-                modal={modalTrs}
-                setModal={setModalTrs}
-                infoConsigna={consignaSeleccionada}
-                handleCerrarConsigna={handleCerrarConsignaTrs}
-              />
-              <AlertCerrarConsigna
-                modal={modalCctv}
-                setModal={setModalCctv}
-                infoConsigna={consignaSeleccionada}
-                handleCerrarConsigna={handleCerrarConsignaCctv}
-              />
-              <div className='mr-8 w-3/6'>
-                <div className='w-full mx-auto border-2 border-gray-200 h-96 mb-8'>
-                  <ConsignasTable
-                    data={consignas.consignasTrs}
-                    confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
-                    tituloTipoTable='TRS'
-                  />
-                </div>
-                <div className='w-full mx-auto border-2 border-gray-200 h-96'>
-                  <ConsignasTable
-                    data={consignas.consignasCctv}
-                    confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
-                    tituloTipoTable='CCTV'
-                  />
-                </div>
+              <div className='w-1/2 mr-12 ml-3'>
+                <Piechart
+                  data={consignas.consignasGrafica.datos.cctv}
+                  handleTimeConsignas={handleTimeGraficas}
+                  rol='CCTV'
+                />
+              </div>
+            </div>
+            <div className='flex mb-8'>
+              <div className='w-1/2 ml-12 mr-3'>
+                <ConsignasTable
+                  data={consignas.consignasTrs}
+                  confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
+                  tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES TRS'
+                />
+              </div>
+              <div className='w-1/2 mr-12 ml-3'>
+                <ConsignasTable
+                  data={consignas.consignasCctv}
+                  confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                  tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
+                />
+              </div>
+            </div>
+            <div className='flex mb-8'>
+              <div className='w-1/2 ml-12 mr-3'>
+                <ConsignasTable
+                  data={consignas.consignasTrs}
+                  confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
+                  tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
+                />
+              </div>
+              <div className='w-1/2 mr-12 ml-3'>
+                <ConsignasTable
+                  data={consignas.consignasTrs}
+                  confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                  tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
+                />
               </div>
             </div>
           </div>
+          <AlertCerrarConsigna
+            modal={modalTrs}
+            setModal={setModalTrs}
+            infoConsigna={consignaSeleccionada}
+            handleCerrarConsigna={handleCerrarConsignaTrs}
+          />
+          <AlertCerrarConsigna
+            modal={modalCctv}
+            setModal={setModalCctv}
+            infoConsigna={consignaSeleccionada}
+            handleCerrarConsigna={handleCerrarConsignaCctv}
+          />
         </>
       )}
     </div>

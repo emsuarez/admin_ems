@@ -11,7 +11,7 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
         <div className='flex flex-wrap items-center'>
           <div className='relative w-full px-4  flex-grow flex-1'>
             <h3 className='font-semibold text-lg text-blueGray-700 '>
-              CONSIGNAS ESPECIALES PENDIENTES {tituloTipoTable}
+              {tituloTipoTable}
             </h3>
           </div>
         </div>
