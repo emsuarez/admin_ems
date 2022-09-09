@@ -16,11 +16,10 @@ const LugaresTable = ({
 
   const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
   const [cuentaHastaPagina, setCuentaHastaPagina] = useState(
-    data.results.length
+    data.results?.length
   )
 
   useEffect(() => {
-    console.log(data, 'data')
     if (!seBuco) {
       setCuentaDesdePagina(1)
       setCuentaHastaPagina(data.results.length)
