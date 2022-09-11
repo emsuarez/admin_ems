@@ -17,32 +17,30 @@ import {
 } from '../store/actions/ConsignasAction'
 
 import AlertCerrarConsigna from '../components/alerts/AlertCerrarConsigna'
-import CCTV from '../components/Header/CCTV'
 
 const Dashboard = props => {
-  const dispatch = useDispatch()
-  const [idConsigna, setIdConsigna] = useState(1)
+  const dispatch = useDispatch(null)
 
   const [modalTrs, setModalTrs] = useState(false)
   const [modalCctv, setModalCctv] = useState(false)
 
-  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
-
-  const cargarConsignas = () => {
-    dispatch(obtenerConsignasCCTVAction())
-    dispatch(obtenerConsignasTRSAction())
-    dispatch(obtenerConsignasGrafica(idConsigna))
-  }
+  const [consignaSeleccionada, setConsignaSeleccionada] = useState({})
 
   useEffect(() => {
+    const cargarConsignas = () => {
+      dispatch(obtenerConsignasCCTVAction())
+      dispatch(obtenerConsignasTRSAction())
+      dispatch(obtenerConsignasGrafica(1))
+    }
     cargarConsignas()
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
+  const { consignasCctv, consignasTrs, consignasGrafica } = consignas
 
-  const handleTimeGraficas = async consigna => {
-    setIdConsigna(consigna)
-    await dispatch(obtenerConsignasGrafica(consigna))
+  const handleTimeGraficas = consigna => {
+    // setIdConsigna(consigna)
+    dispatch(obtenerConsignasGrafica(consigna))
   }
 
   const confirmarCerrarConsignaTrs = consigna => {
@@ -68,7 +66,7 @@ const Dashboard = props => {
   return (
     <div>
       <RedirectWithoutLogin />
-      {AdminAuthorized() == -1 ? (
+      {AdminAuthorized() === -1 ? (
         <div className='bg-white flex flex-col justify-center'>
           <h1 className='font-bold text-3xl text-center'>
             No tiene permisos para acceder a esta página
@@ -85,14 +83,22 @@ const Dashboard = props => {
             <div className='flex mt-4 mb-8'>
               <div className='w-1/2 ml-12 mr-3'>
                 <Piechart
-                  data={consignas.consignasGrafica.datos.trs}
+                  data={
+                    consignasGrafica !== undefined
+                      ? consignasGrafica.datos.trs
+                      : []
+                  }
                   handleTimeConsignas={handleTimeGraficas}
                   rol='TRS'
                 />
               </div>
               <div className='w-1/2 mr-12 ml-3'>
                 <Piechart
-                  data={consignas.consignasGrafica.datos.cctv}
+                  data={
+                    consignasGrafica !== undefined
+                      ? consignasGrafica.datos.cctv
+                      : []
+                  }
                   handleTimeConsignas={handleTimeGraficas}
                   rol='CCTV'
                 />
@@ -101,14 +107,14 @@ const Dashboard = props => {
             <div className='flex mb-8'>
               <div className='w-1/2 ml-12 mr-3'>
                 <ConsignasTable
-                  data={consignas.consignasTrs}
+                  data={consignasTrs}
                   confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
                   tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES TRS'
                 />
               </div>
               <div className='w-1/2 mr-12 ml-3'>
                 <ConsignasTable
-                  data={consignas.consignasCctv}
+                  data={consignasCctv}
                   confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
                   tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
                 />
@@ -117,14 +123,14 @@ const Dashboard = props => {
             <div className='flex mb-8'>
               <div className='w-1/2 ml-12 mr-3'>
                 <ConsignasTable
-                  data={consignas.consignasTrs}
+                  data={consignasTrs}
                   confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
                   tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
                 />
               </div>
               <div className='w-1/2 mr-12 ml-3'>
                 <ConsignasTable
-                  data={consignas.consignasTrs}
+                  data={consignasTrs}
                   confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
                   tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
                 />

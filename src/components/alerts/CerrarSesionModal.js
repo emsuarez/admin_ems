@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DropDown } from '../constants'
 
 const CerrarSesionModal = ({ userInfo, modal, setModal }) => {
   const navigate = useNavigate()
-  useEffect(() => {
-    console.log(userInfo.userData.tipo)
-  }, [])
 
   const handleCerrarSesion = () => {
     window.localStorage.clear()
     setModal(false)
     navigate('/')
   }
-  
+
   return (
     <>
       {modal ? (

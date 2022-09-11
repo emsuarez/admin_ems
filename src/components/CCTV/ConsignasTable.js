@@ -1,5 +1,3 @@
-import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
-import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React from 'react'
 
 const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
@@ -43,8 +41,9 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 '>
                     {item.obs_creacion}
                   </td>
-                  <button onClick={() => confirmarCerrarConsigna(item)}>
-                    <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 hover:cursor-pointer text-white hover:text-red-600 mx-auto'>
+
+                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 hover:cursor-pointer text-white hover:text-red-600 mx-auto'>
+                    <button onClick={() => confirmarCerrarConsigna(item)}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         className='h-6 w-6 border-2 rounded-full border-red-700 bg-red-700'
@@ -59,8 +58,8 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
                           d='M6 18L18 6M6 6l12 12'
                         />
                       </svg>
-                    </td>
-                  </button>
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -70,7 +69,7 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
 
       {/* Paginación */}
       <div className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'>
-        <div className='flex-1 flex justify-between sm:hidden'>
+        {/* <div className='flex-1 flex justify-between sm:hidden'>
           <a
             href='#'
             className='relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
@@ -83,7 +82,7 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
           >
             Next
           </a>
-        </div>
+        </div> */}
         <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
           <div>
             <p className='text-sm text-gray-700'>
@@ -98,7 +97,7 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
               resultados
             </p>
           </div>
-          <div>
+          {/* <div>
             <nav
               className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
               aria-label='Pagination'
@@ -109,9 +108,7 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
                   className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50'
                 >
                   <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
-                  {/* <span className='sr-only'> */}
                   Anterior
-                  {/* </span> */}
                 </a>
               )}
 
@@ -121,13 +118,11 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
                   className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50'
                 >
                   <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
-                  {/* <span className='sr-only'> */}
                   Siguiente
-                  {/* </span> */}
                 </a>
               )}
             </nav>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

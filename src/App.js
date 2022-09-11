@@ -1,27 +1,24 @@
+import { connect } from 'react-redux'
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import { EditRecepcion, Header, ViewRecepcion } from './components'
-import { Dashboard, Login, Registration } from './pages'
-import { Routes, Route } from 'react-router-dom'
-import Ejecutivos from './pages/Recursos/Ejecutivos'
-import { CCTVDashboard, Diurno, Historial, Nocturno } from './pages/CCTV'
-import { clearToast } from './store/actions'
-import { Toast } from './components'
-import { connect, useSelector } from 'react-redux'
-import GrupoFamiliar from './pages/Recursos/GrupoFamiliar'
-import VehicleEjectivos from './pages/Recursos/VehicleEjectivos'
-import Protectores from './pages/Recursos/Protectores'
-import VehicleProtectores from './pages/Recursos/VehicleProtectores'
-import Lugares from './pages/Recursos/Lugares'
-import { HistorialMovimiento, RecepcionTurno } from './pages/TRS'
-import HistorialCCTV from './pages/CCTVAdmin/HistorialCCTV'
-import { TRSDashboard } from './pages/TRSUSER'
-import PerfilUsuario from './pages/PerfilUsuario'
+import { EditRecepcion, Toast } from './components'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
+import { Dashboard, Login, Registration } from './pages'
+import { CCTVDashboard, Diurno, Historial, Nocturno } from './pages/CCTV'
+import HistorialCCTV from './pages/CCTVAdmin/HistorialCCTV'
+import PerfilUsuario from './pages/PerfilUsuario'
+import Ejecutivos from './pages/Recursos/Ejecutivos'
+import GrupoFamiliar from './pages/Recursos/GrupoFamiliar'
+import Lugares from './pages/Recursos/Lugares'
+import Protectores from './pages/Recursos/Protectores'
+import VehicleEjectivos from './pages/Recursos/VehicleEjectivos'
+import VehicleProtectores from './pages/Recursos/VehicleProtectores'
+import { HistorialMovimiento, RecepcionTurno } from './pages/TRS'
+import { TRSDashboard } from './pages/TRSUSER'
 import Usuarios from './pages/Usuarios'
+import { clearToast } from './store/actions'
 
 function App(props) {
-  const usuarioLogeado = useSelector(state => state.auth.user)
-
   return (
     <div>
       {props.isToastShowing && (
