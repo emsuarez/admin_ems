@@ -89,7 +89,7 @@ export function obtenerConsignasGrafica(id) {
         headers: { Authorization: Token },
       })
       const result = respuesta.data
-
+      console.log(result, 'RESULTADO')
       dispatch(comenzarDescargaConsignasGraficaExitosa(result))
       progress.finish()
     } catch (error) {

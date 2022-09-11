@@ -44,6 +44,12 @@ const Login = props => {
   var tipo
 
   const dispatch = useDispatch()
+  const cargarConsignas = () => {
+    dispatch(obtenerConsignasGrafica(1))
+    dispatch(obtenerConsignasTRSAction())
+    dispatch(obtenerConsignasCCTVAction())
+  }
+
   const handleLogin = async () => {
     const obj = {
       username,
@@ -51,9 +57,8 @@ const Login = props => {
     }
     if (username && password) {
       await props.UserLogin(obj)
-      // dispatch(obtenerConsignasCCTVAction())
-      // dispatch(obtenerConsignasTRSAction())
-      // dispatch(obtenerConsignasGrafica(1))
+
+      cargarConsignas()
     } else {
       await props.setToast(
         'error',

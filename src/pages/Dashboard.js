@@ -18,25 +18,23 @@ import {
 
 import AlertCerrarConsigna from '../components/alerts/AlertCerrarConsigna'
 
-const Dashboard = props => {
-  const dispatch = useDispatch(null)
+const Dashboard = () => {
+  const dispatch = useDispatch()
 
   const [modalTrs, setModalTrs] = useState(false)
   const [modalCctv, setModalCctv] = useState(false)
 
   const [consignaSeleccionada, setConsignaSeleccionada] = useState({})
 
-  useEffect(() => {
-    const cargarConsignas = () => {
-      dispatch(obtenerConsignasGrafica(1))
-      dispatch(obtenerConsignasTRSAction())
-      dispatch(obtenerConsignasCCTVAction())
-    }
-    cargarConsignas()
-  }, [dispatch])
+  // useEffect(() => {
+
+  // }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
-  const { consignasCctv, consignasTrs, consignasGrafica } = consignas
+  const consignasGrafica = useSelector(
+    state => state.consignas.consignasGrafica
+  )
+  const { consignasCctv, consignasTrs } = consignas
 
   const handleTimeGraficas = consigna => {
     // setIdConsigna(consigna)
@@ -79,27 +77,24 @@ const Dashboard = props => {
             <div className='mt-4'>
               <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
             </div>
-
-            <div className='flex mt-4 mb-8'>
-              <div className='w-1/2 ml-12 mr-3'>
-                <Piechart
-                  data={
-                    consignasGrafica.datos.trs || { consigna: 0, novedad: 0 }
-                  }
-                  handleTimeConsignas={handleTimeGraficas}
-                  rol='TRS'
-                />
+            {Object.keys(consignasGrafica).length > 0 ? (
+              <div className='flex mt-4 mb-8'>
+                <div className='w-1/2 ml-12 mr-3'>
+                  <Piechart
+                    data={consignasGrafica.datos.trs}
+                    handleTimeConsignas={handleTimeGraficas}
+                    rol='TRS'
+                  />
+                </div>
+                <div className='w-1/2 mr-12 ml-3'>
+                  <Piechart
+                    data={consignasGrafica.datos.cctv}
+                    handleTimeConsignas={handleTimeGraficas}
+                    rol='CCTV'
+                  />
+                </div>
               </div>
-              <div className='w-1/2 mr-12 ml-3'>
-                <Piechart
-                  data={
-                    consignasGrafica.datos.cctv || { consigna: 0, novedad: 0 }
-                  }
-                  handleTimeConsignas={handleTimeGraficas}
-                  rol='CCTV'
-                />
-              </div>
-            </div>
+            ) : null}
             <div className='flex mb-8'>
               <div className='w-1/2 ml-12 mr-3'>
                 <ConsignasTable

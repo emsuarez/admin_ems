@@ -2,7 +2,7 @@ import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 
 const Piechart = ({ data, handleTimeConsignas, rol }) => {
-  const { consigna, novedad } = data || {}
+  const { consigna, novedad } = data
 
   return (
     <div className='flex-col bg-white shadow-sm border-[1px] w-full'>
