@@ -1,8 +1,8 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import { stepButtonClasses } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import Icon from '../../assets/Icon'
 import { GetLugaresAction, UpdateEstadoLugarAction } from '../../store/actions'
 
 const LugaresTable = ({
@@ -16,16 +16,16 @@ const LugaresTable = ({
 
   const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
   const [cuentaHastaPagina, setCuentaHastaPagina] = useState(
-    data.results?.length
+    data.results.length
   )
 
   useEffect(() => {
     if (!seBuco) {
       setCuentaDesdePagina(1)
-      setCuentaHastaPagina(data.results.length)
+      setCuentaHastaPagina(results.length)
     }
 
-    setCuentaHastaPagina(data.results.length)
+    setCuentaHastaPagina(results.length)
     if (count < 10) {
       setCuentaDesdePagina(1)
       setCuentaHastaPagina(count)
@@ -72,7 +72,10 @@ const LugaresTable = ({
               <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
                 Creado
               </th>
-              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
+              <th
+                colSpan={3}
+                className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'
+              >
                 Opciones
               </th>
             </tr>
@@ -91,77 +94,31 @@ const LugaresTable = ({
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.created}
                   </td>
-                  <button
-                    className='mt-2'
+
+                  <td
+                    className='mt-2 border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'
                     onClick={() => handleChangeStatusLugar(item)}
                   >
-                    <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
-                      {item.is_active ? (
-                        <svg
-                          width='23'
-                          height='24'
-                          viewBox='0 0 23 24'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-5'
-                        >
-                          <path
-                            d='M11.0858 0.930908C4.96611 0.930908 -0.000610352 5.98223 -0.000610352 12.2062C-0.000610352 18.4301 4.96611 23.4815 11.0858 23.4815C17.2055 23.4815 22.1723 18.4301 22.1723 12.2062C22.1723 5.98223 17.2055 0.930908 11.0858 0.930908ZM8.86854 17.8438L3.32532 12.2062L4.88851 10.6164L8.86854 14.6529L17.2831 6.09498L18.8463 7.69607L8.86854 17.8438Z'
-                            fill='#128868'
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          width='23'
-                          height='23'
-                          viewBox='0 0 23 23'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-5'
-                        >
-                          <path
-                            d='M11.0858 0.208252C4.96611 0.208252 -0.000610352 5.25957 -0.000610352 11.4835C-0.000610352 17.7075 4.96611 22.7588 11.0858 22.7588C17.2055 22.7588 22.1723 17.7075 22.1723 11.4835C22.1723 5.25957 17.2055 0.208252 11.0858 0.208252ZM8.86854 17.1212L3.32532 11.4835L4.88851 9.89371L8.86854 13.9303L17.2831 5.37233L18.8463 6.97342L8.86854 17.1212Z'
-                            fill='#D61601'
-                          />
-                        </svg>
-                      )}
-                    </td>
-                  </button>
+                    {item.is_active ? (
+                      <Icon svgName='ib_activo' className='h-5 mx-auto' />
+                    ) : (
+                      <Icon svgName='ib_inactivo' className='h-5 mx-auto' />
+                    )}
+                  </td>
 
-                  <button onClick={() => handleOpenEditModal(item)}>
-                    <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'>
-                      <svg
-                        width='17'
-                        height='15'
-                        viewBox='0 0 17 15'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                        className='h-5'
-                      >
-                        <path
-                          d='M9.58764 2.65888L0 11.4233V14.6731H3.47684L16.0145 3.34822V2.16649L13.6966 0H12.327L9.58764 2.65888Z'
-                          fill='#128868'
-                        />
-                      </svg>
-                    </td>
-                  </button>
-                  <button onClick={() => handleOpenDeleteModal(item)}>
-                    <td className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded'>
-                      <svg
-                        width='13'
-                        height='17'
-                        viewBox='0 0 13 17'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                        className='h-5'
-                      >
-                        <path
-                          d='M12.8323 0.917237H9.7281L8.84118 0.00610352H4.40661L3.51969 0.917237H0.41549V2.7395H12.8323V0.917237ZM1.30241 3.65064V14.5842C1.30241 15.5865 2.10063 16.4065 3.07624 16.4065H10.1716C11.1472 16.4065 11.9454 15.5865 11.9454 14.5842V3.65064H1.30241Z'
-                          fill='#D61601'
-                        />
-                      </svg>
-                    </td>
-                  </button>
+                  <td
+                    className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'
+                    onClick={() => handleOpenEditModal(item)}
+                  >
+                    <Icon svgName='ib_editar' className='h-4 mx-auto' />
+                  </td>
+
+                  <td
+                    className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded'
+                    onClick={() => handleOpenDeleteModal(item)}
+                  >
+                    <Icon svgName='ib_eliminar' className='h-4 mx-auto' />
+                  </td>
                 </tr>
               ))}
             </tbody>

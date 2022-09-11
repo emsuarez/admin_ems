@@ -48,7 +48,7 @@ export const getAllEjecutivosAction = () => async dispatch => {
     })
     const result = response.data
     dispatch({ type: types.GET_ALLEJECUTIVO_SUCCESS, payload: result })
-    console.log(result, 'response getAllEjecutivosAction')
+
     progress.finish()
   } catch (error) {
     dispatch({ type: types.GET_ALLEJECUTIVO_FAILED })

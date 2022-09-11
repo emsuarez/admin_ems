@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import logo from '../assets/logo.png'
+import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { connect, useDispatch } from 'react-redux'
-import {
-  obtenerConsignasCCTVAction,
-  obtenerConsignasGrafica,
-  obtenerConsignasTRSAction,
-  setToast,
-  UserLogin,
-} from '../store/actions'
-import { ICONS, RedirectWithLogin } from '../components'
+import logo from '../assets/logo.png'
+import { RedirectWithLogin } from '../components'
+import { setToast, UserLogin } from '../store/actions'
 
 const Login = props => {
   const [username, setUsername] = useState()
@@ -43,13 +37,6 @@ const Login = props => {
   var token
   var tipo
 
-  const dispatch = useDispatch()
-  const cargarConsignas = () => {
-    dispatch(obtenerConsignasGrafica(1))
-    dispatch(obtenerConsignasTRSAction())
-    dispatch(obtenerConsignasCCTVAction())
-  }
-
   const handleLogin = async () => {
     const obj = {
       username,
@@ -57,8 +44,6 @@ const Login = props => {
     }
     if (username && password) {
       await props.UserLogin(obj)
-
-      cargarConsignas()
     } else {
       await props.setToast(
         'error',

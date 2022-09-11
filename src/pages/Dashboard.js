@@ -5,7 +5,7 @@ import {
   Header,
   ICONS,
   Piechart,
-  RedirectWithoutLogin,
+  RedirectWithoutLogin
 } from '../components'
 import ConsignasTable from '../components/CCTV/ConsignasTable'
 import {
@@ -13,7 +13,7 @@ import {
   cerrarConsignacTrsAction,
   obtenerConsignasCCTVAction,
   obtenerConsignasGrafica,
-  obtenerConsignasTRSAction,
+  obtenerConsignasTRSAction
 } from '../store/actions/ConsignasAction'
 
 import AlertCerrarConsigna from '../components/alerts/AlertCerrarConsigna'
@@ -26,9 +26,14 @@ const Dashboard = () => {
 
   const [consignaSeleccionada, setConsignaSeleccionada] = useState({})
 
-  // useEffect(() => {
-
-  // }, [dispatch])
+  useEffect(() => {
+    const cargarConsignas = () => {
+      dispatch(obtenerConsignasGrafica(1))
+      dispatch(obtenerConsignasTRSAction())
+      dispatch(obtenerConsignasCCTVAction())
+    }
+    cargarConsignas()
+  }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
   const consignasGrafica = useSelector(

@@ -1,7 +1,7 @@
 import { types } from '../actionTypes'
 
-import { httpRequest } from '../../config'
 import ProgressBar from '@badrap/bar-of-progress'
+import { httpRequest } from '../../config'
 
 const progress = new ProgressBar({
   size: 4,
@@ -89,7 +89,7 @@ export function obtenerConsignasGrafica(id) {
         headers: { Authorization: Token },
       })
       const result = respuesta.data
-      console.log(result, 'RESULTADO')
+
       dispatch(comenzarDescargaConsignasGraficaExitosa(result))
       progress.finish()
     } catch (error) {

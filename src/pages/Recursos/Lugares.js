@@ -141,15 +141,16 @@ const Lugares = () => {
                 </div>
               </div>
             </div>
-
-            <div className=' pt-4 p-16 flex flex-col'>
-              <LugaresTable
-                data={lugaresData}
-                handleOpenEditModal={handleOpenEditModal}
-                handleOpenDeleteModal={handleOpenDeleteModal}
-                seBusco={seBusco}
-              />
-            </div>
+            {Object.keys(lugaresData).length > 0 && (
+              <div className=' pt-4 p-16 flex flex-col'>
+                <LugaresTable
+                  data={lugaresData}
+                  handleOpenEditModal={handleOpenEditModal}
+                  handleOpenDeleteModal={handleOpenDeleteModal}
+                  seBusco={seBusco}
+                />
+              </div>
+            )}
           </div>
           {/* Modales */}
           <EditLugar
