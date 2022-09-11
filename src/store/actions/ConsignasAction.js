@@ -81,8 +81,8 @@ const comenzarDescargaConsignasTRSError = estado => ({
 export function obtenerConsignasGrafica(id) {
   return async dispatch => {
     try {
-      dispatch(comenzarDescargaConsignasGrafica(id))
       progress.start()
+      dispatch(comenzarDescargaConsignasGrafica(id))
       const token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.get(`/grafica/?tipo=${id || 1}`, {
@@ -94,7 +94,6 @@ export function obtenerConsignasGrafica(id) {
       progress.finish()
     } catch (error) {
       console.log(error, 'DESCARGA CONSIGNAS GRAFICA ERROR')
-
       dispatch(comenzarDescargaConsignasGraficaError(true))
       progress.finish()
     }

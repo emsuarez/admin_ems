@@ -84,9 +84,7 @@ const Dashboard = props => {
               <div className='w-1/2 ml-12 mr-3'>
                 <Piechart
                   data={
-                    consignasGrafica !== undefined
-                      ? consignasGrafica.datos.trs
-                      : []
+                    consignasGrafica.datos.trs || { consigna: 0, novedad: 0 }
                   }
                   handleTimeConsignas={handleTimeGraficas}
                   rol='TRS'
@@ -95,9 +93,7 @@ const Dashboard = props => {
               <div className='w-1/2 mr-12 ml-3'>
                 <Piechart
                   data={
-                    consignasGrafica !== undefined
-                      ? consignasGrafica.datos.cctv
-                      : []
+                    consignasGrafica.datos.cctv || { consigna: 0, novedad: 0 }
                   }
                   handleTimeConsignas={handleTimeGraficas}
                   rol='CCTV'
