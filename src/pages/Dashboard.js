@@ -28,9 +28,9 @@ const Dashboard = props => {
 
   useEffect(() => {
     const cargarConsignas = () => {
-      dispatch(obtenerConsignasCCTVAction())
-      dispatch(obtenerConsignasTRSAction())
       dispatch(obtenerConsignasGrafica(1))
+      dispatch(obtenerConsignasTRSAction())
+      dispatch(obtenerConsignasCCTVAction())
     }
     cargarConsignas()
   }, [dispatch])
