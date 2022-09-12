@@ -3,7 +3,9 @@ import { types } from '../actionTypes'
 
 const initialState = {
   consignasCctv: {},
+  novedadesCctv: {},
   consignasTrs: {},
+  novedadesTrs: {},
   consignasGrafica: {},
   consignaCerrar: null,
   error: null,
@@ -15,20 +17,28 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_CONSIGNASCCTV_START:
     case types.GET_CONSIGNASTRS_START:
     case types.GET_CONSIGNASGRAFICA_START:
+    case types.GET_NOVEDADESCCTV_START:
+    case types.GET_NOVEDADESTRS_START:
       return { ...state, loading: payload }
 
     case types.GET_CONSIGNASCCTV_SUCCESS:
       return { ...state, loading: false, consignasCctv: payload }
+    case types.GET_NOVEDADESCCTV_SUCCESS:
+      return { ...state, loading: false, novedadesCctv: payload }
 
     case types.GET_CONSIGNASCCTV_FAILED:
     case types.GET_CONSIGNASTRS_FAILED:
     case types.GET_CONSIGNASGRAFICA_FAILED:
     case types.CONSIGNACERRARTRS_FAILED:
     case types.CONSIGNACERRARCCTV_FAILED:
+    case types.GET_NOVEDADESCCTV_FAILED:
+    case types.GET_NOVEDADESTRS_FAILED:
       return { ...state, loading: false, error: payload }
 
     case types.GET_CONSIGNASTRS_SUCCESS:
       return { ...state, loading: false, consignasTrs: payload }
+    case types.GET_NOVEDADESTRS_SUCCESS:
+      return { ...state, loading: false, novedadesTrs: payload }
 
     case types.GET_CONSIGNASGRAFICA_SUCCESS:
       return { ...state, loading: false, consignasGrafica: payload }

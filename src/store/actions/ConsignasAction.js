@@ -196,3 +196,73 @@ const cerrarConsignaCctvError = estado => ({
   type: types.CONSIGNACERRARCCTV_FAILED,
   payload: estado,
 })
+
+export function obtenerNovedadesCCTVAction() {
+  return async dispatch => {
+    try {
+      dispatch(obtenerNovedadesCCTV())
+      progress.start()
+      const token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get('/novedadcctv/?id=0', {
+        headers: { Authorization: Token },
+      })
+      const result = respuesta.data
+      dispatch(obtenerNovedadesCCTVExitosa(result))
+      progress.finish()
+    } catch (error) {
+      console.log(error, 'DESCARGA NOVEDADES CCTV ERROR')
+      dispatch(obtenerNovedadesCCTVError(true))
+      progress.finish()
+    }
+  }
+}
+
+const obtenerNovedadesCCTV = () => ({
+  type: types.GET_NOVEDADESCCTV_START,
+})
+
+const obtenerNovedadesCCTVExitosa = novedades => ({
+  type: types.GET_NOVEDADESCCTV_SUCCESS,
+  payload: novedades,
+})
+
+const obtenerNovedadesCCTVError = estado => ({
+  type: types.GET_NOVEDADESCCTV_FAILED,
+  payload: estado,
+})
+
+export function obtenerNovedadesTRSAction() {
+  return async dispatch => {
+    try {
+      dispatch(comenzarDescargaNovedadesTRS())
+      progress.start()
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get('/novedadtrs/?id=0', {
+        headers: { Authorization: Token },
+      })
+
+      dispatch(comenzarDescargaNovedadesTRSExitosa(respuesta.data))
+      progress.finish()
+    } catch (error) {
+      console.log(error, 'DESCARGA NOVEDADES TRS ERROR')
+      dispatch(comenzarDescargaNovedadesTRSError(true))
+    }
+  }
+}
+
+const comenzarDescargaNovedadesTRS = () => ({
+  type: types.GET_NOVEDADESTRS_START,
+  payload: true,
+})
+
+const comenzarDescargaNovedadesTRSExitosa = novedades => ({
+  type: types.GET_NOVEDADESTRS_SUCCESS,
+  payload: novedades,
+})
+
+const comenzarDescargaNovedadesTRSError = estado => ({
+  type: types.GET_NOVEDADESTRS_FAILED,
+  payload: estado,
+})
