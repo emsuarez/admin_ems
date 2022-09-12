@@ -360,7 +360,7 @@ export const GetAllLugaresAction = () => async dispatch => {
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await httpRequest.get('/lugares/?limit=1000&offset=1', {
+    const response = await httpRequest.get('/lugares/?limit=1000&offset=0', {
       headers: {
         Authorization: Token,
         'content-type': 'multipart/form-data',
@@ -381,8 +381,8 @@ export const GetAllLugaresAction = () => async dispatch => {
 //Create Lugar
 export const CreateNewLugarAction = data => async dispatch => {
   try {
-    dispatch({ type: types.POST_LUGARES_START })
     progress.start()
+    dispatch({ type: types.POST_LUGARES_START })
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
     const response = await httpRequest.post('/lugares/', data, {
@@ -390,7 +390,9 @@ export const CreateNewLugarAction = data => async dispatch => {
     })
     const result = response.data
 
-    dispatch({ type: types.POST_LUGARES_SUCCESS, payload: result })
+    data = { ...data, id: result.id }
+    console.log(data, 'data con id recibido')
+    dispatch({ type: types.POST_LUGARES_SUCCESS, payload: data })
     dispatch(setToast('', result.message))
     progress.finish()
   } catch (err) {
@@ -415,7 +417,7 @@ export const DeleteLugaresAction = data => async dispatch => {
       data: data,
     })
     const result = response.data
-
+    console.log(data, 'data recibida')
     dispatch({ type: types.DELETE_LUGARES_SUCCESS, payload: result })
     dispatch(setToast('', result.message))
 

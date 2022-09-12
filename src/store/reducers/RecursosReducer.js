@@ -270,7 +270,18 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_LUGARES_START:
       return { ...state, isLoading: true }
     case types.POST_LUGARES_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        lugares: {
+          ...state.lugares,
+          results: [payload, ...state.lugares.results],
+        },
+        allLugares: {
+          ...state.allLugares,
+          results: [payload, ...state.allLugares.results],
+        },
+      }
     case types.POST_LUGARES_FAILED:
       return { ...state, isLoading: false }
 
@@ -283,6 +294,12 @@ export default (state = initialState, { type, payload }) => {
         lugares: {
           ...state.lugares,
           results: state.lugares.results.filter(
+            dato => dato.id !== state.lugarSeleccionado.id
+          ),
+        },
+        allLugares: {
+          ...state.allLugares,
+          results: state.allLugares.results.filter(
             dato => dato.id !== state.lugarSeleccionado.id
           ),
         },
@@ -300,6 +317,14 @@ export default (state = initialState, { type, payload }) => {
         lugares: {
           ...state.lugares,
           results: state.lugares.results.map(dato => {
+            return dato.id === state.lugarSeleccionado.id
+              ? { ...dato, ...state.lugarSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
+        allLugares: {
+          ...state.allLugares,
+          results: state.allLugares.results.map(dato => {
             return dato.id === state.lugarSeleccionado.id
               ? { ...dato, ...state.lugarSeleccionado }
               : { ...dato, dato }

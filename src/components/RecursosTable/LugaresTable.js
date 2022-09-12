@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Icon from '../../assets/Icon'
 import { GetLugaresAction, UpdateEstadoLugarAction } from '../../store/actions'
+import { format } from 'date-fns'
 
 const LugaresTable = ({
   data,
@@ -92,7 +93,7 @@ const LugaresTable = ({
                     {item.alias}
                   </td>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
-                    {item.created}
+                    {format(new Date(item.created), 'dd/MM/yyyy HH:mm')}
                   </td>
 
                   <td

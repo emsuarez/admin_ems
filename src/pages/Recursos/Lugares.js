@@ -50,12 +50,13 @@ const Lugares = () => {
   }
 
   const handleGuardarLugar = lugar => {
-    console.log(lugar)
     const nuevoLugar = {
       ...lugar,
       lugar: lugar.nombres,
+      created: new Date(),
+      is_active: true,
     }
-    console.log(nuevoLugar, 'nuevoLugar')
+
     dispatch(CreateNewLugarAction(nuevoLugar))
   }
 
