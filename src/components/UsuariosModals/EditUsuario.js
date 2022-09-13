@@ -30,7 +30,6 @@ const EditUsuario = ({
   const cargos = useSelector(state => state.auth.roles)
 
   useEffect(() => {
-    console.log(itemEditar, 'itemEditar')
     const cargarUsuarioSeleccionado = () => {
       setIdUsuario(itemEditar.id)
       setUsername(itemEditar.username)
@@ -138,7 +137,7 @@ const EditUsuario = ({
                     </div>
                     <div>
                       <input
-                       autoComplete='off'
+                        autoComplete='off'
                         type='text'
                         name='apellidos'
                         id='apellidos'

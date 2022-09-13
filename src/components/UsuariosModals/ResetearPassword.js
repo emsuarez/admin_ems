@@ -22,7 +22,6 @@ const ResetearPassword = ({
   const [showPassword, setShowPassword] = useState(true)
   const [showRepetirPassword, setShowRepetirPassword] = useState(true)
   useEffect(() => {
-    console.log(itemEditar, 'itemEditar')
     const cargarUsuarioSeleccionado = () => {
       setIdUsuario(itemEditar.id)
       setUsername(itemEditar.username)
