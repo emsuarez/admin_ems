@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { ICONS } from '../components/constants'
-import authImage from '../assets/auth-image.jpg'
-import authDecorator from '../assets/auth-decoration.png'
-import logo from '../assets/logo.png'
-import { Route, useNavigate, Navigate } from 'react-router-dom'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { UserRegister } from '../store/actions'
-import { RedirectWithLogin, Toast } from '../components'
-import { getTiposUsuarioAction } from '../store/actions'
+import { useNavigate } from 'react-router-dom'
+import logo from '../assets/logo.png'
+import { RedirectWithLogin } from '../components'
+import { getTiposUsuarioAction, UserRegister } from '../store/actions'
 
 const Registration = props => {
   const [usuario, setUsuario] = useState()
