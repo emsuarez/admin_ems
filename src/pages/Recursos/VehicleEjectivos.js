@@ -88,10 +88,16 @@ const VehicleEjectivos = () => {
     setOpenDeleteModal(false)
   }
 
+  const [seBusco, setSeBusco] = useState(false)
+
   const handleSearch = e => {
     dispatch(
       getVehiculoEjecutivoAction('/vehiculoejecutivo/?query=' + e.target.value)
     )
+    if (e.target.value !== '') {
+      setSeBusco(false)
+    }
+    setSeBusco(true)
   }
 
   return (
@@ -160,6 +166,7 @@ const VehicleEjectivos = () => {
                 data={vehiculoEjecutivoData}
                 handleOpenEditModal={handleOpenEditModal}
                 handleOpenDeleteModal={handleOpenDeleteModal}
+                seBuco={seBusco}
               />
             </div>
           </div>

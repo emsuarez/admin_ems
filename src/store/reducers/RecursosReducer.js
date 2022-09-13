@@ -135,6 +135,14 @@ export default (state = initialState, { type, payload }) => {
               : { ...dato, dato }
           }),
         },
+        grupoFamiliarByEjecutivo: {
+          ...state.grupoFamiliarByEjecutivo,
+          results: state.grupoFamiliarByEjecutivo.results.map(dato => {
+            return dato.id === state.familiarSeleccionado.id
+              ? { ...dato, ...state.familiarSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
         familiarSeleccionado: {},
       }
     case types.UPDATE_GRUPOFAMILIAR_FAILED:
@@ -152,6 +160,13 @@ export default (state = initialState, { type, payload }) => {
             dato => dato.id !== state.familiarSeleccionado.id
           ),
         },
+        grupoFamiliarByEjecutivo: {
+          ...state.grupoFamiliarByEjecutivo,
+          results: state.grupoFamiliarByEjecutivo.results.filter(
+            dato => dato.id !== state.familiarSeleccionado.id
+          ),
+        },
+
         familiarSeleccionado: {},
       }
     case types.DELETE_GRUPOFAMILIAR_FAILED:
@@ -171,6 +186,15 @@ export default (state = initialState, { type, payload }) => {
               : { ...dato, dato }
           }),
         },
+        grupoFamiliarByEjecutivo: {
+          ...state.grupoFamiliarByEjecutivo,
+          results: state.grupoFamiliarByEjecutivo.results.map(dato => {
+            return dato.id === state.familiarSeleccionado.id
+              ? { ...dato, is_active: !dato.is_active }
+              : { ...dato, dato }
+          }),
+        },
+
         familiarSeleccionado: {},
       }
     case types.UPDATE_ESTADOFAMILIAR_FAILED:

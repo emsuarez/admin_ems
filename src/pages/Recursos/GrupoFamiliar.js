@@ -45,7 +45,6 @@ const GrupoFamiliar = () => {
   const allFamiliarData = useSelector(state => state.recursos.allFamiliares)
 
   const handleEditarGrupoFamiliar = grupoFamiliar => {
-    console.log(grupoFamiliar, 'grupoFamiliar')
     console.log(itemEditar, 'itemEditar')
     const familiarActualizado = {
       ...grupoFamiliar,
@@ -90,8 +89,13 @@ const GrupoFamiliar = () => {
     setOpenDeleteModal(false)
   }
 
+  const [seBusco, setSeBusco] = useState(false)
   const handleSearch = e => {
     dispatch(getGrupoFamiliarAction('/familiar/?query=' + e.target.value))
+    if (e.target.value !== '') {
+      setSeBusco(false)
+    }
+    setSeBusco(true)
   }
 
   return (
@@ -159,6 +163,7 @@ const GrupoFamiliar = () => {
                 handleOpenDeleteModal={handleOpenDeleteModal}
                 tipo='general'
                 handleOpenEditFamilyModal={handleOpenEditFamilyModal}
+                seBusco={seBusco}
               />
             </div>
           </div>

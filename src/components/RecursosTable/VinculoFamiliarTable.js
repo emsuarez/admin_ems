@@ -13,42 +13,42 @@ const VinculoFamiliarTable = ({
   handleOpenDeleteModal,
   tipo,
   handleOpenEditFamilyModal,
+  seBusco,
 }) => {
-  useEffect(() => {
-    console.log(data, 'data obtenida en la tabla de vinculofamiliar')
-  }, [])
-
   const { results, count } = data
+  const dispatch = useDispatch()
 
   const [cantidadPaginas, setCantidadPaginas] = useState()
 
   const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
-  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(10)
+  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(
+    data.results.length
+  )
 
-  const dispatch = useDispatch()
   useEffect(() => {
-    const calculoPaginas = () => {
-      const cuantasPaginas = count / 10
-      const numeracionList = []
-      for (let index = 0; index < cuantasPaginas; index++) {
-        numeracionList.push(index + 1)
-      }
-      setCantidadPaginas(numeracionList)
+    if (!seBusco) {
+      setCuentaDesdePagina(1)
+      setCuentaHastaPagina(results.length)
     }
-    calculoPaginas()
-  }, [])
+
+    setCuentaHastaPagina(results.length)
+    if (count < 10) {
+      setCuentaDesdePagina(1)
+      setCuentaHastaPagina(count)
+    }
+  }, [count])
 
   const handlePreviousPage = newPage => {
     dispatch(getGrupoFamiliarAction(newPage))
     setCuentaDesdePagina(
       cuentaDesdePagina - 10 < 0 ? 1 : cuentaDesdePagina - 10
     )
-    setCuentaHastaPagina(cuentaHastaPagina - 10)
+    setCuentaHastaPagina(cuentaHastaPagina - data.results.length)
   }
 
   const handleNextPage = newPage => {
     dispatch(getGrupoFamiliarAction(newPage))
-    setCuentaDesdePagina(cuentaDesdePagina + 10)
+    setCuentaDesdePagina(cuentaDesdePagina + data.results.length)
     setCuentaHastaPagina(
       cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
     )
