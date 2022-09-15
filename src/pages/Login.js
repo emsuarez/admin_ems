@@ -123,7 +123,7 @@ const Login = props => {
                   id='newPassword'
                   name='newPassword'
                   type={showPassword ? 'password' : 'text'}
-                  placeholder='Nueva contraseña'
+                  placeholder='Contraseña'
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />

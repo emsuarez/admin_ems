@@ -163,13 +163,13 @@ const getUserInfoFailed = estadoError => ({
 // Funcion actualizar info de Usuario
 export const updateUserInfoAction = data => {
   return async dispatch => {
-    await dispatch(updateUserInfo())
     try {
       progress.start()
-      console.log('DATA', data)
-      const token = window.localStorage.getItem('token')
+      dispatch({ type: types.UPDATE_USERINFO_START })
+
+      let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      console.log(data.imagen, 'imagen', data.imagen.name)
+
       let form_data = new FormData()
 
       form_data.append('id', data.id)
@@ -183,38 +183,27 @@ export const updateUserInfoAction = data => {
       console.log(form_data, 'EL FORM DATA CARGO')
       const respuesta = await httpRequest.patch(`/usuario/`, form_data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
           Authorization: Token,
+          'content-type': 'multipart/form-data',
         },
       })
-      console.log(respuesta.data, 'Nuevo Info user')
-      progress.finish()
 
-      dispatch(updateUserInfoSuccess(respuesta.data))
+      const result = respuesta.data
+      console.log(result)
+      dispatch({
+        type: types.UPDATE_USERINFO_SUCCESS,
+        payload: result.userData,
+      })
+
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
-      console.log('Error updateUserInfo ', error)
-      progress.finish()
-      dispatch(updateUserInfoFailed(true))
+      dispatch({ type: types.UPDATE_USERINFO_FAILED })
+      dispatch(setToast('error', error))
       progress.finish()
     }
   }
 }
-
-const updateUserInfo = () => ({
-  type: types.UPDATE_USERINFO_START,
-  payload: true,
-})
-
-const updateUserInfoSuccess = user => ({
-  type: types.UPDATE_USERINFO_SUCCESS,
-  payload: user,
-})
-
-const updateUserInfoFailed = estadoError => ({
-  type: types.UPDATE_USERINFO_FAILED,
-  payload: estadoError,
-})
 
 // Funcion obtener todos los usuarios
 export const getUsersAction = (enlacePaginacion = '/user/') => {
@@ -285,8 +274,7 @@ export const UpdateEstadoUsuariosAction = data => {
 export const UpdateUserAction = data => {
   return async dispatch => {
     try {
-      console.log(data, 'DATA')
-      dispatch({ type: types.UPDATE_USUARIO_START, payload: data })
+      dispatch({ type: types.UPDATE_USERINFO_START })
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
@@ -297,12 +285,16 @@ export const UpdateUserAction = data => {
         },
       })
       const result = response.data
-
-      dispatch({ type: types.UPDATE_USUARIO_SUCCESS, payload: result })
+      console.log(result)
+      dispatch({
+        type: types.UPDATE_USERINFO_SUCCESS,
+        payload: result.userData,
+      })
       dispatch(setToast('', result.message))
       progress.finish()
     } catch (error) {
-      dispatch({ type: types.UPDATE_USUARIO_FAILED })
+      dispatch({ type: types.UPDATE_USERINFO_FAILED })
+
       dispatch(setToast('error', error.message))
       progress.finish()
     }
@@ -348,7 +340,7 @@ export const getAllUsersReportAction = () => async dispatch => {
     })
     const result = response.data
     dispatch({ type: types.GET_ALLUSERSREPORT_SUCCESS, payload: result })
-    console.log(result, 'response getAllEjecutivosAction')
+
     progress.finish()
   } catch (error) {
     dispatch({ type: types.GET_ALLUSERSREPORT_FAILED })

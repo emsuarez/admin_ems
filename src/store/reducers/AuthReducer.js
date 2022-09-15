@@ -47,7 +47,15 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        user: { ...state.user, userData: payload.userData },
+        users: {
+          ...state.users,
+          results: state.users.results.map(dato => {
+            return dato.user_id === payload.user_id
+              ? { ...dato, ...payload }
+              : { ...dato, dato }
+          }),
+        },
+        // usuarioSeleccionado: {},
       }
     case types.UPDATE_USERINFO_FAILED:
       return { ...state, isLoading: false }
@@ -64,25 +72,6 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_ALLUSERSREPORT_SUCCESS:
       return { ...state, isLoading: false, allUsers: payload }
     case types.GET_ALLUSERSREPORT_FAILED:
-      return { ...state, isLoading: false }
-
-    case type.UPDATE_USUARIO_START:
-      return { ...state, isLoading: true, usuarioSeleccionado: payload }
-    case type.UPDATE_USUARIO_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        users: {
-          ...state.users,
-          results: state.users.results.map(dato => {
-            return dato.user_id === state.usuarioSeleccionado.id
-              ? { ...dato, ...state.usuarioSeleccionado }
-              : { ...dato, dato }
-          }),
-        },
-        usuarioSeleccionado: {},
-      }
-    case type.UPDATE_USUARIO_FAILED:
       return { ...state, isLoading: false }
 
     case types.UPDATE_ESTADOUSUARIO_START:

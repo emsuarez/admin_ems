@@ -1,6 +1,7 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import React from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   getVehiculoProtectorAction,
@@ -15,9 +16,11 @@ const VehiculosProtectTable = ({
   const { results, count } = data
   const dispatch = useDispatch()
 
+  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(
+    data.results.length
+  )
+  
   const handlePreviousPage = newPage => {
-    console.log(newPage, 'newPage')
-
     dispatch(getVehiculoProtectorAction(newPage))
   }
 

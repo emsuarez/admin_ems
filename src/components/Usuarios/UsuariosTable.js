@@ -1,6 +1,6 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   getUsersAction,
@@ -58,21 +58,22 @@ const UsuariosTable = ({
     setImagenSeleccionada(URL.createObjectURL(file))
     setOpenModal(true)
     setUsuarioSeleccionado(usuario)
+
+    console.log(imagenSeleccionada, 'Imagen seleccionada')
   }
 
-  const handleImageSubmit = usuarioImagen => {
+  const handleImageSubmit = () => {
     const usuario = {
-      id: usuarioImagen.user_id,
-      usuario: usuarioImagen.username,
-      nombres: usuarioImagen.first_name,
-      apellidos: usuarioImagen.last_name,
-      email: usuarioImagen.email,
-      tipo: usuarioImagen.tipo,
-      imagen: imagenNueva ? imagenNueva : usuarioImagen.imagen,
+      id: usuarioSeleccionado.user_id,
+      usuario: usuarioSeleccionado.username,
+      nombres: usuarioSeleccionado.first_name,
+      apellidos: usuarioSeleccionado.last_name,
+      tipo: usuarioSeleccionado.tipo,
+      imagen: imagenNueva,
     }
-
-    setOpenModal(false)
+    console.log(usuario, 'Usuario')
     dispatch(updateUserInfoAction(usuario))
+    setOpenModal(false)
   }
 
   const handleCloseModal = () => {
