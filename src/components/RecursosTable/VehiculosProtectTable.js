@@ -1,33 +1,55 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import React from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   getVehiculoProtectorAction,
   UpdateEstadoVehiculoProtectorAction,
 } from '../../store/actions'
 
+import { format } from 'date-fns'
+
 const VehiculosProtectTable = ({
   data,
   handleOpenEditModal,
   handleOpenDeleteModal,
+  seBusco,
 }) => {
   const { results, count } = data
   const dispatch = useDispatch()
 
+  const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
   const [cuentaHastaPagina, setCuentaHastaPagina] = useState(
     data.results.length
   )
-  
+
+  useEffect(() => {
+    if (!seBusco) {
+      setCuentaDesdePagina(1)
+      setCuentaHastaPagina(results.length)
+    }
+
+    setCuentaHastaPagina(results.length)
+    if (count < 10) {
+      setCuentaDesdePagina(1)
+      setCuentaHastaPagina(count)
+    }
+  }, [count])
+
   const handlePreviousPage = newPage => {
     dispatch(getVehiculoProtectorAction(newPage))
+    setCuentaDesdePagina(
+      cuentaDesdePagina - 10 < 0 ? 1 : cuentaDesdePagina - 10
+    )
+    setCuentaHastaPagina(cuentaHastaPagina - data.results.length)
   }
 
   const handleNextPage = newPage => {
-    console.log(newPage, 'newPage')
-
     dispatch(getVehiculoProtectorAction(newPage))
+    setCuentaDesdePagina(cuentaDesdePagina + data.results.length)
+    setCuentaHastaPagina(
+      cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
+    )
   }
 
   const handleChangeStatusVehiculo = data => {
@@ -36,7 +58,7 @@ const VehiculosProtectTable = ({
       id: data.id,
       estado: data.is_active === true ? false : true,
     }
-    console.log(nuevoStatus, 'nuevoStatus')
+
     dispatch(UpdateEstadoVehiculoProtectorAction(nuevoStatus))
   }
   return (
@@ -67,7 +89,7 @@ const VehiculosProtectTable = ({
           {Object.keys(data).length > 0 ? (
             <tbody className='overflow-x-auto'>
               {data.results.map((item, index) => (
-                <tr key={item.id}>
+                <tr key={index}>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
                     {item.alias}
                   </td>
@@ -78,7 +100,7 @@ const VehiculosProtectTable = ({
                     {item.tipo}
                   </td>
                   <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
-                    {item.created}
+                    {format(new Date(item.created), 'dd/MM/yyyy HH:mm')}
                   </td>
                   <button
                     className='mt-2'
@@ -163,9 +185,10 @@ const VehiculosProtectTable = ({
         <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
           <div>
             <p className='text-sm text-gray-700'>
-              Mostrando <span className='font-medium'>1</span> -{' '}
+              Mostrando <span className='font-medium'>{cuentaDesdePagina}</span>{' '}
+              -{' '}
               <span className='font-medium'>
-                {Object.keys(data).length > 0 ? results.length : null}
+                {Object.keys(data).length > 0 ? cuentaHastaPagina : null}
               </span>{' '}
               de{' '}
               <span className='font-medium'>

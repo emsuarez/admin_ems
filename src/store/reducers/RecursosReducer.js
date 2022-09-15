@@ -482,9 +482,23 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.POST_VEHICLE_PROTECTOR_START:
-      return { ...state, isLoading: true }
+      return {
+        ...state,
+        isLoading: true,
+        vehiculoProtectorSeleccionado: payload,
+      }
     case types.POST_VEHICLE_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosProtectores: {
+          ...state.vehiculosProtectores,
+          results: [
+            { ...state.vehiculoProtectorSeleccionado, id: payload.id },
+            ...state.vehiculosProtectores.results,
+          ],
+        },
+      }
     case types.POST_VEHICLE_PROTECTOR_FAILED:
       return { ...state, isLoading: false }
 

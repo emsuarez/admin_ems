@@ -13,7 +13,7 @@ const VehiculosEjecutivoTable = ({
   data,
   handleOpenEditModal,
   handleOpenDeleteModal,
-  seBuco,
+  seBusco,
 }) => {
   const { results, count } = data
   const dispatch = useDispatch()
@@ -24,7 +24,7 @@ const VehiculosEjecutivoTable = ({
   )
 
   useEffect(() => {
-    if (!seBuco) {
+    if (!seBusco) {
       setCuentaDesdePagina(1)
       setCuentaHastaPagina(results.length)
     }

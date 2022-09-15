@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
   DeleteEjecutivo,
-  EditEjecutivo,
   EditVehicle,
   Header,
   ICONS,
@@ -13,12 +12,12 @@ import {
 import CreateVehiculo from '../../components/RecursosModals/CreateVehiculo'
 import vehiculosEjecutivosReportPDF from '../../reports/Recursos/vehiculosEjecutivosReportPDF'
 import {
+  createNewVehicleEjecutivoAction,
   DeleteVehiculoEjecutivoAction,
   getAllVehiculosEjecutivoAction,
   getVehiculoEjecutivoAction,
   UpdateVehicleEjecutivoAction,
 } from '../../store/actions'
-import { createNewVehicleEjecutivoAction } from '../../store/actions'
 
 const VehicleEjectivos = () => {
   const dispatch = useDispatch()
@@ -60,7 +59,7 @@ const VehicleEjectivos = () => {
       alias: vehiculoEjecutivo.alias,
       tipo: vehiculoEjecutivo.tipo,
     }
-    console.log(nuevoVehiculo, 'nuevoVehiculo')
+
     dispatch(createNewVehicleEjecutivoAction(nuevoVehiculo))
     setOpenEditModal(false)
   }
@@ -74,7 +73,7 @@ const VehicleEjectivos = () => {
       ...vehiculo,
       id: itemEditar.idVehiculo,
     }
-    console.log(ejecutivoActualizado)
+
     dispatch(UpdateVehicleEjecutivoAction(ejecutivoActualizado))
     setOpenEditModal(false)
   }

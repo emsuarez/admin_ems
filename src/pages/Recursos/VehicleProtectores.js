@@ -8,14 +8,12 @@ import {
   Header,
   ICONS,
   RedirectWithoutLogin,
-  VehiculosEjecutivoTable,
   VehiculosProtectTable,
 } from '../../components'
 import vehiculosProtectoresReportPDF from '../../reports/Recursos/vehiculosProtectoresReportPDF'
 import {
   CreateNewVehicleProtectorAction,
   DeleteVehicleProtectorAction,
-  DeleteVehiculoEjecutivoAction,
   getAllVehiculoProtectorAction,
   getVehiculoProtectorAction,
   UpdateVehicleProtectorAction,
@@ -56,12 +54,13 @@ const VehicleProtectores = () => {
 
   const handleGuardarVehículoProtector = vehiculoProtector => {
     const nuevoVehiculo = {
-      // id_ejecutivo: vehiculoProtector.propietario,
       placas: vehiculoProtector.placas,
       alias: vehiculoProtector.alias,
       tipo: vehiculoProtector.tipo,
+      created: new Date(),
+      is_active: true,
     }
-    console.log(nuevoVehiculo, 'nuevoVehiculo')
+
     dispatch(CreateNewVehicleProtectorAction(nuevoVehiculo))
     setOpenEditModal(false)
   }
@@ -90,10 +89,15 @@ const VehicleProtectores = () => {
     setOpenDeleteModal(false)
   }
 
+  const [seBusco, setSeBusco] = useState(false)
   const handleSearch = e => {
     dispatch(
       getVehiculoProtectorAction('/vehiculoprotector/?query=' + e.target.value)
     )
+    if (e.target.value !== '') {
+      setSeBusco(false)
+    }
+    setSeBusco(true)
   }
 
   return (
@@ -156,14 +160,16 @@ const VehicleProtectores = () => {
                 </div>
               </div>
             </div>
-
-            <div className=' pt-4 p-16 flex flex-col'>
-              <VehiculosProtectTable
-                data={vehiculosProtectoresData}
-                handleOpenEditModal={handleOpenEditModal}
-                handleOpenDeleteModal={handleOpenDeleteModal}
-              />
-            </div>
+            {Object.keys(vehiculosProtectoresData).length > 0 && (
+              <div className=' pt-4 p-16 flex flex-col'>
+                <VehiculosProtectTable
+                  data={vehiculosProtectoresData}
+                  handleOpenEditModal={handleOpenEditModal}
+                  handleOpenDeleteModal={handleOpenDeleteModal}
+                  seBusco={seBusco}
+                />
+              </div>
+            )}
           </div>
           {/* Modales */}
           <EditVehicle

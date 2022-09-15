@@ -781,7 +781,7 @@ export const UpdateEstadoProtectorAction = data => async dispatch => {
 //Create Vehicle Protector
 export const CreateNewVehicleProtectorAction = data => async dispatch => {
   try {
-    dispatch({ type: types.POST_VEHICLE_PROTECTOR_START })
+    dispatch({ type: types.POST_VEHICLE_PROTECTOR_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token

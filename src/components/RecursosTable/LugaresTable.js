@@ -6,48 +6,78 @@ import Icon from '../../assets/Icon'
 import { GetLugaresAction, UpdateEstadoLugarAction } from '../../store/actions'
 import { format } from 'date-fns'
 
+import {
+  Box,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  tablePaginationClasses,
+  TableRow,
+  useTheme,
+} from '@mui/material'
+
+function TablePaginationActions(props) {
+  const theme = useTheme()
+  const { count, page, rowsPerPage, onPageChange } = props
+
+  const handleBackButtonClick = event => {
+    onPageChange(event, page - 1)
+  }
+
+  const handleNextButtonClick = event => {
+    onPageChange(event, page + 1)
+  }
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label='previous page'
+      >
+        {theme.direction === 'rtl' ? (
+          <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
+        ) : (
+          <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label='next page'
+      >
+        {theme.direction === 'rtl' ? (
+          <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
+        ) : (
+          <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
+        )}
+      </IconButton>
+    </Box>
+  )
+}
+
+// TablePaginationActions.propTypes = {
+//   count: PropTypes.number.isRequired,
+//   onPageChange: PropTypes.func.isRequired,
+//   page: PropTypes.number.isRequired,
+//   rowsPerPage: PropTypes.number.isRequired,
+// }
+
 const LugaresTable = ({
   data,
   handleOpenEditModal,
   handleOpenDeleteModal,
-  seBuco,
+  seBusco,
 }) => {
   const { results, count } = data
   const dispatch = useDispatch()
-
-  const [cuentaDesdePagina, setCuentaDesdePagina] = useState(1)
-  const [cuentaHastaPagina, setCuentaHastaPagina] = useState(
-    data.results.length
-  )
-
-  useEffect(() => {
-    if (!seBuco) {
-      setCuentaDesdePagina(1)
-      setCuentaHastaPagina(results.length)
-    }
-
-    setCuentaHastaPagina(results.length)
-    if (count < 10) {
-      setCuentaDesdePagina(1)
-      setCuentaHastaPagina(count)
-    }
-  }, [count])
-
-  const handlePreviousPage = newPage => {
-    dispatch(GetLugaresAction(newPage))
-    setCuentaDesdePagina(
-      cuentaDesdePagina - 10 < 0 ? 1 : cuentaDesdePagina - 10
-    )
-    setCuentaHastaPagina(cuentaHastaPagina - data.results.length)
-  }
-
-  const handleNextPage = newPage => {
-    dispatch(GetLugaresAction(newPage))
-    setCuentaDesdePagina(cuentaDesdePagina + data.results.length)
-    setCuentaHastaPagina(
-      cuentaHastaPagina + 10 > count ? count : cuentaHastaPagina + 10
-    )
-  }
 
   const handleChangeStatusLugar = data => {
     const nuevoStatus = {
@@ -57,150 +87,125 @@ const LugaresTable = ({
     }
     dispatch(UpdateEstadoLugarAction(nuevoStatus))
   }
+
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - results.length) : 0
+
+  const handleChangePage = (event, newPage) => {
+    dispatch(GetLugaresAction(newPage > page ? data.next : data.previous))
+    console.log(page)
+    setPage(newPage)
+    console.log(newPage)
+    console.log(data)
+  }
+
   return (
-    <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
-      <div className='overflow-y-auto'>
-        <table className='items-center bg-transparent w-full border-collapse'>
-          <thead className='border-gray-200'>
-            <tr>
-              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
-                Lugar
-              </th>
-              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
-                Alias
-              </th>
-
-              <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
-                Creado
-              </th>
-              <th
-                colSpan={3}
-                className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center'
-              >
-                Opciones
-              </th>
-            </tr>
-          </thead>
-
-          {Object.keys(data).length > 0 ? (
-            <tbody className='overflow-x-auto'>
-              {data.results.map(item => (
-                <tr key={item.id}>
-                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
-                    {item.lugar}
-                  </td>
-                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
-                    {item.alias}
-                  </td>
-                  <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap'>
-                    {format(new Date(item.created), 'dd/MM/yyyy HH:mm')}
-                  </td>
-
-                  <td
-                    className='mt-2 border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'
-                    onClick={() => handleChangeStatusLugar(item)}
+    <TableContainer className='shadow-lg' component={Paper}>
+      <Table
+        size='small'
+        className='shadow-none'
+        aria-label='custom pagination table'
+        sx={{
+          [`& .${tableCellClasses.root}`]: {
+            borderBottom: 'none',
+          },
+        }}
+      >
+        <TableHead
+          className='border-y-[1.5px] border-gray-200'
+          sx={{
+            [`& .${tableCellClasses.head}`]: {
+              color: '#26346E',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              lineHeight: '1.25rem',
+              letterSpacing: '0.03em',
+              textTransform: 'uppercase',
+              padding: '1.1rem 1rem',
+            },
+          }}
+        >
+          <TableRow>
+            <TableCell className='font-bold'>Lugar</TableCell>
+            <TableCell>Alias</TableCell>
+            <TableCell>Creado</TableCell>
+            <TableCell sx={{ textAlign: 'center' }}>Opciones</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {results.map(row => (
+            <TableRow key={row.id}>
+              <TableCell scope='row'>{row.lugar}</TableCell>
+              <TableCell>{row.alias}</TableCell>
+              <TableCell>{row.created}</TableCell>
+              <TableCell>
+                <div className='flex justify-center'>
+                  <div
+                    className='border-t-0 px-2 border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:bg-gray-300 hover:rounded'
+                    onClick={() => handleChangeStatusLugar(row)}
                   >
-                    {item.is_active ? (
+                    {row.is_active ? (
                       <Icon svgName='ib_activo' className='h-5 mx-auto' />
                     ) : (
                       <Icon svgName='ib_inactivo' className='h-5 mx-auto' />
                     )}
-                  </td>
+                  </div>
 
-                  <td
-                    className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-gray-300 hover:rounded'
-                    onClick={() => handleOpenEditModal(item)}
+                  <div
+                    className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
+                    onClick={() => handleOpenEditModal(row)}
                   >
                     <Icon svgName='ib_editar' className='h-4 mx-auto' />
-                  </td>
+                  </div>
 
-                  <td
-                    className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600 mx-auto hover:bg-gray-300 hover:rounded'
-                    onClick={() => handleOpenDeleteModal(item)}
+                  <div
+                    className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600  hover:bg-gray-300 hover:rounded'
+                    onClick={() => handleOpenDeleteModal(row)}
                   >
                     <Icon svgName='ib_eliminar' className='h-4 mx-auto' />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          ) : null}
-        </table>
-      </div>
-
-      {/* Paginación */}
-      <div className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'>
-        <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
-          <div>
-            <p className='text-sm text-gray-700'>
-              Mostrando <span className='font-medium'>{cuentaDesdePagina}</span>{' '}
-              -{' '}
-              <span className='font-medium'>
-                {Object.keys(data).length > 0 ? cuentaHastaPagina : null}
-              </span>{' '}
-              de{' '}
-              <span className='font-medium'>
-                {Object.keys(data).length > 0 ? count : null}
-              </span>{' '}
-              resultados
-            </p>
-          </div>
-          <div>
-            <nav
-              className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
-              aria-label='Pagination'
-            >
-              <button
-                disabled={data.previous === null ? true : false}
-                className={data.previous !== null ? 'cursor-pointer' : null}
-                onClick={() => handlePreviousPage(data.previous)}
-              >
-                <div
-                  className={
-                    data.previous === null
-                      ? 'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium text-blue-900 bg-gray-300'
-                      : 'relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-blue-900 hover:bg-gray-50'
-                  }
-                >
-                  <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
-                  {/* <span className='sr-only'> */}
-                  Anterior
-                  {/* </span> */}
+                  </div>
                 </div>
-              </button>
-
-              {/* {data.next || data.previous
-            ? cantidadPaginas.map(pagina => (
-                <a
-                  href='#'
-                  class='py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                >
-                  {pagina}
-                </a>
-              ))
-            : null} */}
-              <button
-                disabled={data.next === null ? true : false}
-                className={data.next !== null ? 'cursor-pointer' : null}
-                onClick={() => handleNextPage(data.next)}
-              >
-                <div
-                  className={
-                    data.next === null
-                      ? 'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 text-sm font-medium text-blue-900 bg-gray-300'
-                      : 'relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-blue-900 hover:bg-gray-50'
-                  }
-                >
-                  {/* <span className='sr-only'> */}
-                  Siguiente
-                  <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
-                  {/* </span> */}
-                </div>
-              </button>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter className='border-y-[1.5px] border-gray-200'>
+          <TableRow>
+            <TablePagination
+              sx={{
+                [`& .${tablePaginationClasses.spacer}`]: {
+                  display: 'none',
+                },
+                [`& .${tablePaginationClasses.toolbar}`]: {
+                  justifyContent: 'space-between',
+                  padding: '0rem 3rem',
+                },
+              }}
+              colSpan={4}
+              count={count}
+              rowsPerPageOptions={[]}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              SelectProps={{
+                inputProps: {
+                  'aria-label': 'filas por pagina',
+                },
+                native: true,
+              }}
+              labelDisplayedRows={({ from, to, count }) => {
+                return 'Mostrando ' + from + ' - ' + to + ' de ' + count + ' resultados'
+              }}
+              onPageChange={handleChangePage}
+              ActionsComponent={TablePaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
   )
 }
 
