@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import {
   AdminAuthorized,
@@ -21,12 +21,11 @@ import {
   crudPersonalActaAction,
   deleteConsignaTRSAction,
   deleteNovedadTRSAction,
-  getInformeTrs,
   getInformeTrsNavegacion,
-  setToast,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
+import ReactToPrint, { useReactToPrint } from 'react-to-print'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()
@@ -530,6 +529,12 @@ const EditRecepcion = () => {
   const handleSiguienteInforme = () => {
     dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 1))
   }
+
+  const componentRef = useRef()
+  const handleGenerarInformePdf = useReactToPrint({
+    content: () => componentRef.current,
+  })
+
   // #endregion
   return (
     <>
@@ -551,7 +556,7 @@ const EditRecepcion = () => {
               <p className=' ml-1'>Entrega y Recepción de Turno</p>
             </div>
 
-            <div className='flex justify-center items-center'>
+            <div className='flex justify-center items-center '>
               <button onClick={() => handleInformeAnterior()}>
                 <Icon
                   svgName='ib_flechaizq'
@@ -559,14 +564,17 @@ const EditRecepcion = () => {
                 />
               </button>
               <div className='flex justify-center bg-white'>
-                <div className='px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm pt-2 w-[67rem]'>
+                <div
+                  ref={componentRef}
+                  className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86rem] py-2'
+                >
                   <div className='flex justify-between mb-2 mx-10'>
                     <img src={logo} className='h-14' />
                     <h2 className='font-bold text-lg'>
                       ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
                     </h2>
 
-                    <button>
+                    <button onClick={handleGenerarInformePdf}>
                       <div className='flex'>
                         <p className='text-blue-800 hover:cursor-pointer'>
                           Exportar a PDF
@@ -1126,32 +1134,34 @@ const EditRecepcion = () => {
                   </div>
 
                   {/* FOOTER SECTION */}
-                  <div className='border-2'>
-                    <div className='flex border-b-2 border-gray-500'>
-                      <div className='p-1 w-1/2 border-r-2 border-gray-500 font-semibold text-sm'>
-                        <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
-                        <p className='text-blue-800'>{agenteSaliente}</p>
+                  <div className='flex justify-end items-end mt-4 h-full'>
+                    <div className='border-2 w-full'>
+                      <div className='flex border-b-2 border-gray-500'>
+                        <div className='p-1 w-1/2 border-r-2 border-gray-500 font-semibold text-sm'>
+                          <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
+                          <p className='text-blue-800'>{agenteSaliente}</p>
+                        </div>
+
+                        <div className='w-1/2 font-semibold p-1 text-sm'>
+                          <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
+                          <p className='text-blue-800'>{agenteEntrante}</p>
+                        </div>
                       </div>
 
-                      <div className='w-1/2 font-semibold p-1 text-sm'>
-                        <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
-                        <p className='text-blue-800'>{agenteEntrante}</p>
+                      <div className='flex text-sm'>
+                        <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
+                          Firma:
+                        </p>
+                        <p className=' h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
+                          Hora:
+                        </p>
+                        <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
+                          Firma:
+                        </p>
+                        <p className='h-20 w-1/2 flex flex-col justify-end p-2'>
+                          Hora:
+                        </p>
                       </div>
-                    </div>
-
-                    <div className='flex text-sm'>
-                      <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
-                        Firma:
-                      </p>
-                      <p className=' h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
-                        Hora:
-                      </p>
-                      <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
-                        Firma:
-                      </p>
-                      <p className='h-20 w-1/2 flex flex-col justify-end p-2'>
-                        Hora:
-                      </p>
                     </div>
                   </div>
                 </div>
