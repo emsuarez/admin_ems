@@ -5,6 +5,7 @@ import { EditRecepcion, Toast } from './components'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
 import { Dashboard, Login, Registration } from './pages'
 import { CCTVDashboard, Diurno, Historial, Nocturno } from './pages/CCTV'
+import RecepcionTurnoCctv from './pages/CCTV/RecepcionTurnoCctv'
 import HistorialCCTV from './pages/CCTVAdmin/HistorialCCTV'
 import PerfilUsuario from './pages/PerfilUsuario'
 import Ejecutivos from './pages/Recursos/Ejecutivos'
@@ -55,6 +56,11 @@ function App(props) {
           {/* TRSUSER */}
           <Route path='trsdashboard' element={<TRSDashboard />} />
 
+          {/* CCTV */}
+          <Route path='recepcionturnocctv' element={<RecepcionTurnoCctv />} />
+          <Route path='editrecepcioncctv' element={<EditRecepcion />} />
+          <Route path='viewrecepcioncctv' element={<EditRecepcion />} />
+          {/* CCTVUSER */}
           <Route path='cctvdashboard' element={<CCTVDashboard />} />
 
           <Route path='cctv/diurno' element={<Diurno />} />

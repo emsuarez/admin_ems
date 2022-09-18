@@ -380,3 +380,26 @@ export const getHistorialMovimientosAction = (
     }
   }
 }
+
+export const getInformeCctv = (enlacePaginacion = '/informecctv/') => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_INFORMECCTV_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(enlacePaginacion, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+      console.log(result, 'result informe')
+      dispatch({ type: types.GET_INFORMECCTV_SUCCESS, payload: result })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_INFORMECCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}

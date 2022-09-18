@@ -59,9 +59,9 @@ const CCTV = ({ item }) => {
                   window.location.protocol +
                     '//' +
                     window.location.host +
-                    '/recepcionturno'
+                    '/recepcionturnocctv'
                 ) {
-                  navigate('/recepcionturno')
+                  navigate('/recepcionturnocctv')
                 }
               }}
               className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
