@@ -159,15 +159,15 @@ const VehicleEjectivos = () => {
                 </div>
               </div>
             </div>
-
-            <div className=' pt-4 p-16 flex flex-col'>
-              <VehiculosEjecutivoTable
-                data={vehiculoEjecutivoData}
-                handleOpenEditModal={handleOpenEditModal}
-                handleOpenDeleteModal={handleOpenDeleteModal}
-                seBuco={seBusco}
-              />
-            </div>
+            {Object.keys(vehiculoEjecutivoData).length > 0 && (
+              <div className=' pt-4 p-16 flex flex-col'>
+                <VehiculosEjecutivoTable
+                  data={vehiculoEjecutivoData}
+                  handleOpenEditModal={handleOpenEditModal}
+                  handleOpenDeleteModal={handleOpenDeleteModal}
+                />
+              </div>
+            )}
           </div>
           {/* Modales */}
           <EditVehicle

@@ -563,10 +563,10 @@ const EditRecepcion = () => {
                   className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
                 />
               </button>
-              <div className='flex justify-center bg-white'>
+              <div className='flex justify-center bg-white h-[89rem]'>
                 <div
                   ref={componentRef}
-                  className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86rem] py-2'
+                  className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86.5rem] py-2'
                 >
                   <div className='flex justify-between mb-2 mx-10'>
                     <img src={logo} className='h-14' />
@@ -1134,7 +1134,7 @@ const EditRecepcion = () => {
                   </div>
 
                   {/* FOOTER SECTION */}
-                  <div className='flex justify-end items-end mt-4 h-full'>
+                  <div className='flex justify-end items-end mt-1 h-full'>
                     <div className='border-2 w-full'>
                       <div className='flex border-b-2 border-gray-500'>
                         <div className='p-1 w-1/2 border-r-2 border-gray-500 font-semibold text-sm'>

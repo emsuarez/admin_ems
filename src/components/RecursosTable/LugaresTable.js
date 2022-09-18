@@ -1,10 +1,10 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
-import React, { useEffect, useState } from 'react'
+import { format } from 'date-fns'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import Icon from '../../assets/Icon'
 import { GetLugaresAction, UpdateEstadoLugarAction } from '../../store/actions'
-import { format } from 'date-fns'
 
 import {
   Box,
@@ -63,19 +63,7 @@ function TablePaginationActions(props) {
   )
 }
 
-// TablePaginationActions.propTypes = {
-//   count: PropTypes.number.isRequired,
-//   onPageChange: PropTypes.func.isRequired,
-//   page: PropTypes.number.isRequired,
-//   rowsPerPage: PropTypes.number.isRequired,
-// }
-
-const LugaresTable = ({
-  data,
-  handleOpenEditModal,
-  handleOpenDeleteModal,
-  seBusco,
-}) => {
+const LugaresTable = ({ data, handleOpenEditModal, handleOpenDeleteModal }) => {
   const { results, count } = data
   const dispatch = useDispatch()
 
@@ -91,16 +79,10 @@ const LugaresTable = ({
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - results.length) : 0
-
   const handleChangePage = (event, newPage) => {
     dispatch(GetLugaresAction(newPage > page ? data.next : data.previous))
-    console.log(page)
+
     setPage(newPage)
-    console.log(newPage)
-    console.log(data)
   }
 
   return (
@@ -141,7 +123,9 @@ const LugaresTable = ({
             <TableRow key={row.id}>
               <TableCell scope='row'>{row.lugar}</TableCell>
               <TableCell>{row.alias}</TableCell>
-              <TableCell>{row.created}</TableCell>
+              <TableCell>
+                {format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
+              </TableCell>
               <TableCell>
                 <div className='flex justify-center'>
                   <div
@@ -197,7 +181,23 @@ const LugaresTable = ({
                 native: true,
               }}
               labelDisplayedRows={({ from, to, count }) => {
-                return 'Mostrando ' + from + ' - ' + to + ' de ' + count + ' resultados'
+                return (
+                  'Mostrando ' +
+                  from +
+                  ' - ' +
+                  to +
+                  ' de ' +
+                  count +
+                  ' resultados'
+                )
+              }}
+              backIconButtonProps={{
+                inputProps: {
+                  'aria-label': 'pagina anterior',
+                },
+              }}
+              nextIconButtonProps={{
+                color: 'secondary',
               }}
               onPageChange={handleChangePage}
               ActionsComponent={TablePaginationActions}
