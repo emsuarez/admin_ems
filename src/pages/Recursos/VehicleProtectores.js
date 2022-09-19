@@ -166,7 +166,6 @@ const VehicleProtectores = () => {
                   data={vehiculosProtectoresData}
                   handleOpenEditModal={handleOpenEditModal}
                   handleOpenDeleteModal={handleOpenDeleteModal}
-                  seBusco={seBusco}
                 />
               </div>
             )}
