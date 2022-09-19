@@ -140,6 +140,32 @@ export const crudPersonalActaAction = data => {
   }
 }
 
+export const crudPersonalActaCctvAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CRUD_PERSONAL_ACTACCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch('/informecctv/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CRUD_PERSONAL_ACTACCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CRUD_PERSONAL_ACTACCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const createNovedadTRSAction = data => {
   return async dispatch => {
     try {
@@ -166,6 +192,32 @@ export const createNovedadTRSAction = data => {
   }
 }
 
+export const createNovedadCctvAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CREATE_NOVEDADCCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.post('/novedadcctv/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CREATE_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CREATE_NOVEDADCCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const updateNovedadTRSAction = data => {
   return async dispatch => {
     try {
@@ -186,6 +238,32 @@ export const updateNovedadTRSAction = data => {
       progress.finish()
     } catch (error) {
       dispatch({ type: types.UPDATE_NOVEDADTRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const updateNovedadCCTVAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.UPDATE_NOVEDADCCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch('/novedadcctv/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.UPDATE_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.UPDATE_NOVEDADCCTV_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }
@@ -219,6 +297,33 @@ export const deleteNovedadTRSAction = data => {
   }
 }
 
+export const deleteNovedadCCTVAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.DELETE_NOVEDADCCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.delete('/novedadcctv/', {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+        data: data,
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.DELETE_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.DELETE_NOVEDADCCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const cerrarNovedadTRSAction = data => {
   return async dispatch => {
     try {
@@ -239,6 +344,32 @@ export const cerrarNovedadTRSAction = data => {
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CERRAR_NOVEDADTRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const cerrarNovedadCCTVAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CERRAR_NOVEDADCCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.put('/novedadcctv/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CERRAR_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CERRAR_NOVEDADCCTV_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }
@@ -271,6 +402,32 @@ export const createConsignaTRSAction = data => {
   }
 }
 
+export const createConsignaCctvAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CREATE_CONSIGNACCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.post('/consignacctv/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.CREATE_CONSIGNACCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Consigna ingresada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CREATE_CONSIGNACCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const updateConsignaTRSAction = data => {
   return async dispatch => {
     try {
@@ -291,6 +448,31 @@ export const updateConsignaTRSAction = data => {
       progress.finish()
     } catch (error) {
       dispatch({ type: types.UPDATE_CONSIGNATRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+export const updateConsignaCCTVAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.UPDATE_CONSIGNACCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch('/consignacctv/', data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.UPDATE_CONSIGNACCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.UPDATE_CONSIGNACCTV_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }
@@ -318,6 +500,33 @@ export const deleteConsignaTRSAction = data => {
       progress.finish()
     } catch (error) {
       dispatch({ type: types.DELETE_CONSIGNATRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const deleteConsignaCCTVAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.DELETE_CONSIGNACCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.delete('/consignacctv/', {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+        data: data,
+      })
+
+      const result = respuesta.data
+      dispatch({ type: types.DELETE_CONSIGNACCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Consigna eliminada correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.DELETE_CONSIGNACCTV_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }
@@ -398,6 +607,60 @@ export const getInformeCctv = (enlacePaginacion = '/informecctv/') => {
       progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_INFORMECCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const getInformeCctvById = informeActual => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_INFORMECCTV_BY_ID_START })
+
+      dispatch({
+        type: types.GET_INFORMECCTV_BY_ID_SUCCESS,
+        payload: informeActual,
+      })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_INFORMECCTV_BY_ID_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const getInformeCctvNavegacion = (informeActual, navega) => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_INFORMECCTV_BY_ID_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(
+        `/informecctv/?id=${informeActual}&next=${navega}`,
+        {
+          headers: { Authorization: Token },
+        }
+      )
+
+      const result = respuesta.data
+      console.log(result, 'result informe navegacion')
+      if (result.results.length === 0) {
+        dispatch(setToast('error', 'Ah llegado al final de la lista'))
+        progress.finish()
+        return
+      }
+
+      dispatch({
+        type: types.GET_INFORMECCTV_BY_ID_SUCCESS,
+        payload: result.results[0],
+      })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_INFORMECCTV_BY_ID_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }

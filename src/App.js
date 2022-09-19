@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import { EditRecepcion, Toast } from './components'
+import EditRecepcionCctv from './components/CCTV/EditRecepcionCctv'
 import ProtectedRoutes from './components/routes/ProtectedRoutes'
 import { Dashboard, Login, Registration } from './pages'
 import { CCTVDashboard, Diurno, Historial, Nocturno } from './pages/CCTV'
@@ -58,8 +59,8 @@ function App(props) {
 
           {/* CCTV */}
           <Route path='recepcionturnocctv' element={<RecepcionTurnoCctv />} />
-          <Route path='editrecepcioncctv' element={<EditRecepcion />} />
-          <Route path='viewrecepcioncctv' element={<EditRecepcion />} />
+          <Route path='editrecepcioncctv' element={<EditRecepcionCctv />} />
+          <Route path='viewrecepcioncctv' element={<EditRecepcionCctv />} />
           {/* CCTVUSER */}
           <Route path='cctvdashboard' element={<CCTVDashboard />} />
 

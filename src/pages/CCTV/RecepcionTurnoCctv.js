@@ -12,6 +12,7 @@ import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeCctv,
+  getInformeCctvById,
   getInformeTrs,
   getInformeTrsById,
 } from '../../store/actions'
@@ -24,6 +25,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
+
 const RecepcionTurnoCctv = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -54,13 +56,13 @@ const RecepcionTurnoCctv = () => {
 
   const handleOpenViewInforme = informe => {
     console.log(informe)
-    navigate('/viewrecepcioncctv', { state: informe })
+    navigate('/viewrecepcioncctv')
   }
 
   const handleOpenEditInforme = informe => {
     console.log(informe)
     navigate('/editrecepcioncctv')
-    dispatch(getInformeTrsById(informe))
+    dispatch(getInformeCctvById(informe))
   }
 
   const handleOpenDeleteActa = itemEliminar => {
@@ -74,7 +76,7 @@ const RecepcionTurnoCctv = () => {
   }
 
   const handleDeleteActa = acta => {
-    dispatch(deleteInformeTRSAction({ id: acta.id }))
+    // dispatch(deleteInformeCctvAction({ id: acta.id }))
     console.log(acta, 'acta')
     setOpenDeleteModal(false)
   }
