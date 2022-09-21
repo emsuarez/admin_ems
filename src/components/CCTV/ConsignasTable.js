@@ -4,7 +4,7 @@ const ConsignasTable = ({ data, confirmarCerrarConsigna, tituloTipoTable }) => {
   const { results, count } = data
 
   return (
-    <div className='flex flex-col break-words bg-white w-full shadow-lg h-96'>
+    <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
       <div className='mb-0 px-4 py-3 border-0'>
         <div className='flex flex-wrap items-center'>
           <div className='relative w-full px-4  flex-grow flex-1'>

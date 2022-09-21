@@ -39,11 +39,15 @@ const Dashboard = () => {
     cargarConsignas()
   }, [dispatch])
 
-  const consignas = useSelector(state => state.consignas)
-  const consignasGrafica = useSelector(
-    state => state.consignas.consignasGrafica
-  )
-  const { consignasCctv, consignasTrs, novedadesCctv, novedadesTrs } = consignas
+  const consignas = useSelector(state => state.consignas) || {}
+
+  const {
+    consignasGrafica,
+    consignasCctv,
+    consignasTrs,
+    novedadesCctv,
+    novedadesTrs,
+  } = consignas
 
   const handleTimeGraficas = consigna => {
     // setIdConsigna(consigna)
@@ -82,39 +86,39 @@ const Dashboard = () => {
       ) : (
         <>
           <Header />
-          <div className='flex flex-col'>
-            <div className='mt-4'>
-              <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
-            </div>
-            {Object.keys(consignasGrafica).length > 0 ? (
+          {Object.keys(consignas).length > 0 && (
+            <div className='flex flex-col'>
+              <div className='mt-4'>
+                <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
+              </div>
               <div className='flex mt-4 mb-8'>
                 <div className='w-1/2 ml-12 mr-3'>
                   <Piechart
-                    data={consignasGrafica.datos.trs}
+                    data={consignasGrafica.datos?.trs}
                     handleTimeConsignas={handleTimeGraficas}
                     rol='TRS'
                   />
                 </div>
+
                 <div className='w-1/2 mr-12 ml-3'>
                   <Piechart
-                    data={consignasGrafica.datos.cctv}
+                    data={consignasGrafica.datos?.cctv}
                     handleTimeConsignas={handleTimeGraficas}
                     rol='CCTV'
                   />
                 </div>
               </div>
-            ) : null}
-            {Object.keys(consignas).length > 0 && (
+
               <>
                 <div className='flex mb-8'>
-                  <div className='w-1/2 ml-12 mr-3'>
+                  <div className='w-1/2 ml-12 mr-3 h-96'>
                     <ConsignasTable
                       data={consignasTrs}
                       confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
                       tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES TRS'
                     />
                   </div>
-                  <div className='w-1/2 mr-12 ml-3'>
+                  <div className='w-1/2 mr-12 ml-3 h-96'>
                     <ConsignasTable
                       data={consignasCctv}
                       confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
@@ -123,14 +127,14 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className='flex mb-8'>
-                  <div className='w-1/2 ml-12 mr-3'>
+                  <div className='w-1/2 ml-12 mr-3 h-96'>
                     <ConsignasTable
                       data={novedadesTrs}
                       confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
                       tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
                     />
                   </div>
-                  <div className='w-1/2 mr-12 ml-3'>
+                  <div className='w-1/2 mr-12 ml-3 h-96'>
                     <ConsignasTable
                       data={novedadesCctv}
                       confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
@@ -139,8 +143,8 @@ const Dashboard = () => {
                   </div>
                 </div>
               </>
-            )}
-          </div>
+            </div>
+          )}
           <AlertCerrarConsigna
             modal={modalTrs}
             setModal={setModalTrs}

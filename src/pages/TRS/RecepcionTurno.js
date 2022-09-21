@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  AdminAuthorized,
-  Header,
-  HistorialMovimientoTable,
-  ICONS,
+  CCTVAuthorized,
+  Header, ICONS,
   RecepcionTurnoTable,
-  RedirectWithoutLogin,
+  RedirectWithoutLogin
 } from '../../components'
 
 import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeTrs,
-  getInformeTrsById,
+  getInformeTrsById
 } from '../../store/actions'
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import TextField from '@mui/material/TextField'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
@@ -83,7 +81,7 @@ const RecepcionTurno = () => {
     <>
       <div>
         <RedirectWithoutLogin />
-        {AdminAuthorized() == -1 ? (
+        {CCTVAuthorized === -1 ? (
           <div className='bg-white flex flex-col justify-center'>
             <h1 className='font-bold text-3xl text-center'>
               No tiene permisos para acceder a esta página

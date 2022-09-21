@@ -34,7 +34,6 @@ const Ejecutivos = () => {
   const [itemEliminar, setItemEliminar] = useState('')
   const [itemEditarFamily, setItemEditarFamily] = useState('')
 
-
   useEffect(() => {
     dispatch(getEjecutivoAction())
     dispatch(getAllEjecutivosAction())
@@ -72,8 +71,6 @@ const Ejecutivos = () => {
     console.log(itemEditar, 'itemEditar')
     dispatch(getGrupoFamiliarByIdAction(itemEditar.id))
   }
-
-  
 
   const handleOpenDeleteModal = itemEliminar => {
     setOpenDeleteModal(true)
@@ -152,15 +149,16 @@ const Ejecutivos = () => {
                   </div>
                 </div>
               </div>
-
-              <div className=' pt-4 p-16 flex flex-col'>
-                <EjecutivosTable
-                  data={ejecutivoData}
-                  handleOpenEditModal={handleOpenEditModal}
-                  handleOpenDeleteModal={handleOpenDeleteModal}
-                  handleOpenEditFamilyModal={handleOpenEditFamilyModal}
-                />
-              </div>
+              {Object.keys(ejecutivoData).length > 0 && (
+                <div className=' pt-4 p-16 flex flex-col'>
+                  <EjecutivosTable
+                    data={ejecutivoData}
+                    handleOpenEditModal={handleOpenEditModal}
+                    handleOpenDeleteModal={handleOpenDeleteModal}
+                    handleOpenEditFamilyModal={handleOpenEditFamilyModal}
+                  />
+                </div>
+              )}
             </div>
             {/* Modales */}
             <EditEjecutivo

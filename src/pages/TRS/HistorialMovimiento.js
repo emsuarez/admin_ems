@@ -279,14 +279,16 @@ const HistorialMovimiento = () => {
                   </div>
                 </div>
               </div>
-              <div className=' pt-4 p-16 flex flex-col'>
-                <HistorialMovimientoTable
-                  data={historiales}
-                  handleOpenViewInforme={handleOpenViewInforme}
-                  handleOpenEditInforme={handleOpenEditInforme}
-                  handleOpenDelete={handleOpenDeleteEvento}
-                />
-              </div>
+              {Object.keys(historiales).length > 0 && (
+                <div className=' pt-4 p-16 flex flex-col'>
+                  <HistorialMovimientoTable
+                    data={historiales}
+                    handleOpenViewInforme={handleOpenViewInforme}
+                    handleOpenEditInforme={handleOpenEditInforme}
+                    handleOpenDelete={handleOpenDeleteEvento}
+                  />
+                </div>
+              )}
             </div>
             {/* Modales */}
             <VerEventoModal

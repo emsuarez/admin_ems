@@ -66,11 +66,11 @@ const CCTVDashboard = () => {
 
             <div className='flex mt-4 justify-center mb-8'>
               <div className='flex flex-col basis-2/4 mx-8'>
-                <div className='bg-white w-full mb-12 border-2 border-gray-200 p-20'>
+                <div className='bg-white w-full mb-3 border-2 border-gray-200 p-20'>
                   <LineChart data={consignas.consignasGrafica} />
                 </div>
 
-                <div className='bg-white p-6 shadow-md mb-12 w-full border-2 border-gray-200'>
+                <div className='bg-white p-6 shadow-md mb-3 w-full border-2 border-gray-200'>
                   <h2 className='font-semibold text-lg'>
                     GUARDIA DE PROTECCIÓN GUARDIA
                   </h2>
@@ -98,12 +98,21 @@ const CCTVDashboard = () => {
                 infoConsigna={consignaSeleccionada}
                 handleCerrarConsigna={handleCerrarConsignaCctv}
               />
-              <div className='basis-2/4 flex items-stretch'>
-                <ConsignasTable
-                  data={consignas.consignasCctv}
-                  confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
-                  tituloTipoTable='CCTV'
-                />
+              <div className='flex flex-col basis-2/4'>
+                <div className='flex items-stretch mb-3 h-1/2'>
+                  <ConsignasTable
+                    data={consignas.consignasCctv}
+                    confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                    tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
+                  />
+                </div>
+                <div className='basis-2/4 flex items-stretch h-1/2'>
+                  <ConsignasTable
+                    data={consignas.consignasCctv}
+                    confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                    tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
+                  />
+                </div>
               </div>
             </div>
           </div>

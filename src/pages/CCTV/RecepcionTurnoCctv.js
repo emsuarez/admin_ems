@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   AdminAuthorized,
+  CCTVAuthorized,
   Header,
   ICONS,
   RecepcionTurnoTable,
@@ -85,7 +86,7 @@ const RecepcionTurnoCctv = () => {
     <>
       <div>
         <RedirectWithoutLogin />
-        {AdminAuthorized() == -1 ? (
+        {CCTVAuthorized === -1 ? (
           <div className='bg-white flex flex-col justify-center'>
             <h1 className='font-bold text-3xl text-center'>
               No tiene permisos para acceder a esta página

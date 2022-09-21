@@ -2,8 +2,6 @@ import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 
 const Piechart = ({ data, handleTimeConsignas, rol }) => {
-  const { consigna, novedad } = data
-
   return (
     <div className='flex-col bg-white shadow-sm border-[1px] w-full'>
       <h3 className='px-5 mt-5 font-bold'>
@@ -24,40 +22,42 @@ const Piechart = ({ data, handleTimeConsignas, rol }) => {
         </div>
 
         <div className='w-1/2 mt-10 self-center h-1/2'>
-          {Object.keys(data).length > 0 ? (
-            consigna + novedad > 0 ? (
-              <div className='my-5'>
-                <PieChart
-                  animation
-                  animationDuration={500}
-                  animationEasing='ease-out'
-                  center={[50, 50]}
-                  data={[
-                    { title: 'CONSIGNA', value: consigna, color: '#21B739' },
-                    { title: 'NOVEDAD', value: novedad, color: '#1A84E7' },
-                  ]}
-                  radius={50}
-                />
-              </div>
-            ) : (
-              <>
-                <label className='flex justify-center mb-4'>
-                  "No hay datos para mostrar"
-                </label>
-                <PieChart
-                  animation
-                  animationDuration={500}
-                  animationEasing='ease-out'
-                  center={[50, 50]}
-                  data={[
-                    { title: 'CONSIGNA', value: 50, color: 'rgb(229 231 235)' },
-                    { title: 'NOVEDAD', value: 50, color: 'rgb(229 231 255)' },
-                  ]}
-                  radius={50}
-                />
-              </>
-            )
-          ) : null}
+          {data?.consigna + data?.novedad > 0 ? (
+            <div className='my-5'>
+              <PieChart
+                animation
+                animationDuration={500}
+                animationEasing='ease-out'
+                center={[50, 50]}
+                data={[
+                  {
+                    title: 'CONSIGNA',
+                    value: data?.consigna,
+                    color: '#21B739',
+                  },
+                  { title: 'NOVEDAD', value: data?.novedad, color: '#1A84E7' },
+                ]}
+                radius={50}
+              />
+            </div>
+          ) : (
+            <>
+              <label className='flex justify-center mb-4'>
+                "No hay datos para mostrar"
+              </label>
+              <PieChart
+                animation
+                animationDuration={500}
+                animationEasing='ease-out'
+                center={[50, 50]}
+                data={[
+                  { title: 'CONSIGNA', value: 50, color: 'rgb(229 231 235)' },
+                  { title: 'NOVEDAD', value: 50, color: 'rgb(229 231 255)' },
+                ]}
+                radius={50}
+              />
+            </>
+          )}
         </div>
 
         <div className='flex my-10 justify-center'>
@@ -67,7 +67,7 @@ const Piechart = ({ data, handleTimeConsignas, rol }) => {
               <p className='text-[#A3AED0] text-xl font-semibold'>CONSIGNAS</p>
             </div>
             <div className='text-2xl font-bold self-center'>
-              {Object.keys(data).length > 0 ? consigna : 0}
+              {data?.consigna}
             </div>
           </div>
 
@@ -77,7 +77,7 @@ const Piechart = ({ data, handleTimeConsignas, rol }) => {
               <p className='text-[#A3AED0] text-xl font-semibold'>NOVEDADES</p>
             </div>
             <div className='text-2xl font-bold self-center'>
-              {Object.keys(data).length > 0 ? novedad : 0}
+              {data?.novedad}
             </div>
           </div>
         </div>

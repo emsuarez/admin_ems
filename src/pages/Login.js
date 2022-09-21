@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import { RedirectWithLogin } from '../components'
 import { setToast, UserLogin } from '../store/actions'
 
 const Login = props => {
+  let navigate = useNavigate()
+
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [showPassword, setShowPassword] = useState(true)
-
-  let navigate = useNavigate()
 
   useEffect(() => {
     token = window.localStorage.getItem('token')

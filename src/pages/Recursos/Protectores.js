@@ -128,14 +128,15 @@ const Protectores = () => {
                 </div>
               </div>
             </div>
-
-            <div className=' pt-4 p-16 flex flex-col'>
-              <ProtectoresTable
-                data={protectoresData}
-                handleOpenEditModal={handleOpenEditModal}
-                handleOpenDeleteModal={handleOpenDeleteModal}
-              />
-            </div>
+            {Object.keys(protectoresData).length > 0 && (
+              <div className=' pt-4 p-16 flex flex-col'>
+                <ProtectoresTable
+                  data={protectoresData}
+                  handleOpenEditModal={handleOpenEditModal}
+                  handleOpenDeleteModal={handleOpenDeleteModal}
+                />
+              </div>
+            )}
           </div>
           {/* Modales */}
           <EditEjecutivo
