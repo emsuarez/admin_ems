@@ -11,6 +11,7 @@ import AlertCerrarConsigna from '../../components/alerts/AlertCerrarConsigna'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
 import {
   cerrarConsignacCctvAction,
+  getPersonalInformeCctv,
   obtenerConsignasCCTVAction,
   obtenerConsignasGrafica,
 } from '../../store/actions'
@@ -23,32 +24,41 @@ const CCTVDashboard = () => {
   const [modalCctv, setModalCctv] = useState(false)
 
   const [consignaSeleccionada, setConsignaSeleccionada] = useState()
+  const [protectores, setProtectores] = useState([])
+  const [centralistas, setCentralistas] = useState([])
 
   useEffect(() => {
     const cargarConsignas = () => {
+      dispatch(getPersonalInformeCctv())
       dispatch(obtenerConsignasCCTVAction())
       dispatch(obtenerConsignasGrafica(idConsigna))
     }
     cargarConsignas()
+    cargarPersonal()
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
-
-  const confirmarCerrarConsignaCctv = consigna => {
-    setModalCctv(true)
-    setConsignaSeleccionada(consigna)
-  }
+  const informes = useSelector(state => state.informes)
 
   const handleCerrarConsignaCctv = () => {
     dispatch(cerrarConsignacCctvAction(consignaSeleccionada))
     setModalCctv(false)
   }
 
+  const cargarPersonal = () => {
+    if (informes) {
+      console.log(informes, 'informes')
+      setProtectores(informes.personalInformeCctv.lista.protectores.split(','))
+      setCentralistas(
+        informes.personalInformeCctv.lista.centralistas.split(',')
+      )
+    }
+  }
   return (
     <div className='h-full w-full'>
       <RedirectWithoutLogin />
 
-      {CCTVAuthorized() == -1 ? (
+      {CCTVAuthorized() === -1 ? (
         <div className='h-full bg-white flex flex-col justify-center'>
           <h1 className='font-bold text-3xl text-center'>
             No tiene permisos para acceder a esta página
@@ -73,22 +83,30 @@ const CCTVDashboard = () => {
                   <h2 className='font-semibold text-lg'>
                     GUARDIA DE PROTECCIÓN GUARDIA
                   </h2>
-                  <ol>
-                    <li>1 - Pedro Sanchez</li>
-                    <li>2 - Luis Alberto</li>
-                    <li>3 - Santiago Gutierrez</li>
-                    <li>4 - Alfredo Alma</li>
-                  </ol>
+                  {protectores && (
+                    <ol>
+                      {protectores.map((protector, index) => (
+                        <li key={index} className='text-xs'>
+                          <span className='text-gray-400'>{index + 1}.-</span>{' '}
+                          {protector}
+                        </li>
+                      ))}
+                    </ol>
+                  )}
                 </div>
 
                 <div className='bg-white p-6 shadow-md w-full border-2 border-gray-200'>
                   <h2 className='font-semibold text-lg'>GRUPO DE TRABAJO</h2>
-                  <ol>
-                    <li>1 - Alberto López</li>
-                    <li>2 - Roberto Sol</li>
-                    <li>3 - Mauricio Rosa</li>
-                    <li>4 - Alfredo Alma</li>
-                  </ol>
+                  {centralistas && (
+                    <ol>
+                      {centralistas.map((centralista, index) => (
+                        <li key={index} className='text-xs'>
+                          <span className='text-gray-400'>{index + 1}.-</span>{' '}
+                          {centralista}
+                        </li>
+                      ))}
+                    </ol>
+                  )}
                 </div>
               </div>
               <AlertCerrarConsigna
@@ -101,14 +119,12 @@ const CCTVDashboard = () => {
                 <div className='flex items-stretch mb-3 h-1/2'>
                   <ConsignasTable
                     data={consignas?.consignasCctv}
-                    confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
                     tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
                   />
                 </div>
                 <div className='basis-2/4 flex items-stretch h-1/2'>
                   <ConsignasTable
                     data={consignas?.novedadesCctv}
-                    confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
                     tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
                   />
                 </div>

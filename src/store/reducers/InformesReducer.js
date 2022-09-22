@@ -6,6 +6,8 @@ const initialState = {
   informesCctv: {},
   actaSeleccionada: {},
   historialMovimientos: {},
+  personalInformeCctv: {},
+  personalInformeTrs: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -265,6 +267,21 @@ export default (state = initialState, { type, payload }) => {
 
     case types.GET_HISTORIAL_MOVIMIENTOS_FAILED:
       return { ...state, isLoading: false }
+
+    case types.GET_PERSONAL_INFORMECCTV_START:
+    case types.GET_PERSONA_INFORMETRS_START:
+      return { ...state, isLoading: true }
+
+    case types.GET_PERSONAL_INFORMECCTV_SUCCESS:
+      return { ...state, isLoading: false, personalInformeCctv: payload }
+
+    case types.GET_PERSONAL_INFORMETRS_SUCCESS:
+      return { ...state, isLoading: false, personalInformeTrs: payload }
+
+    case types.GET_PERSONAL_INFORMECCTV_FAILED:
+    case types.GET_PERSONAL_INFORMETRS_FAILED:
+      return { ...state, isLoading: false }
+
     default:
       return state
   }

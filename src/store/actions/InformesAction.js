@@ -666,3 +666,55 @@ export const getInformeCctvNavegacion = (informeActual, navega) => {
     }
   }
 }
+
+export const getPersonalInformeCctv = () => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_PERSONAL_INFORMECCTV_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.options('/informecctv/', {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+      console.log(result, 'result informe')
+      dispatch({
+        type: types.GET_PERSONAL_INFORMECCTV_SUCCESS,
+        payload: result,
+      })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_PERSONAL_INFORMECCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const getPersonalInformeTrs = () => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_PERSONAL_INFORMETRS_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.options('/informetrs/', {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+      console.log(result, 'result informe')
+      dispatch({
+        type: types.GET_PERSONAL_INFORMETRS_SUCCESS,
+        payload: result,
+      })
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.GET_PERSONAL_INFORMETRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
