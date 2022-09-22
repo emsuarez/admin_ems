@@ -27,33 +27,19 @@ const CCTVDashboard = () => {
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
 
+  const cargarConsignas = () => {
+    dispatch(obtenerConsignasCCTVAction())
+    dispatch(obtenerConsignasGrafica(idConsigna))
+  }
   useEffect(() => {
-    const cargarConsignas = () => {
-      dispatch(getPersonalInformeCctv())
-      dispatch(obtenerConsignasCCTVAction())
-      dispatch(obtenerConsignasGrafica(idConsigna))
-    }
+    const obtenerPersonal = () => dispatch(getPersonalInformeCctv())
+    obtenerPersonal()
     cargarConsignas()
-    cargarPersonal()
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
   const informes = useSelector(state => state.informes)
 
-  const handleCerrarConsignaCctv = () => {
-    dispatch(cerrarConsignacCctvAction(consignaSeleccionada))
-    setModalCctv(false)
-  }
-
-  const cargarPersonal = () => {
-    if (informes) {
-      console.log(informes, 'informes')
-      setProtectores(informes.personalInformeCctv.lista.protectores.split(','))
-      setCentralistas(
-        informes.personalInformeCctv.lista.centralistas.split(',')
-      )
-    }
-  }
   return (
     <div className='h-full w-full'>
       <RedirectWithoutLogin />
@@ -83,38 +69,42 @@ const CCTVDashboard = () => {
                   <h2 className='font-semibold text-lg'>
                     GUARDIA DE PROTECCIÓN GUARDIA
                   </h2>
-                  {protectores && (
+                  {informes.personalInformeCctv.protectores && (
                     <ol>
-                      {protectores.map((protector, index) => (
-                        <li key={index} className='text-xs'>
-                          <span className='text-gray-400'>{index + 1}.-</span>{' '}
-                          {protector}
-                        </li>
-                      ))}
+                      {informes.personalInformeCctv.protectores.map(
+                        (protector, index) => (
+                          <li key={index} className='text-xs'>
+                            <span className='text-gray-400'>{index + 1}.-</span>{' '}
+                            {protector}
+                          </li>
+                        )
+                      )}
                     </ol>
                   )}
                 </div>
 
                 <div className='bg-white p-6 shadow-md w-full border-2 border-gray-200'>
                   <h2 className='font-semibold text-lg'>GRUPO DE TRABAJO</h2>
-                  {centralistas && (
+                  {informes.personalInformeCctv.centralistas && (
                     <ol>
-                      {centralistas.map((centralista, index) => (
-                        <li key={index} className='text-xs'>
-                          <span className='text-gray-400'>{index + 1}.-</span>{' '}
-                          {centralista}
-                        </li>
-                      ))}
+                      {informes.personalInformeCctv.centralistas.map(
+                        (centralista, index) => (
+                          <li key={index} className='text-xs'>
+                            <span className='text-gray-400'>{index + 1}.-</span>{' '}
+                            {centralista}
+                          </li>
+                        )
+                      )}
                     </ol>
                   )}
                 </div>
               </div>
-              <AlertCerrarConsigna
+              {/* <AlertCerrarConsigna
                 modal={modalCctv}
                 setModal={setModalCctv}
                 infoConsigna={consignaSeleccionada}
                 handleCerrarConsigna={handleCerrarConsignaCctv}
-              />
+              /> */}
               <div className='flex flex-col basis-2/4'>
                 <div className='flex items-stretch mb-3 h-1/2'>
                   <ConsignasTable

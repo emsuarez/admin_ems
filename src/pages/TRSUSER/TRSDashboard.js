@@ -21,41 +21,19 @@ const TRSDashboard = () => {
 
   const [idConsigna] = useState(3)
 
-  const [modalTrs, setModalTrs] = useState(false)
-
-  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
-
-  const [protectores, setProtectores] = useState([])
-  const [centralistas, setCentralistas] = useState([])
-
   const cargarConsignas = () => {
-    dispatch(getPersonalInformeTrs())
     dispatch(obtenerConsignasTRSAction())
     dispatch(obtenerConsignasGrafica(idConsigna))
   }
 
   useEffect(() => {
+    const obtenerPersonal = () => dispatch(getPersonalInformeTrs())
+    obtenerPersonal()
     cargarConsignas()
-    cargarPersonal()
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
   const informes = useSelector(state => state.informes)
-
-  // const handleCerrarConsignaTrs = () => {
-  //   dispatch(cerrarConsignacTrsAction(consignaSeleccionada))
-  //   setModalTrs(false)
-  // }
-
-  const cargarPersonal = () => {
-    if (informes.personalInformeTrs) {
-      console.log(informes.personalInformeTrs, 'informes.personalInformeTrs')
-      setProtectores(informes?.personalInformeTrs.lista.protectores.split(','))
-      setCentralistas(
-        informes?.personalInformeTrs.lista.centralistas.split(',')
-      )
-    }
-  }
 
   return (
     <div className='h-full w-full'>
@@ -88,28 +66,32 @@ const TRSDashboard = () => {
                   <h2 className='font-semibold text-lg'>
                     GRUPO DE PROTECCIÓN GUARDIA
                   </h2>
-                  {protectores && (
+                  {informes.personalInformeTrs.protectores && (
                     <ol>
-                      {protectores.map((protector, index) => (
-                        <li key={index} className='text-xs'>
-                          <span className='text-gray-400'>{index + 1}.-</span>{' '}
-                          {protector}
-                        </li>
-                      ))}
+                      {informes.personalInformeTrs.protectores.map(
+                        (protector, index) => (
+                          <li key={index} className='text-xs'>
+                            <span className='text-gray-400'>{index + 1}.-</span>{' '}
+                            {protector}
+                          </li>
+                        )
+                      )}
                     </ol>
                   )}
                 </div>
 
                 <div className='bg-white p-6 shadow-md w-full border-2 border-gray-200'>
                   <h2 className='font-semibold text-lg'>GRUPO DE TRABAJO</h2>
-                  {centralistas && (
+                  {informes.personalInformeTrs.centralistas && (
                     <ol>
-                      {centralistas.map((centralista, index) => (
-                        <li key={index} className='text-xs'>
-                          <span className='text-gray-400'>{index + 1}.-</span>{' '}
-                          {centralista}
-                        </li>
-                      ))}
+                      {informes.personalInformeTrs.centralistas.map(
+                        (centralista, index) => (
+                          <li key={index} className='text-xs'>
+                            <span className='text-gray-400'>{index + 1}.-</span>{' '}
+                            {centralista}
+                          </li>
+                        )
+                      )}
                     </ol>
                   )}
                 </div>

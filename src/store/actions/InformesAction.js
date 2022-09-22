@@ -680,9 +680,14 @@ export const getPersonalInformeCctv = () => {
 
       const result = respuesta.data
       console.log(result, 'result informe')
+
+      const personal = {
+        protectores: result.lista.protectores.split(','),
+        centralistas: result.lista.centralistas.split(','),
+      }
       dispatch({
         type: types.GET_PERSONAL_INFORMECCTV_SUCCESS,
-        payload: result,
+        payload: personal,
       })
       progress.finish()
     } catch (error) {
@@ -705,10 +710,13 @@ export const getPersonalInformeTrs = () => {
       })
 
       const result = respuesta.data
-      console.log(result, 'result informe')
+      const personal = {
+        protectores: result.lista.protectores.split(','),
+        centralistas: result.lista.centralistas.split(','),
+      }
       dispatch({
         type: types.GET_PERSONAL_INFORMETRS_SUCCESS,
-        payload: result,
+        payload: personal,
       })
       progress.finish()
     } catch (error) {

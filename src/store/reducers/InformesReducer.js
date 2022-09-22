@@ -2,12 +2,12 @@ import { types } from '../actionTypes'
 
 const initialState = {
   isLoading: false,
+  personalInformeCctv: {},
+  personalInformeTrs: {},
   informesTrs: {},
   informesCctv: {},
   actaSeleccionada: {},
   historialMovimientos: {},
-  personalInformeCctv: {},
-  personalInformeTrs: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
