@@ -32,7 +32,7 @@ import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 import Icon from '../../assets/Icon'
 import VerEventoModal from '../../components/TRSModals/VerEventoModal'
-const HistorialMovimiento = () => {
+const ControlMovimiento = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -131,98 +131,13 @@ const HistorialMovimiento = () => {
               <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
               <p className=' ml-1'>TRS</p>
               <ICONS.ChevronRightIconO className='h-3  ml-1' />
-              <p className=' ml-1'>Historial de control de movimiento</p>
+              <p className=' ml-1'>Control de movimiento</p>
             </div>
 
             <div className='bg-white mx-10 py-10'>
               <div className='flex mx-10 justify-between'>
                 <div>
-                  <div className='flex justify-between align-middle text-center mt-4'>
-                    <div className='ml-10 mt-2 mr-4 font-semibold'>Desde:</div>
-                    <div className='w-60'>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
-                          inputProps={{
-                            style: {
-                              padding: `0.5rem 10px`,
-                              buttonColor: 'blue',
-                            },
-                            className:
-                              ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
-                          }}
-                          // label='Date Time picker'
-                          value={value}
-                          onChange={handleChange}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              sx={{
-                                svg: { color: '#26346E' },
-                                // input: { color },
-                                // label: { color },
-                              }}
-                            />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </div>
-                  </div>
-                  <div className='flex justify-between align-middle text-center mt-4'>
-                    <div className='ml-10 mt-2 mr-4 font-semibold'>Hasta:</div>
-                    <div className='w-60'>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
-                          inputProps={{
-                            style: {
-                              padding: `0.5rem 10px`,
-                              buttonColor: 'blue',
-                            },
-                            className:
-                              ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
-                          }}
-                          // label='Date Time picker'
-                          value={value}
-                          onChange={handleChange}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              sx={{
-                                svg: { color: '#26346E' },
-                                // input: { color },
-                                // label: { color },
-                              }}
-                            />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </div>
-                  </div>
-                  <div className='flex justify-between text-center mt-4'>
-                    <div className='ml-10 mt-2 mr-4 font-semibold'>
-                      Ejecutivo:
-                    </div>
-                    <div className='w-60'>
-                      <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
-                        {Object.keys(allEjecutivos).length > 0
-                          ? allEjecutivos.results.map(ejecutivo => (
-                              <option value={ejecutivo.id}>
-                                {ejecutivo.nombres}
-                              </option>
-                            ))
-                          : null}
-                      </select>
-                    </div>
-                  </div>
-                  <div className='flex justify-between align-middle text-center mt-4'>
-                    <span className='ml-10 mt-2 mr-4 font-semibold text-white cursor-default'>
-                      Buscar:
-                    </span>
-                    <div className='w-60'>
-                      <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'>
-                        Buscar
-                      </button>
-                    </div>
-                  </div>
+                    
                 </div>
                 <div className='self-center space-y-2'>
                   <p className='flex'>
@@ -325,4 +240,4 @@ const HistorialMovimiento = () => {
   )
 }
 
-export default HistorialMovimiento
+export default ControlMovimiento

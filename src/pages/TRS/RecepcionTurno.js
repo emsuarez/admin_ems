@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  CCTVAuthorized,
-  Header, ICONS,
+  Header,
+  ICONS,
   RecepcionTurnoTable,
-  RedirectWithoutLogin
+  RedirectWithoutLogin,
+  TRSAuthorized
 } from '../../components'
 
 import {
@@ -30,9 +31,9 @@ const RecepcionTurno = () => {
   const [itemEliminar, setItemEliminar] = useState('')
 
   useEffect(() => {
-    const obtenerInfoVista = async () => {
-      await dispatch(getInformeTrs())
-      await dispatch(getAllEjecutivosAction())
+    const obtenerInfoVista = () => {
+      dispatch(getInformeTrs())
+      dispatch(getAllEjecutivosAction())
     }
     obtenerInfoVista()
   }, [])
@@ -81,7 +82,7 @@ const RecepcionTurno = () => {
     <>
       <div>
         <RedirectWithoutLogin />
-        {CCTVAuthorized === -1 ? (
+        {TRSAuthorized === -1 ? (
           <div className='bg-white flex flex-col justify-center'>
             <h1 className='font-bold text-3xl text-center'>
               No tiene permisos para acceder a esta página

@@ -38,7 +38,20 @@ const TRS = ({ item }) => {
         <React.Fragment>
           <ul className='w-full' ref={wrapperRef}>
             {item === 'trs' ? (
-              <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+              <li
+                onClick={() => {
+                  if (
+                    window.location.href !==
+                    window.location.protocol +
+                      '//' +
+                      window.location.host +
+                      '/controlmovimiento'
+                  ) {
+                    navigate('/controlmovimiento')
+                  }
+                }}
+                className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
+              >
                 <p className='text-sm my-1 ml-3 '>Control de movimiento</p>
               </li>
             ) : null}

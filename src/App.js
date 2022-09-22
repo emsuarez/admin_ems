@@ -16,6 +16,7 @@ import Protectores from './pages/Recursos/Protectores'
 import VehicleEjectivos from './pages/Recursos/VehicleEjectivos'
 import VehicleProtectores from './pages/Recursos/VehicleProtectores'
 import { HistorialMovimiento, RecepcionTurno } from './pages/TRS'
+import ControlMovimiento from './pages/TRS/ControlMovimiento'
 import { TRSDashboard } from './pages/TRSUSER'
 import Usuarios from './pages/Usuarios'
 import { clearToast } from './store/actions'
@@ -56,6 +57,7 @@ function App(props) {
 
           {/* TRSUSER */}
           <Route path='trsdashboard' element={<TRSDashboard />} />
+          <Route path='controlmovimiento' element={<ControlMovimiento />} />
 
           {/* CCTV */}
           <Route path='recepcionturnocctv' element={<RecepcionTurnoCctv />} />
