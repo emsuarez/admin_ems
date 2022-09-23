@@ -47,35 +47,34 @@ const EditMovimiento = ({
       lugares
     ) {
       setEjecutivo(
-        ejecutivos.results.find(e => e.alias === dataSeleccionada.ejecutivo)
+        ejecutivos.results?.find(e => e.alias === dataSeleccionada.ejecutivo)
       )
       setVehiculoEjecutivo(
-        vehiculosEjecutivo.results.find(
+        vehiculosEjecutivo.results?.find(
           e => e.alias === dataSeleccionada.vehiculo_ejecutivo
         )
       )
       setProtector(
-        protectores.results.find(e => e.alias === dataSeleccionada.protector)
+        protectores.results?.find(e => e.alias === dataSeleccionada.protector)
       )
       setVehiculoProtector(
-        vehiculosProtector.results.find(
+        vehiculosProtector.results?.find(
           e => e.alias === dataSeleccionada.vehiculo_protector
         )
       )
       setObservacionVehiculo(dataSeleccionada.observacion_vehiculo)
       setLugarSalida(
-        lugares.results.find(e => e.alias === dataSeleccionada.lugar_salida)
+        lugares.results?.find(e => e.alias === dataSeleccionada.lugar_salida)
       )
       setHoraSalida(dayjs(dataSeleccionada.hora_salida))
       setLugarLlegada(
-        lugares.results.find(e => e.alias === dataSeleccionada.lugar_llegada)
+        lugares.results?.find(e => e.alias === dataSeleccionada.lugar_llegada)
       )
       setHoraLlegada(dayjs(dataSeleccionada.hora_llegada))
       setObservacion(dataSeleccionada.observacion)
     }
   }, [dataSeleccionada])
 
- 
   return (
     <>
       <Modal
