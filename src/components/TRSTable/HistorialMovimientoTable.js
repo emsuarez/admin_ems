@@ -81,7 +81,7 @@ const HistorialMovimientoTable = ({
 
     setPage(newPage)
   }
-
+  const tipo = window.localStorage.getItem('tipo')
   return (
     <TableContainer className='shadow-lg' component={Paper}>
       <Table
@@ -177,12 +177,14 @@ const HistorialMovimientoTable = ({
                       Ver
                     </button>
                   </div>
-                  <div
-                    className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
-                    onClick={() => handleOpenDelete(row)}
-                  >
-                    <Icon svgName='ib_eliminar' className='h-4 mx-auto' />
-                  </div>
+                  {tipo === '1' && (
+                    <div
+                      className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
+                      onClick={() => handleOpenDelete(row)}
+                    >
+                      <Icon svgName='ib_eliminar' className='h-4 mx-auto' />
+                    </div>
+                  )}
                 </div>
               </TableCell>
             </TableRow>

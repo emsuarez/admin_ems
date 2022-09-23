@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 import Icon from '../../assets/Icon'
 import VerEventoModal from '../../components/TRSModals/VerEventoModal'
+import FormCrearEvento from '../../components/TRSModals/FormCrearEvento'
 const ControlMovimiento = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -55,7 +56,7 @@ const ControlMovimiento = () => {
       dispatch(GetAllLugaresAction())
     }
     obtenerInfoVista()
-  }, [])
+  }, [dispatch])
 
   const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
 
@@ -136,34 +137,15 @@ const ControlMovimiento = () => {
 
             <div className='bg-white mx-10 py-10'>
               <div className='flex mx-10 justify-between'>
-                <div>
-                    
-                </div>
-                <div className='self-center space-y-2'>
-                  <p className='flex'>
-                    <Icon
-                      svgName='luzRoja'
-                      className='h-6 mx-2'
-                      title='Luz Roja'
-                    />
-                    <span>Falta lugar de llegada y hora.</span>
-                  </p>
-                  <p className='flex'>
-                    <Icon
-                      svgName='luzNaranja'
-                      className='h-6 mx-2'
-                      title='Luz Roja'
-                    />
-                    <span>Falta la hora de llegada.</span>
-                  </p>
-                  <p className='flex'>
-                    <Icon
-                      svgName='luzVerde'
-                      className='h-6 mx-2'
-                      title='Luz Roja'
-                    />
-                    <span>Completo.</span>
-                  </p>
+                <div className='mx-auto'>
+                  <FormCrearEvento
+                    ejecutivos={allEjecutivos}
+                    vehiculosEjecutivo={allVehiculosEjecutivos}
+                    protectores={allProtectores}
+                    vehiculosProtector={allVehiculosProtectores}
+                    lugares={allLugares}
+                    handleAction={handleEditInformeModal}
+                  />
                 </div>
               </div>
               <div className='flex flex-row justify-between align-bottom mx-16'>

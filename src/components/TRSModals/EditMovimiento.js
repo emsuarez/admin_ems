@@ -75,6 +75,7 @@ const EditMovimiento = ({
     }
   }, [dataSeleccionada])
 
+ 
   return (
     <>
       <Modal
@@ -367,6 +368,7 @@ const EditMovimiento = ({
                     >
                       Actualizar
                     </button>
+
                     <button
                       data-modal-toggle='defaultModal'
                       type='button'
