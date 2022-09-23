@@ -726,3 +726,28 @@ export const getPersonalInformeTrs = () => {
     }
   }
 }
+
+export const postControlMovimiento = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.POST_CONTROL_MOVIMIENTO_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.post('/controlmovimiento/', data, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+
+      dispatch({ type: types.POST_CONTROL_MOVIMIENTO_SUCCESS, payload: result })
+      dispatch(setToast('success', result.message))
+
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.POST_CONTROL_MOVIMIENTO_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}

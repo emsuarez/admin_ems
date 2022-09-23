@@ -282,6 +282,22 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_PERSONAL_INFORMETRS_FAILED:
       return { ...state, isLoading: false }
 
+    case types.POST_CONTROL_MOVIMIENTO_START:
+      return { ...state, isLoading: true }
+
+    case types.POST_CONTROL_MOVIMIENTO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        historialMovimientos: {
+          ...state.historialMovimientos,
+          results: [payload, ...state.historialMovimientos.results],
+        },
+      }
+
+    case types.POST_CONTROL_MOVIMIENTO_FAILED:
+      return { ...state, isLoading: false }
+
     default:
       return state
   }

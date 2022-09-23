@@ -20,6 +20,7 @@ import {
   getAllVehiculosEjecutivoAction,
   getHistorialMovimientosAction,
   getInformeTrs,
+  postControlMovimiento,
 } from '../../store/actions'
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -97,6 +98,11 @@ const ControlMovimiento = () => {
     setOpenEditModal(false)
   }
 
+  const handleCrearEvento = infoEvento => {
+    console.log(infoEvento)
+    dispatch(postControlMovimiento(infoEvento))
+  }
+
   const handleEditInformeModal = informe => {}
 
   const handleOpenDeleteEvento = itemEliminar => {
@@ -144,7 +150,7 @@ const ControlMovimiento = () => {
                     protectores={allProtectores}
                     vehiculosProtector={allVehiculosProtectores}
                     lugares={allLugares}
-                    handleAction={handleEditInformeModal}
+                    handleAction={handleCrearEvento}
                   />
                 </div>
               </div>

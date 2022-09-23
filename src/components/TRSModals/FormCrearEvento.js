@@ -18,23 +18,27 @@ const FormCrearEvento = ({
   vehiculosProtector,
   lugares,
 }) => {
-  const [ejecutivo, setEjecutivo] = useState()
-  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState()
-  const [protector, setProtector] = useState()
-  const [vehiculoProtector, setVehiculoProtector] = useState()
-  const [grupoFamiliar, setGrupoFamiliar] = useState()
+  const [ejecutivo, setEjecutivo] = useState(ejecutivos.results[0]?.id)
+  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState(
+    vehiculosEjecutivo.results[0]?.id
+  )
+  const [protector, setProtector] = useState(protectores.results[0].id)
+  const [vehiculoProtector, setVehiculoProtector] = useState(
+    vehiculosProtector.results[0]?.id
+  )
+  const [grupoFamiliar, setGrupoFamiliar] = useState(ejecutivos.results[0]?.id)
   const [observacionVehiculo, setObservacionVehiculo] = useState()
-  const [lugarSalida, setLugarSalida] = useState()
+  const [lugarSalida, setLugarSalida] = useState(lugares.results[0]?.id)
   const [horaSalida, setHoraSalida] = React.useState(
     dayjs('2021-08-18T21:11:54')
   )
-  const [lugarLlegada, setLugarLlegada] = useState()
+  const [lugarLlegada, setLugarLlegada] = useState(lugares.results[0]?.id)
   const [horaLlegada, setHoraLlegada] = React.useState(
     dayjs('2021-08-18T21:11:54')
   )
   const [observacion, setObservacion] = useState()
   useEffect(() => {
-    console.log(lugares, 'lugares')
+    console.log(ejecutivos, vehiculosEjecutivo, protectores, vehiculosProtector)
     if (
       dataSeleccionada &&
       ejecutivos &&
@@ -69,6 +73,23 @@ const FormCrearEvento = ({
       setObservacion(dataSeleccionada.observacion)
     }
   }, [dataSeleccionada])
+
+  const handleNuevoEvento = () => {
+    const nuevoEvento = {
+      ejecutivo: ejecutivo,
+      familiar: grupoFamiliar,
+      vehiculo_ejecutivo: vehiculoEjecutivo,
+      vehiculo_observacion: observacionVehiculo,
+      protector: protector,
+      vehiculo_protector: vehiculoProtector,
+      lugar_salida: lugarSalida,
+      lugar_llegada: lugarLlegada,
+      hora_salida: horaSalida.toString(),
+      hora_llegada: horaLlegada.toString(),
+      observacion: observacion,
+    }
+    handleAction(nuevoEvento)
+  }
 
   return (
     <>
@@ -131,8 +152,8 @@ const FormCrearEvento = ({
                   </span>
                   <select
                     className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
-                    id={ejecutivo}
-                    value={ejecutivo}
+                    id={grupoFamiliar}
+                    value={grupoFamiliar}
                     onChange={e => setGrupoFamiliar(e.target.value)}
                   >
                     {Object.keys(ejecutivos).length > 0
@@ -336,7 +357,7 @@ const FormCrearEvento = ({
                 data-modal-toggle='defaultModal'
                 type='button'
                 className='w-80 text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
-                onClick={() => handleAction()}
+                onClick={() => handleNuevoEvento()}
               >
                 Crear Evento
               </button>
