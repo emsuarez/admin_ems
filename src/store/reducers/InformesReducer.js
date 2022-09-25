@@ -2,12 +2,12 @@ import { types } from '../actionTypes'
 
 const initialState = {
   isLoading: false,
+  historialMovimientos: {},
   personalInformeCctv: {},
   personalInformeTrs: {},
   informesTrs: {},
   informesCctv: {},
   actaSeleccionada: {},
-  historialMovimientos: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -296,6 +296,22 @@ export default (state = initialState, { type, payload }) => {
       }
 
     case types.POST_CONTROL_MOVIMIENTO_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.POST_INFORMECCTV_START:
+      return { ...state, isLoading: true }
+
+    case types.POST_INFORMECCTV_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        // informesCctv: {
+        //   ...state.informesCctv,
+        //   results: [payload, ...state.informesCctv.results],
+        // },
+      }
+
+    case types.POST_INFORMECCTV_FAILED:
       return { ...state, isLoading: false }
 
     default:

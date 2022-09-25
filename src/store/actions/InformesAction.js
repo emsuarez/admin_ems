@@ -740,12 +740,40 @@ export const postControlMovimiento = data => {
 
       const result = respuesta.data
 
-      dispatch({ type: types.POST_CONTROL_MOVIMIENTO_SUCCESS, payload: result })
+      dispatch({ type: types.POST_CONTROL_MOVIMIENTO_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
 
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_CONTROL_MOVIMIENTO_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const postInformeCctv = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.POST_INFORMECCTV_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const param = {
+        turno: data,
+      }
+      const respuesta = await httpRequest.post('/informecctv/', param, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+
+      dispatch({ type: types.POST_INFORMECCTV_SUCCESS, payload: data })
+      dispatch(setToast('success', result.message))
+
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.POST_INFORMECCTV_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }

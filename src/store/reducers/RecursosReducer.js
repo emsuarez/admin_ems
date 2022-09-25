@@ -16,12 +16,12 @@ const initialState = {
   allVehiculosProtectores: {},
   lugares: {},
   allLugares: {},
-  message: {},
   ejecutivoSeleccionado: {},
   familiarSeleccionado: {},
   protectorSeleccionado: {},
   vehiculoEjecutivoSeleccionado: {},
   vehiculoProtectorSeleccionado: {},
+  message: {},
 }
 
 export default (state = initialState, { type, payload }) => {

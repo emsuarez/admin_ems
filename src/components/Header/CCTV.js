@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { ClickOutSide } from '../clickOutside/ClickOutSide'
 import { Button, Menu, MenuItem } from '@mui/material'
 import Icon from '../../assets/Icon'
+import { useDispatch } from 'react-redux'
+import { postInformeCctv } from '../../store/actions/InformesAction'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} placement='bottom' />
@@ -21,7 +23,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 const CCTV = ({ item }) => {
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [subopen, setSubOpen] = useState(false)
 
@@ -45,6 +47,11 @@ const CCTV = ({ item }) => {
   // const handleClose = () => {
   //   setAnchorEl(null)
   // }
+
+  const handleNuevoInforme = tipoInforme => {
+    // navigate('/editrecepcioncctv')
+    dispatch(postInformeCctv(tipoInforme))
+  }
   return (
     <HtmlTooltip
       open={open}
@@ -64,10 +71,16 @@ const CCTV = ({ item }) => {
                   title={
                     <>
                       <ul className='w-full' ref={wrapperRef}>
-                        <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+                        <li
+                          className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
+                          onClick={() => handleNuevoInforme(1)}
+                        >
                           <p className='text-sm my-1 ml-3 '>Diurno</p>
                         </li>
-                        <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+                        <li
+                          className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'
+                          onClick={() => handleNuevoInforme(2)}
+                        >
                           <p className='text-sm my-1 ml-3 '>Nocturno</p>
                         </li>
                       </ul>
