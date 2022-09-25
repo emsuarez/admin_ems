@@ -49,15 +49,15 @@ const ControlMovimiento = () => {
 
   useEffect(() => {
     const obtenerInfoVista = () => {
-      dispatch(getHistorialMovimientosAction())
       dispatch(getAllEjecutivosAction())
       dispatch(getAllVehiculosEjecutivoAction())
       dispatch(getAllProtectoresAction())
       dispatch(getAllVehiculoProtectorAction())
       dispatch(GetAllLugaresAction())
+      dispatch(getHistorialMovimientosAction())
     }
     obtenerInfoVista()
-  }, [dispatch])
+  }, [])
 
   const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
 

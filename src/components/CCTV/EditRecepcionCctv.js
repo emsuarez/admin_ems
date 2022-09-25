@@ -21,6 +21,7 @@ import {
   deleteConsignaCCTVAction,
   deleteNovedadCCTVAction,
   getInformeCctvNavegacion,
+  setToast,
   updateConsignaCCTVAction,
   updateNovedadCCTVAction,
 } from '../../store/actions'
@@ -150,7 +151,7 @@ const EditRecepcionCctv = () => {
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-    console.log(protectorEditado, 'protectorEditado')
+
     dispatch(crudPersonalActaCctvAction(protectorEditado))
 
     setProtectores(
@@ -262,6 +263,10 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_NOVEDADES
   const handleOpenAgregarNovedad = () => {
+    if (novedades.length > 14) {
+      dispatch(setToast('Error', 'No se pueden agregar más novedades'))
+      return
+    }
     setOpenModalAgregarNovedad(true)
   }
 
@@ -385,6 +390,10 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_CONSIGNAS
   const handleOpenAgregarConsigna = () => {
+    if (consignas.length > 14) {
+      dispatch(setToast('Error', 'No se pueden agregar más consignas'))
+      return
+    }
     setOpenModalAgregarConsigna(true)
   }
 
@@ -589,7 +598,8 @@ const EditRecepcionCctv = () => {
 
                   <div className='flex justify-between px-20'>
                     <p className='font-semibold text-sm'>
-                      CENTRAL DE OPERACIONES: DIURNA
+                      CENTRAL DE OPERACIONES:{' '}
+                      {actaSeleccionada.turno === 1 ? 'DIURNO' : 'NOCTURNO'}
                       <span className='text-blue-800 ml-2'>
                         {agenteSaliente}
                       </span>

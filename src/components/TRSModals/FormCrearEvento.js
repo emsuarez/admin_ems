@@ -7,72 +7,52 @@ import format from 'date-fns/format'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllEjecutivosAction } from '../../store/actions'
 
 const FormCrearEvento = ({
   handleClose,
   handleAction,
-  dataSeleccionada,
+
   ejecutivos,
   vehiculosEjecutivo,
   protectores,
   vehiculosProtector,
   lugares,
 }) => {
-  const [ejecutivo, setEjecutivo] = useState(ejecutivos.results[0]?.id)
-  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState(
-    vehiculosEjecutivo.results[0]?.id
-  )
-  const [protector, setProtector] = useState(protectores.results[0].id)
-  const [vehiculoProtector, setVehiculoProtector] = useState(
-    vehiculosProtector.results[0]?.id
-  )
-  const [grupoFamiliar, setGrupoFamiliar] = useState(ejecutivos.results[0]?.id)
+  const [ejecutivo, setEjecutivo] = useState()
+  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState()
+  const [protector, setProtector] = useState()
+  const [vehiculoProtector, setVehiculoProtector] = useState()
+  const [grupoFamiliar, setGrupoFamiliar] = useState()
   const [observacionVehiculo, setObservacionVehiculo] = useState()
-  const [lugarSalida, setLugarSalida] = useState(lugares.results[0]?.id)
-  const [horaSalida, setHoraSalida] = React.useState(
-    dayjs('2021-08-18T21:11:54')
-  )
-  const [lugarLlegada, setLugarLlegada] = useState(lugares.results[0]?.id)
-  const [horaLlegada, setHoraLlegada] = React.useState(
-    dayjs('2021-08-18T21:11:54')
-  )
+  const [lugarSalida, setLugarSalida] = useState()
+  const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
+  const [lugarLlegada, setLugarLlegada] = useState()
+  const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
   const [observacion, setObservacion] = useState()
+
   useEffect(() => {
-    console.log(ejecutivos, vehiculosEjecutivo, protectores, vehiculosProtector)
     if (
-      dataSeleccionada &&
       ejecutivos &&
       vehiculosEjecutivo &&
       protectores &&
       vehiculosProtector &&
       lugares
     ) {
-      setEjecutivo(ejecutivos.results[0])
-      setVehiculoEjecutivo(
-        vehiculosEjecutivo.results.find(
-          e => e.alias === dataSeleccionada.vehiculo_ejecutivo
-        )
-      )
-      setProtector(
-        protectores.results.find(e => e.alias === dataSeleccionada.protector)
-      )
-      setVehiculoProtector(
-        vehiculosProtector.results.find(
-          e => e.alias === dataSeleccionada.vehiculo_protector
-        )
-      )
-      setObservacionVehiculo(dataSeleccionada.observacion_vehiculo)
-      setLugarSalida(
-        lugares.results.find(e => e.alias === dataSeleccionada.lugar_salida)
-      )
-      setHoraSalida(dayjs(dataSeleccionada.hora_salida))
-      setLugarLlegada(
-        lugares.results.find(e => e.alias === dataSeleccionada.lugar_llegada)
-      )
-      setHoraLlegada(dayjs(dataSeleccionada.hora_llegada))
-      setObservacion(dataSeleccionada.observacion)
+      setEjecutivo(ejecutivos.results[0].id)
+      setGrupoFamiliar(ejecutivos.results[0].id)
+      setVehiculoEjecutivo(vehiculosEjecutivo.results[0].id)
+      setProtector(protectores.results[0].id)
+      setVehiculoProtector(vehiculosProtector.results[0].id)
+
+      setLugarSalida(lugares.results[0].id)
+
+      // setHoraSalida(dayjs(dataSeleccionada.hora_salida))
+      setLugarLlegada(lugares.results[0].id)
+      // setHoraLlegada(dayjs(dataSeleccionada.hora_llegada))
     }
-  }, [dataSeleccionada])
+  }, [])
 
   const handleNuevoEvento = () => {
     const nuevoEvento = {
@@ -84,8 +64,8 @@ const FormCrearEvento = ({
       vehiculo_protector: vehiculoProtector,
       lugar_salida: lugarSalida,
       lugar_llegada: lugarLlegada,
-      hora_salida: horaSalida.toString(),
-      hora_llegada: horaLlegada.toString(),
+      hora_salida: new Date(horaSalida),
+      hora_llegada: new Date(horaLlegada),
       observacion: observacion,
     }
     handleAction(nuevoEvento)
@@ -134,6 +114,13 @@ const FormCrearEvento = ({
                       value={vehiculoEjecutivo}
                       onChange={e => setVehiculoEjecutivo(e.target.value)}
                     >
+                      <option
+                        key={0}
+                        value='Selecciona un vehículo ejecutivo'
+                        selected
+                      >
+                        'Selecciona un vehículo ejecutivo'
+                      </option>
                       {Object.keys(vehiculosEjecutivo).length > 0
                         ? vehiculosEjecutivo.results.map(vehiculo => (
                             <option key={vehiculo.id} value={vehiculo.id}>
@@ -262,7 +249,7 @@ const FormCrearEvento = ({
                       }}
                       // label='Date Time picker'
                       value={horaSalida}
-                      onChange={e => setHoraSalida(e.target.value)}
+                      onChange={hSalida => setHoraSalida(hSalida)}
                       renderInput={params => (
                         <TextField
                           {...params}
@@ -317,7 +304,7 @@ const FormCrearEvento = ({
                       }}
                       // label='Date Time picker'
                       value={horaLlegada}
-                      onChange={e => setHoraLlegada(e.target.value)}
+                      onChange={hLlegada => setHoraLlegada(hLlegada)}
                       renderInput={params => (
                         <TextField
                           {...params}

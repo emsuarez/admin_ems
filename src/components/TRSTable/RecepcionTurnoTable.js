@@ -129,7 +129,7 @@ const RecepcionTurnoTable = ({
               <TableCell>
                 {format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
               </TableCell>
-              <TableCell>{row.turno === 0 ? 'Nocturno' : 'Diurno'}</TableCell>
+              <TableCell>{row.turno === 1 ? 'Diurno' : 'Nocturno'}</TableCell>
               <TableCell>
                 <div className='flex justify-center'>
                   <div
