@@ -4,8 +4,8 @@ import { types } from '../actionTypes'
 const initialState = {
   isLoading: false,
   user: {},
-  roles: [],
   users: {},
+  roles: [],
   usuarioSeleccionado: {},
   allUsers: {},
 }
