@@ -119,16 +119,17 @@ const Usuarios = () => {
                   </div>
                 </div>
               </div>
-
-              <div className=' pt-4 p-16 flex flex-col'>
-                <UsuariosTable
-                  data={usuariosData}
-                  handleOpenEditModal={handleOpenEditModal}
-                  handleOpenResetearPasswordModal={
-                    handleOpenResetearPasswordModal
-                  }
-                />
-              </div>
+              {Object.keys(usuariosData).length > 0 && (
+                <div className=' pt-4 p-16 flex flex-col'>
+                  <UsuariosTable
+                    data={usuariosData}
+                    handleOpenEditModal={handleOpenEditModal}
+                    handleOpenResetearPasswordModal={
+                      handleOpenResetearPasswordModal
+                    }
+                  />
+                </div>
+              )}
             </div>
             {/* Modales */}
             <EditUsuario
