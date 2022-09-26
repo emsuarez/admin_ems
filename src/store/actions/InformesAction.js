@@ -1,8 +1,8 @@
-import { types } from '../actionTypes'
 import { httpRequest } from '../../config'
+import { types } from '../actionTypes'
 
-import { setToast } from './ToastAction'
 import ProgressBar from '@badrap/bar-of-progress'
+import { setToast } from './ToastAction'
 
 const progress = new ProgressBar({
   size: 4,
@@ -679,7 +679,6 @@ export const getPersonalInformeCctv = () => {
       })
 
       const result = respuesta.data
-      console.log(result, 'result informe')
 
       const personal = {
         protectores: result.lista.protectores.split(','),
@@ -766,14 +765,75 @@ export const postInformeCctv = data => {
         headers: { Authorization: Token },
       })
 
-      const result = respuesta.data
+      const resultado = respuesta.data
 
       dispatch({ type: types.POST_INFORMECCTV_SUCCESS, payload: data })
-      dispatch(setToast('success', result.message))
+      dispatch(setToast('success', resultado.message))
+
+      const response = await httpRequest.get(
+        '/informecctv/?id=' + resultado.id,
+        {
+          headers: { Authorization: Token },
+        }
+      )
+
+      const result = response.data
+
+      dispatch({
+        type: types.GET_INFORMECCTV_BY_ID_SUCCESS,
+        payload: result.results[0],
+      })
 
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_INFORMECCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+export const postInformeTrs = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.POST_INFORMETRS_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const param = {
+        turno: data,
+      }
+      const respuesta = await httpRequest.post('/informetrs/', param, {
+        headers: { Authorization: Token },
+      })
+
+      const resultado = respuesta.data
+
+      dispatch({ type: types.POST_INFORMETRS_SUCCESS, payload: data })
+      dispatch(setToast('success', resultado.message))
+
+      const response = await httpRequest.get(
+        '/informetrs/?id=' + resultado.id,
+        {
+          headers: { Authorization: Token },
+        }
+      )
+
+      const result = response.data
+
+      dispatch({
+        type: types.GET_INFORMETRS_BY_ID_SUCCESS,
+        payload: result.results[0],
+      })
+
+      const responseConsigna = await httpRequest.get('/informetrs/?id=0', {
+        headers: { Authorization: Token },
+      })
+
+      const resultConsigna = responseConsigna.data
+      console.log(resultConsigna, 'result Consignas pendientes')
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.POST_INFORMETRS_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }

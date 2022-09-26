@@ -540,649 +540,621 @@ const EditRecepcion = () => {
     <>
       <div>
         <RedirectWithoutLogin />
-        {AdminAuthorized() == -1 ? (
-          <div className='bg-white flex flex-col justify-center'>
-            <h1 className='font-bold text-3xl text-center'>
-              No tiene permisos para acceder a esta página
-            </h1>
-          </div>
-        ) : (
-          <>
-            <Header />
-            <div className='flex items-center bg-slate-100 py-2'>
-              <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
-              <p className=' ml-1'>TRS</p>
-              <ICONS.ChevronRightIconO className='h-3  ml-1' />
-              <p className=' ml-1'>Entrega y Recepción de Turno</p>
-            </div>
 
-            <div className='flex justify-center items-center '>
-              <button onClick={() => handleInformeAnterior()}>
-                <Icon
-                  svgName='ib_flechaizq'
-                  className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
-                />
-              </button>
-              <div className='flex justify-center bg-white h-[89rem]'>
-                <div
-                  ref={componentRef}
-                  className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86.5rem] py-2'
-                >
-                  <div className='flex justify-between mb-2 mx-10'>
-                    <img src={logo} className='h-14' />
-                    <h2 className='font-bold text-lg'>
-                      ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
+        <Header />
+        <div className='flex items-center bg-slate-100 py-2'>
+          <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
+          <p className=' ml-1'>TRS</p>
+          <ICONS.ChevronRightIconO className='h-3  ml-1' />
+          <p className=' ml-1'>Entrega y Recepción de Turno</p>
+        </div>
+
+        <div className='flex justify-center items-center '>
+          <button onClick={() => handleInformeAnterior()}>
+            <Icon
+              svgName='ib_flechaizq'
+              className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+            />
+          </button>
+          <div className='flex justify-center bg-white h-[89rem]'>
+            <div
+              ref={componentRef}
+              className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86.5rem] py-2'
+            >
+              <div className='flex justify-between mb-2 mx-10'>
+                <img src={logo} className='h-14' />
+                <h2 className='font-bold text-lg'>
+                  ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
+                </h2>
+
+                <button onClick={handleGenerarInformePdf}>
+                  <div className='flex'>
+                    <p className='text-blue-800 hover:cursor-pointer'>
+                      Exportar a PDF
+                    </p>
+                    <ICONS.ChevronDownIconO
+                      className='w-3 mb-1.5 ml-2'
+                      color='blue'
+                    />
+                  </div>
+                </button>
+              </div>
+
+              <div className='flex justify-between px-20'>
+                <p className='font-semibold text-sm'>
+                  CENTRAL DE OPERACIONES:{' '}
+                  {actaSeleccionada.turno === 1 ? 'DIURNO' : 'NOCTURNO'}
+                  <span className='text-blue-800 ml-2'>{agenteSaliente}</span>
+                </p>
+                <p className='font-semibold text-sm'>
+                  FECHA:{' '}
+                  {format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
+                </p>
+              </div>
+
+              {/* FOUR LINES */}
+              <div className='flex mt-5'>
+                {/* LEFT */}
+                <div className='w-1/2'>
+                  <div className='flex flex-row justify-between'>
+                    <h2 className='font-semibold text-center mx-auto text-sm'>
+                      GRUPO DE PROTECCION GUARDIA
                     </h2>
-
-                    <button onClick={handleGenerarInformePdf}>
-                      <div className='flex'>
-                        <p className='text-blue-800 hover:cursor-pointer'>
-                          Exportar a PDF
-                        </p>
-                        <ICONS.ChevronDownIconO
-                          className='w-3 mb-1.5 ml-2'
-                          color='blue'
-                        />
-                      </div>
+                    <button onClick={handleOpenAgregarProtector}>
+                      <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
+                    <CrearEditarModalGenerico
+                      tipoModal='crear'
+                      openModal={openModalAgregarProtector}
+                      handleClose={handleCloseAgregarProtector}
+                      tituloModal='Crear personal de Protección Guardia'
+                      descripcionModal='A continuación escriba el nombre del agente:'
+                      handleAction={handleAgregarProtector}
+                    />
                   </div>
 
-                  <div className='flex justify-between px-20'>
-                    <p className='font-semibold text-sm'>
-                      CENTRAL DE OPERACIONES: DIURNA
-                      <span className='text-blue-800 ml-2'>
-                        {agenteSaliente}
-                      </span>
-                    </p>
-                    <p className='font-semibold text-sm'>
-                      FECHA:{' '}
-                      {format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
-                    </p>
-                  </div>
+                  <div>
+                    <ol style={{ listStyleType: 'number' }} className='pl-6'>
+                      <div className='border-2 border-gray-500 rounded-md'>
+                        {protectores.length > 0 ? (
+                          protectores.map((protector, index) => (
+                            <li
+                              key={index}
+                              className='px-2 border-b-2 border-gray-500'
+                            >
+                              <div className='flex flex-row justify-between text-xs'>
+                                <p className='font-semibold'>{protector}</p>
+                                <div className='flex flex-row '>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenEditarProtector(protector)
+                                    }
+                                  >
+                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                      <Icon
+                                        svgName='ib_editar'
+                                        className='h-3 mx-1'
+                                      />
+                                    </div>
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenEliminarProtector(protector)
+                                    }
+                                  >
+                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                      <Icon
+                                        svgName='ib_eliminar'
+                                        className='h-3 mx-1'
+                                      />
+                                    </div>
+                                  </button>
+                                </div>
+                              </div>
+                              <CrearEditarModalGenerico
+                                tipoModal='actualizar'
+                                openModal={openModalEditarProtector}
+                                handleClose={handleCloseEditarProtector}
+                                tituloModal='Editar personal de Grupo de protección Guardia'
+                                descripcionModal='Edite el nombre del agente:'
+                                handleAction={handleEditarProtector}
+                                itemSeleccionado={protectorSeleccionado}
+                              />
+                            </li>
+                          ))
+                        ) : (
+                          <li className='pl-2 border-b-2 border-gray-500'>
+                            <p className='font-semibold'>
+                              No se han registrado protectores
+                            </p>
+                          </li>
+                        )}
 
-                  {/* FOUR LINES */}
-                  <div className='flex mt-5'>
-                    {/* LEFT */}
-                    <div className='w-1/2'>
-                      <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto text-sm'>
-                          GRUPO DE PROTECCION GUARDIA
-                        </h2>
-                        <button onClick={handleOpenAgregarProtector}>
-                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
-                        </button>
-                        <CrearEditarModalGenerico
-                          tipoModal='crear'
-                          openModal={openModalAgregarProtector}
-                          handleClose={handleCloseAgregarProtector}
-                          tituloModal='Crear personal de Protección Guardia'
-                          descripcionModal='A continuación escriba el nombre del agente:'
-                          handleAction={handleAgregarProtector}
+                        <EliminarModalGenerico
+                          openModal={openModalEliminarProtector}
+                          handleClose={handleCloseEliminarProtector}
+                          tituloModal='Eliminar agente de Grupo de protección Guardia'
+                          descripcionModal='Al eliminar un agente, sera de forma definitiva y sin posiblidad de recuperación'
+                          handleAction={handleEliminarProtector}
                         />
                       </div>
+                    </ol>
+                  </div>
+                </div>
 
-                      <div>
-                        <ol
-                          style={{ listStyleType: 'number' }}
-                          className='pl-6'
-                        >
-                          <div className='border-2 border-gray-500 rounded-md'>
-                            {protectores.length > 0 ? (
-                              protectores.map((protector, index) => (
-                                <li
-                                  key={index}
-                                  className='px-2 border-b-2 border-gray-500'
-                                >
-                                  <div className='flex flex-row justify-between text-xs'>
-                                    <p className='font-semibold'>{protector}</p>
-                                    <div className='flex flex-row '>
-                                      <button
-                                        onClick={() =>
-                                          handleOpenEditarProtector(protector)
-                                        }
-                                      >
-                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <Icon
-                                            svgName='ib_editar'
-                                            className='h-3 mx-1'
-                                          />
-                                        </div>
-                                      </button>
-                                      <button
-                                        onClick={() =>
-                                          handleOpenEliminarProtector(protector)
-                                        }
-                                      >
-                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <Icon
-                                            svgName='ib_eliminar'
-                                            className='h-3 mx-1'
-                                          />
-                                        </div>
-                                      </button>
-                                    </div>
-                                  </div>
-                                  <CrearEditarModalGenerico
-                                    tipoModal='actualizar'
-                                    openModal={openModalEditarProtector}
-                                    handleClose={handleCloseEditarProtector}
-                                    tituloModal='Editar personal de Grupo de protección Guardia'
-                                    descripcionModal='Edite el nombre del agente:'
-                                    handleAction={handleEditarProtector}
-                                    itemSeleccionado={protectorSeleccionado}
-                                  />
-                                </li>
-                              ))
-                            ) : (
-                              <li className='pl-2 border-b-2 border-gray-500'>
-                                <p className='font-semibold'>
-                                  No se han registrado protectores
+                {/* RIGHT */}
+                <div className='w-1/2'>
+                  <div className='flex flex-row justify-between'>
+                    <h2 className='font-semibold text-center mx-auto text-sm'>
+                      GRUPO DE TRABAJO
+                    </h2>{' '}
+                    <button onClick={handleOpenAgregarCentralista}>
+                      <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                    </button>
+                    <CrearEditarModalGenerico
+                      tipoModal='crear'
+                      openModal={openModalAgregarCentralista}
+                      handleClose={handleCloseAgregarCentralista}
+                      tituloModal='Crear personal de Trabajo'
+                      descripcionModal='A continuación escriba el nombre del agente:'
+                      handleAction={handleAgregarCentralista}
+                    />
+                  </div>
+                  <div>
+                    <ol style={{ listStyleType: 'number' }} className='pl-6'>
+                      <div className='border-2 border-gray-500 rounded-md'>
+                        {centralistas.length > 0 ? (
+                          centralistas.map((centralista, index) => (
+                            <li
+                              key={index}
+                              className='pl-2 border-b-2 border-gray-500'
+                            >
+                              <div className='flex flex-row justify-between'>
+                                <p className='font-semibold text-xs'>
+                                  {centralista}
                                 </p>
-                              </li>
-                            )}
-
-                            <EliminarModalGenerico
-                              openModal={openModalEliminarProtector}
-                              handleClose={handleCloseEliminarProtector}
-                              tituloModal='Eliminar agente de Grupo de protección Guardia'
-                              descripcionModal='Al eliminar un agente, sera de forma definitiva y sin posiblidad de recuperación'
-                              handleAction={handleEliminarProtector}
-                            />
-                          </div>
-                        </ol>
-                      </div>
-                    </div>
-
-                    {/* RIGHT */}
-                    <div className='w-1/2'>
-                      <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto text-sm'>
-                          GRUPO DE TRABAJO
-                        </h2>{' '}
-                        <button onClick={handleOpenAgregarCentralista}>
-                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
-                        </button>
-                        <CrearEditarModalGenerico
-                          tipoModal='crear'
-                          openModal={openModalAgregarCentralista}
-                          handleClose={handleCloseAgregarCentralista}
-                          tituloModal='Crear personal de Trabajo'
-                          descripcionModal='A continuación escriba el nombre del agente:'
-                          handleAction={handleAgregarCentralista}
-                        />
-                      </div>
-                      <div>
-                        <ol
-                          style={{ listStyleType: 'number' }}
-                          className='pl-6'
-                        >
-                          <div className='border-2 border-gray-500 rounded-md'>
-                            {centralistas.length > 0 ? (
-                              centralistas.map((centralista, index) => (
-                                <li
-                                  key={index}
-                                  className='pl-2 border-b-2 border-gray-500'
-                                >
-                                  <div className='flex flex-row justify-between'>
-                                    <p className='font-semibold text-xs'>
-                                      {centralista}
-                                    </p>
-                                    <div className='flex flex-row'>
-                                      <button
-                                        onClick={() =>
-                                          handleOpenEditarCentralista(
-                                            centralista
-                                          )
-                                        }
-                                      >
-                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <Icon
-                                            svgName='ib_editar'
-                                            className='h-3 mx-1'
-                                          />
-                                        </div>
-                                      </button>
-                                      <button
-                                        onClick={() =>
-                                          handleOpenEliminarCentralista(
-                                            centralista
-                                          )
-                                        }
-                                      >
-                                        <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                          <Icon
-                                            svgName='ib_eliminar'
-                                            className='h-3 mx-1'
-                                          />
-                                        </div>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </li>
-                              ))
-                            ) : (
-                              <li className='pl-2 border-b-2 border-gray-500'>
-                                <p>No se han registrado centralistas</p>
-                              </li>
-                            )}
-                            <CrearEditarModalGenerico
-                              tipoModal='actualizar'
-                              openModal={openModalEditarCentralista}
-                              handleClose={handleCloseEditarCentralista}
-                              tituloModal='Editar personal de Grupo de trabajo'
-                              descripcionModal='Edite el nombre del agente:'
-                              handleAction={handleEditarCentralista}
-                              itemSeleccionado={centralistaSeleccionado}
-                            />
-                            <EliminarModalGenerico
-                              openModal={openModalEliminarCentralista}
-                              handleClose={handleCloseEliminarCentralista}
-                              tituloModal='Eliminar agente de Grupo de Trabajo'
-                              descripcionModal='Al eliminar un agente, sera de forma definitiva y sin posiblidad de recuperación'
-                              handleAction={handleEliminarCentralista}
-                            />
-                          </div>
-                        </ol>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* NEW SECTION */}
-                  <div className='flex mt-2'>
-                    {/* LEFT */}
-                    <div className='w-1/2'>
-                      <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto text-sm'>
-                          NOVEDADES ESPECIALES
-                        </h2>
-                        <button onClick={handleOpenAgregarNovedad}>
-                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
-                        </button>
-                        <CrearEditarModalGenerico
-                          tipoModal='crearTextArea'
-                          openModal={openModalAgregarNovedad}
-                          handleClose={handleCloseAgregarNovedad}
-                          tituloModal='Crear Novedad Especial'
-                          descripcionModal='A continuación escriba la nueva novedad:'
-                          handleAction={handleAgregarNovedad}
-                        />
-                      </div>
-                      <div className='ml-4'>
-                        <ol>
-                          {novedades.map((novedad, index) => (
-                            <li key={index} className='my-1'>
-                              <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
-                                <div className='item1 col-span-2 border-b-2'>
-                                  <div
-                                    className={
-                                      novedad.estado === 1
-                                        ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
-                                        : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
+                                <div className='flex flex-row'>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenEditarCentralista(centralista)
                                     }
                                   >
-                                    <span>Creado</span>
-                                    <span>
-                                      {format(
-                                        new Date(novedad.created),
-                                        'dd/MM/yyyy'
-                                      )}
-                                    </span>
-                                    <span>
-                                      {format(
-                                        new Date(novedad.created),
-                                        'HH:mm'
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className='item2 col-span-9 border-b-2 text-xs text-center'>
-                                  {novedad.obs_creacion}
-                                </div>
-                                <div className='item3 border-b-2 border-l-2'>
-                                  <div className='flex items-center flex-col'>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarNovedad(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
+                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                       <Icon
                                         svgName='ib_editar'
-                                        className='h-3 my-1'
+                                        className='h-3 mx-1'
                                       />
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEliminarNovedad(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_eliminar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                    {novedad.obs_cierre === null && (
-                                      <button
-                                        onClick={() =>
-                                          handleOpenCerrarNovedad(novedad)
-                                        }
-                                        className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                      >
-                                        <Icon
-                                          svgName='ib_cerrar'
-                                          className='h-3 my-1'
-                                        />
-                                      </button>
-                                    )}
-                                  </div>
-                                </div>
-                                {novedad.obs_cierre && (
-                                  <>
-                                    <div className='item-4 col-span-2'>
-                                      <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
-                                        <span>Cerrado</span>
-                                        <span>
-                                          {format(
-                                            new Date(novedad.fecha_obs_cierre),
-                                            'dd/MM/yyyy'
-                                          )}
-                                        </span>
-                                        <span>
-                                          {format(
-                                            new Date(novedad.fecha_obs_cierre),
-                                            'HH:mm'
-                                          )}
-                                        </span>
-                                      </div>
                                     </div>
-                                    <div className='item-5 col-span-9 text-xs text-center'>
-                                      {novedad.obs_cierre}
-                                    </div>
-                                    <div className='item-6 col-span-1 border-l-2'>
-                                      <div className='flex items-center flex-col mt-3'>
-                                        <button
-                                          onClick={() =>
-                                            handleOpenEditarNovedadCerrada(
-                                              novedad
-                                            )
-                                          }
-                                          className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                        >
-                                          <Icon
-                                            svgName='ib_editar'
-                                            className='h-3 my-1'
-                                          />
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            </li>
-                          ))}
-                        </ol>
-                      </div>
-                      <CrearEditarModalGenerico
-                        tipoModal='actualizarTextArea'
-                        openModal={openModalEditarNovedad}
-                        handleClose={handleCloseEditarNovedad}
-                        tituloModal='Editar Novedad Especial'
-                        descripcionModal='Edite la novedad especial:'
-                        handleAction={handleEditarNovedad}
-                        itemSeleccionado={observacionNovedadSeleccionada}
-                      />
-                      <EliminarModalGenerico
-                        openModal={openModalEliminarNovedad}
-                        handleClose={handleCloseEliminarNovedad}
-                        tituloModal='Eliminar Novedad Especial'
-                        descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
-                        handleAction={handleEliminarNovedad}
-                      />
-                      {/* CIERRE DE NOVEDAD MODAL */}
-                      <CrearEditarModalGenerico
-                        tipoModal='actualizarTextArea'
-                        openModal={openModalCerrarNovedad}
-                        handleClose={handleCloseCerrarNovedad}
-                        tituloModal='Crear cierre de Novedad Especial'
-                        descripcionModal='Escriba una observación para cerar la novedad especial:'
-                        handleAction={handleCerrarNovedad}
-                      />
-                      {/* EDITAR NOVEDAD CERRADA MODAL */}
-                      <CrearEditarModalGenerico
-                        tipoModal='actualizarTextArea'
-                        openModal={openModalEditarNovedadCerrada}
-                        handleClose={handleCloseEditarNovedadCerrada}
-                        tituloModal='Editar cierre de Novedad Especial'
-                        descripcionModal='Edite el cierre de la novedad especial:'
-                        handleAction={handleEditarNovedadCerrada}
-                        itemSeleccionado={observacionNovedadSeleccionada}
-                      />
-                    </div>
-
-                    {/* RIGHT */}
-                    <div className='w-1/2'>
-                      <div className='flex flex-row justify-between'>
-                        <h2 className='font-semibold text-center mx-auto text-sm'>
-                          CONSIGNAS ESPECIALES
-                        </h2>
-                        <button onClick={handleOpenAgregarConsigna}>
-                          <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
-                        </button>
-                        <CrearEditarModalGenerico
-                          tipoModal='crearTextArea'
-                          openModal={openModalAgregarConsigna}
-                          handleClose={handleCloseAgregarConsigna}
-                          tituloModal='Crear Consigna Especial'
-                          descripcionModal='A continuación escriba la nueva consigna:'
-                          handleAction={handleAgregarConsigna}
-                        />
-                      </div>
-
-                      <div className='ml-4'>
-                        <ol>
-                          {consignas.map((consigna, index) => (
-                            <li key={index} className='my-1'>
-                              <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
-                                <div className='item1 col-span-2 border-b-2'>
-                                  <div
-                                    className={
-                                      consigna.estado === 1
-                                        ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
-                                        : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenEliminarCentralista(centralista)
                                     }
                                   >
-                                    <span>Creado</span>
-                                    <span>
-                                      {format(
-                                        new Date(consigna.created),
-                                        'dd/MM/yyyy'
-                                      )}
-                                    </span>
-                                    <span>
-                                      {format(
-                                        new Date(consigna.created),
-                                        'HH:mm'
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className='item2 col-span-9 border-b-2 text-xs text-center'>
-                                  {consigna.obs_creacion}
-                                </div>
-                                <div className='item3 border-b-2 border-l-2'>
-                                  <div className='flex items-center flex-col '>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarConsigna(consigna)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEliminarConsigna(consigna)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
+                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
                                       <Icon
                                         svgName='ib_eliminar'
-                                        className='h-3 my-1'
+                                        className='h-3 mx-1'
                                       />
-                                    </button>
-                                    {consigna.obs_cierre === null && (
-                                      <button
-                                        onClick={() =>
-                                          handleOpenCerrarConsigna(consigna)
-                                        }
-                                        className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                      >
-                                        <Icon
-                                          svgName='ib_cerrar'
-                                          className='h-3 my-1'
-                                        />
-                                      </button>
-                                    )}
-                                  </div>
+                                    </div>
+                                  </button>
                                 </div>
-                                {consigna.obs_cierre && (
-                                  <>
-                                    <div className='item-4 col-span-2'>
-                                      <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
-                                        <span>Cerrado</span>
-                                        <span>
-                                          {format(
-                                            new Date(consigna.fecha_obs_cierre),
-                                            'dd/MM/yyyy'
-                                          )}
-                                        </span>
-                                        <span>
-                                          {format(
-                                            new Date(consigna.fecha_obs_cierre),
-                                            'HH:mm'
-                                          )}
-                                        </span>
-                                      </div>
-                                    </div>
-                                    <div className='item-5 col-span-9 text-xs text-center'>
-                                      {consigna.obs_cierre}
-                                    </div>
-                                    <div className='item-6 col-span-1 border-l-2'>
-                                      <div className='flex items-center flex-col mt-3'>
-                                        <button
-                                          onClick={() =>
-                                            handleOpenEditarConsignaCerrada(
-                                              consigna
-                                            )
-                                          }
-                                          className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                        >
-                                          <Icon
-                                            svgName='ib_editar'
-                                            className='h-3 my-1'
-                                          />
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
                               </div>
                             </li>
-                          ))}
-                        </ol>
+                          ))
+                        ) : (
+                          <li className='pl-2 border-b-2 border-gray-500'>
+                            <p>No se han registrado centralistas</p>
+                          </li>
+                        )}
+                        <CrearEditarModalGenerico
+                          tipoModal='actualizar'
+                          openModal={openModalEditarCentralista}
+                          handleClose={handleCloseEditarCentralista}
+                          tituloModal='Editar personal de Grupo de trabajo'
+                          descripcionModal='Edite el nombre del agente:'
+                          handleAction={handleEditarCentralista}
+                          itemSeleccionado={centralistaSeleccionado}
+                        />
+                        <EliminarModalGenerico
+                          openModal={openModalEliminarCentralista}
+                          handleClose={handleCloseEliminarCentralista}
+                          tituloModal='Eliminar agente de Grupo de Trabajo'
+                          descripcionModal='Al eliminar un agente, sera de forma definitiva y sin posiblidad de recuperación'
+                          handleAction={handleEliminarCentralista}
+                        />
                       </div>
-                    </div>
-                    <CrearEditarModalGenerico
-                      tipoModal='actualizarTextArea'
-                      openModal={openModalEditarConsigna}
-                      handleClose={handleCloseEditarConsigna}
-                      tituloModal='Editar Consigna Especial'
-                      descripcionModal='Edite la novedad especial:'
-                      handleAction={handleEditarConsigna}
-                      itemSeleccionado={observacionConsignaSeleccionada}
-                    />
-                    <EliminarModalGenerico
-                      openModal={openModalEliminarConsigna}
-                      handleClose={handleCloseEliminarConsigna}
-                      tituloModal='Eliminar Consigna Especial'
-                      descripcionModal='Al eliminar una consigna, esta se eliminara con la observación de cierre de ser el caso, sera de forma definitiva y sin posiblidad de recuperación.'
-                      handleAction={handleEliminarConsigna}
-                    />
-                    {/* CIERRE DE CONSIGNA MODAL */}
-                    <CrearEditarModalGenerico
-                      tipoModal='actualizarTextArea'
-                      openModal={openModalCerrarConsigna}
-                      handleClose={handleCloseCerrarConsigna}
-                      tituloModal='Crear cierre de Consigna Especial'
-                      descripcionModal='Escriba una observación para cerar la consigna especial:'
-                      handleAction={handleCerrarConsigna}
-                    />
-                    {/* EDITAR CONSIGNA CERRADA MODAL */}
-                    <CrearEditarModalGenerico
-                      tipoModal='actualizarTextArea'
-                      openModal={openModalEditarConsignaCerrada}
-                      handleClose={handleCloseEditarConsignaCerrada}
-                      tituloModal='Editar cierre de Consigna Especial'
-                      descripcionModal='Edite el cierre de la consigna especial:'
-                      handleAction={handleEditarConsignaCerrada}
-                      itemSeleccionado={observacionConsignaSeleccionada}
-                    />
-                  </div>
-
-                  {/* FOOTER SECTION */}
-                  <div className='flex justify-end items-end mt-1 h-full'>
-                    <div className='border-2 w-full'>
-                      <div className='flex border-b-2 border-gray-500'>
-                        <div className='p-1 w-1/2 border-r-2 border-gray-500 font-semibold text-sm'>
-                          <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
-                          <p className='text-blue-800'>{agenteSaliente}</p>
-                        </div>
-
-                        <div className='w-1/2 font-semibold p-1 text-sm'>
-                          <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
-                          <p className='text-blue-800'>{agenteEntrante}</p>
-                        </div>
-                      </div>
-
-                      <div className='flex text-sm'>
-                        <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
-                          Firma:
-                        </p>
-                        <p className=' h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
-                          Hora:
-                        </p>
-                        <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
-                          Firma:
-                        </p>
-                        <p className='h-20 w-1/2 flex flex-col justify-end p-2'>
-                          Hora:
-                        </p>
-                      </div>
-                    </div>
+                    </ol>
                   </div>
                 </div>
               </div>
-              <button onClick={() => handleSiguienteInforme()}>
-                <Icon
-                  svgName='ib_flechader'
-                  className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+
+              {/* NEW SECTION */}
+              <div className='flex mt-2'>
+                {/* LEFT */}
+                <div className='w-1/2'>
+                  <div className='flex flex-row justify-between'>
+                    <h2 className='font-semibold text-center mx-auto text-sm'>
+                      NOVEDADES ESPECIALES
+                    </h2>
+                    <button onClick={handleOpenAgregarNovedad}>
+                      <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                    </button>
+                    <CrearEditarModalGenerico
+                      tipoModal='crearTextArea'
+                      openModal={openModalAgregarNovedad}
+                      handleClose={handleCloseAgregarNovedad}
+                      tituloModal='Crear Novedad Especial'
+                      descripcionModal='A continuación escriba la nueva novedad:'
+                      handleAction={handleAgregarNovedad}
+                    />
+                  </div>
+                  <div className='ml-4'>
+                    <ol>
+                      {novedades.map((novedad, index) => (
+                        <li key={index} className='my-1'>
+                          <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
+                            <div className='item1 col-span-2 border-b-2'>
+                              <div
+                                className={
+                                  novedad.estado === 1
+                                    ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
+                                    : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
+                                }
+                              >
+                                <span>Creado</span>
+                                <span>
+                                  {format(
+                                    new Date(novedad.created),
+                                    'dd/MM/yyyy'
+                                  )}
+                                </span>
+                                <span>
+                                  {format(new Date(novedad.created), 'HH:mm')}
+                                </span>
+                              </div>
+                            </div>
+                            <div className='item2 col-span-9 border-b-2 text-xs text-center'>
+                              {novedad.obs_creacion}
+                            </div>
+                            <div className='item3 border-b-2 border-l-2'>
+                              <div className='flex items-center flex-col'>
+                                <button
+                                  onClick={() =>
+                                    handleOpenEditarNovedad(novedad)
+                                  }
+                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                >
+                                  <Icon
+                                    svgName='ib_editar'
+                                    className='h-3 my-1'
+                                  />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleOpenEliminarNovedad(novedad)
+                                  }
+                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                >
+                                  <Icon
+                                    svgName='ib_eliminar'
+                                    className='h-3 my-1'
+                                  />
+                                </button>
+                                {novedad.obs_cierre === null && (
+                                  <button
+                                    onClick={() =>
+                                      handleOpenCerrarNovedad(novedad)
+                                    }
+                                    className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                  >
+                                    <Icon
+                                      svgName='ib_cerrar'
+                                      className='h-3 my-1'
+                                    />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                            {novedad.obs_cierre && (
+                              <>
+                                <div className='item-4 col-span-2'>
+                                  <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
+                                    <span>Cerrado</span>
+                                    <span>
+                                      {format(
+                                        new Date(novedad.fecha_obs_cierre),
+                                        'dd/MM/yyyy'
+                                      )}
+                                    </span>
+                                    <span>
+                                      {format(
+                                        new Date(novedad.fecha_obs_cierre),
+                                        'HH:mm'
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className='item-5 col-span-9 text-xs text-center'>
+                                  {novedad.obs_cierre}
+                                </div>
+                                <div className='item-6 col-span-1 border-l-2'>
+                                  <div className='flex items-center flex-col mt-3'>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEditarNovedadCerrada(novedad)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_editar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalEditarNovedad}
+                    handleClose={handleCloseEditarNovedad}
+                    tituloModal='Editar Novedad Especial'
+                    descripcionModal='Edite la novedad especial:'
+                    handleAction={handleEditarNovedad}
+                    itemSeleccionado={observacionNovedadSeleccionada}
+                  />
+                  <EliminarModalGenerico
+                    openModal={openModalEliminarNovedad}
+                    handleClose={handleCloseEliminarNovedad}
+                    tituloModal='Eliminar Novedad Especial'
+                    descripcionModal='Al eliminar una novedad, sera de forma definitiva y sin posiblidad de recuperación'
+                    handleAction={handleEliminarNovedad}
+                  />
+                  {/* CIERRE DE NOVEDAD MODAL */}
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalCerrarNovedad}
+                    handleClose={handleCloseCerrarNovedad}
+                    tituloModal='Crear cierre de Novedad Especial'
+                    descripcionModal='Escriba una observación para cerar la novedad especial:'
+                    handleAction={handleCerrarNovedad}
+                  />
+                  {/* EDITAR NOVEDAD CERRADA MODAL */}
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalEditarNovedadCerrada}
+                    handleClose={handleCloseEditarNovedadCerrada}
+                    tituloModal='Editar cierre de Novedad Especial'
+                    descripcionModal='Edite el cierre de la novedad especial:'
+                    handleAction={handleEditarNovedadCerrada}
+                    itemSeleccionado={observacionNovedadSeleccionada}
+                  />
+                </div>
+
+                {/* RIGHT */}
+                <div className='w-1/2'>
+                  <div className='flex flex-row justify-between'>
+                    <h2 className='font-semibold text-center mx-auto text-sm'>
+                      CONSIGNAS ESPECIALES
+                    </h2>
+                    <button onClick={handleOpenAgregarConsigna}>
+                      <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
+                    </button>
+                    <CrearEditarModalGenerico
+                      tipoModal='crearTextArea'
+                      openModal={openModalAgregarConsigna}
+                      handleClose={handleCloseAgregarConsigna}
+                      tituloModal='Crear Consigna Especial'
+                      descripcionModal='A continuación escriba la nueva consigna:'
+                      handleAction={handleAgregarConsigna}
+                    />
+                  </div>
+
+                  <div className='ml-4'>
+                    <ol>
+                      {consignas.map((consigna, index) => (
+                        <li key={index} className='my-1'>
+                          <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
+                            <div className='item1 col-span-2 border-b-2'>
+                              <div
+                                className={
+                                  consigna.estado === 1
+                                    ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
+                                    : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
+                                }
+                              >
+                                <span>Creado</span>
+                                <span>
+                                  {format(
+                                    new Date(consigna.created),
+                                    'dd/MM/yyyy'
+                                  )}
+                                </span>
+                                <span>
+                                  {format(new Date(consigna.created), 'HH:mm')}
+                                </span>
+                              </div>
+                            </div>
+                            <div className='item2 col-span-9 border-b-2 text-xs text-center'>
+                              {consigna.obs_creacion}
+                            </div>
+                            <div className='item3 border-b-2 border-l-2'>
+                              <div className='flex items-center flex-col '>
+                                <button
+                                  onClick={() =>
+                                    handleOpenEditarConsigna(consigna)
+                                  }
+                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                >
+                                  <Icon
+                                    svgName='ib_editar'
+                                    className='h-3 my-1'
+                                  />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleOpenEliminarConsigna(consigna)
+                                  }
+                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                >
+                                  <Icon
+                                    svgName='ib_eliminar'
+                                    className='h-3 my-1'
+                                  />
+                                </button>
+                                {consigna.obs_cierre === null && (
+                                  <button
+                                    onClick={() =>
+                                      handleOpenCerrarConsigna(consigna)
+                                    }
+                                    className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                  >
+                                    <Icon
+                                      svgName='ib_cerrar'
+                                      className='h-3 my-1'
+                                    />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                            {consigna.obs_cierre && (
+                              <>
+                                <div className='item-4 col-span-2'>
+                                  <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
+                                    <span>Cerrado</span>
+                                    <span>
+                                      {format(
+                                        new Date(consigna.fecha_obs_cierre),
+                                        'dd/MM/yyyy'
+                                      )}
+                                    </span>
+                                    <span>
+                                      {format(
+                                        new Date(consigna.fecha_obs_cierre),
+                                        'HH:mm'
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className='item-5 col-span-9 text-xs text-center'>
+                                  {consigna.obs_cierre}
+                                </div>
+                                <div className='item-6 col-span-1 border-l-2'>
+                                  <div className='flex items-center flex-col mt-3'>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEditarConsignaCerrada(
+                                          consigna
+                                        )
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_editar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+                <CrearEditarModalGenerico
+                  tipoModal='actualizarTextArea'
+                  openModal={openModalEditarConsigna}
+                  handleClose={handleCloseEditarConsigna}
+                  tituloModal='Editar Consigna Especial'
+                  descripcionModal='Edite la novedad especial:'
+                  handleAction={handleEditarConsigna}
+                  itemSeleccionado={observacionConsignaSeleccionada}
                 />
-              </button>
-              <div className='mx-14 text-gray-400 self-end'>
-                <button
-                  className='self-end bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
-                  onClick={() => handleSalir()}
-                >
-                  Salir
-                </button>
+                <EliminarModalGenerico
+                  openModal={openModalEliminarConsigna}
+                  handleClose={handleCloseEliminarConsigna}
+                  tituloModal='Eliminar Consigna Especial'
+                  descripcionModal='Al eliminar una consigna, esta se eliminara con la observación de cierre de ser el caso, sera de forma definitiva y sin posiblidad de recuperación.'
+                  handleAction={handleEliminarConsigna}
+                />
+                {/* CIERRE DE CONSIGNA MODAL */}
+                <CrearEditarModalGenerico
+                  tipoModal='actualizarTextArea'
+                  openModal={openModalCerrarConsigna}
+                  handleClose={handleCloseCerrarConsigna}
+                  tituloModal='Crear cierre de Consigna Especial'
+                  descripcionModal='Escriba una observación para cerar la consigna especial:'
+                  handleAction={handleCerrarConsigna}
+                />
+                {/* EDITAR CONSIGNA CERRADA MODAL */}
+                <CrearEditarModalGenerico
+                  tipoModal='actualizarTextArea'
+                  openModal={openModalEditarConsignaCerrada}
+                  handleClose={handleCloseEditarConsignaCerrada}
+                  tituloModal='Editar cierre de Consigna Especial'
+                  descripcionModal='Edite el cierre de la consigna especial:'
+                  handleAction={handleEditarConsignaCerrada}
+                  itemSeleccionado={observacionConsignaSeleccionada}
+                />
+              </div>
+
+              {/* FOOTER SECTION */}
+              <div className='flex justify-end items-end mt-1 h-full'>
+                <div className='border-2 w-full'>
+                  <div className='flex border-b-2 border-gray-500'>
+                    <div className='p-1 w-1/2 border-r-2 border-gray-500 font-semibold text-sm'>
+                      <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
+                      <p className='text-blue-800'>{agenteSaliente}</p>
+                    </div>
+
+                    <div className='w-1/2 font-semibold p-1 text-sm'>
+                      <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
+                      <p className='text-blue-800'>{agenteEntrante}</p>
+                    </div>
+                  </div>
+
+                  <div className='flex text-sm'>
+                    <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
+                      Firma:
+                    </p>
+                    <p className=' h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
+                      Hora:
+                    </p>
+                    <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
+                      Firma:
+                    </p>
+                    <p className='h-20 w-1/2 flex flex-col justify-end p-2'>
+                      Hora:
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-          </>
-        )}
+          </div>
+          <button onClick={() => handleSiguienteInforme()}>
+            <Icon
+              svgName='ib_flechader'
+              className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+            />
+          </button>
+          <div className='mx-14 text-gray-400 self-end'>
+            <button
+              className='self-end bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
+              onClick={() => handleSalir()}
+            >
+              Salir
+            </button>
+          </div>
+        </div>
       </div>
     </>
   )

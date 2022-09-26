@@ -164,8 +164,8 @@ const UsuariosTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {results.map(row => (
-            <TableRow key={row.id}>
+          {results.map((row, index) => (
+            <TableRow key={index}>
               <TableCell scope='row'>{row.username}</TableCell>
               <TableCell> {`${row.first_name} ${row.last_name}`}</TableCell>
               <TableCell>

@@ -1,4 +1,4 @@
-import { Dialog, Box } from '@mui/material'
+import { Box, Dialog } from '@mui/material'
 
 import React, { useEffect, useState } from 'react'
 
@@ -14,7 +14,6 @@ const CrearEditarModalGenerico = ({
   const [nuevoValor, setNuevoValor] = useState('')
 
   useEffect(() => {
-    console.log(itemSeleccionado, 'itemSeleccionado')
     setNuevoValor(itemSeleccionado)
   }, [itemSeleccionado])
 

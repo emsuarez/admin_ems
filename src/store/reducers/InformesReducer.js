@@ -314,6 +314,22 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_INFORMECCTV_FAILED:
       return { ...state, isLoading: false }
 
+    case types.POST_INFORMETRS_START:
+      return { ...state, isLoading: true }
+
+    case types.POST_INFORMETRS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        // informesTrs: {
+        //   ...state.informesTrs,
+        //   results: [payload, ...state.informesTrs.results],
+        // },
+      }
+
+    case types.POST_INFORMETRS_FAILED:
+      return { ...state, isLoading: false }
+
     default:
       return state
   }
