@@ -7,10 +7,8 @@ import {
   RedirectWithoutLogin,
   TRSAuthorized,
 } from '../../components'
-import AlertCerrarConsigna from '../../components/alerts/AlertCerrarConsigna'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
 import {
-  cerrarConsignacTrsAction,
   getPersonalInformeTrs,
   obtenerConsignasGrafica,
   obtenerConsignasTRSAction,
@@ -112,7 +110,7 @@ const TRSDashboard = () => {
                 <div className='basis-2/4 flex items-stretch h-1/2'>
                   <ConsignasTable
                     data={consignas?.novedadesTrs}
-                    tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
+                    tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
                   />
                 </div>
               </div>

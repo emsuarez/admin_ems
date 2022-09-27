@@ -122,12 +122,14 @@ const RecepcionTurnoTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {results.map(row => (
-            <TableRow key={row.id}>
+          {results.map((row, index) => (
+            <TableRow key={index}>
               <TableCell scope='row'>{row.agente_saliente}</TableCell>
               <TableCell>{row.agente_entrante}</TableCell>
               <TableCell>
-                {format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
+                {row.created
+                  ? format(new Date(row.created), 'dd/MM/yyyy HH:mm')
+                  : ''}
               </TableCell>
               <TableCell>{row.turno === 1 ? 'Diurno' : 'Nocturno'}</TableCell>
               <TableCell>

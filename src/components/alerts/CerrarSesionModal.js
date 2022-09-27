@@ -1,11 +1,26 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { cerrarInformeCctv, cerrarInformeTrs } from '../../store/actions'
 import { DropDown } from '../constants'
 
 const CerrarSesionModal = ({ userInfo, modal, setModal }) => {
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   const handleCerrarSesion = () => {
+    const tipo = window.localStorage.getItem('tipo')
+    // const dataCierreSesion = {
+    //   id= userInfo.userData.id,
+    //   username = userInfo.userData.username,
+    // }
+    console.log(userInfo, 'USERINFO')
+    // if (tipo === '2') {
+    //   dispatch(cerrarInformeCctv())
+    // }
+
+    // if (tipo === '3') {
+    //   dispatch(cerrarInformeTrs())
+    // }
     window.localStorage.clear()
     setModal(false)
     navigate('/')

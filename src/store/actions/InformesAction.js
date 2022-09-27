@@ -820,20 +820,70 @@ export const postInformeTrs = data => {
 
       const result = response.data
 
-      dispatch({
-        type: types.GET_INFORMETRS_BY_ID_SUCCESS,
-        payload: result.results[0],
-      })
-
       const responseConsigna = await httpRequest.get('/informetrs/?id=0', {
         headers: { Authorization: Token },
       })
 
       const resultConsigna = responseConsigna.data
-      console.log(resultConsigna, 'result Consignas pendientes')
+      dispatch({
+        type: types.GET_INFORMETRS_BY_ID_SUCCESS,
+        payload: [...result.results[0], ...resultConsigna.results],
+      })
+
+      console.log(result, 'result', resultConsigna, 'resultConsigna')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_INFORMETRS_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const cerrarInformeCctv = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CERRAR_INFORMECCTV_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.put('/informecctv/', data, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+
+      dispatch({ type: types.CERRAR_INFORMECCTV_SUCCESS, payload: data })
+      dispatch(setToast('success', result.message))
+
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CERRAR_INFORMECCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const cerrarInformeTrs = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.CERRAR_INFORMETRS_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.put('/informetrs/', data, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+
+      dispatch({ type: types.CERRAR_INFORMETRS_SUCCESS, payload: data })
+      dispatch(setToast('success', result.message))
+
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.CERRAR_INFORMETRS_FAILED, payload: true })
       dispatch(setToast('error', error.message))
       progress.finish()
     }
