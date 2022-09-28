@@ -44,7 +44,7 @@ const CCTV = ({ item }) => {
             <Icon svgName='ib_notebook' className='h-5' />
           </div>
 
-          <h2 className='text-base font-semibold text-gray-500'>CCTV</h2>
+          <h2 className='text-sm font-semibold text-gray-500'>CCTV</h2>
           <ICONS.ChevronDownIconO className='h-3' />
         </>
       </Button>
