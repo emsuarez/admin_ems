@@ -77,9 +77,9 @@ const TRS = ({ item }) => {
               window.location.protocol +
                 '//' +
                 window.location.host +
-                '/recepcionturnocctv'
+                '/controlmovimiento'
             ) {
-              navigate('/recepcionturnocctv')
+              navigate('/controlmovimiento')
             }
           }}
         >
@@ -94,9 +94,9 @@ const TRS = ({ item }) => {
               window.location.protocol +
                 '//' +
                 window.location.host +
-                '/recepcionturnocctv'
+                '/historialmovimiento'
             ) {
-              navigate('/recepcionturnocctv')
+              navigate('/historialmovimiento')
             }
           }}
         >
@@ -148,9 +148,9 @@ const TRS = ({ item }) => {
               window.location.protocol +
                 '//' +
                 window.location.host +
-                '/recepcionturnocctv'
+                '/recepcionturno'
             ) {
-              navigate('/recepcionturnocctv')
+              navigate('/recepcionturno')
             }
           }}
         >

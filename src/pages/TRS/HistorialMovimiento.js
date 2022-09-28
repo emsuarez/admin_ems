@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  AdminAuthorized,
   EditMovimiento,
   Header,
   HistorialMovimientoTable,
   ICONS,
-  RecepcionTurnoTable,
   RedirectWithoutLogin,
-  TRSAuthorized,
 } from '../../components'
 
 import {
-  deleteInformeTRSAction,
   getAllEjecutivosAction,
   GetAllLugaresAction,
   getAllProtectoresAction,
@@ -22,15 +18,16 @@ import {
   getInformeTrs,
 } from '../../store/actions'
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import TextField from '@mui/material/TextField'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { format } from 'date-fns'
 
-import dayjs from 'dayjs'
+import TextField from '@mui/material/TextField'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+
+import { DatePicker } from '@mui/x-date-pickers'
 import { useNavigate } from 'react-router-dom'
-import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 import Icon from '../../assets/Icon'
+import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 import VerEventoModal from '../../components/TRSModals/VerEventoModal'
 const HistorialMovimiento = () => {
   const navigate = useNavigate()
@@ -57,11 +54,8 @@ const HistorialMovimiento = () => {
     obtenerInfoVista()
   }, [])
 
-  const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
-
-  const handleChange = newValue => {
-    setValue(newValue)
-  }
+  const [fechaInicial, setFechaInicial] = useState(new Date())
+  const [fechaFinal, setFechaFinal] = useState(new Date())
 
   const historiales = useSelector(state => state.informes.historialMovimientos)
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
@@ -74,8 +68,14 @@ const HistorialMovimiento = () => {
   )
   const allLugares = useSelector(state => state.recursos.allLugares)
 
+  const [ejecutivo, setEjecutivo] = useState(allEjecutivos.results[0].id)
+
   const handleSearch = e => {
-    dispatch(getInformeTrs('/controlmovimiento/?query=' + e.target.value))
+    dispatch(
+      getHistorialMovimientosAction(
+        '/controlmovimiento/?query=' + e.target.value
+      )
+    )
   }
 
   const handleOpenViewInforme = informe => {
@@ -114,6 +114,17 @@ const HistorialMovimiento = () => {
     setOpenDeleteModal(false)
   }
 
+  const handleFiltrarPorFecha = () => {
+    const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd')
+    const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd')
+
+    dispatch(
+      getHistorialMovimientosAction(
+        `/controlmovimiento/?fechainicial=${fechaInficialFormat}&fechafinal=${fechaFinalFormat}&ejecutivo=${ejecutivo}`
+      )
+    )
+  }
+
   return (
     <>
       <div>
@@ -134,7 +145,7 @@ const HistorialMovimiento = () => {
                 <div className='ml-10 mt-2 mr-4 font-semibold'>Desde:</div>
                 <div className='w-60'>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
+                    <DatePicker
                       inputProps={{
                         style: {
                           padding: `0.5rem 10px`,
@@ -144,8 +155,8 @@ const HistorialMovimiento = () => {
                           ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                       }}
                       // label='Date Time picker'
-                      value={value}
-                      onChange={handleChange}
+                      value={fechaInicial}
+                      onChange={fInicial => setFechaInicial(fInicial)}
                       renderInput={params => (
                         <TextField
                           {...params}
@@ -164,7 +175,7 @@ const HistorialMovimiento = () => {
                 <div className='ml-10 mt-2 mr-4 font-semibold'>Hasta:</div>
                 <div className='w-60'>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
+                    <DatePicker
                       inputProps={{
                         style: {
                           padding: `0.5rem 10px`,
@@ -174,8 +185,8 @@ const HistorialMovimiento = () => {
                           ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                       }}
                       // label='Date Time picker'
-                      value={value}
-                      onChange={handleChange}
+                      value={fechaFinal}
+                      onChange={fFinal => setFechaFinal(fFinal)}
                       renderInput={params => (
                         <TextField
                           {...params}
@@ -193,7 +204,12 @@ const HistorialMovimiento = () => {
               <div className='flex justify-between text-center mt-4'>
                 <div className='ml-10 mt-2 mr-4 font-semibold'>Ejecutivo:</div>
                 <div className='w-60'>
-                  <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
+                  <select
+                    className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'
+                    id={ejecutivo}
+                    value={ejecutivo}
+                    onChange={e => setEjecutivo(e.target.value)}
+                  >
                     {Object.keys(allEjecutivos).length > 0
                       ? allEjecutivos.results.map(ejecutivo => (
                           <option value={ejecutivo.id}>
@@ -209,7 +225,10 @@ const HistorialMovimiento = () => {
                   Buscar:
                 </span>
                 <div className='w-60'>
-                  <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'>
+                  <button
+                    className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'
+                    onClick={() => handleFiltrarPorFecha()}
+                  >
                     Buscar
                   </button>
                 </div>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  AdminAuthorized,
-  CCTVAuthorized,
   Header,
   ICONS,
   RecepcionTurnoTable,
@@ -10,19 +8,19 @@ import {
 } from '../../components'
 
 import {
-  deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeCctv,
   getInformeCctvById,
   getInformeTrs,
-  getInformeTrsById,
 } from '../../store/actions'
+
+import { format } from 'date-fns'
 
 import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
+import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
@@ -42,17 +40,14 @@ const RecepcionTurnoCctv = () => {
     obtenerInfoVista()
   }, [])
 
-  const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
-
-  const handleChange = newValue => {
-    setValue(newValue)
-  }
+  const [fechaInicial, setFechaInicial] = useState(new Date())
+  const [fechaFinal, setFechaFinal] = useState(new Date())
 
   const recepcionesTurnoData = useSelector(state => state.informes.informesCctv)
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
 
   const handleSearch = e => {
-    dispatch(getInformeTrs('/informetrs/?query=' + e.target.value))
+    dispatch(getInformeCctv('/informetrs/?query=' + e.target.value))
   }
 
   const handleOpenViewInforme = informe => {
@@ -82,6 +77,17 @@ const RecepcionTurnoCctv = () => {
     setOpenDeleteModal(false)
   }
 
+  const handleFiltrarPorFecha = () => {
+    const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd')
+    const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd')
+
+    dispatch(
+      getInformeCctv(
+        `/informecctv/?fechainicial=${fechaInficialFormat}&fechafinal=${fechaFinalFormat}`
+      )
+    )
+  }
+
   return (
     <>
       <div>
@@ -102,7 +108,7 @@ const RecepcionTurnoCctv = () => {
                 <div className='ml-10 mt-2 mr-4 font-semibold'>Desde:</div>
                 <div className='w-60'>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
+                    <DatePicker
                       inputProps={{
                         style: {
                           padding: `0.5rem 10px`,
@@ -112,8 +118,8 @@ const RecepcionTurnoCctv = () => {
                           ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                       }}
                       // label='Date Time picker'
-                      value={value}
-                      onChange={handleChange}
+                      value={fechaInicial}
+                      onChange={fInicial => setFechaInicial(fInicial)}
                       renderInput={params => (
                         <TextField
                           {...params}
@@ -132,7 +138,7 @@ const RecepcionTurnoCctv = () => {
                 <div className='ml-10 mt-2 mr-4 font-semibold'>Hasta:</div>
                 <div className='w-60'>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
+                    <DatePicker
                       inputProps={{
                         style: {
                           padding: `0.5rem 10px`,
@@ -142,8 +148,8 @@ const RecepcionTurnoCctv = () => {
                           ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                       }}
                       // label='Date Time picker'
-                      value={value}
-                      onChange={handleChange}
+                      value={fechaFinal}
+                      onChange={fFinal => setFechaFinal(fFinal)}
                       renderInput={params => (
                         <TextField
                           {...params}
@@ -158,7 +164,7 @@ const RecepcionTurnoCctv = () => {
                   </LocalizationProvider>
                 </div>
               </div>
-              <div className='flex justify-between text-center mt-4'>
+              {/* <div className='flex justify-between text-center mt-4'>
                 <div className='ml-10 mt-2 mr-4 font-semibold'>Ejecutivo:</div>
                 <div className='w-60'>
                   <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
@@ -171,14 +177,17 @@ const RecepcionTurnoCctv = () => {
                       : null}
                   </select>
                 </div>
-              </div>
+              </div> */}
               <div className='flex justify-between align-middle text-center mt-4'>
                 <span className='ml-10 mt-2 mr-4 font-semibold text-white cursor-default'>
                   Buscar:
                 </span>
                 <div className='w-60'>
-                  <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'>
-                    Buscar
+                  <button
+                    className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'
+                    onClick={() => handleFiltrarPorFecha()}
+                  >
+                    Buscar por fecha
                   </button>
                 </div>
               </div>

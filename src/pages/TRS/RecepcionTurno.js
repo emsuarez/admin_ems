@@ -5,15 +5,17 @@ import {
   ICONS,
   RecepcionTurnoTable,
   RedirectWithoutLogin,
-  TRSAuthorized
+  TRSAuthorized,
 } from '../../components'
 
 import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeTrs,
-  getInformeTrsById
+  getInformeTrsById,
 } from '../../store/actions'
+
+import { format } from 'date-fns'
 
 import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -23,12 +25,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
+import { DatePicker } from '@mui/x-date-pickers'
 const RecepcionTurno = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [itemEliminar, setItemEliminar] = useState('')
+
+  const [fechaInicial, setFechaInicial] = useState(new Date())
+  const [fechaFinal, setFechaFinal] = useState(new Date())
 
   useEffect(() => {
     const obtenerInfoVista = () => {
@@ -78,6 +84,17 @@ const RecepcionTurno = () => {
     setOpenDeleteModal(false)
   }
 
+  const handleFiltrarPorFecha = () => {
+    const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd')
+    const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd')
+
+    dispatch(
+      getInformeTrs(
+        `/informetrs/?fechainicial=${fechaInficialFormat}&fechafinal=${fechaFinalFormat}`
+      )
+    )
+  }
+
   return (
     <>
       <div>
@@ -105,7 +122,7 @@ const RecepcionTurno = () => {
                     <div className='ml-10 mt-2 mr-4 font-semibold'>Desde:</div>
                     <div className='w-60'>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
+                        <DatePicker
                           inputProps={{
                             style: {
                               padding: `0.5rem 10px`,
@@ -115,8 +132,8 @@ const RecepcionTurno = () => {
                               ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                           }}
                           // label='Date Time picker'
-                          value={value}
-                          onChange={handleChange}
+                          value={fechaInicial}
+                          onChange={fInicial => setFechaInicial(fInicial)}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -135,7 +152,7 @@ const RecepcionTurno = () => {
                     <div className='ml-10 mt-2 mr-4 font-semibold'>Hasta:</div>
                     <div className='w-60'>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
+                        <DatePicker
                           inputProps={{
                             style: {
                               padding: `0.5rem 10px`,
@@ -145,8 +162,8 @@ const RecepcionTurno = () => {
                               ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                           }}
                           // label='Date Time picker'
-                          value={value}
-                          onChange={handleChange}
+                          value={fechaFinal}
+                          onChange={fFinal => setFechaFinal(fFinal)}
                           renderInput={params => (
                             <TextField
                               {...params}
