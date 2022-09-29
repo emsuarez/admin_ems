@@ -87,16 +87,10 @@ const VehicleEjectivos = () => {
     setOpenDeleteModal(false)
   }
 
-  const [seBusco, setSeBusco] = useState(false)
-
   const handleSearch = e => {
     dispatch(
       getVehiculoEjecutivoAction('/vehiculoejecutivo/?query=' + e.target.value)
     )
-    if (e.target.value !== '') {
-      setSeBusco(false)
-    }
-    setSeBusco(true)
   }
 
   return (
@@ -159,15 +153,16 @@ const VehicleEjectivos = () => {
                 </div>
               </div>
             </div>
-            {Object.keys(vehiculoEjecutivoData).length > 0 && (
-              <div className=' pt-4 p-16 flex flex-col'>
-                <VehiculosEjecutivoTable
-                  data={vehiculoEjecutivoData}
-                  handleOpenEditModal={handleOpenEditModal}
-                  handleOpenDeleteModal={handleOpenDeleteModal}
-                />
-              </div>
-            )}
+            {vehiculoEjecutivoData &&
+              Object.keys(vehiculoEjecutivoData).length > 0 && (
+                <div className=' pt-4 p-16 flex flex-col'>
+                  <VehiculosEjecutivoTable
+                    data={vehiculoEjecutivoData}
+                    handleOpenEditModal={handleOpenEditModal}
+                    handleOpenDeleteModal={handleOpenDeleteModal}
+                  />
+                </div>
+              )}
           </div>
           {/* Modales */}
           <EditVehicle

@@ -13,7 +13,6 @@ const progress = new ProgressBar({
 export const getEjecutivoAction =
   (enlacePaginacion = '/ejecutivo/') =>
   async dispatch => {
-    console.log(enlacePaginacion, 'enlacePaginacion')
     try {
       dispatch({ type: types.GET_EJECUTIVO_START })
       progress.start()
@@ -402,7 +401,6 @@ export const CreateNewLugarAction = data => async dispatch => {
     const result = response.data
 
     data = { ...data, id: result.id }
-    console.log(data, 'data con id recibido')
     dispatch({ type: types.POST_LUGARES_SUCCESS, payload: data })
     dispatch(setToast('', result.message))
     progress.finish()
@@ -542,15 +540,11 @@ export const UpdateProtectorAction = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log('*********jjj*** ', result)
     progress.finish()
     dispatch({ type: types.UPDATE_PROTECTOR_SUCCESS, payload: result })
   } catch (err) {
     progress.finish()
-    console.log(
-      'Error in input : -------------------------------------------------------------',
-      err
-    )
+
     dispatch({ type: types.UPDATE_PROTECTOR_FAILED })
   }
 }
