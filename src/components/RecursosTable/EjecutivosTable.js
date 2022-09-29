@@ -134,7 +134,8 @@ const EjecutivosTable = ({
               <TableCell>{row.alias}</TableCell>
               <TableCell>{row.familiares}</TableCell>
               <TableCell>
-                {format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
+                {row.created &&
+                  format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
               </TableCell>
               <TableCell>
                 <div className='flex justify-center'>

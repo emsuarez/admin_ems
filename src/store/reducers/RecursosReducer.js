@@ -43,7 +43,19 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_EJECUTIVO_START:
       return { ...state, isLoading: true }
     case types.POST_EJECUTIVO_SUCCESS:
-      return { ...state, isLoading: false, message: payload }
+      return {
+        ...state,
+        isLoading: false,
+        ejecutivo: {
+          ...state.ejecutivo,
+          results: [payload, ...state.ejecutivo.results],
+        },
+        allEjecutivos: {
+          ...state.allEjecutivos,
+          results: [payload, ...state.allEjecutivos.results],
+        },
+      }
+
     case types.POST_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
@@ -61,15 +73,37 @@ export default (state = initialState, { type, payload }) => {
               : { ...dato, dato }
           }),
         },
+        allEjecutivos: {
+          ...state.allEjecutivos,
+          results: state.allEjecutivos.results.map(dato => {
+            return dato.id === state.ejecutivoSeleccionado.id
+              ? { ...dato, ...state.ejecutivoSeleccionado }
+              : { ...dato, dato }
+          }),
+        },
         ejecutivoSeleccionado: {},
       }
     case types.UPDATE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
     case types.DELETE_EJECUTIVO_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, ejecutivoSeleccionado: payload }
     case types.DELETE_EJECUTIVO_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ejecutivo: {
+          ...state.ejecutivo,
+          results: state.ejecutivo.results.filter(
+            dato => dato.id !== state.ejecutivoSeleccionado.id
+          ),
+        },
+        allEjecutivos: {
+          ...state.allEjecutivos,
+          results: state.allEjecutivos.results.filter(
+            dato => dato.id !== state.ejecutivoSeleccionado.id
+          ),
+        },
+        ejecutivoSeleccionado: {},
+      }
     case types.DELETE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
@@ -198,7 +232,7 @@ export default (state = initialState, { type, payload }) => {
         familiarSeleccionado: {},
       }
     case types.UPDATE_ESTADOFAMILIAR_FAILED:
-      return { ...state, isLoading: false }
+      return { ...state, isLoading: false, familiarSeleccionado: {} }
 
     case types.GET_PROTECTOR_START:
       return { ...state, isLoading: true }

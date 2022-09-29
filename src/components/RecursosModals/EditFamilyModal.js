@@ -100,12 +100,15 @@ const EditFamilyModal = ({
                     // handleAction={handleGuardarNuevoFamiliar}
                   />
                 </div>
-                <VinculoFamiliarTable
-                  data={familiaresPorEjecutivo}
-                  handleOpenEditModal={handleOpenEditModal}
-                  handleOpenDeleteModal={handleOpenDeleteModal}
-                  tipo='modal'
-                />
+                {familiaresPorEjecutivo &&
+                  Object.keys(familiaresPorEjecutivo).length > 0 && (
+                    <VinculoFamiliarTable
+                      data={familiaresPorEjecutivo}
+                      handleOpenEditModal={handleOpenEditModal}
+                      handleOpenDeleteModal={handleOpenDeleteModal}
+                      tipo='modal'
+                    />
+                  )}
 
                 {/* Modales CAMBIAR NOMBRE para hacer del componente más generico */}
                 <EditEjecutivo

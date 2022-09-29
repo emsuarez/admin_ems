@@ -1,9 +1,8 @@
-import { types } from '../actionTypes'
-import { httpRequest } from '../../config'
-import qs from 'qs'
 import ProgressBar from '@badrap/bar-of-progress'
-import { setToast } from './ToastAction'
 import axios from 'axios'
+import { httpRequest } from '../../config'
+import { types } from '../actionTypes'
+import { setToast } from './ToastAction'
 
 const progress = new ProgressBar({
   size: 4,
@@ -43,7 +42,7 @@ export const getAllEjecutivosAction = () => async dispatch => {
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
 
-    const response = await httpRequest.get('/ejecutivo/?limit=1000&offset=1', {
+    const response = await httpRequest.get('/ejecutivo/?limit=1000&offset=0', {
       headers: { Authorization: Token },
     })
     const result = response.data
@@ -69,7 +68,16 @@ export const createNewEjecutivoAction = data => async dispatch => {
     })
     const result = response.data
 
-    dispatch({ type: types.POST_EJECUTIVO_SUCCESS, payload: result })
+    dispatch({
+      type: types.POST_EJECUTIVO_SUCCESS,
+      payload: {
+        ...data,
+        id: result.id,
+        familiares: 0,
+        created: new Date(),
+        is_active: true,
+      },
+    })
     dispatch(setToast('', result.message))
     progress.finish()
   } catch (error) {
@@ -87,7 +95,10 @@ export const UpdateEjecutivoAction = data => async dispatch => {
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
     const response = await httpRequest.patch('/ejecutivo/', data, {
-      headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
+      headers: {
+        Authorization: Token,
+        'content-type': 'multipart/form-data',
+      },
     })
     const result = response.data
 
@@ -104,7 +115,7 @@ export const UpdateEjecutivoAction = data => async dispatch => {
 //Delete ejecutivo
 export const DeleteEjecutivoAction = data => async dispatch => {
   try {
-    dispatch({ type: types.DELETE_EJECUTIVO_START })
+    dispatch({ type: types.DELETE_EJECUTIVO_START, payload: data })
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
@@ -188,7 +199,7 @@ export const getAllFamiliaresAction = () => async dispatch => {
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await httpRequest.get('/familiar/?limit=1000&offset=1', {
+    const response = await httpRequest.get('/familiar/?limit=1000&offset=0', {
       headers: {
         Authorization: Token,
         'content-type': 'multipart/form-data',
@@ -417,7 +428,7 @@ export const DeleteLugaresAction = data => async dispatch => {
       data: data,
     })
     const result = response.data
-    console.log(data, 'data recibida')
+
     dispatch({ type: types.DELETE_LUGARES_SUCCESS, payload: result })
     dispatch(setToast('', result.message))
 
@@ -575,7 +586,7 @@ export const getAllVehiculosEjecutivoAction = () => async dispatch => {
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
     const response = await httpRequest.get(
-      'vehiculoejecutivo/?limit=1000&offset=1',
+      'vehiculoejecutivo/?limit=1000&offset=0',
       {
         headers: {
           Authorization: Token,
@@ -735,7 +746,7 @@ export const getAllProtectoresAction = () => async dispatch => {
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-    const response = await httpRequest.get('/protector/?limit=1000&offset=1', {
+    const response = await httpRequest.get('/protector/?limit=1000&offset=0', {
       headers: { Authorization: Token },
     })
     const result = response.data
@@ -906,7 +917,7 @@ export const getAllVehiculoProtectorAction = () => async dispatch => {
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
     const response = await httpRequest.get(
-      '/vehiculoprotector/?limit=1000&offset=1',
+      '/vehiculoprotector/?limit=1000&offset=0',
       {
         headers: {
           Authorization: Token,

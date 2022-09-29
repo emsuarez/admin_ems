@@ -1,12 +1,11 @@
-import React, { useRef, useState } from 'react'
-import { ICONS } from '../constants'
-import { styled } from '@mui/material/styles'
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
-import { Link, useNavigate } from 'react-router-dom'
-import { ClickOutSide } from '../clickOutside/ClickOutSide'
 import { Button, Menu, MenuItem } from '@mui/material'
-import Icon from '../../assets/Icon'
+import { styled } from '@mui/material/styles'
+import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import Icon from '../../assets/Icon'
+import { ICONS } from '../constants'
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} placement='bottom' />
@@ -39,29 +38,6 @@ const Usuarios = ({ item }) => {
   }
 
   return (
-    // <HtmlTooltip
-    //   open={open}
-    //   enterDelay={0}
-    //   leaveDelay={200}
-    //   title={
-    //     <React.Fragment>
-    //       <ul className='w-36' ref={wrapperRef}>
-    //         <Link to={'/usuarios'}>
-    //           <li className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200 h-10'>
-    //             {/* <ICONS.PencilAltIconS className="h-4 mt-3 ml-3" color="blue"/> */}
-    //             <p className='text-sm  mt-3 ml-3'>Administrar</p>
-    //           </li>
-    //         </Link>
-    //       </ul>
-    //     </React.Fragment>
-    //   }
-    // >
-    //   <div onClick={() => toogleTooltip()} className='flex space-x-2'>
-    //     <div className=''></div>
-    //     <h2 className='text-base font-semibold text-gray-500'>USUARIOS</h2>
-    //     <ICONS.ChevronDownIconO className='h-3 mt-2 ' />
-    //   </div>
-    // </HtmlTooltip>
     <div>
       <Button
         id='basic-button'

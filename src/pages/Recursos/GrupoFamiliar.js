@@ -155,18 +155,19 @@ const GrupoFamiliar = () => {
                 </div>
               </div>
             </div>
-            {Object.keys(familiaData).length > 0 && (
-              <div className=' pt-4 p-16 flex flex-col'>
-                <VinculoFamiliarTable
-                  data={familiaData}
-                  handleOpenEditModal={handleOpenEditModal}
-                  handleOpenDeleteModal={handleOpenDeleteModal}
-                  tipo='general'
-                  handleOpenEditFamilyModal={handleOpenEditFamilyModal}
-                  seBusco={seBusco}
-                />
-              </div>
-            )}
+            {familiaData
+              ? Object.keys(familiaData).length > 0 && (
+                  <div className=' pt-4 p-16 flex flex-col'>
+                    <VinculoFamiliarTable
+                      data={familiaData}
+                      handleOpenEditModal={handleOpenEditModal}
+                      handleOpenDeleteModal={handleOpenDeleteModal}
+                      tipo='general'
+                      handleOpenEditFamilyModal={handleOpenEditFamilyModal}
+                    />
+                  </div>
+                )
+              : null}
           </div>
           {/* Modales CAMBIAR NOMBRE para hacer del componente más generico */}
           <EditEjecutivo

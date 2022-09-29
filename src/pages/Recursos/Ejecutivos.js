@@ -149,7 +149,7 @@ const Ejecutivos = () => {
                   </div>
                 </div>
               </div>
-              {Object.keys(ejecutivoData).length > 0 && (
+              {ejecutivoData && Object.keys(ejecutivoData).length > 0 && (
                 <div className=' pt-4 p-16 flex flex-col'>
                   <EjecutivosTable
                     data={ejecutivoData}
