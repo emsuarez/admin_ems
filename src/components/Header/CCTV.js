@@ -4,11 +4,17 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
 import { postInformeCctv } from '../../store/actions/InformesAction'
+import AlertCrearInforme from '../alerts/AlertCrearInforme'
 import { ICONS } from '../constants'
 
 const CCTV = ({ item }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const [openModalCrearActaDiurna, setOpenModalCrearActaDiurna] =
+    useState(false)
+  const [openModalCrearActaNocturna, setOpenModalCrearActaNocturna] =
+    useState(false)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [subMenu, setSubMenu] = useState()
@@ -24,10 +30,30 @@ const CCTV = ({ item }) => {
     setAnchorEl(null)
   }
 
-  const handleNuevoInforme = tipoInforme => {
-    navigate('/editrecepcioncctv')
-    dispatch(postInformeCctv(tipoInforme))
+  const handleOpenCrearActaModal = tipo => {
+    if (tipo === 1) {
+      setOpenModalCrearActaDiurna(true)
+    } else if (tipo === 0) {
+      setOpenModalCrearActaNocturna(true)
+    }
   }
+
+  const handleCloseCrearActaModal = () => {
+    setOpenModalCrearActaDiurna(false)
+    setOpenModalCrearActaNocturna(false)
+  }
+
+  const handleNuevoInformeDiurno = () => {
+    navigate('/editrecepcioncctv')
+    dispatch(postInformeCctv(1))
+    setOpenModalCrearActaDiurna(false)
+  }
+  const handleNuevoInformeNocturno = () => {
+    navigate('/editrecepcioncctv')
+    dispatch(postInformeCctv(0))
+    setOpenModalCrearActaNocturna(false)
+  }
+
   return (
     <div>
       <Button
@@ -87,8 +113,10 @@ const CCTV = ({ item }) => {
               }}
               className='ml-5'
             >
-              <MenuItem onClick={() => handleNuevoInforme(1)}>Diurno</MenuItem>
-              <MenuItem onClick={() => handleNuevoInforme(0)}>
+              <MenuItem onClick={() => handleOpenCrearActaModal(1)}>
+                Diurno
+              </MenuItem>
+              <MenuItem onClick={() => handleOpenCrearActaModal(0)}>
                 Nocturno
               </MenuItem>
             </Menu>
@@ -114,6 +142,24 @@ const CCTV = ({ item }) => {
           </div>
         </MenuItem>
       </Menu>
+      <AlertCrearInforme
+        tituloModal={'Inicio de Acta, jornada Diurna'}
+        descripcionModal={
+          'En este momento va a iniciar la Acta entrega recepción de la jornada Diurna, esta usted de acuerdo.'
+        }
+        openModal={openModalCrearActaDiurna}
+        handleClose={handleCloseCrearActaModal}
+        handleAction={handleNuevoInformeDiurno}
+      />
+      <AlertCrearInforme
+        tituloModal={'Inicio de Acta, jornada Nocturna'}
+        descripcionModal={
+          'En este momento va a iniciar la Acta entrega recepción de la jornada Nocturna, esta usted de acuerdo.'
+        }
+        openModal={openModalCrearActaNocturna}
+        handleClose={handleCloseCrearActaModal}
+        handleAction={handleNuevoInformeNocturno}
+      />
     </div>
   )
 }

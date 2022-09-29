@@ -596,7 +596,7 @@ const EditRecepcionCctv = () => {
                 </p>
                 <p className='font-semibold text-sm'>
                   FECHA:{' '}
-                  {actaSeleccionada &&
+                  {actaSeleccionada.created &&
                     format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
                 </p>
               </div>

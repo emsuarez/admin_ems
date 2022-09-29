@@ -7,7 +7,7 @@ import {
   Header,
   ICONS,
   RedirectWithoutLogin,
-  VehiculosEjecutivoTable,
+  VehiculosEjecutivoTable
 } from '../../components'
 import CreateVehiculo from '../../components/RecursosModals/CreateVehiculo'
 import vehiculosEjecutivosReportPDF from '../../reports/Recursos/vehiculosEjecutivosReportPDF'
@@ -16,7 +16,7 @@ import {
   DeleteVehiculoEjecutivoAction,
   getAllVehiculosEjecutivoAction,
   getVehiculoEjecutivoAction,
-  UpdateVehicleEjecutivoAction,
+  UpdateVehicleEjecutivoAction
 } from '../../store/actions'
 
 const VehicleEjectivos = () => {

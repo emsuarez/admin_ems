@@ -5,27 +5,26 @@ import {
   ICONS,
   RecepcionTurnoTable,
   RedirectWithoutLogin,
-  TRSAuthorized,
+  TRSAuthorized
 } from '../../components'
 
 import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeTrs,
-  getInformeTrsById,
+  getInformeTrsById
 } from '../../store/actions'
 
 import { format } from 'date-fns'
 
 import TextField from '@mui/material/TextField'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
+import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
-import { DatePicker } from '@mui/x-date-pickers'
 const RecepcionTurno = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
