@@ -178,7 +178,7 @@ const RecepcionTurno = () => {
                       </LocalizationProvider>
                     </div>
                   </div>
-                  <div className='flex justify-between text-center mt-4'>
+                  {/* <div className='flex justify-between text-center mt-4'>
                     <div className='ml-10 mt-2 mr-4 font-semibold'>
                       Ejecutivo:
                     </div>
@@ -193,14 +193,17 @@ const RecepcionTurno = () => {
                           : null}
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                   <div className='flex justify-between align-middle text-center mt-4'>
                     <span className='ml-10 mt-2 mr-4 font-semibold text-white cursor-default'>
                       Buscar:
                     </span>
                     <div className='w-60'>
-                      <button className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'>
-                        Buscar
+                      <button
+                        className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'
+                        onClick={() => handleFiltrarPorFecha()}
+                      >
+                        Buscar por fecha
                       </button>
                     </div>
                   </div>

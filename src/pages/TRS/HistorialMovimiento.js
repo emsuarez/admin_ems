@@ -229,7 +229,7 @@ const HistorialMovimiento = () => {
                     className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-semibold text-base p-1 rounded-md w-full'
                     onClick={() => handleFiltrarPorFecha()}
                   >
-                    Buscar
+                    Buscar por fecha
                   </button>
                 </div>
               </div>
