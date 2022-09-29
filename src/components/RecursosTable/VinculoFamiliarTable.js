@@ -135,7 +135,8 @@ const VinculoFamiliarTable = ({
               <TableCell>{row.alias}</TableCell>
               {tipo === 'general' && <TableCell>{row.ejecutivo}</TableCell>}
               <TableCell>
-                {format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
+                {row.created &&
+                  format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
               </TableCell>
               <TableCell>
                 <div className='flex justify-center'>

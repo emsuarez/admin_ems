@@ -151,7 +151,22 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_GRUPOFAMILIAR_START:
       return { ...state, isLoading: true }
     case types.POST_GRUPOFAMILIAR_SUCCESS:
-      return { ...state, isLoading: false, message: payload }
+      return {
+        ...state,
+        isLoading: false,
+        grupoFamiliar: {
+          ...state.grupoFamiliar,
+          results: [payload, ...state.grupoFamiliar.results],
+        },
+        allFamiliares: {
+          ...state.allFamiliares,
+          results: [payload, ...state.allFamiliares.results],
+        },
+        grupoFamiliarByEjecutivo: {
+          ...state.grupoFamiliarByEjecutivo,
+          results: [payload, ...state.grupoFamiliarByEjecutivo.results],
+        },
+      }
     case types.POST_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
 

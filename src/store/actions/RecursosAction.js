@@ -261,7 +261,7 @@ export const createNewFamiliarAction = data => async dispatch => {
     })
     const result = response.data
 
-    dispatch({ type: types.POST_GRUPOFAMILIAR_SUCCESS, payload: result })
+    dispatch({ type: types.POST_GRUPOFAMILIAR_SUCCESS, payload: data })
     dispatch(setToast('', result.message))
     progress.finish()
   } catch (error) {

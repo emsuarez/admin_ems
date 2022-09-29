@@ -2,6 +2,7 @@ import { Box, Modal } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  createNewFamiliarAction,
   DeleteFamiliarAction,
   getGrupoFamiliarAction,
   UpdateFamiliarAction,
@@ -16,6 +17,7 @@ const EditFamilyModal = ({
   handleClose,
   tituloModal,
   id_ejecutivo,
+  tipo,
 }) => {
   const dispatch = useDispatch()
   const [openEditModal, setOpenEditModal] = useState(false)
@@ -30,6 +32,17 @@ const EditFamilyModal = ({
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false)
+  }
+
+  const handleGuardarNuevoFamiliar = familiar => {
+    const nuevoFamiliar = {
+      ...familiar,
+      id_ejecutivo: id_ejecutivo.id_ejecutivo,
+      created: new Date(),
+      is_active: true,
+    }
+
+    dispatch(createNewFamiliarAction(nuevoFamiliar))
   }
 
   const handleEditarGrupoFamiliar = grupoFamiliar => {
@@ -84,7 +97,9 @@ const EditFamilyModal = ({
                   <h1 className='text-2xl font-bold'>{tituloModal}</h1>
                   <div className='flex flex-col justify-center items-center'>
                     <div>
-                      <label className='font-semibold'>Ejecutivo:</label>{' '}
+                      <label className='font-semibold'>
+                        {tipo === 'familiar' ? 'Familiar:' : 'Ejecutivo:'}
+                      </label>{' '}
                       {id_ejecutivo.nombres}
                     </div>
                     <div>
@@ -97,7 +112,7 @@ const EditFamilyModal = ({
                   <CreateEjecutivo
                     tituloModal={'Crear Familiar'}
                     descripcionModal={''}
-                    // handleAction={handleGuardarNuevoFamiliar}
+                    handleAction={handleGuardarNuevoFamiliar}
                   />
                 </div>
                 {familiaresPorEjecutivo &&

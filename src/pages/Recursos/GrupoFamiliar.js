@@ -194,6 +194,7 @@ const GrupoFamiliar = () => {
             openModal={openEditFamiliarModal}
             handleClose={handleCloseEditFamiliarModal}
             id_ejecutivo={itemEditarFamily}
+            tipo='familiar'
           />
         </>
       )}
