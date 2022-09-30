@@ -335,7 +335,7 @@ export const getAllUsersReportAction = () => async dispatch => {
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
 
-    const response = await httpRequest.get('/user/?limit=1000&offset=1', {
+    const response = await httpRequest.get('/user/?limit=1000&offset=0', {
       headers: { Authorization: Token },
     })
     const result = response.data

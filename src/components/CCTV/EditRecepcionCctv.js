@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
+import { ReactComponent as svgCierreInforme } from '../../assets/cerrar-sesion 2.svg'
 import {
   AdminAuthorized,
   Header,
@@ -14,12 +15,14 @@ import { useReactToPrint } from 'react-to-print'
 import Icon from '../../assets/Icon'
 import {
   cerrarConsignacCctvAction,
+  cerrarInformeCctv,
   cerrarNovedadCCTVAction,
   createConsignaCctvAction,
   createNovedadCctvAction,
   crudPersonalActaCctvAction,
   deleteConsignaCCTVAction,
   deleteNovedadCCTVAction,
+  getAllUsersReportAction,
   getInformeCctvNavegacion,
   setToast,
   updateConsignaCCTVAction,
@@ -27,6 +30,7 @@ import {
 } from '../../store/actions'
 import CrearEditarModalGenerico from '../TRSModals/CrearEditarModalGenerico'
 import EliminarModalGenerico from '../TRSModals/EliminarModalGenerico'
+import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
 
 const EditRecepcionCctv = () => {
   const navigate = useNavigate()
@@ -84,11 +88,14 @@ const EditRecepcionCctv = () => {
   const [observacionConsignaSeleccionada, setObservacionConsignaSeleccionada] =
     useState()
 
+  const [openModalAgregarOperadorCierre, setOpenModalAgregarOperadorCierre] =
+    useState(false)
+
   //#endregion
 
   useEffect(() => {
     const obtenerInfoVista = () => {
-      if (Object.keys(actaSeleccionada).length > 0) {
+      if (actaSeleccionada && Object.keys(actaSeleccionada).length > 0) {
         setProtectores(
           actaSeleccionada.protectores !== null
             ? actaSeleccionada.protectores.split(',') || []
@@ -106,6 +113,7 @@ const EditRecepcionCctv = () => {
       }
     }
     obtenerInfoVista()
+    dispatch(getAllUsersReportAction())
   }, [actaSeleccionada])
 
   // #region CRUD_PROTECTORES
@@ -542,6 +550,25 @@ const EditRecepcionCctv = () => {
   const handleGenerarInformePdf = useReactToPrint({
     content: () => componentRef.current,
   })
+
+  const handleOpenModalAgregarOperadorCierre = () => {
+    setOpenModalAgregarOperadorCierre(true)
+  }
+
+  const handleCloseAgregarOperadorCierre = () => {
+    setOpenModalAgregarOperadorCierre(false)
+  }
+
+  const handleAgregarOperadorCierre = operador => {
+    setOpenModalAgregarOperadorCierre(false)
+    const operadorCierre = {
+      id: actaSeleccionada.id,
+      username: operador,
+    }
+    console.log(operadorCierre, 'operadorCierre')
+
+    dispatch(cerrarInformeCctv(operadorCierre))
+  }
 
   // #endregion
   return (
@@ -1125,9 +1152,20 @@ const EditRecepcionCctv = () => {
                       <p className='text-blue-800'>{agenteSaliente}</p>
                     </div>
 
-                    <div className='w-1/2 font-semibold p-1 text-sm'>
-                      <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
-                      <p className='text-blue-800'>{agenteEntrante}</p>
+                    <div className='w-1/2 font-semibold p-1 text-sm flex justify-between'>
+                      <div>
+                        <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
+                        <p className='text-blue-800'>{agenteEntrante}</p>
+                      </div>
+
+                      <img
+                        src={
+                          require('../../assets/cerrar-sesion 2.svg').default
+                        }
+                        alt='mySvgImage'
+                        className='hover: cursor-pointer hover:bg-gray-200 rounded-md'
+                        onClick={handleOpenModalAgregarOperadorCierre}
+                      />
                     </div>
                   </div>
 
@@ -1147,6 +1185,13 @@ const EditRecepcionCctv = () => {
                   </div>
                 </div>
               </div>
+              <AlertOperadorCierre
+                openModal={openModalAgregarOperadorCierre}
+                handleClose={handleCloseAgregarOperadorCierre}
+                tituloModal='Operador entrante'
+                descripcionModal='Seleccione el nombre del operador:'
+                handleAction={handleAgregarOperadorCierre}
+              />
             </div>
           </div>
           <button onClick={() => handleSiguienteInforme()}>

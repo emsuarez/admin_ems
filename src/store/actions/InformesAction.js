@@ -21,7 +21,7 @@ export const getInformeTrs = (enlacePaginacion = '/informetrs/') => {
       })
 
       const result = respuesta.data
-      console.log(result, 'result informe')
+
       dispatch({ type: types.GET_INFORMETRS_SUCCESS, payload: result })
       progress.finish()
     } catch (error) {
@@ -66,7 +66,7 @@ export const getInformeTrsNavegacion = (informeActual, navega) => {
       )
 
       const result = respuesta.data
-      console.log(result, 'result informe navegacion')
+
       if (result.results.length === 0) {
         dispatch(setToast('error', 'Ah llegado al final de la lista'))
         progress.finish()
@@ -602,7 +602,7 @@ export const getInformeCctv = (enlacePaginacion = '/informecctv/') => {
       })
 
       const result = respuesta.data
-      console.log(result, 'result informe')
+
       dispatch({ type: types.GET_INFORMECCTV_SUCCESS, payload: result })
       progress.finish()
     } catch (error) {
@@ -647,7 +647,7 @@ export const getInformeCctvNavegacion = (informeActual, navega) => {
       )
 
       const result = respuesta.data
-      console.log(result, 'result informe navegacion')
+
       if (result.results.length === 0) {
         dispatch(setToast('error', 'Ah llegado al final de la lista'))
         progress.finish()
@@ -830,7 +830,6 @@ export const postInformeTrs = data => {
         payload: [...result.results[0], ...resultConsigna.results],
       })
 
-      console.log(result, 'result', resultConsigna, 'resultConsigna')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_INFORMETRS_FAILED, payload: true })
@@ -889,4 +888,3 @@ export const cerrarInformeTrs = data => {
     }
   }
 }
-

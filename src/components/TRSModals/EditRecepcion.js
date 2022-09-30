@@ -1,17 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
-import {
-  AdminAuthorized,
-  Header,
-  ICONS,
-  RedirectWithoutLogin,
-} from '../../components'
+import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 import EliminarModalGenerico from './EliminarModalGenerico'
 
 import { format } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux'
+import { useReactToPrint } from 'react-to-print'
 import Icon from '../../assets/Icon'
 import {
   cerrarConsignaTRSAction,
@@ -25,7 +21,6 @@ import {
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
-import ReactToPrint, { useReactToPrint } from 'react-to-print'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()

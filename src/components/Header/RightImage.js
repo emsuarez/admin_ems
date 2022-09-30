@@ -86,7 +86,7 @@ const RightImage = ({ userInfo }) => {
 
       <CerrarSesionModal
         userInfo={userInfo}
-        modal={modal}
+        openModal={modal}
         setModal={setModal}
       />
     </>
