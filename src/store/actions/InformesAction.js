@@ -820,14 +820,9 @@ export const postInformeTrs = data => {
 
       const result = response.data
 
-      const responseConsigna = await httpRequest.get('/informetrs/?id=0', {
-        headers: { Authorization: Token },
-      })
-
-      const resultConsigna = responseConsigna.data
       dispatch({
         type: types.GET_INFORMETRS_BY_ID_SUCCESS,
-        payload: [...result.results[0], ...resultConsigna.results],
+        payload: result.results[0],
       })
 
       progress.finish()

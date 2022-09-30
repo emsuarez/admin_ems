@@ -44,14 +44,14 @@ const CCTV = ({ item }) => {
   }
 
   const handleNuevoInformeDiurno = () => {
-    navigate('/editrecepcioncctv')
     dispatch(postInformeCctv(1))
     setOpenModalCrearActaDiurna(false)
+    navigate('/editrecepcioncctv')
   }
   const handleNuevoInformeNocturno = () => {
-    navigate('/editrecepcioncctv')
     dispatch(postInformeCctv(0))
     setOpenModalCrearActaNocturna(false)
+    navigate('/editrecepcioncctv')
   }
 
   return (

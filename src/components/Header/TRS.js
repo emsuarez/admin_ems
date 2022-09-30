@@ -44,14 +44,14 @@ const TRS = ({ item }) => {
   }
 
   const handleNuevoInformeDiurno = () => {
-    navigate('/editrecepcion')
     dispatch(postInformeTrs(1))
     setOpenModalCrearActaDiurna(false)
+    navigate('/editrecepcion')
   }
   const handleNuevoInformeNocturno = () => {
-    navigate('/editrecepcion')
     dispatch(postInformeTrs(0))
     setOpenModalCrearActaNocturna(false)
+    navigate('/editrecepcion')
   }
   return (
     <div>

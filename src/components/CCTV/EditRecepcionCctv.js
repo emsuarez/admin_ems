@@ -565,7 +565,6 @@ const EditRecepcionCctv = () => {
       id: actaSeleccionada.id,
       username: operador,
     }
-    console.log(operadorCierre, 'operadorCierre')
 
     dispatch(cerrarInformeCctv(operadorCierre))
   }

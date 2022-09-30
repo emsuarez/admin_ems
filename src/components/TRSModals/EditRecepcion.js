@@ -11,16 +11,19 @@ import { useReactToPrint } from 'react-to-print'
 import Icon from '../../assets/Icon'
 import {
   cerrarConsignaTRSAction,
+  cerrarInformeTrs,
   cerrarNovedadTRSAction,
   createConsignaTRSAction,
   createNovedadTRSAction,
   crudPersonalActaAction,
   deleteConsignaTRSAction,
   deleteNovedadTRSAction,
+  getAllUsersReportAction,
   getInformeTrsNavegacion,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
+import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()
@@ -78,29 +81,34 @@ const EditRecepcion = () => {
   const [observacionConsignaSeleccionada, setObservacionConsignaSeleccionada] =
     useState()
 
+  const [openModalAgregarOperadorCierre, setOpenModalAgregarOperadorCierre] =
+    useState(false)
   //#endregion
 
   useEffect(() => {
     const obtenerInfoVista = () => {
-      setProtectores(
-        actaSeleccionada.protectores !== null
-          ? actaSeleccionada.protectores.split(',') || []
-          : []
-      )
-      setCentralistas(
-        actaSeleccionada.centralistas !== null
-          ? actaSeleccionada.centralistas.split(',') || []
-          : []
-      )
-      setNovedades(actaSeleccionada.trsnovedad || [])
-      setConsignas(actaSeleccionada.trsconsigna || [])
-      setAgenteSaliente(actaSeleccionada.agente_saliente || '')
-      setAgenteEntrante(actaSeleccionada.agente_entrante || '')
+      if (actaSeleccionada) {
+        if (Object.keys(actaSeleccionada).length > 0) {
+          setProtectores(
+            actaSeleccionada.protectores !== null
+              ? actaSeleccionada.protectores.split(',') || []
+              : []
+          )
+          setCentralistas(
+            actaSeleccionada.centralistas !== null
+              ? actaSeleccionada.centralistas.split(',') || []
+              : []
+          )
+          setNovedades(actaSeleccionada.trsnovedad || [])
+          setConsignas(actaSeleccionada.trsconsigna || [])
+          setAgenteSaliente(actaSeleccionada.agente_saliente || '')
+          setAgenteEntrante(actaSeleccionada.agente_entrante || '')
+        }
+      }
     }
 
     obtenerInfoVista()
-
-    console.log(actaSeleccionada, 'actaSeleccionada')
+    dispatch(getAllUsersReportAction())
   }, [actaSeleccionada])
 
   // #region CRUD_PROTECTORES
@@ -530,6 +538,23 @@ const EditRecepcion = () => {
     content: () => componentRef.current,
   })
 
+  const handleOpenModalAgregarOperadorCierre = () => {
+    setOpenModalAgregarOperadorCierre(true)
+  }
+
+  const handleCloseAgregarOperadorCierre = () => {
+    setOpenModalAgregarOperadorCierre(false)
+  }
+
+  const handleAgregarOperadorCierre = operador => {
+    setOpenModalAgregarOperadorCierre(false)
+    const operadorCierre = {
+      id: actaSeleccionada.id,
+      username: operador,
+    }
+
+    dispatch(cerrarInformeTrs(operadorCierre))
+  }
   // #endregion
   return (
     <>
@@ -583,7 +608,8 @@ const EditRecepcion = () => {
                 </p>
                 <p className='font-semibold text-sm'>
                   FECHA:{' '}
-                  {format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
+                  {actaSeleccionada.created &&
+                    format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
                 </p>
               </div>
 
@@ -1111,9 +1137,20 @@ const EditRecepcion = () => {
                       <p className='text-blue-800'>{agenteSaliente}</p>
                     </div>
 
-                    <div className='w-1/2 font-semibold p-1 text-sm'>
-                      <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
-                      <p className='text-blue-800'>{agenteEntrante}</p>
+                    <div className='w-1/2 font-semibold p-1 text-sm flex justify-between'>
+                      <div>
+                        <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
+                        <p className='text-blue-800'>{agenteEntrante}</p>
+                      </div>
+
+                      <img
+                        src={
+                          require('../../assets/cerrar-sesion 2.svg').default
+                        }
+                        alt='mySvgImage'
+                        className='hover: cursor-pointer hover:bg-gray-200 rounded-md'
+                        onClick={handleOpenModalAgregarOperadorCierre}
+                      />
                     </div>
                   </div>
 
@@ -1133,6 +1170,13 @@ const EditRecepcion = () => {
                   </div>
                 </div>
               </div>
+              <AlertOperadorCierre
+                openModal={openModalAgregarOperadorCierre}
+                handleClose={handleCloseAgregarOperadorCierre}
+                tituloModal='Operador entrante'
+                descripcionModal='Seleccione el nombre del operador:'
+                handleAction={handleAgregarOperadorCierre}
+              />
             </div>
           </div>
           <button onClick={() => handleSiguienteInforme()}>

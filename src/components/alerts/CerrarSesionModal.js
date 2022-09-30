@@ -11,37 +11,38 @@ const CerrarSesionModal = ({ userInfo, openModal, setModal }) => {
   const informes = useSelector(state => state.informes)
   const handleCerrarSesion = () => {
     const tipo = window.localStorage.getItem('tipo')
-
-    if (tipo === '2') {
-      if (informes.informesCctv.results[0].agente_entrante.length === 0) {
-        dispatch(
-          setToast(
-            'error',
-            'No se puede cerrar sesión, ingrese un agente de relevo en su útimo informe'
+    if (informes) {
+      if (tipo === '2') {
+        if (informes.informesCctv.results[0].agente_entrante.length === 0) {
+          dispatch(
+            setToast(
+              'error',
+              'No se puede cerrar sesión, ingrese un agente de relevo en su útimo informe'
+            )
           )
-        )
-        setModal(false)
-        navigate('/recepcionturnocctv')
-        return
+          setModal(false)
+          navigate('/recepcionturnocctv')
+          return
+        }
       }
-    }
 
-    if (tipo === '3') {
-      if (informes.informesTrs.results[0].agente_entrante.length === 0) {
-        dispatch(
-          setToast(
-            'error',
-            'No se puede cerrar sesión, ingrese un agente de relevo en su útimo informe'
+      if (tipo === '3') {
+        if (informes.informesTrs.results[0].agente_entrante.length === 0) {
+          dispatch(
+            setToast(
+              'error',
+              'No se puede cerrar sesión, ingrese un agente de relevo en su útimo informe'
+            )
           )
-        )
-        setModal(false)
-        navigate('/recepcionturno')
-        return
+          setModal(false)
+          navigate('/recepcionturno')
+          return
+        }
       }
+      window.localStorage.clear()
+      setModal(false)
+      navigate('/')
     }
-    window.localStorage.clear()
-    setModal(false)
-    navigate('/')
   }
 
   return (
