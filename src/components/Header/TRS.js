@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
-import { postInformeTrs } from '../../store/actions/InformesAction'
+import {
+  getNovedadesConsignasTrsPendientes,
+  postInformeTrs,
+} from '../../store/actions/InformesAction'
 import AlertCrearInforme from '../alerts/AlertCrearInforme'
 import { ICONS } from '../constants'
 
@@ -46,11 +49,13 @@ const TRS = ({ item }) => {
   const handleNuevoInformeDiurno = () => {
     dispatch(postInformeTrs(1))
     setOpenModalCrearActaDiurna(false)
+    dispatch(getNovedadesConsignasTrsPendientes())
     navigate('/editrecepcion')
   }
   const handleNuevoInformeNocturno = () => {
     dispatch(postInformeTrs(0))
     setOpenModalCrearActaNocturna(false)
+    dispatch(getNovedadesConsignasTrsPendientes())
     navigate('/editrecepcion')
   }
   return (

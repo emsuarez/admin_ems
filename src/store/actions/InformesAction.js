@@ -883,3 +883,46 @@ export const cerrarInformeTrs = data => {
     }
   }
 }
+
+export const getNovedadesConsignasTrsPendientes = () => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_START })
+      
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+
+      const respuestaConsignas = await httpRequest.get('/consignatrs/?id=0', {
+        headers: { Authorization: Token },
+      })
+
+      const resultConsignas = respuestaConsignas.data
+
+      const respuestaNovedades = await httpRequest.get('/novedadtrs/?id=0', {
+        headers: { Authorization: Token },
+      })
+
+      const resultNovedades = respuestaNovedades.data
+
+      const pendientes = {
+        consignas: resultConsignas.results,
+        novedades: resultNovedades.results,
+      }
+
+      dispatch({
+        type: types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_SUCCESS,
+        payload: pendientes,
+      })
+
+      progress.finish()
+    } catch (error) {
+      dispatch({
+        type: types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_FAILED,
+        payload: true,
+      })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}

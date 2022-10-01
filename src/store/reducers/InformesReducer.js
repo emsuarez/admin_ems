@@ -8,6 +8,7 @@ const initialState = {
   informesTrs: {},
   informesCctv: {},
   actaSeleccionada: {},
+  consignasNovedadesPendientes: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -329,6 +330,19 @@ export default (state = initialState, { type, payload }) => {
 
     case types.POST_INFORMETRS_FAILED:
       return { ...state, isLoading: false }
+
+    case types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_START:
+      return { ...state, isLoading: true }
+
+    case types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        consignasNovedadesPendientes: payload,
+      }
+
+    case types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_FAILED:
+      return { ...state, isLoading: false, consignasNovedadesPendientes: {} }
 
     default:
       return state

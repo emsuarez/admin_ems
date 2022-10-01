@@ -30,7 +30,9 @@ const EditRecepcion = () => {
   const dispatch = useDispatch()
 
   const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
-
+  const consignasNovedadesPendientes = useSelector(
+    state => state.informes.consignasNovedadesPendientes
+  )
   // #region STATE_INICIAL
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
@@ -99,8 +101,22 @@ const EditRecepcion = () => {
               ? actaSeleccionada.centralistas.split(',') || []
               : []
           )
-          setNovedades(actaSeleccionada.trsnovedad || [])
-          setConsignas(actaSeleccionada.trsconsigna || [])
+          if (consignasNovedadesPendientes.consignas) {
+            setConsignas([
+              ...consignasNovedadesPendientes.consignas,
+              ...actaSeleccionada.trsconsigna,
+            ])
+          } else {
+            setConsignas(actaSeleccionada.trsconsigna || [])
+          }
+          if (consignasNovedadesPendientes.novedades) {
+            setNovedades([
+              ...consignasNovedadesPendientes.novedades,
+              ...actaSeleccionada.trsnovedad,
+            ])
+          } else {
+            setNovedades(actaSeleccionada.trsnovedad || [])
+          }
           setAgenteSaliente(actaSeleccionada.agente_saliente || '')
           setAgenteEntrante(actaSeleccionada.agente_entrante || '')
         }
