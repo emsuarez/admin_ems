@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
-import { postInformeCctv } from '../../store/actions/InformesAction'
+import {
+  getNovedadesConsignasCctvPendientes,
+  postInformeCctv,
+} from '../../store/actions/InformesAction'
 import AlertCrearInforme from '../alerts/AlertCrearInforme'
 import { ICONS } from '../constants'
 
@@ -46,11 +49,13 @@ const CCTV = ({ item }) => {
   const handleNuevoInformeDiurno = () => {
     dispatch(postInformeCctv(1))
     setOpenModalCrearActaDiurna(false)
+    dispatch(getNovedadesConsignasCctvPendientes())
     navigate('/editrecepcioncctv')
   }
   const handleNuevoInformeNocturno = () => {
     dispatch(postInformeCctv(0))
     setOpenModalCrearActaNocturna(false)
+    dispatch(getNovedadesConsignasCctvPendientes())
     navigate('/editrecepcioncctv')
   }
 

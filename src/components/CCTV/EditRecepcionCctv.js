@@ -37,7 +37,9 @@ const EditRecepcionCctv = () => {
   const dispatch = useDispatch()
 
   const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
-
+  const consignasNovedadesPendientes = useSelector(
+    state => state.informes.consignasNovedadesPendientesCctv
+  )
   // #region STATE_INICIAL
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
@@ -95,21 +97,38 @@ const EditRecepcionCctv = () => {
 
   useEffect(() => {
     const obtenerInfoVista = () => {
-      if (actaSeleccionada && Object.keys(actaSeleccionada).length > 0) {
-        setProtectores(
-          actaSeleccionada.protectores !== null
-            ? actaSeleccionada.protectores.split(',') || []
-            : []
-        )
-        setCentralistas(
-          actaSeleccionada.centralistas !== null
-            ? actaSeleccionada.centralistas.split(',') || []
-            : []
-        )
-        setNovedades(actaSeleccionada.cctvnovedad || [])
-        setConsignas(actaSeleccionada.cctvconsigna || [])
-        setAgenteSaliente(actaSeleccionada.agente_saliente || '')
-        setAgenteEntrante(actaSeleccionada.agente_entrante || '')
+      if (actaSeleccionada) {
+        if (Object.keys(actaSeleccionada).length > 0) {
+          setProtectores(
+            actaSeleccionada.protectores !== null
+              ? actaSeleccionada.protectores.split(',') || []
+              : []
+          )
+          setCentralistas(
+            actaSeleccionada.centralistas !== null
+              ? actaSeleccionada.centralistas.split(',') || []
+              : []
+          )
+          if (consignasNovedadesPendientes.consignas) {
+            setConsignas([
+              ...consignasNovedadesPendientes.consignas,
+              ...actaSeleccionada.cctvconsigna,
+            ])
+          } else {
+            setConsignas(actaSeleccionada.cctvconsigna || [])
+          }
+          if (consignasNovedadesPendientes.novedades) {
+            setNovedades([
+              ...consignasNovedadesPendientes.novedades,
+              ...actaSeleccionada.cctvnovedad,
+            ])
+          } else {
+            setNovedades(actaSeleccionada.cctvnovedad || [])
+          }
+
+          setAgenteSaliente(actaSeleccionada.agente_saliente || '')
+          setAgenteEntrante(actaSeleccionada.agente_entrante || '')
+        }
       }
     }
     obtenerInfoVista()

@@ -3,12 +3,13 @@ import { types } from '../actionTypes'
 const initialState = {
   isLoading: false,
   historialMovimientos: {},
-  personalInformeCctv: {},
-  personalInformeTrs: {},
-  informesTrs: {},
   informesCctv: {},
-  actaSeleccionada: {},
+  personalInformeCctv: {},
+  consignasNovedadesPendientesCctv: {},
+  informesTrs: {},
+  personalInformeTrs: {},
   consignasNovedadesPendientes: {},
+  actaSeleccionada: {},
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -343,6 +344,23 @@ export default (state = initialState, { type, payload }) => {
 
     case types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_FAILED:
       return { ...state, isLoading: false, consignasNovedadesPendientes: {} }
+
+    case types.GET_CONSIGNAS_NOVEDADES_PENDIENTESCCTV_START:
+      return { ...state, isLoading: true }
+
+    case types.GET_CONSIGNAS_NOVEDADES_PENDIENTESCCTV_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        consignasNovedadesPendientesCctv: payload,
+      }
+
+    case types.GET_CONSIGNAS_NOVEDADES_PENDIENTESCCTV_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        consignasNovedadesPendientesCctv: {},
+      }
 
     default:
       return state
