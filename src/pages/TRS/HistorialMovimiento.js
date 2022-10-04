@@ -210,6 +210,7 @@ const HistorialMovimiento = () => {
                     value={ejecutivo}
                     onChange={e => setEjecutivo(e.target.value)}
                   >
+                    <option value='0'>Seleccione un ejecutivo</option>
                     {Object.keys(allEjecutivos).length > 0
                       ? allEjecutivos.results.map(ejecutivo => (
                           <option value={ejecutivo.id}>

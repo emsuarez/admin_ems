@@ -166,6 +166,7 @@ const EditUsuario = ({
                         value={cargo}
                         onChange={e => setCargo(e.target.value)}
                       >
+                        <option value='0'>Seleccione cargo</option>
                         {cargos.map(rol => (
                           <option key={rol.id} value={rol.id}>
                             {rol.rol}

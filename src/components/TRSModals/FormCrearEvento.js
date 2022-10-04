@@ -94,6 +94,7 @@ const FormCrearEvento = ({
                       value={ejecutivo}
                       onChange={e => setEjecutivo(e.target.value)}
                     >
+                      <option value='0'>Seleccione un ejecutivo</option>
                       {Object.keys(ejecutivos).length > 0 &&
                         ejecutivos.results.map(ejecutivo => (
                           <option key={ejecutivo.id} value={ejecutivo.id}>
@@ -114,13 +115,7 @@ const FormCrearEvento = ({
                       value={vehiculoEjecutivo}
                       onChange={e => setVehiculoEjecutivo(e.target.value)}
                     >
-                      <option
-                        key={0}
-                        value='Selecciona un vehículo ejecutivo'
-                        selected
-                      >
-                        'Selecciona un vehículo ejecutivo'
-                      </option>
+                      <option value='0'>Seleccione un vehículo</option>
                       {Object.keys(vehiculosEjecutivo).length > 0
                         ? vehiculosEjecutivo.results.map(vehiculo => (
                             <option key={vehiculo.id} value={vehiculo.id}>
@@ -143,6 +138,7 @@ const FormCrearEvento = ({
                     value={grupoFamiliar}
                     onChange={e => setGrupoFamiliar(e.target.value)}
                   >
+                    <option value='0'>Seleccione un ejecutivo</option>
                     {Object.keys(ejecutivos).length > 0
                       ? ejecutivos.results.map(ejecutivo => (
                           <option key={ejecutivo.id} value={ejecutivo.id}>
@@ -178,6 +174,7 @@ const FormCrearEvento = ({
                       value={protector}
                       onChange={e => setProtector(e.target.value)}
                     >
+                      <option value='0'>Seleccione un protector</option>
                       {Object.keys(protectores).length > 0
                         ? protectores.results.map(p => (
                             <option key={p.id} value={p.id}>
@@ -199,6 +196,7 @@ const FormCrearEvento = ({
                       value={vehiculoProtector}
                       onChange={e => setVehiculoProtector(e.target.value)}
                     >
+                      <option value='0'>Seleccione un vehículo</option>
                       {Object.keys(vehiculosProtector).length > 0
                         ? vehiculosProtector.results.map(vP => (
                             <option key={vP.id} value={vP.id}>
@@ -225,6 +223,7 @@ const FormCrearEvento = ({
                       value={lugarSalida}
                       onChange={e => setLugarSalida(e.target.value)}
                     >
+                      <option value='0'>Seleccione un lugar</option>
                       {Object.keys(lugares).length > 0
                         ? lugares.results.map(lugar => (
                             <option key={lugar.id} value={lugar.id}>
@@ -280,6 +279,7 @@ const FormCrearEvento = ({
                       value={lugarLlegada}
                       onChange={e => setLugarLlegada(e.target.value)}
                     >
+                      <option value='0'>Seleccione un lugar</option>
                       {Object.keys(lugares).length > 0
                         ? lugares.results.map(lugar => (
                             <option key={lugar.id} value={lugar.id}>

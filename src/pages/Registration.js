@@ -211,6 +211,7 @@ const Registration = props => {
                   value={tipo}
                   onChange={item => setTipo(item.target.value)}
                 >
+                  <option value='0'>Seleccione nivel de usuario</option>
                   {roles.map(nivelUser => (
                     <option key={nivelUser.id} value={nivelUser.id}>
                       {nivelUser.rol}

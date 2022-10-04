@@ -116,6 +116,7 @@ const EditMovimiento = ({
                             value={ejecutivo.id}
                             onChange={e => setEjecutivo(e.target.value)}
                           >
+                            <option value='0'>Seleccione un ejecutivo</option>
                             {Object.keys(ejecutivos).length > 0
                               ? ejecutivos.results.map(ejecutivo => (
                                   <option
@@ -140,6 +141,7 @@ const EditMovimiento = ({
                             value={vehiculoEjecutivo.id}
                             onChange={e => setVehiculoEjecutivo(e.target.value)}
                           >
+                            <option value='0'>Seleccione un vehículo</option>
                             {Object.keys(vehiculosEjecutivo).length > 0
                               ? vehiculosEjecutivo.results.map(vehiculo => (
                                   <option key={vehiculo.id} value={vehiculo.id}>
@@ -162,6 +164,7 @@ const EditMovimiento = ({
                           value={ejecutivo}
                           onChange={e => setGrupoFamiliar(e.target.value)}
                         >
+                          <option value='0'>Seleccione un familiar</option>
                           {Object.keys(ejecutivos).length > 0
                             ? ejecutivos.results.map(ejecutivo => (
                                 <option key={ejecutivo.id} value={ejecutivo.id}>
@@ -197,6 +200,7 @@ const EditMovimiento = ({
                             value={protector.id}
                             onChange={e => setProtector(e.target.value)}
                           >
+                            <option value='0'>Seleccione un protector</option>
                             {Object.keys(protectores).length > 0
                               ? protectores.results.map(p => (
                                   <option key={p.id} value={p.id}>
@@ -218,6 +222,7 @@ const EditMovimiento = ({
                             value={vehiculoProtector.id}
                             onChange={e => setVehiculoProtector(e.target.value)}
                           >
+                            <option value='0'>Seleccione un vehículo</option>
                             {Object.keys(vehiculosProtector).length > 0
                               ? vehiculosProtector.results.map(vP => (
                                   <option key={vP.id} value={vP.id}>
@@ -244,6 +249,7 @@ const EditMovimiento = ({
                             value={lugarSalida.id}
                             onChange={e => setLugarSalida(e.target.value)}
                           >
+                            <option value='0'>Seleccione un lugar</option>
                             {Object.keys(lugares).length > 0
                               ? lugares.results.map(lugar => (
                                   <option key={lugar.id} value={lugar.id}>
@@ -299,6 +305,7 @@ const EditMovimiento = ({
                             value={lugarLlegada.id}
                             onChange={e => setLugarLlegada(e.target.value)}
                           >
+                            <option value='0'>Seleccione un lugar</option>
                             {Object.keys(lugares).length > 0
                               ? lugares.results.map(lugar => (
                                   <option key={lugar.id} value={lugar.id}>

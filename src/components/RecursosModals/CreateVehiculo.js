@@ -177,6 +177,7 @@ const CreateVehiculo = ({ tituloModal, descripcionModal, handleAction }) => {
                         value={propietario}
                         onChange={e => setPropietario(e.target.value)}
                       >
+                        <option value='0'>Seleccione un propietario</option>
                         {propietarios.results.length > 0
                           ? propietarios.results.map(propie => (
                               <option key={propie.id} value={propie.id}>
