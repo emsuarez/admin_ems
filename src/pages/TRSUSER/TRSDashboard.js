@@ -12,6 +12,7 @@ import {
   getPersonalInformeTrs,
   obtenerConsignasGrafica,
   obtenerConsignasTRSAction,
+  obtenerNovedadesTRSAction,
 } from '../../store/actions'
 
 const TRSDashboard = () => {
@@ -53,7 +54,7 @@ const TRSDashboard = () => {
             </div>
 
             <div className='flex mt-4 justify-center mb-8'>
-              <div className='flex flex-col basis-2/4 mx-8'>
+              <div className='flex flex-col w-1/2 mx-8'>
                 {consignas.consignasGrafica && (
                   <div className='bg-white w-full mb-3 border-2 border-gray-200 p-20'>
                     <LineChart data={consignas.consignasGrafica} />
@@ -100,20 +101,24 @@ const TRSDashboard = () => {
                 infoConsigna={consignaSeleccionada}
                 handleCerrarConsigna={handleCerrarConsignaTrs}
               /> */}
-              <div className='flex flex-col basis-2/4'>
-                <div className='flex items-stretch mb-3 h-1/2'>
-                  <ConsignasTable
-                    data={consignas?.consignasTrs}
-                    tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES TRS'
-                  />
+              {consignas && (
+                <div className='flex flex-col w-1/2'>
+                  <div className='mb-3'>
+                    <ConsignasTable
+                      data={consignas?.consignasTrs}
+                      tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES TRS'
+                      functionChangePage={obtenerConsignasTRSAction}
+                    />
+                  </div>
+                  <div className=''>
+                    <ConsignasTable
+                      data={consignas?.novedadesTrs}
+                      tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
+                      functionChangePage={obtenerNovedadesTRSAction}
+                    />
+                  </div>
                 </div>
-                <div className='basis-2/4 flex items-stretch h-1/2'>
-                  <ConsignasTable
-                    data={consignas?.novedadesTrs}
-                    tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
-                  />
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </>

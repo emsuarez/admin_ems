@@ -101,7 +101,15 @@ const EditRecepcion = () => {
               ? actaSeleccionada.centralistas.split(',') || []
               : []
           )
-          if (consignasNovedadesPendientes.consignas) {
+          const fechaActual = new Date()
+          const fechaActaSeleccionada = new Date(actaSeleccionada.created)
+          fechaActual.setHours(0, 0, 0, 0)
+          fechaActaSeleccionada.setHours(0, 0, 0, 0)
+
+          if (
+            consignasNovedadesPendientes.consignas &&
+            fechaActaSeleccionada.getTime() == fechaActual.getTime()
+          ) {
             setConsignas([
               ...consignasNovedadesPendientes.consignas,
               ...actaSeleccionada.trsconsigna,
@@ -109,7 +117,10 @@ const EditRecepcion = () => {
           } else {
             setConsignas(actaSeleccionada.trsconsigna || [])
           }
-          if (consignasNovedadesPendientes.novedades) {
+          if (
+            consignasNovedadesPendientes.novedades &&
+            fechaActaSeleccionada.getTime() == fechaActual.getTime()
+          ) {
             setNovedades([
               ...consignasNovedadesPendientes.novedades,
               ...actaSeleccionada.trsnovedad,

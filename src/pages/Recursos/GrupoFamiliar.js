@@ -33,9 +33,6 @@ const GrupoFamiliar = () => {
   const [itemEliminar, setItemEliminar] = useState('')
   const [itemEditarFamily, setItemEditarFamily] = useState('')
 
-  const [textoBusqueda, setTextoBusqueda] = useState('')
-  const [familiaresBuscador, setFamiliaresBuscador] = useState({})
-
   useEffect(() => {
     dispatch(getGrupoFamiliarAction())
     dispatch(getAllFamiliaresAction())

@@ -13,7 +13,7 @@ const CerrarSesionModal = ({ userInfo, openModal, setModal }) => {
     const tipo = window.localStorage.getItem('tipo')
     if (informes) {
       if (tipo === '2') {
-        if (informes.informesCctv.results[0].agente_entrante.length === 0) {
+        if (informes.informesCctv.results[0].agente_entrante) {
           dispatch(
             setToast(
               'error',
@@ -27,7 +27,7 @@ const CerrarSesionModal = ({ userInfo, openModal, setModal }) => {
       }
 
       if (tipo === '3') {
-        if (informes.informesTrs.results[0].agente_entrante.length === 0) {
+        if (informes.informesTrs.results[0].agente_entrante) {
           dispatch(
             setToast(
               'error',

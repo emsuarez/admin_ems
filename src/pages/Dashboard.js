@@ -39,7 +39,7 @@ const Dashboard = () => {
     cargarConsignas()
   }, [dispatch])
 
-  const consignas = useSelector(state => state.consignas) || {}
+  const consignas = useSelector(state => state.consignas)
 
   const {
     consignasGrafica,
@@ -108,41 +108,46 @@ const Dashboard = () => {
                   />
                 </div>
               </div>
-
-              <>
-                <div className='flex mb-8'>
-                  <div className='w-1/2 ml-12 mr-3 h-96'>
-                    <ConsignasTable
-                      data={consignasTrs}
-                      confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
-                      tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES TRS'
-                    />
+              {consignasTrs && (
+                <>
+                  <div className='flex'>
+                    <div className='w-1/2 ml-12 mr-3 mb-4'>
+                      <ConsignasTable
+                        data={consignasTrs}
+                        confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
+                        tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES TRS'
+                        functionChangePage={obtenerConsignasTRSAction}
+                      />
+                    </div>
+                    <div className='w-1/2 mr-12 ml-3 mb-4'>
+                      <ConsignasTable
+                        data={consignasCctv}
+                        confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                        tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
+                        functionChangePage={obtenerConsignasCCTVAction}
+                      />
+                    </div>
                   </div>
-                  <div className='w-1/2 mr-12 ml-3 h-96'>
-                    <ConsignasTable
-                      data={consignasCctv}
-                      confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
-                      tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
-                    />
+                  <div className='flex mb-8'>
+                    <div className='w-1/2 ml-12 mr-3'>
+                      <ConsignasTable
+                        data={novedadesTrs}
+                        confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
+                        tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
+                        functionChangePage={obtenerNovedadesTRSAction}
+                      />
+                    </div>
+                    <div className='w-1/2 mr-12 ml-3'>
+                      <ConsignasTable
+                        data={novedadesCctv}
+                        confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
+                        tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
+                        functionChangePage={obtenerNovedadesCCTVAction}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className='flex mb-8'>
-                  <div className='w-1/2 ml-12 mr-3 h-96'>
-                    <ConsignasTable
-                      data={novedadesTrs}
-                      confirmarCerrarConsigna={confirmarCerrarConsignaTrs}
-                      tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'
-                    />
-                  </div>
-                  <div className='w-1/2 mr-12 ml-3 h-96'>
-                    <ConsignasTable
-                      data={novedadesCctv}
-                      confirmarCerrarConsigna={confirmarCerrarConsignaCctv}
-                      tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
-                    />
-                  </div>
-                </div>
-              </>
+                </>
+              )}
             </div>
           )}
           <AlertCerrarConsigna

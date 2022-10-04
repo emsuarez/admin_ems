@@ -5,14 +5,14 @@ import {
   ICONS,
   RecepcionTurnoTable,
   RedirectWithoutLogin,
-  TRSAuthorized
+  TRSAuthorized,
 } from '../../components'
 
 import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeTrs,
-  getInformeTrsById
+  getInformeTrsById,
 } from '../../store/actions'
 
 import { format } from 'date-fns'
@@ -42,12 +42,6 @@ const RecepcionTurno = () => {
     }
     obtenerInfoVista()
   }, [])
-
-  const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
-
-  const handleChange = newValue => {
-    setValue(newValue)
-  }
 
   const recepcionesTurnoData = useSelector(state => state.informes.informesTrs)
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)

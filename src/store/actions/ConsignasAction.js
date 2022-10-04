@@ -8,14 +8,16 @@ const progress = new ProgressBar({
   color: 'blue',
 })
 
-export function obtenerConsignasCCTVAction() {
+export function obtenerConsignasCCTVAction(
+  enlacePaginacion = '/consignacctv/?id=0'
+) {
   return async dispatch => {
     try {
       dispatch(comenzarDescargaConsignasCCTV())
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const respuesta = await httpRequest.get('/consignacctv/?id=0', {
+      const respuesta = await httpRequest.get(enlacePaginacion, {
         headers: { Authorization: Token },
       })
 
@@ -43,14 +45,16 @@ const comenzarDescargaConsignasCCTVError = estado => ({
   payload: estado,
 })
 
-export function obtenerConsignasTRSAction() {
+export function obtenerConsignasTRSAction(
+  enlacePaginacion = '/consignatrs/?id=0'
+) {
   return async dispatch => {
     try {
       dispatch(comenzarDescargaConsignasTRS())
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const respuesta = await httpRequest.get('/consignatrs/?id=0', {
+      const respuesta = await httpRequest.get(enlacePaginacion, {
         headers: { Authorization: Token },
       })
 
@@ -197,14 +201,16 @@ const cerrarConsignaCctvError = estado => ({
   payload: estado,
 })
 
-export function obtenerNovedadesCCTVAction() {
+export function obtenerNovedadesCCTVAction(
+  enlacePaginacion = '/novedadcctv/?id=0'
+) {
   return async dispatch => {
     try {
       dispatch(obtenerNovedadesCCTV())
       progress.start()
       const token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const respuesta = await httpRequest.get('/novedadcctv/?id=0', {
+      const respuesta = await httpRequest.get(enlacePaginacion, {
         headers: { Authorization: Token },
       })
       const result = respuesta.data
@@ -232,17 +238,21 @@ const obtenerNovedadesCCTVError = estado => ({
   payload: estado,
 })
 
-export function obtenerNovedadesTRSAction() {
+export function obtenerNovedadesTRSAction(
+  enlacePaginacion = '/novedadtrs/?id=0'
+) {
   return async dispatch => {
     try {
+      console.log(enlacePaginacion, 'ENLACE PAGINACION')
       dispatch(comenzarDescargaNovedadesTRS())
       progress.start()
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const respuesta = await httpRequest.get('/novedadtrs/?id=0', {
+      const respuesta = await httpRequest.get(enlacePaginacion, {
         headers: { Authorization: Token },
       })
 
+      console.log(respuesta)
       dispatch(comenzarDescargaNovedadesTRSExitosa(respuesta.data))
       progress.finish()
     } catch (error) {

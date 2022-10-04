@@ -17,6 +17,7 @@ import {
   createNewEjecutivoAction,
   DeleteEjecutivoAction,
   getAllEjecutivosAction,
+  getAllFamiliaresAction,
   getEjecutivoAction,
   getGrupoFamiliarAction,
   getGrupoFamiliarByIdAction,
@@ -33,6 +34,11 @@ const Ejecutivos = () => {
   const [itemEditar, setItemEditar] = useState('')
   const [itemEliminar, setItemEliminar] = useState('')
   const [itemEditarFamily, setItemEditarFamily] = useState('')
+
+  useEffect(() => {
+    dispatch(getGrupoFamiliarAction())
+    dispatch(getAllFamiliaresAction())
+  }, [])
 
   useEffect(() => {
     dispatch(getEjecutivoAction())
