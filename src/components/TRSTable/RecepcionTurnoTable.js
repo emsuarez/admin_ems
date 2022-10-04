@@ -76,6 +76,12 @@ const RecepcionTurnoTable = ({
   const dispatch = useDispatch()
   const { results, count } = data
 
+  const [fechaAtcual, setFechaAtcual] = useState(
+    new Date().setHours(0, 0, 0, 0)
+  )
+
+  const tipo = window.localStorage.getItem('tipo')
+
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
@@ -134,28 +140,52 @@ const RecepcionTurnoTable = ({
               <TableCell>{row.turno === 1 ? 'Diurno' : 'Nocturno'}</TableCell>
               <TableCell>
                 <div className='flex justify-center'>
-                  <div
-                    className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
-                    onClick={() => handleOpenEditInforme(row)}
-                  >
-                    <Icon svgName='ib_editar' className='h-4 mx-auto' />
-                  </div>
+                  {tipo === '1' ? (
+                    <>
+                      <div
+                        className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
+                        onClick={() => handleOpenEditInforme(row)}
+                      >
+                        <Icon svgName='ib_editar' className='h-4 mx-auto' />
+                      </div>
+                      <div
+                        className='bg-blue-900 rounded-md mx-1'
+                        onClick={() => handleOpenViewInforme(row)}
+                      >
+                        <span className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-blue-600 hover:rounded'>
+                          Ver
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    row === results[0] && (
+                      <>
+                        <div
+                          className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
+                          onClick={() => handleOpenEditInforme(row)}
+                        >
+                          <Icon svgName='ib_editar' className='h-4 mx-auto' />
+                        </div>
+                        <div
+                          className='bg-blue-900 rounded-md mx-1'
+                          onClick={() => handleOpenViewInforme(row)}
+                        >
+                          <span className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-blue-600 hover:rounded'>
+                            Ver
+                          </span>
+                        </div>
+                      </>
+                    )
+                  )}
 
-                  <div
-                    className='bg-blue-900 rounded-md mx-1'
-                    onClick={() => handleOpenViewInforme(row)}
-                  >
-                    <span className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-blue-600 hover:rounded'>
-                      Ver
-                    </span>
-                  </div>
-
-                  <div
-                    className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600  hover:bg-gray-300 hover:rounded'
-                    onClick={() => handleOpenDeleteActa(row)}
-                  >
-                    <Icon svgName='ib_eliminar' className='h-4 mx-auto' />
-                  </div>
+                  {tipo === '1' && (
+                    <div
+                      className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-red-600  hover:bg-gray-300 hover:rounded'
+                      onClick={() => handleOpenDeleteActa(row)}
+                    >
+                      <Icon svgName='ib_eliminar' className='h-4 mx-auto' />
+                    </div>
+                  )}
                 </div>
               </TableCell>
             </TableRow>
