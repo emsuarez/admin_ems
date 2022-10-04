@@ -116,14 +116,7 @@ const GrupoFamiliar = () => {
 
           <div className='bg-white mx-10 py-10'>
             <div className='flex mx-10 justify-between'>
-              <div className=''>
-                {/* Modal Guardar hACERLO Más generico */}
-                {/* <CreateEjecutivo
-                  tituloModal={'Crear Familiar'}
-                  descripcionModal={''}
-                  handleAction={handleGuardarNuevoFamiliar}
-                /> */}
-              </div>
+              <div className=''></div>
 
               <div className='flex'>
                 <button

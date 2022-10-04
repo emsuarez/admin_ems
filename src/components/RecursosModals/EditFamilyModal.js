@@ -35,9 +35,11 @@ const EditFamilyModal = ({
   }
 
   const handleGuardarNuevoFamiliar = familiar => {
+    console.log(id_ejecutivo)
     const nuevoFamiliar = {
       ...familiar,
-      id_ejecutivo: id_ejecutivo.id_ejecutivo,
+      id_ejecutivo:
+        tipo === 'familiar' ? id_ejecutivo.id_ejecutivo : id_ejecutivo.id,
       created: new Date(),
       is_active: true,
     }
@@ -46,8 +48,6 @@ const EditFamilyModal = ({
   }
 
   const handleEditarGrupoFamiliar = grupoFamiliar => {
-    console.log(grupoFamiliar, 'grupoFamiliar')
-    console.log(itemEditar, 'itemEditar')
     const familiarActualizado = {
       ...grupoFamiliar,
       id: itemEditar.id,
@@ -113,6 +113,7 @@ const EditFamilyModal = ({
                     tituloModal={'Crear Familiar'}
                     descripcionModal={''}
                     handleAction={handleGuardarNuevoFamiliar}
+                    setItemEditar={setItemEditar}
                   />
                 </div>
                 {familiaresPorEjecutivo &&
