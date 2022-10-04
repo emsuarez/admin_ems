@@ -16,7 +16,7 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { format } from 'date-fns'
 import { useDispatch } from 'react-redux'
 import {
@@ -70,12 +70,18 @@ const ConsignasTable = ({
   tituloTipoTable,
   functionChangePage,
 }) => {
+  const [resultados, setResultados] = React.useState([])
+
   const { results, count } = data
 
   const dispatch = useDispatch()
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+
+  useEffect(() => {
+    setResultados(results)
+  }, [data])
 
   const handleChangePage = (event, newPage) => {
     dispatch(functionChangePage(newPage > page ? data.next : data.previous))
@@ -123,9 +129,10 @@ const ConsignasTable = ({
               <TableCell>CONSIGNAS</TableCell>
             </TableRow>
           </TableHead>
-          {data && (
-            <TableBody style={{ maxHeight: 300 }}>
-              {results.map((row, index) => (
+
+          <TableBody style={{ maxHeight: 300 }}>
+            {Array.isArray(resultados) &&
+              resultados.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell>
                     {format(new Date(row.created), 'dd/MM/yyyy HH:mm')}
@@ -133,8 +140,7 @@ const ConsignasTable = ({
                   <TableCell>{row.obs_creacion}</TableCell>
                 </TableRow>
               ))}
-            </TableBody>
-          )}
+          </TableBody>
 
           <TableFooter className='border-y-[1.5px] border-gray-200'>
             <TableRow>
