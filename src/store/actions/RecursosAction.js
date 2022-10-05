@@ -235,7 +235,7 @@ export const getGrupoFamiliarByIdAction = data => async dispatch => {
     })
 
     const result = response.data
-
+    console.log(result)
     dispatch({
       type: types.GET_GRUPOFAMILIARBYEJECUTIVO_SUCCESS,
       payload: result,
@@ -568,6 +568,7 @@ export const getVehiculoEjecutivoAction =
         },
       })
       const result = response.data
+      console.log(result, 'vehiculo')
       dispatch({ type: types.GET_VEHICULOEJECUTIVO_SUCCESS, payload: result })
       progress.finish()
     } catch (error) {

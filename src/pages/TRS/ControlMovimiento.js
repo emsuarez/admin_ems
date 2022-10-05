@@ -15,8 +15,10 @@ import {
   getAllProtectoresAction,
   getAllVehiculoProtectorAction,
   getAllVehiculosEjecutivoAction,
+  getGrupoFamiliarByIdAction,
   getHistorialMovimientosAction,
   getInformeTrs,
+  getVehiculoEjecutivoAction,
   postControlMovimiento,
 } from '../../store/actions'
 
@@ -41,11 +43,12 @@ const ControlMovimiento = () => {
   useEffect(() => {
     const obtenerInfoVista = () => {
       dispatch(getAllEjecutivosAction())
-      dispatch(getAllVehiculosEjecutivoAction())
+      dispatch(getVehiculoEjecutivoAction('/vehiculoejecutivo/?id=-1'))
       dispatch(getAllProtectoresAction())
       dispatch(getAllVehiculoProtectorAction())
       dispatch(GetAllLugaresAction())
       dispatch(getHistorialMovimientosAction())
+      dispatch(getGrupoFamiliarByIdAction())
     }
     obtenerInfoVista()
   }, [])
@@ -61,12 +64,17 @@ const ControlMovimiento = () => {
   const allVehiculosEjecutivos = useSelector(
     state => state.recursos.allVehiculosEjecutivos
   )
+  const vehiculosEjecutivos = useSelector(
+    state => state.recursos.vehiculosEjecutivos
+  )
   const allProtectores = useSelector(state => state.recursos.allProtectores)
   const allVehiculosProtectores = useSelector(
     state => state.recursos.allVehiculosProtectores
   )
   const allLugares = useSelector(state => state.recursos.allLugares)
-
+  const familiaresEjecutivo = useSelector(
+    state => state.recursos.grupoFamiliarByEjecutivo
+  )
   const handleSearch = e => {
     dispatch(getInformeTrs('/controlmovimiento/?query=' + e.target.value))
   }
@@ -130,7 +138,8 @@ const ControlMovimiento = () => {
             <div className='mx-auto'>
               <FormCrearEvento
                 ejecutivos={allEjecutivos}
-                vehiculosEjecutivo={allVehiculosEjecutivos}
+                familiaresEjecutivo={familiaresEjecutivo}
+                vehiculosEjecutivo={vehiculosEjecutivos}
                 protectores={allProtectores}
                 vehiculosProtector={allVehiculosProtectores}
                 lugares={allLugares}

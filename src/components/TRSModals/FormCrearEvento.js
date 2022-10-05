@@ -1,58 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Modal, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
+import React, { useState } from 'react'
 
-import logo from '../../assets/logo.png'
-import { ICONS } from '../constants'
-import format from 'date-fns/format'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
-import { useDispatch, useSelector } from 'react-redux'
-import { getAllEjecutivosAction } from '../../store/actions'
+import { useDispatch } from 'react-redux'
+import {
+  getGrupoFamiliarByIdAction,
+  getVehiculoEjecutivoAction,
+} from '../../store/actions'
 
 const FormCrearEvento = ({
   handleClose,
   handleAction,
-
   ejecutivos,
   vehiculosEjecutivo,
   protectores,
   vehiculosProtector,
   lugares,
+  familiaresEjecutivo,
 }) => {
-  const [ejecutivo, setEjecutivo] = useState()
-  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState()
-  const [protector, setProtector] = useState()
-  const [vehiculoProtector, setVehiculoProtector] = useState()
-  const [grupoFamiliar, setGrupoFamiliar] = useState()
-  const [observacionVehiculo, setObservacionVehiculo] = useState()
-  const [lugarSalida, setLugarSalida] = useState()
+  const dispatch = useDispatch()
+  const [ejecutivo, setEjecutivo] = useState('')
+  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('')
+  const [protector, setProtector] = useState('')
+  const [vehiculoProtector, setVehiculoProtector] = useState('')
+  const [grupoFamiliar, setGrupoFamiliar] = useState('')
+  const [observacionVehiculo, setObservacionVehiculo] = useState('')
+  const [lugarSalida, setLugarSalida] = useState('')
   const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
   const [lugarLlegada, setLugarLlegada] = useState()
   const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
-  const [observacion, setObservacion] = useState()
-
-  useEffect(() => {
-    if (
-      ejecutivos &&
-      vehiculosEjecutivo &&
-      protectores &&
-      vehiculosProtector &&
-      lugares
-    ) {
-      setEjecutivo(ejecutivos.results[0].id)
-      setGrupoFamiliar(ejecutivos.results[0].id)
-      setVehiculoEjecutivo(vehiculosEjecutivo.results[0].id)
-      setProtector(protectores.results[0].id)
-      setVehiculoProtector(vehiculosProtector.results[0].id)
-
-      setLugarSalida(lugares.results[0].id)
-
-      // setHoraSalida(dayjs(dataSeleccionada.hora_salida))
-      setLugarLlegada(lugares.results[0].id)
-      // setHoraLlegada(dayjs(dataSeleccionada.hora_llegada))
-    }
-  }, [])
+  const [observacion, setObservacion] = useState('')
 
   const handleNuevoEvento = () => {
     const nuevoEvento = {
@@ -71,6 +50,13 @@ const FormCrearEvento = ({
     handleAction(nuevoEvento)
   }
 
+  const seleccionaEjecutivo = e => {
+    setEjecutivo(e.target.value)
+    dispatch(getGrupoFamiliarByIdAction(e.target.value))
+    dispatch(
+      getVehiculoEjecutivoAction(`/vehiculoejecutivo/?id=${e.target.value}`)
+    )
+  }
   return (
     <>
       <div className='p-4 w-full'>
@@ -92,9 +78,11 @@ const FormCrearEvento = ({
                       className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
                       id={ejecutivo}
                       value={ejecutivo}
-                      onChange={e => setEjecutivo(e.target.value)}
+                      onChange={e => seleccionaEjecutivo(e)}
                     >
-                      <option value='0'>Seleccione un ejecutivo</option>
+                      <option value='0' selected>
+                        Seleccione un ejecutivo
+                      </option>
                       {Object.keys(ejecutivos).length > 0 &&
                         ejecutivos.results.map(ejecutivo => (
                           <option key={ejecutivo.id} value={ejecutivo.id}>
@@ -138,11 +126,12 @@ const FormCrearEvento = ({
                     value={grupoFamiliar}
                     onChange={e => setGrupoFamiliar(e.target.value)}
                   >
-                    <option value='0'>Seleccione un ejecutivo</option>
-                    {Object.keys(ejecutivos).length > 0
-                      ? ejecutivos.results.map(ejecutivo => (
-                          <option key={ejecutivo.id} value={ejecutivo.id}>
-                            {ejecutivo.nombres}
+                    <option value='0'>Seleccione un familiar</option>
+                    {familiaresEjecutivo &&
+                    Object.keys(familiaresEjecutivo).length > 0
+                      ? familiaresEjecutivo.results.map(familiar => (
+                          <option key={familiar.id} value={familiar.id}>
+                            {familiar.nombres}
                           </option>
                         ))
                       : null}

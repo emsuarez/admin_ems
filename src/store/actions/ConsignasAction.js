@@ -252,7 +252,6 @@ export function obtenerNovedadesTRSAction(
         headers: { Authorization: Token },
       })
 
-      console.log(respuesta)
       dispatch(comenzarDescargaNovedadesTRSExitosa(respuesta.data))
       progress.finish()
     } catch (error) {
