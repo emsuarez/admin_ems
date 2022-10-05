@@ -157,25 +157,25 @@ const RecepcionTurnoTable = ({
                         </span>
                       </div>
                     </>
+                  ) : row === results[0] ? (
+                    <>
+                      <div
+                        className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
+                        onClick={() => handleOpenEditInforme(row)}
+                      >
+                        <Icon svgName='ib_editar' className='h-4 mx-auto' />
+                      </div>
+                      <div
+                        className='bg-blue-900 rounded-md mx-1'
+                        onClick={() => handleOpenViewInforme(row)}
+                      >
+                        <span className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-blue-600 hover:rounded'>
+                          Ver
+                        </span>
+                      </div>
+                    </>
                   ) : (
-                    row === results[0] && (
-                      <>
-                        <div
-                          className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
-                          onClick={() => handleOpenEditInforme(row)}
-                        >
-                          <Icon svgName='ib_editar' className='h-4 mx-auto' />
-                        </div>
-                        <div
-                          className='bg-blue-900 rounded-md mx-1'
-                          onClick={() => handleOpenViewInforme(row)}
-                        >
-                          <span className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-blue-600 hover:rounded'>
-                            Ver
-                          </span>
-                        </div>
-                      </>
-                    )
+                    page > 0 && null
                   )}
 
                   {tipo === '1' && (

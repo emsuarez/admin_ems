@@ -259,8 +259,12 @@ export const createNewFamiliarAction = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
+    console.log(result, ' result grupo familiar')
 
-    dispatch({ type: types.POST_GRUPOFAMILIAR_SUCCESS, payload: data })
+    dispatch({
+      type: types.POST_GRUPOFAMILIAR_SUCCESS,
+      payload: { ...data, id: result.id },
+    })
     dispatch(setToast('', result.message))
     progress.finish()
   } catch (error) {

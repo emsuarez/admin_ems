@@ -35,7 +35,6 @@ const EditFamilyModal = ({
   }
 
   const handleGuardarNuevoFamiliar = familiar => {
-    console.log(id_ejecutivo)
     const nuevoFamiliar = {
       ...familiar,
       id_ejecutivo:
@@ -53,6 +52,7 @@ const EditFamilyModal = ({
       id: itemEditar.id,
       id_ejecutivo: itemEditar.id_ejecutivo,
     }
+    console.log(familiarActualizado, 'familiarActualizado')
     dispatch(UpdateFamiliarAction(familiarActualizado))
     setOpenEditModal(false)
   }

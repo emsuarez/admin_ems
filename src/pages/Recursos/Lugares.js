@@ -79,13 +79,8 @@ const Lugares = () => {
     setOpenDeleteModal(false)
   }
 
-  const [seBusco, setSeBusco] = useState(false)
   const handleSearch = e => {
     dispatch(GetLugaresAction('/lugares/?query=' + e.target.value))
-    if (e.target.value !== '') {
-      setSeBusco(false)
-    }
-    setSeBusco(true)
   }
 
   return (

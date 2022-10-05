@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { store } from '../store/store'
 import '../global'
+import { store } from '../store/store'
 // const baseURL = 'https://cloudbitakor.com/api/1.0'
 const baseURL = global.baseUrl
 
@@ -10,6 +10,7 @@ export const httpRequest = axios.create({
 
 let token = window.localStorage.getItem('token')
 const Token = 'Token ' + token
+
 export const config = {
   Headers: {
     Authorization: Token,
@@ -22,6 +23,8 @@ httpRequest.interceptors.response.use(
   error => {
     if (error.response.status === 401) {
       window.localStorage.removeItem('token')
+      window.localStorage.clear()
+      window.location.href = '/login'
     }
   }
 )

@@ -33,9 +33,8 @@ const VehicleProtectores = () => {
     dispatch(getAllVehiculoProtectorAction())
   }, [dispatch])
 
-  const vehiculosProtectoresData = useSelector(
-    state => state.recursos.vehiculosProtectores
-  )
+  const vehiculosProtectoresData =
+    useSelector(state => state.recursos.vehiculosProtectores)
 
   const allVehiculosProtectores = useSelector(
     state => state.recursos.allVehiculosProtectores
@@ -89,15 +88,10 @@ const VehicleProtectores = () => {
     setOpenDeleteModal(false)
   }
 
-  const [seBusco, setSeBusco] = useState(false)
   const handleSearch = e => {
     dispatch(
       getVehiculoProtectorAction('/vehiculoprotector/?query=' + e.target.value)
     )
-    if (e.target.value !== '') {
-      setSeBusco(false)
-    }
-    setSeBusco(true)
   }
 
   return (
@@ -160,15 +154,16 @@ const VehicleProtectores = () => {
                 </div>
               </div>
             </div>
-            {Object.keys(vehiculosProtectoresData).length > 0 && (
-              <div className=' pt-4 p-16 flex flex-col'>
-                <VehiculosProtectTable
-                  data={vehiculosProtectoresData}
-                  handleOpenEditModal={handleOpenEditModal}
-                  handleOpenDeleteModal={handleOpenDeleteModal}
-                />
-              </div>
-            )}
+            {vehiculosProtectoresData &&
+              Object.keys(vehiculosProtectoresData).length > 0 && (
+                <div className=' pt-4 p-16 flex flex-col'>
+                  <VehiculosProtectTable
+                    data={vehiculosProtectoresData}
+                    handleOpenEditModal={handleOpenEditModal}
+                    handleOpenDeleteModal={handleOpenDeleteModal}
+                  />
+                </div>
+              )}
           </div>
           {/* Modales */}
           <EditVehicle
