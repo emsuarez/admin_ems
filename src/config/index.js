@@ -24,7 +24,7 @@ httpRequest.interceptors.response.use(
     if (error.response.status === 401) {
       window.localStorage.removeItem('token')
       window.localStorage.clear()
-      window.location.href = '/login'
+      window.location.href = '/'
     }
   }
 )

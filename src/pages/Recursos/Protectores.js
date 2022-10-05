@@ -128,7 +128,7 @@ const Protectores = () => {
                 </div>
               </div>
             </div>
-            {Object.keys(protectoresData).length > 0 && (
+            {protectoresData && Object.keys(protectoresData).length > 0 && (
               <div className=' pt-4 p-16 flex flex-col'>
                 <ProtectoresTable
                   data={protectoresData}
