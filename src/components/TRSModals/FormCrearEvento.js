@@ -33,6 +33,8 @@ const FormCrearEvento = ({
   const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
   const [observacion, setObservacion] = useState('')
 
+  const [vehiculosEjecutivos, setVehiculosEjecutivos] = useState([])
+  const [vehiculosProtectores, setVehiculosProtectores] = useState([])
   const handleNuevoEvento = () => {
     const nuevoEvento = {
       ejecutivo: ejecutivo,
@@ -53,10 +55,25 @@ const FormCrearEvento = ({
   const seleccionaEjecutivo = e => {
     setEjecutivo(e.target.value)
     dispatch(getGrupoFamiliarByIdAction(e.target.value))
-    dispatch(
-      getVehiculoEjecutivoAction(`/vehiculoejecutivo/?id=${e.target.value}`)
+    // dispatch(
+    //   getVehiculoEjecutivoAction(`/vehiculoejecutivo/?id=${e.target.value}`)
+    // )
+
+    setVehiculosEjecutivos(
+      vehiculosEjecutivo.results.filter(
+        vehiculo => vehiculo.id_ejecutivo === Number(e.target.value)
+      )
     )
   }
+
+  // const seleccionaProtector = e => {
+  //   setProtector(e.target.value)
+  //   setVehiculosProtectores(
+  //     vehiculosProtector.results.filter(
+  //       vehiculo => vehiculo.id_protector === Number(e.target.value)
+  //     )
+  //   )
+  // }
   return (
     <>
       <div className='p-4 w-full'>
@@ -96,7 +113,7 @@ const FormCrearEvento = ({
                   <span className='font-semibold text-sm pr-4 w-40 '>
                     Vehículo ejecutivo:
                   </span>
-                  {vehiculosEjecutivo && (
+                  {vehiculosEjecutivos && (
                     <select
                       className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
                       id={vehiculoEjecutivo}
@@ -104,8 +121,8 @@ const FormCrearEvento = ({
                       onChange={e => setVehiculoEjecutivo(e.target.value)}
                     >
                       <option value='0'>Seleccione un vehículo</option>
-                      {Object.keys(vehiculosEjecutivo).length > 0
-                        ? vehiculosEjecutivo.results.map(vehiculo => (
+                      {Object.keys(vehiculosEjecutivos).length > 0
+                        ? vehiculosEjecutivos.map(vehiculo => (
                             <option key={vehiculo.id} value={vehiculo.id}>
                               {vehiculo.alias}
                             </option>

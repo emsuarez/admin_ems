@@ -139,7 +139,7 @@ const ControlMovimiento = () => {
               <FormCrearEvento
                 ejecutivos={allEjecutivos}
                 familiaresEjecutivo={familiaresEjecutivo}
-                vehiculosEjecutivo={vehiculosEjecutivos}
+                vehiculosEjecutivo={allVehiculosEjecutivos}
                 protectores={allProtectores}
                 vehiculosProtector={allVehiculosProtectores}
                 lugares={allLugares}
