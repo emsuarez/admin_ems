@@ -93,6 +93,9 @@ const EditRecepcionCctv = () => {
   const [openModalAgregarOperadorCierre, setOpenModalAgregarOperadorCierre] =
     useState(false)
 
+  const [fechaActualValida, setFechaActualValida] = useState()
+  const [fechaActaSeleccionadaValida, setfechaActaSeleccionadaValida] =
+    useState()
   //#endregion
 
   useEffect(() => {
@@ -113,6 +116,8 @@ const EditRecepcionCctv = () => {
           const fechaActaSeleccionada = new Date(actaSeleccionada.created)
           fechaActual.setHours(0, 0, 0, 0)
           fechaActaSeleccionada.setHours(0, 0, 0, 0)
+          setFechaActualValida(fechaActual)
+          setfechaActaSeleccionadaValida(fechaActaSeleccionada)
           if (
             consignasNovedadesPendientes.consignas &&
             fechaActaSeleccionada.getTime() == fechaActual.getTime()
@@ -598,6 +603,12 @@ const EditRecepcionCctv = () => {
     dispatch(cerrarInformeCctv(operadorCierre))
   }
 
+  const validarFecha = fecha => {
+    const fechaActual = new Date().setHours(0, 0, 0, 0)
+    const fechaValidar = new Date(fecha).setHours(0, 0, 0, 0)
+
+    return fechaActual === fechaValidar
+  }
   // #endregion
   return (
     <>
@@ -1185,15 +1196,16 @@ const EditRecepcionCctv = () => {
                         <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
                         <p className='text-blue-800'>{agenteEntrante}</p>
                       </div>
-
-                      <img
-                        src={
-                          require('../../assets/cerrar-sesion 2.svg').default
-                        }
-                        alt='mySvgImage'
-                        className='hover: cursor-pointer hover:bg-gray-200 rounded-md'
-                        onClick={handleOpenModalAgregarOperadorCierre}
-                      />
+                      {validarFecha(actaSeleccionada.created) && (
+                        <img
+                          src={
+                            require('../../assets/cerrar-sesion 2.svg').default
+                          }
+                          alt='mySvgImage'
+                          className='hover: cursor-pointer hover:bg-gray-200 rounded-md'
+                          onClick={handleOpenModalAgregarOperadorCierre}
+                        />
+                      )}
                     </div>
                   </div>
 

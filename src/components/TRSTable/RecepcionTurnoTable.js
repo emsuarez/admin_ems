@@ -76,10 +76,6 @@ const RecepcionTurnoTable = ({
   const dispatch = useDispatch()
   const { results, count } = data
 
-  const [fechaAtcual, setFechaAtcual] = useState(
-    new Date().setHours(0, 0, 0, 0)
-  )
-
   const tipo = window.localStorage.getItem('tipo')
 
   const [page, setPage] = React.useState(0)
@@ -91,6 +87,12 @@ const RecepcionTurnoTable = ({
     setPage(newPage)
   }
 
+  const validarFecha = fecha => {
+    const fechaActual = new Date().setHours(0, 0, 0, 0)
+    const fechaValidar = new Date(fecha).setHours(0, 0, 0, 0)
+
+    return fechaActual === fechaValidar
+  }
   return (
     <TableContainer className='shadow-lg' component={Paper}>
       <Table
@@ -157,7 +159,7 @@ const RecepcionTurnoTable = ({
                         </span>
                       </div>
                     </>
-                  ) : row === results[0] ? (
+                  ) : row === results[0] && validarFecha(row.created) ? (
                     <>
                       <div
                         className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
