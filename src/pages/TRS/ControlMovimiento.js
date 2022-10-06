@@ -6,7 +6,6 @@ import {
   HistorialMovimientoTable,
   ICONS,
   RedirectWithoutLogin,
-  TRSAuthorized,
 } from '../../components'
 
 import {
@@ -14,7 +13,6 @@ import {
   GetAllLugaresAction,
   getAllProtectoresAction,
   getAllVehiculoProtectorAction,
-  getAllVehiculosEjecutivoAction,
   getGrupoFamiliarByIdAction,
   getHistorialMovimientosAction,
   getInformeTrs,
@@ -22,13 +20,12 @@ import {
   postControlMovimiento,
 } from '../../store/actions'
 
-import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
+// import dayjs from 'dayjs'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 import FormCrearEvento from '../../components/TRSModals/FormCrearEvento'
 import VerEventoModal from '../../components/TRSModals/VerEventoModal'
+import Icon from '../../assets/Icon'
 const ControlMovimiento = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const [openViewModal, setOpenViewModal] = useState(false)
@@ -51,22 +48,14 @@ const ControlMovimiento = () => {
       dispatch(getGrupoFamiliarByIdAction())
     }
     obtenerInfoVista()
-  }, [])
-
-  const [value, setValue] = React.useState(dayjs('2021-08-18T21:11:54'))
-
-  const handleChange = newValue => {
-    setValue(newValue)
-  }
+  }, [dispatch])
 
   const historiales = useSelector(state => state.informes.historialMovimientos)
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
   const allVehiculosEjecutivos = useSelector(
     state => state.recursos.allVehiculosEjecutivos
   )
-  const vehiculosEjecutivos = useSelector(
-    state => state.recursos.vehiculosEjecutivos
-  )
+
   const allProtectores = useSelector(state => state.recursos.allProtectores)
   const allVehiculosProtectores = useSelector(
     state => state.recursos.allVehiculosProtectores
@@ -98,7 +87,6 @@ const ControlMovimiento = () => {
   }
 
   const handleCrearEvento = infoEvento => {
-    console.log(infoEvento)
     dispatch(postControlMovimiento(infoEvento))
   }
 
@@ -145,6 +133,28 @@ const ControlMovimiento = () => {
                 lugares={allLugares}
                 handleAction={handleCrearEvento}
               />
+            </div>
+            <div className='self-end space-y-2 mb-8'>
+              <p className='flex'>
+                <Icon svgName='luzRoja' className='h-6 mx-2' title='Luz Roja' />
+                <span>Falta lugar de llegada y hora.</span>
+              </p>
+              <p className='flex'>
+                <Icon
+                  svgName='luzNaranja'
+                  className='h-6 mx-2'
+                  title='Luz Roja'
+                />
+                <span>Falta la hora de llegada.</span>
+              </p>
+              <p className='flex'>
+                <Icon
+                  svgName='luzVerde'
+                  className='h-6 mx-2'
+                  title='Luz Roja'
+                />
+                <span>Completo.</span>
+              </p>
             </div>
           </div>
           <div className='flex flex-row justify-between align-bottom mx-16'>

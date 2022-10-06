@@ -738,8 +738,21 @@ export const postControlMovimiento = data => {
       })
 
       const result = respuesta.data
-
-      dispatch({ type: types.POST_CONTROL_MOVIMIENTO_SUCCESS, payload: data })
+      console.log(result, 'result')
+      dispatch({
+        type: types.POST_CONTROL_MOVIMIENTO_SUCCESS,
+        payload: {
+          ...data,
+          id: result.id,
+          ejecutivo: data.ejecutivo_nombre,
+          vehiculo_ejecutivo: data.vehiculo_ejecutivo_nombre,
+          protector: data.protector_nombre,
+          vehiculo_protector: data.vehiculo_protector_nombre,
+          lugar_salida: data.lugar_salida_nombre,
+          lugar_llegada: data.lugar_llegada_nombre,
+          estado: result.estado,
+        },
+      })
       dispatch(setToast('success', result.message))
 
       progress.finish()

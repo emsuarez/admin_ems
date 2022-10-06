@@ -5,10 +5,8 @@ import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
-import {
-  getGrupoFamiliarByIdAction,
-  getVehiculoEjecutivoAction,
-} from '../../store/actions'
+import { getGrupoFamiliarByIdAction } from '../../store/actions'
+import Icon from '../../assets/Icon'
 
 const FormCrearEvento = ({
   handleClose,
@@ -29,35 +27,71 @@ const FormCrearEvento = ({
   const [observacionVehiculo, setObservacionVehiculo] = useState('')
   const [lugarSalida, setLugarSalida] = useState('')
   const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
+
   const [lugarLlegada, setLugarLlegada] = useState()
   const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
+
   const [observacion, setObservacion] = useState('')
 
   const [vehiculosEjecutivos, setVehiculosEjecutivos] = useState([])
-  const [vehiculosProtectores, setVehiculosProtectores] = useState([])
+
+  const [editarLugarSalida, setEditarLugarSalida] = useState(true)
+  const [editarLugarLlegada, setEditarLugarLlegada] = useState(true)
+  const [lugarSalidaTexto, setLugarSalidaTexto] = useState('')
+  const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('')
   const handleNuevoEvento = () => {
     const nuevoEvento = {
       ejecutivo: ejecutivo,
+      ejecutivo_nombre: ejecutivos.results.find(
+        ejecutivoItem => ejecutivoItem.id === Number(ejecutivo)
+      ).nombres,
       familiar: grupoFamiliar,
       vehiculo_ejecutivo: vehiculoEjecutivo,
+      vehiculo_ejecutivo_nombre: vehiculosEjecutivo.results.find(
+        vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
+      ).alias,
       vehiculo_observacion: observacionVehiculo,
       protector: protector,
+      protector_nombre: protectores.results.find(
+        protectorItem => protectorItem.id === Number(protector)
+      ).nombres,
       vehiculo_protector: vehiculoProtector,
-      lugar_salida: lugarSalida,
+      vehiculo_protector_nombre: vehiculosProtector.results.find(
+        vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
+      ).alias,
+
+      lugar_salida: lugarSalidaTexto === '' ? lugarSalida : null,
+      lugar_salida_nombre:
+        lugarSalidaTexto === ''
+          ? lugares.results.find(
+              lugarItem => lugarItem.id === Number(lugarSalida)
+            ).alias
+          : lugarSalidaTexto,
+      lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
       lugar_llegada: lugarLlegada,
+      lugar_llegada_nombre:
+        lugarLlegadaTexto === ''
+          ? lugares.results.find(
+              lugarItem => lugarItem.id === Number(lugarLlegada)
+            ).alias
+          : lugarLlegadaTexto,
+      lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
       hora_salida: new Date(horaSalida),
       hora_llegada: new Date(horaLlegada),
       observacion: observacion,
     }
+    console.log(
+      protectores.results.find(
+        protectorItem => protectorItem.id === Number(protector)
+      )
+    )
+    console.log(nuevoEvento)
     handleAction(nuevoEvento)
   }
 
   const seleccionaEjecutivo = e => {
     setEjecutivo(e.target.value)
     dispatch(getGrupoFamiliarByIdAction(e.target.value))
-    // dispatch(
-    //   getVehiculoEjecutivoAction(`/vehiculoejecutivo/?id=${e.target.value}`)
-    // )
 
     setVehiculosEjecutivos(
       vehiculosEjecutivo.results.filter(
@@ -65,15 +99,22 @@ const FormCrearEvento = ({
       )
     )
   }
+  const handleLugarSalidaComponente = lugarSalidaTF => {
+    setEditarLugarSalida(lugarSalidaTF)
 
-  // const seleccionaProtector = e => {
-  //   setProtector(e.target.value)
-  //   setVehiculosProtectores(
-  //     vehiculosProtector.results.filter(
-  //       vehiculo => vehiculo.id_protector === Number(e.target.value)
-  //     )
-  //   )
-  // }
+    if (lugarSalidaTF === true) {
+      setLugarSalidaTexto('')
+    }
+  }
+
+  const handleLugarLlegadaComponente = lugarLlegadaTF => {
+    setEditarLugarLlegada(lugarLlegadaTF)
+
+    if (lugarLlegadaTF === true) {
+      setLugarLlegadaTexto('')
+    }
+  }
+
   return (
     <>
       <div className='p-4 w-full'>
@@ -92,14 +133,12 @@ const FormCrearEvento = ({
                   </span>
                   {ejecutivos && (
                     <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
+                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
                       id={ejecutivo}
                       value={ejecutivo}
                       onChange={e => seleccionaEjecutivo(e)}
                     >
-                      <option value='0' selected>
-                        Seleccione un ejecutivo
-                      </option>
+                      <option value='0'>Seleccione un ejecutivo</option>
                       {Object.keys(ejecutivos).length > 0 &&
                         ejecutivos.results.map(ejecutivo => (
                           <option key={ejecutivo.id} value={ejecutivo.id}>
@@ -115,7 +154,7 @@ const FormCrearEvento = ({
                   </span>
                   {vehiculosEjecutivos && (
                     <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
+                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
                       id={vehiculoEjecutivo}
                       value={vehiculoEjecutivo}
                       onChange={e => setVehiculoEjecutivo(e.target.value)}
@@ -138,7 +177,7 @@ const FormCrearEvento = ({
                     Grupo Familiar:
                   </span>
                   <select
-                    className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
+                    className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
                     id={grupoFamiliar}
                     value={grupoFamiliar}
                     onChange={e => setGrupoFamiliar(e.target.value)}
@@ -175,7 +214,7 @@ const FormCrearEvento = ({
                   </span>
                   {protectores && (
                     <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
+                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
                       id={protector}
                       value={protector}
                       onChange={e => setProtector(e.target.value)}
@@ -197,7 +236,7 @@ const FormCrearEvento = ({
                   </span>
                   {vehiculosProtector && (
                     <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
+                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
                       id={vehiculoProtector}
                       value={vehiculoProtector}
                       onChange={e => setVehiculoProtector(e.target.value)}
@@ -219,26 +258,53 @@ const FormCrearEvento = ({
             <div className='flex justify-start my-4'>
               <div className='flex flex-col'>
                 <p className='text-sm flex justify-start mb-6'>
-                  <span className='font-semibold text-sm pr-4 w-40 '>
-                    Lugar salida:
-                  </span>
-                  {lugares && (
-                    <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
-                      id={lugarSalida}
-                      value={lugarSalida}
-                      onChange={e => setLugarSalida(e.target.value)}
-                    >
-                      <option value='0'>Seleccione un lugar</option>
-                      {Object.keys(lugares).length > 0
-                        ? lugares.results.map(lugar => (
-                            <option key={lugar.id} value={lugar.id}>
-                              {lugar.lugar}
-                            </option>
-                          ))
-                        : null}
-                    </select>
+                  {editarLugarSalida ? (
+                    <>
+                      <span className='font-semibold text-sm pr-4 w-40 '>
+                        Lugar salida:
+                      </span>
+                      {lugares && (
+                        <select
+                          className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
+                          id={lugarSalida}
+                          value={lugarSalida}
+                          onChange={e => setLugarSalida(e.target.value)}
+                        >
+                          <option value='0'>Seleccione un lugar</option>
+                          {Object.keys(lugares).length > 0
+                            ? lugares.results.map(lugar => (
+                                <option key={lugar.id} value={lugar.id}>
+                                  {lugar.alias}
+                                </option>
+                              ))
+                            : null}
+                        </select>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <span className='font-semibold text-sm pr-4 w-40 '>
+                        Lugar salida:
+                      </span>
+                      <input
+                        type='text'
+                        className='border-[1px] px-1 border-neutral-300 rounded-md text-sm focus:border-blue-800 outline-none w-44'
+                        value={lugarSalidaTexto}
+                        onChange={e => setLugarSalidaTexto(e.target.value)}
+                      />
+                    </>
                   )}
+
+                  <button
+                    onClick={() =>
+                      handleLugarSalidaComponente(!editarLugarSalida)
+                    }
+                  >
+                    <Icon
+                      svgName='ib_editar'
+                      className='h-3 ml-2 my-auto hover:bg-gray-300 rounded cursor-pointer'
+                    />
+                  </button>
                 </p>
                 <p className='text-sm flex justify-start'>
                   <span className='font-semibold text-sm pr-4 w-40 '>
@@ -253,6 +319,7 @@ const FormCrearEvento = ({
                         },
                       }}
                       // label='Date Time picker'
+                      inputFormat='DD/MM/YYYY HH:mm A'
                       value={horaSalida}
                       onChange={hSalida => setHoraSalida(hSalida)}
                       renderInput={params => (
@@ -275,26 +342,53 @@ const FormCrearEvento = ({
               </div>
               <div className='flex flex-col ml-2'>
                 <p className='text-sm flex justify-start mb-6'>
-                  <span className='font-semibold text-sm pr-4 w-40 '>
-                    Lugar llegada:
-                  </span>
-                  {lugares && (
-                    <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-40'
-                      id={lugarLlegada}
-                      value={lugarLlegada}
-                      onChange={e => setLugarLlegada(e.target.value)}
-                    >
-                      <option value='0'>Seleccione un lugar</option>
-                      {Object.keys(lugares).length > 0
-                        ? lugares.results.map(lugar => (
-                            <option key={lugar.id} value={lugar.id}>
-                              {lugar.lugar}
-                            </option>
-                          ))
-                        : null}
-                    </select>
+                  {editarLugarLlegada ? (
+                    <>
+                      <span className='font-semibold text-sm pr-4 w-40 '>
+                        Lugar llegada:
+                      </span>
+                      {lugares && (
+                        <select
+                          className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
+                          id={lugarLlegada}
+                          value={lugarLlegada}
+                          onChange={e => setLugarLlegada(e.target.value)}
+                        >
+                          <option value='0'>Seleccione un lugar</option>
+                          {Object.keys(lugares).length > 0
+                            ? lugares.results.map(lugar => (
+                                <option key={lugar.id} value={lugar.id}>
+                                  {lugar.alias}
+                                </option>
+                              ))
+                            : null}
+                        </select>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <span className='font-semibold text-sm pr-4 w-40 '>
+                        Lugar llegada:
+                      </span>
+                      <input
+                        type='text'
+                        className='border-[1px] px-1 border-neutral-300 rounded-md text-sm focus:border-blue-800 outline-none w-44'
+                        value={lugarLlegadaTexto}
+                        onChange={e => setLugarLlegadaTexto(e.target.value)}
+                      />
+                    </>
                   )}
+
+                  <button
+                    onClick={() =>
+                      handleLugarLlegadaComponente(!editarLugarLlegada)
+                    }
+                  >
+                    <Icon
+                      svgName='ib_editar'
+                      className='h-3 ml-2 my-auto hover:bg-gray-300 rounded cursor-pointer'
+                    />
+                  </button>
                 </p>
                 <p className='text-sm flex justify-start'>
                   <span className='font-semibold text-sm pr-4 w-40 '>
@@ -331,25 +425,25 @@ const FormCrearEvento = ({
               </div>
             </div>
 
-            <div className='flex justify-start my-4'>
-              <div className='flex flex-col'>
-                <p className='text-sm flex justify-start'>
-                  <span className='font-semibold text-sm pr-4 w-full'>
-                    Observación:
-                  </span>
-                  <textarea
-                    className='border-[1px] px-1 border-neutral-300 rounded-md text-sm focus:border-blue-800 outline-none w-64'
-                    value={observacion}
-                    onChange={e => setObservacion(e.target.value)}
-                  />
-                </p>
+            <div className='flex flex-col px-6 py-3 border-gray-200 items-center'>
+              <div className='flex my-4'>
+                <div className='flex flex-col '>
+                  <p className='text-sm flex justify-start items-start self-start'>
+                    <span className='font-semibold text-sm pr-4'>
+                      Observación:
+                    </span>
+                    <textarea
+                      className='border-[1px] px-1 border-neutral-300 rounded-md text-sm focus:border-blue-800 outline-none w-96'
+                      value={observacion}
+                      onChange={e => setObservacion(e.target.value)}
+                    />
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className='flex mx-auto px-6 py-3  border-gray-200 w-80'>
               <button
                 data-modal-toggle='defaultModal'
                 type='button'
-                className='w-80 text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
+                className='w-80  text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
                 onClick={() => handleNuevoEvento()}
               >
                 Crear Evento

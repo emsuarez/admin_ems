@@ -137,8 +137,16 @@ const HistorialMovimientoTable = ({
           {results.map(row => (
             <TableRow key={row.id}>
               <TableCell scope='row'>{row.ejecutivo}</TableCell>
-              <TableCell>{row.lugar_salida}</TableCell>
-              <TableCell>{row.lugar_llegada}</TableCell>
+              <TableCell>
+                {row.lugar_salida_texto
+                  ? row.lugar_salida_texto
+                  : row.lugar_salida}
+              </TableCell>
+              <TableCell>
+                {row.lugar_llegada_texto
+                  ? row.lugar_llegada_texto
+                  : row.lugar_llegada}
+              </TableCell>
               <TableCell>{row.vehiculo_ejecutivo}</TableCell>
               <TableCell>{row.vehiculo_protector}</TableCell>
               <TableCell>
