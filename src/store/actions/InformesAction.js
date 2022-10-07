@@ -590,6 +590,41 @@ export const getHistorialMovimientosAction = (
   }
 }
 
+export const getAllHistorialMovimientosAction = () => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.GET_ALLHISTORIAL_MOVIMIENTOS_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(
+        '/controlmovimiento/?limit=10000&offset=0',
+        {
+          headers: {
+            Authorization: Token,
+            'content-type': 'multipart/form-data',
+          },
+        }
+      )
+
+      const result = respuesta.data
+      dispatch({
+        type: types.GET_ALLHISTORIAL_MOVIMIENTOS_SUCCESS,
+        payload: result,
+      })
+      dispatch(setToast('success', result.message))
+      progress.finish()
+    } catch (error) {
+      dispatch({
+        type: types.GET_ALLHISTORIAL_MOVIMIENTOS_FAILED,
+        payload: true,
+      })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const getInformeCctv = (enlacePaginacion = '/informecctv/') => {
   return async dispatch => {
     try {

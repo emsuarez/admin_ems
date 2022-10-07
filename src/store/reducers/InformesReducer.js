@@ -3,6 +3,7 @@ import { types } from '../actionTypes'
 const initialState = {
   isLoading: false,
   historialMovimientos: {},
+  allHistorialMovimientos: {},
   informesCctv: {},
   personalInformeCctv: {},
   consignasNovedadesPendientesCctv: {},
@@ -268,6 +269,15 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false, historialMovimientos: payload }
 
     case types.GET_HISTORIAL_MOVIMIENTOS_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.GET_ALLHISTORIAL_MOVIMIENTOS_START:
+      return { ...state, isLoading: true }
+
+    case types.GET_ALLHISTORIAL_MOVIMIENTOS_SUCCESS:
+      return { ...state, isLoading: false, allHistorialMovimientos: payload }
+
+    case types.GET_ALLHISTORIAL_MOVIMIENTOS_FAILED:
       return { ...state, isLoading: false }
 
     case types.GET_PERSONAL_INFORMECCTV_START:

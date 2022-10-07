@@ -10,6 +10,7 @@ import {
 
 import {
   getAllEjecutivosAction,
+  getAllHistorialMovimientosAction,
   GetAllLugaresAction,
   getAllProtectoresAction,
   getAllVehiculoProtectorAction,
@@ -25,6 +26,7 @@ import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGener
 import FormCrearEvento from '../../components/TRSModals/FormCrearEvento'
 import VerEventoModal from '../../components/TRSModals/VerEventoModal'
 import Icon from '../../assets/Icon'
+import controlMovimientoReportPDF from '../../reports/TRS/controlMovimientoReportPDF'
 const ControlMovimiento = () => {
   const dispatch = useDispatch()
 
@@ -45,12 +47,16 @@ const ControlMovimiento = () => {
       dispatch(getAllVehiculoProtectorAction())
       dispatch(GetAllLugaresAction())
       dispatch(getHistorialMovimientosAction())
+      dispatch(getAllHistorialMovimientosAction())
       dispatch(getGrupoFamiliarByIdAction())
     }
     obtenerInfoVista()
   }, [dispatch])
 
   const historiales = useSelector(state => state.informes.historialMovimientos)
+  const allHistoriales = useSelector(
+    state => state.informes.allHistorialMovimientos
+  )
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
   const allVehiculosEjecutivos = useSelector(
     state => state.recursos.allVehiculosEjecutivos
@@ -161,9 +167,9 @@ const ControlMovimiento = () => {
             <div></div>
             <div className='flex'>
               <button
-              // onClick={() =>
-              //   ejecutivosReportPDF(allEjecutivosData.results)
-              // }
+                onClick={() =>
+                  controlMovimientoReportPDF(allHistoriales.results)
+                }
               >
                 <div className='flex'>
                   <p className='text-blue-800 hover:cursor-pointer'>
