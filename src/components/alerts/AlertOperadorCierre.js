@@ -12,12 +12,12 @@ const AlertOperadorCierre = ({
   descripcionModal,
   handleAction,
 }) => {
-  const [user, setUser] = useState()
+  const [user, setUser] = useState({})
   const usuarios = useSelector(state => state.auth.allUsers)
 
   const handleSi = () => {
-    console.log(user)
-    handleAction(user)
+    console.log(JSON.parse(user), 'user')
+    handleAction(JSON.parse(user))
   }
   return (
     <>
@@ -54,8 +54,8 @@ const AlertOperadorCierre = ({
                     >
                       <option value='0'>Seleccione un operador</option>
                       {Object.keys(usuarios).length > 0
-                        ? usuarios.results.map(usuario => (
-                            <option value={usuario.username}>
+                        ? usuarios.results.map((usuario, index) => (
+                            <option key={index} value={JSON.stringify(usuario)}>
                               {usuario.first_name} {usuario.last_name}
                             </option>
                           ))

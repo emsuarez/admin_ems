@@ -362,6 +362,19 @@ export default (state = initialState, { type, payload }) => {
         consignasNovedadesPendientesCctv: {},
       }
 
+    case types.CERRAR_INFORMECCTV_START:
+      return { ...state, isLoading: true }
+
+    case types.CERRAR_INFORMECCTV_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          agente_entrante: payload.nombre_saliente,
+        },
+      }
+
     default:
       return state
   }

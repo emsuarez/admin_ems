@@ -597,8 +597,10 @@ const EditRecepcionCctv = () => {
     setOpenModalAgregarOperadorCierre(false)
     const operadorCierre = {
       id: actaSeleccionada.id,
-      username: operador,
+      username: operador.username,
+      nombre_saliente: `${operador.first_name} ${operador.last_name}`,
     }
+    console.log(operadorCierre, 'operadorCierre')
 
     dispatch(cerrarInformeCctv(operadorCierre))
   }
