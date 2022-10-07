@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
 import { Box, Modal } from '@mui/material'
+import React from 'react'
 
+import { format } from 'date-fns'
+import { useRef } from 'react'
+import { useReactToPrint } from 'react-to-print'
 import logo from '../../assets/logo.png'
 import { ICONS } from '../constants'
-import { format } from 'date-fns'
 
 const VerEventoModal = ({
   openModal,
@@ -13,6 +15,10 @@ const VerEventoModal = ({
   handleAction,
   dataSeleccionada,
 }) => {
+  const componentRef = useRef()
+  const handleGenerarReportePdf = useReactToPrint({
+    content: () => componentRef.current,
+  })
   return (
     <>
       <Modal
@@ -28,15 +34,20 @@ const VerEventoModal = ({
       >
         <Box>
           <div id='defaultModal' aria-hidden='true' className=''>
-            <div className='p-4 w-[650px]'>
+            <div className='p-4 w-[650px] '>
               <div className=' bg-white rounded-lg p-2'>
-                <div className='grid grid-rows-7'>
-                  <div className='flex justify-end'>
+                <button
+                  onClick={() => handleGenerarReportePdf()}
+                  className='flex w-full justify-end'
+                >
+                  <div className='flex'>
                     <p className='text-blue-800 hover:cursor-pointer'>
                       Exportar a PDF
                     </p>
                     <ICONS.ChevronDownIconO className='w-3 ml-2' color='blue' />
                   </div>
+                </button>
+                <div ref={componentRef} className='grid grid-rows-7'>
                   <div className='flex flex-col justify-center items-center'>
                     <img src={logo} className='h-14' />
                     <h1 className='text-2xl font-bold'>
@@ -179,17 +190,16 @@ const VerEventoModal = ({
                       </p>
                     </div>
                   </div>
-
-                  <div className='flex items-end justify-end px-6 py-3  border-gray-200 '>
-                    <button
-                      data-modal-toggle='defaultModal'
-                      type='button'
-                      className=' text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
-                      onClick={handleClose}
-                    >
-                      Salir
-                    </button>
-                  </div>
+                </div>
+                <div className='flex items-end justify-end px-6 py-3  border-gray-200 '>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
+                    onClick={handleClose}
+                  >
+                    Salir
+                  </button>
                 </div>
               </div>
             </div>
