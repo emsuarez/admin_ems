@@ -209,17 +209,26 @@ const ControlMovimiento = () => {
           handleClose={handleCloseViewModal}
           dataSeleccionada={itemVisualizar}
         />
-        <EditMovimiento
-          openModal={openEditModal}
-          handleClose={handleCloseEditModal}
-          dataSeleccionada={itemEditar}
-          ejecutivos={allEjecutivos}
-          vehiculosEjecutivo={allVehiculosEjecutivos}
-          protectores={allProtectores}
-          vehiculosProtector={allVehiculosProtectores}
-          lugares={allLugares}
-          handleAction={handleEditInformeModal}
-        />
+        {itemEditar &&
+          allEjecutivos &&
+          allVehiculosEjecutivos &&
+          allProtectores &&
+          allVehiculosProtectores &&
+          allLugares && (
+            <EditMovimiento
+              openModal={openEditModal}
+              handleClose={handleCloseEditModal}
+              dataSeleccionada={itemEditar}
+              ejecutivos={allEjecutivos}
+              vehiculosEjecutivo={allVehiculosEjecutivos}
+              protectores={allProtectores}
+              vehiculosProtector={allVehiculosProtectores}
+              lugares={allLugares}
+              familiaresEjecutivo={familiaresEjecutivo}
+              handleAction={handleEditInformeModal}
+            />
+          )}
+
         <EliminarModalGenerico
           tituloModal={'Eliminar Evento'}
           descripcionModal={

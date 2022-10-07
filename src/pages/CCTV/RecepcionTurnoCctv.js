@@ -8,6 +8,7 @@ import {
 } from '../../components'
 
 import {
+  deleteInformeCctvAction,
   getAllEjecutivosAction,
   getInformeCctv,
   getInformeCctvById,
@@ -72,7 +73,7 @@ const RecepcionTurnoCctv = () => {
   }
 
   const handleDeleteActa = acta => {
-    // dispatch(deleteInformeCctvAction({ id: acta.id }))
+    dispatch(deleteInformeCctvAction({ id: acta.id }))
     console.log(acta, 'acta')
     setOpenDeleteModal(false)
   }

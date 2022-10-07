@@ -232,16 +232,17 @@ const RecepcionTurno = () => {
                   </div>
                 </div>
               </div>
-              {Object.keys(recepcionesTurnoData).length > 0 && (
-                <div className=' pt-4 p-16 flex flex-col'>
-                  <RecepcionTurnoTable
-                    data={recepcionesTurnoData}
-                    handleOpenViewInforme={handleOpenViewInforme}
-                    handleOpenEditInforme={handleOpenEditInforme}
-                    handleOpenDeleteActa={handleOpenDeleteActa}
-                  />
-                </div>
-              )}
+              {recepcionesTurnoData &&
+                Object.keys(recepcionesTurnoData).length > 0 && (
+                  <div className=' pt-4 p-16 flex flex-col'>
+                    <RecepcionTurnoTable
+                      data={recepcionesTurnoData}
+                      handleOpenViewInforme={handleOpenViewInforme}
+                      handleOpenEditInforme={handleOpenEditInforme}
+                      handleOpenDeleteActa={handleOpenDeleteActa}
+                    />
+                  </div>
+                )}
             </div>
             {/* Modales */}
 

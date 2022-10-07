@@ -28,7 +28,7 @@ const FormCrearEvento = ({
   const [lugarSalida, setLugarSalida] = useState('')
   const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
 
-  const [lugarLlegada, setLugarLlegada] = useState()
+  const [lugarLlegada, setLugarLlegada] = useState('')
   const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
 
   const [observacion, setObservacion] = useState('')
@@ -403,6 +403,7 @@ const FormCrearEvento = ({
                         },
                       }}
                       // label='Date Time picker'
+                      inputFormat='DD/MM/YYYY HH:mm A'
                       value={horaLlegada}
                       onChange={hLlegada => setHoraLlegada(hLlegada)}
                       renderInput={params => (

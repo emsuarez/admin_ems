@@ -638,7 +638,7 @@ const EditRecepcionCctv = () => {
               className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86.5rem] py-2'
             >
               <div className='flex justify-between mb-2 mx-10'>
-                <img src={logo} className='h-14' />
+                <img src={logo} className='h-14' alt='logo'/>
                 <h2 className='font-bold text-lg'>
                   ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
                 </h2>

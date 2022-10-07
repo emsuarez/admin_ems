@@ -42,7 +42,7 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: false }
 
     case types.DELETE_INFORMETRS_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, actaSeleccionada: payload }
 
     case types.DELETE_INFORMETRS_SUCCESS:
       return {
@@ -58,6 +58,25 @@ export default (state = initialState, { type, payload }) => {
       }
 
     case types.DELETE_INFORMETRS_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.DELETE_INFORMECCTV_START:
+      return { ...state, isLoading: true, actaSeleccionada: payload }
+
+    case types.DELETE_INFORMECCTV_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        informesCctv: {
+          ...state.informesCctv,
+          results: state.informesCctv.results.filter(
+            dato => dato.id !== state.actaSeleccionada.id
+          ),
+        },
+        actaSeleccionada: {},
+      }
+
+    case types.DELETE_INFORMECCTV_FAILED:
       return { ...state, isLoading: false }
 
     case types.CRUD_PERSONAL_ACTA_START:

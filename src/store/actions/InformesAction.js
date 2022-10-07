@@ -114,6 +114,34 @@ export const deleteInformeTRSAction = data => {
   }
 }
 
+export const deleteInformeCctvAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.DELETE_INFORMECCTV_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.delete('/informecctv/', {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+        data: data,
+      })
+
+      const result = respuesta.data
+
+      dispatch({ type: types.DELETE_INFORMECCTV_SUCCESS, payload: result })
+      dispatch(setToast('success', 'Informe eliminado correctamente'))
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.DELETE_INFORMECCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const crudPersonalActaAction = data => {
   return async dispatch => {
     try {
