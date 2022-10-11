@@ -10,14 +10,17 @@ import {
 
 import {
   getAllEjecutivosAction,
+  getAllFamiliaresAction,
   getAllHistorialMovimientosAction,
   GetAllLugaresAction,
   getAllProtectoresAction,
   getAllVehiculoProtectorAction,
+  getAllVehiculosEjecutivoAction,
   getGrupoFamiliarByIdAction,
   getHistorialMovimientosAction,
   getInformeTrs,
   getVehiculoEjecutivoAction,
+  patchControlMovimiento,
   postControlMovimiento,
 } from '../../store/actions'
 
@@ -44,11 +47,13 @@ const ControlMovimiento = () => {
       dispatch(getAllEjecutivosAction())
       dispatch(getVehiculoEjecutivoAction('/vehiculoejecutivo/?id=-1'))
       dispatch(getAllProtectoresAction())
+      dispatch(getAllVehiculosEjecutivoAction())
       dispatch(getAllVehiculoProtectorAction())
       dispatch(GetAllLugaresAction())
       dispatch(getHistorialMovimientosAction())
       dispatch(getAllHistorialMovimientosAction())
       dispatch(getGrupoFamiliarByIdAction())
+      dispatch(getAllFamiliaresAction())
     }
     obtenerInfoVista()
   }, [dispatch])
@@ -70,6 +75,10 @@ const ControlMovimiento = () => {
   const familiaresEjecutivo = useSelector(
     state => state.recursos.grupoFamiliarByEjecutivo
   )
+  const allFamiliaresEjecutivo = useSelector(
+    state => state.recursos.allFamiliares
+  )
+
   const handleSearch = e => {
     dispatch(getInformeTrs('/controlmovimiento/?query=' + e.target.value))
   }
@@ -96,7 +105,9 @@ const ControlMovimiento = () => {
     dispatch(postControlMovimiento(infoEvento))
   }
 
-  const handleEditInformeModal = informe => {}
+  const handleEditInformeModal = informe => {
+    dispatch(patchControlMovimiento(informe))
+  }
 
   const handleOpenDeleteEvento = itemEliminar => {
     console.log(itemEliminar, 'itemEliminar')
@@ -130,15 +141,19 @@ const ControlMovimiento = () => {
         <div className='bg-white mx-10 py-10'>
           <div className='flex mx-10 justify-between'>
             <div className='mx-auto'>
-              <FormCrearEvento
-                ejecutivos={allEjecutivos}
-                familiaresEjecutivo={familiaresEjecutivo}
-                vehiculosEjecutivo={allVehiculosEjecutivos}
-                protectores={allProtectores}
-                vehiculosProtector={allVehiculosProtectores}
-                lugares={allLugares}
-                handleAction={handleCrearEvento}
-              />
+              {allEjecutivos &&
+                familiaresEjecutivo &&
+                allVehiculosEjecutivos && (
+                  <FormCrearEvento
+                    ejecutivos={allEjecutivos}
+                    familiaresEjecutivo={familiaresEjecutivo}
+                    vehiculosEjecutivo={allVehiculosEjecutivos}
+                    protectores={allProtectores}
+                    vehiculosProtector={allVehiculosProtectores}
+                    lugares={allLugares}
+                    handleAction={handleCrearEvento}
+                  />
+                )}
             </div>
             <div className='self-end space-y-2 mb-8'>
               <p className='flex'>
@@ -209,26 +224,20 @@ const ControlMovimiento = () => {
           handleClose={handleCloseViewModal}
           dataSeleccionada={itemVisualizar}
         />
-        {itemEditar &&
-          allEjecutivos &&
-          allVehiculosEjecutivos &&
-          allProtectores &&
-          allVehiculosProtectores &&
-          allLugares && (
-            <EditMovimiento
-              openModal={openEditModal}
-              handleClose={handleCloseEditModal}
-              dataSeleccionada={itemEditar}
-              ejecutivos={allEjecutivos}
-              vehiculosEjecutivo={allVehiculosEjecutivos}
-              protectores={allProtectores}
-              vehiculosProtector={allVehiculosProtectores}
-              lugares={allLugares}
-              familiaresEjecutivo={familiaresEjecutivo}
-              handleAction={handleEditInformeModal}
-            />
-          )}
-
+        {openEditModal && (
+          <EditMovimiento
+            dataSeleccionada={itemEditar}
+            ejecutivos={allEjecutivos}
+            familiaresEjecutivo={allFamiliaresEjecutivo}
+            vehiculosEjecutivo={allVehiculosEjecutivos}
+            protectores={allProtectores}
+            vehiculosProtector={allVehiculosProtectores}
+            lugares={allLugares}
+            handleAction={handleEditInformeModal}
+            openModal={openEditModal}
+            handleClose={handleCloseEditModal}
+          />
+        )}
         <EliminarModalGenerico
           tituloModal={'Eliminar Evento'}
           descripcionModal={

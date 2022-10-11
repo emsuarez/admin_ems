@@ -827,6 +827,43 @@ export const postControlMovimiento = data => {
   }
 }
 
+export const patchControlMovimiento = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.PATCH_CONTROL_MOVIMIENTO_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.patch('/controlmovimiento/', data, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+      console.log(result, 'result')
+      dispatch({
+        type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
+        payload: {
+          ...data,
+          ejecutivo: data.ejecutivo_nombre,
+          vehiculo_ejecutivo: data.vehiculo_ejecutivo_nombre,
+          protector: data.protector_nombre,
+          vehiculo_protector: data.vehiculo_protector_nombre,
+          lugar_salida: data.lugar_salida_nombre,
+          lugar_llegada: data.lugar_llegada_nombre,
+          estado: result.estado,
+        },
+      })
+      dispatch(setToast('success', result.message))
+
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.PATCH_CONTROL_MOVIMIENTO_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const postInformeCctv = data => {
   return async dispatch => {
     try {

@@ -4,17 +4,16 @@ import React, { useEffect, useState } from 'react'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
-import logo from '../../assets/logo.png'
-import { ICONS } from '../constants'
-import { getGrupoFamiliarByIdAction } from '../../store/actions'
 import { useDispatch } from 'react-redux'
 import Icon from '../../assets/Icon'
+import logo from '../../assets/logo.png'
+import { getGrupoFamiliarByIdAction } from '../../store/actions'
+import { data } from 'jquery'
+import { isAllOf } from '@reduxjs/toolkit'
 
 const EditMovimiento = ({
   openModal,
   handleClose,
-  tituloModal,
-  descripcionModal,
   handleAction,
   dataSeleccionada,
   ejecutivos,
@@ -25,23 +24,23 @@ const EditMovimiento = ({
   familiaresEjecutivo,
 }) => {
   const dispatch = useDispatch()
-  const [ejecutivo, setEjecutivo] = useState('')
+
+  const [ejecutivo, setEjecutivo] = useState('0')
   const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('')
   const [protector, setProtector] = useState('')
   const [vehiculoProtector, setVehiculoProtector] = useState('')
   const [grupoFamiliar, setGrupoFamiliar] = useState('')
   const [observacionVehiculo, setObservacionVehiculo] = useState('')
   const [lugarSalida, setLugarSalida] = useState('')
-  const [horaSalida, setHoraSalida] = React.useState(
-    dayjs('2021-08-18T21:11:54')
-  )
+  const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
+
   const [lugarLlegada, setLugarLlegada] = useState('')
-  const [horaLlegada, setHoraLlegada] = React.useState(
-    dayjs('2021-08-18T21:11:54')
-  )
+  const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
+
   const [observacion, setObservacion] = useState('')
 
   const [vehiculosEjecutivos, setVehiculosEjecutivos] = useState([])
+  const [familiares, setFamiliares] = useState([])
 
   const [editarLugarSalida, setEditarLugarSalida] = useState(true)
   const [editarLugarLlegada, setEditarLugarLlegada] = useState(true)
@@ -49,63 +48,103 @@ const EditMovimiento = ({
   const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('')
 
   useEffect(() => {
-    if (
-      dataSeleccionada &&
-      ejecutivos &&
-      vehiculosEjecutivo &&
-      protectores &&
-      vehiculosProtector &&
-      lugares &&
-      familiaresEjecutivo
-    ) {
-      console.log(dataSeleccionada)
-      console.log(vehiculosEjecutivo)
-
-      setEjecutivo(
-        ejecutivos &&
-          ejecutivos.results?.find(e => e.alias === dataSeleccionada.ejecutivo)
-      )
-      setGrupoFamiliar(
-        familiaresEjecutivo.results?.find(
-          e => e.alias === dataSeleccionada.familiar
-        )
-      )
-      // setVehiculosEjecutivos(
-      //   vehiculosEjecutivo &&
-      //     vehiculosEjecutivo.results?.filter(
-      //       vehiculo =>
-      //         vehiculo?.id_ejecutivo ===
-      //         Number(
-      //           ejecutivos.results?.find(
-      //             e => e.alias === dataSeleccionada.ejecutivo
-      //           ).id
-      //         )
-      //     )
-      // )
-      setVehiculoEjecutivo(
-        vehiculosEjecutivo.results?.find(
-          e => e.alias === dataSeleccionada.vehiculo_ejecutivo
-        )
-      )
-      setProtector(
-        protectores.results?.find(e => e.alias === dataSeleccionada.protector)
-      )
-      setVehiculoProtector(
-        vehiculosProtector.results?.find(
-          e => e.alias === dataSeleccionada.vehiculo_protector
-        )
-      )
-      setObservacionVehiculo(dataSeleccionada.observacion_vehiculo)
-      setLugarSalida(
-        lugares.results?.find(e => e.alias === dataSeleccionada.lugar_salida)
-      )
-      setHoraSalida(dayjs(dataSeleccionada.hora_salida))
-      setLugarLlegada(
-        lugares.results?.find(e => e.alias === dataSeleccionada.lugar_llegada)
-      )
-      setHoraLlegada(dayjs(dataSeleccionada.hora_llegada))
-      setObservacion(dataSeleccionada.observacion)
+    if (!dataSeleccionada) {
+      return
     }
+    if (!ejecutivos) {
+      console.log('no hay ejecutivos')
+      return
+    }
+    if (!vehiculosEjecutivo) {
+      return
+    }
+    if (!vehiculosProtector) {
+      return
+    }
+    if (!familiaresEjecutivo) {
+      return
+    }
+
+    const ejecutivoSeleccionado =
+      ejecutivos.results &&
+      ejecutivos.results.find(eje => eje.alias === dataSeleccionada.ejecutivo)
+        .id
+    const protectorSeleccionado =
+      protectores.results &&
+      protectores.results.find(pro => pro.alias === dataSeleccionada.protector)
+        .id
+
+    const vehiculoProtectorSeleccionado =
+      Array.isArray(vehiculosProtector.results) &&
+      vehiculosProtector.results.find(
+        veh => veh.alias === dataSeleccionada.vehiculo_protector
+      ).id
+
+    const idEjecutivo = ejecutivos.results.find(
+      eje => eje.alias === dataSeleccionada.ejecutivo
+    ).id
+    dispatch(getGrupoFamiliarByIdAction(idEjecutivo))
+
+    setEjecutivo(ejecutivoSeleccionado ? ejecutivoSeleccionado : '0')
+
+    setProtector(protectorSeleccionado ? protectorSeleccionado : '0')
+
+    setVehiculosEjecutivos(
+      vehiculosEjecutivo.results &&
+        vehiculosEjecutivo.results.filter(
+          vehiculo => vehiculo.id_ejecutivo === idEjecutivo
+        )
+    )
+
+    const idVehiculoEjec = vehiculosEjecutivo.results.find(
+      vehiculo => vehiculo.alias === dataSeleccionada.vehiculo_ejecutivo
+    ).id
+
+    setVehiculoEjecutivo(idVehiculoEjec ? idVehiculoEjec : '0')
+    setVehiculoProtector(
+      vehiculoProtectorSeleccionado ? vehiculoProtectorSeleccionado : '0'
+    )
+
+    setFamiliares(
+      familiaresEjecutivo.results &&
+        familiaresEjecutivo.results.filter(
+          familiar => familiar.id_ejecutivo === idEjecutivo
+        )
+    )
+
+    const idFamiliar = familiaresEjecutivo.results.find(
+      fam => fam.alias === dataSeleccionada.familiar
+    ).id
+    setGrupoFamiliar(idFamiliar ? idFamiliar : '0')
+
+    if (dataSeleccionada.lugar_salida_texto !== null) {
+      setLugarSalidaTexto(dataSeleccionada.lugar_salida_texto)
+      setEditarLugarSalida(false)
+    } else {
+      const lugarSalidaId = dataSeleccionada.lugar_salida
+        ? lugares.results.find(
+            lugar => lugar.alias === dataSeleccionada.lugar_salida
+          ).id
+        : '0'
+      setLugarSalida(lugarSalidaId ? lugarSalidaId : '0')
+    }
+
+    if (dataSeleccionada.lugar_llegada_texto !== null) {
+      setLugarLlegadaTexto(dataSeleccionada.lugar_llegada_texto)
+      setEditarLugarLlegada(false)
+    } else {
+      const lugarLlegadaId = dataSeleccionada.lugar_llegada
+        ? lugares.results.find(
+            lugar => lugar.alias === dataSeleccionada.lugar_llegada
+          ).id
+        : '0'
+
+      setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : '0')
+    }
+
+    setObservacion(
+      dataSeleccionada.observacion ? dataSeleccionada.observacion : ''
+    )
   }, [dataSeleccionada])
 
   const seleccionaEjecutivo = e => {
@@ -115,7 +154,13 @@ const EditMovimiento = ({
     setVehiculosEjecutivos(
       vehiculosEjecutivo.results.filter(
         vehiculo => vehiculo.id_ejecutivo === Number(e.target.value)
-      )
+      ) || []
+    )
+
+    setFamiliares(
+      familiaresEjecutivo.results.filter(
+        familiar => familiar.id_ejecutivo === Number(e.target.value)
+      ) || []
     )
   }
 
@@ -134,6 +179,60 @@ const EditMovimiento = ({
       setLugarLlegadaTexto('')
     }
   }
+
+  // #region Handle Editar
+  const handleEditarEvento = () => {
+    const eventoEditado = {
+      id: dataSeleccionada.id,
+      ejecutivo: ejecutivo,
+      ejecutivo_nombre: ejecutivos.results.find(
+        ejecutivoItem => ejecutivoItem.id === Number(ejecutivo)
+      ).nombres,
+      familiar: grupoFamiliar,
+      vehiculo_ejecutivo: vehiculoEjecutivo,
+      vehiculo_ejecutivo_nombre: vehiculosEjecutivo.results.find(
+        vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
+      ).alias,
+      vehiculo_observacion: observacionVehiculo,
+      protector: protector,
+      protector_nombre: protectores.results.find(
+        protectorItem => protectorItem.id === Number(protector)
+      ).nombres,
+      vehiculo_protector: vehiculoProtector,
+      vehiculo_protector_nombre: vehiculosProtector.results.find(
+        vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
+      ).alias,
+
+      lugar_salida: lugarSalidaTexto === '' ? lugarSalida : null,
+      lugar_salida_nombre:
+        lugarSalidaTexto === ''
+          ? lugares.results.find(
+              lugarItem => lugarItem.id === Number(lugarSalida)
+            ).alias
+          : lugarSalidaTexto,
+      lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
+      lugar_llegada: lugarLlegada,
+      lugar_llegada_nombre:
+        lugarLlegadaTexto === ''
+          ? lugares.results.find(
+              lugarItem => lugarItem.id === Number(lugarLlegada)
+            ).alias
+          : lugarLlegadaTexto,
+      lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
+      hora_salida: new Date(horaSalida),
+      hora_llegada: new Date(horaLlegada),
+      observacion: observacion,
+    }
+    console.log(
+      protectores.results.find(
+        protectorItem => protectorItem.id === Number(protector)
+      )
+    )
+
+    handleAction(eventoEditado)
+  }
+  // #endregion
+
   return (
     <>
       <Modal
@@ -152,12 +251,6 @@ const EditMovimiento = ({
             <div className='p-4 w-full'>
               <div className=' bg-white rounded-lg p-2 w-full px-14'>
                 <div className='grid grid-rows-7'>
-                  <div className='flex justify-end'>
-                    <p className='text-blue-800 hover:cursor-pointer'>
-                      Exportar a PDF
-                    </p>
-                    <ICONS.ChevronDownIconO className='w-3 ml-2' color='blue' />
-                  </div>
                   <div className='flex flex-col justify-center items-center'>
                     <img src={logo} className='h-14' alt='logo' />
                     <h1 className='text-2xl font-bold'>Editar Evento:</h1>
@@ -171,8 +264,8 @@ const EditMovimiento = ({
                         {ejecutivos && (
                           <select
                             className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                            id={ejecutivo?.id}
-                            value={ejecutivo?.id}
+                            id={ejecutivo}
+                            value={ejecutivo}
                             onChange={e => seleccionaEjecutivo(e)}
                           >
                             <option value='0'>Seleccione un ejecutivo</option>
@@ -196,8 +289,8 @@ const EditMovimiento = ({
                         {vehiculosEjecutivos && (
                           <select
                             className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                            id={vehiculoEjecutivo?.id}
-                            value={vehiculoEjecutivo?.id}
+                            id={vehiculoEjecutivo}
+                            value={vehiculoEjecutivo}
                             onChange={e => setVehiculoEjecutivo(e.target.value)}
                           >
                             <option value='0'>Seleccione un vehículo</option>
@@ -217,22 +310,23 @@ const EditMovimiento = ({
                         <span className='font-semibold text-sm pr-4 w-40 '>
                           Grupo Familiar:
                         </span>
-                        <select
-                          className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                          id={grupoFamiliar?.id}
-                          value={grupoFamiliar?.id}
-                          onChange={e => setGrupoFamiliar(e.target.value)}
-                        >
-                          <option value='0'>Seleccione un familiar</option>
-                          {familiaresEjecutivo &&
-                          Object.keys(familiaresEjecutivo).length > 0
-                            ? familiaresEjecutivo.results.map(familiar => (
-                                <option key={familiar.id} value={familiar.id}>
-                                  {familiar.nombres}
-                                </option>
-                              ))
-                            : null}
-                        </select>
+                        {familiares && (
+                          <select
+                            className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
+                            id={grupoFamiliar}
+                            value={grupoFamiliar}
+                            onChange={e => setGrupoFamiliar(e.target.value)}
+                          >
+                            <option value='0'>Seleccione un familiar</option>
+                            {Object.keys(familiares).length > 0
+                              ? familiares.map(familiar => (
+                                  <option key={familiar.id} value={familiar.id}>
+                                    {familiar.nombres}
+                                  </option>
+                                ))
+                              : null}
+                          </select>
+                        )}
                       </p>
                       <p className='text-sm flex justify-start'>
                         <span className='font-semibold text-sm pr-4 w-40 '>
@@ -256,8 +350,8 @@ const EditMovimiento = ({
                         {protector && (
                           <select
                             className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                            id={protector.id}
-                            value={protector.id}
+                            id={protector}
+                            value={protector}
                             onChange={e => setProtector(e.target.value)}
                           >
                             <option value='0'>Seleccione un protector</option>
@@ -489,7 +583,7 @@ const EditMovimiento = ({
                         data-modal-toggle='defaultModal'
                         type='button'
                         className='mx-4 text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
-                        onClick={() => handleAction()}
+                        onClick={() => handleEditarEvento()}
                       >
                         Actualizar
                       </button>

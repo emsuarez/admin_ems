@@ -235,7 +235,7 @@ export const getGrupoFamiliarByIdAction = data => async dispatch => {
     })
 
     const result = response.data
-    console.log(result)
+
     dispatch({
       type: types.GET_GRUPOFAMILIARBYEJECUTIVO_SUCCESS,
       payload: result,
