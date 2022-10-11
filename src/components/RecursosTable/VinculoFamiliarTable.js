@@ -14,7 +14,7 @@ import {
   TablePagination,
   tablePaginationClasses,
   TableRow,
-  useTheme
+  useTheme,
 } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
@@ -22,7 +22,8 @@ import { useDispatch } from 'react-redux'
 import Icon from '../../assets/Icon'
 import {
   getGrupoFamiliarAction,
-  UpdateEstadoFamiliarAction
+  getGrupoFamiliarByIdAction,
+  UpdateEstadoFamiliarAction,
 } from '../../store/actions'
 
 function TablePaginationActions(props) {
@@ -89,8 +90,16 @@ const VinculoFamiliarTable = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const handleChangePage = (event, newPage) => {
-    dispatch(getGrupoFamiliarAction(newPage > page ? data.next : data.previous))
-
+    if (tipo === 'modal') {
+      dispatch(
+        getGrupoFamiliarByIdAction(newPage > page ? data.next : data.previous)
+      )
+    } else {
+      dispatch(
+        getGrupoFamiliarAction(newPage > page ? data.next : data.previous)
+      )
+    }
+    console.log(data)
     setPage(newPage)
   }
 

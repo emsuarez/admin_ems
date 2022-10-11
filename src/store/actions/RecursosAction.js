@@ -224,8 +224,13 @@ export const getGrupoFamiliarByIdAction = data => async dispatch => {
     progress.start()
     let token = window.localStorage.getItem('token')
     const Token = 'Token ' + token
-
-    const urlGet = `/familiar/?id_ejecutivo=${data}`
+    let urlGet = ''
+    if (isNaN(data)) {
+      urlGet = data.toString()
+    } else {
+      urlGet = `/familiar/?id_ejecutivo=${data}`
+    }
+    console.log(urlGet, 'urlGet')
 
     const response = await httpRequest.get(urlGet, {
       headers: {

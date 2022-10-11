@@ -130,7 +130,11 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_GRUPOFAMILIAR_START:
       return { ...state, isLoading: true }
     case types.GET_GRUPOFAMILIAR_SUCCESS:
-      return { ...state, isLoading: false, grupoFamiliar: payload }
+      return {
+        ...state,
+        isLoading: false,
+        grupoFamiliar: payload,
+      }
     case types.GET_GRUPOFAMILIAR_FAILED:
       return { ...state, isLoading: false }
 
