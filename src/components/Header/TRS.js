@@ -88,23 +88,25 @@ const TRS = ({ item }) => {
         }}
         className='-ml-4'
       >
-        <MenuItem
-          onClick={() => {
-            if (
-              window.location.href !==
-              window.location.protocol +
-                '//' +
-                window.location.host +
-                '/controlmovimiento'
-            ) {
-              navigate('/controlmovimiento')
-            }
-          }}
-        >
-          <div className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
-            <p className='text-sm mx-3'>Control de movimiento</p>
-          </div>
-        </MenuItem>
+        {item === 'trs' && (
+          <MenuItem
+            onClick={() => {
+              if (
+                window.location.href !==
+                window.location.protocol +
+                  '//' +
+                  window.location.host +
+                  '/controlmovimiento'
+              ) {
+                navigate('/controlmovimiento')
+              }
+            }}
+          >
+            <div className='flex hover:border-l-4 border-blue-500 hover:cursor-pointer hover:bg-slate-200'>
+              <p className='text-sm mx-3'>Control de movimiento</p>
+            </div>
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             if (
