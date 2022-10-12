@@ -10,6 +10,7 @@ const CrearEditarModalGenerico = ({
   descripcionModal,
   handleAction,
   itemSeleccionado,
+  dataSeleccionable,
 }) => {
   const [nuevoValor, setNuevoValor] = useState('')
 
@@ -55,32 +56,66 @@ const CrearEditarModalGenerico = ({
                         Alias<span className='text-red-600'>*</span>:
                       </label>
                     </div> */}
-                    <div>
-                      {tipoModal === 'crearTextArea' ||
-                      tipoModal === 'actualizarTextArea' ? (
-                        <textarea
-                          type='text'
-                          name='alias'
-                          id='alias'
-                          className='mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
-                          placeholder=''
-                          value={nuevoValor}
-                          onChange={e => setNuevoValor(e.target.value)}
-                          required
-                        />
-                      ) : (
-                        <input
-                          type='text'
-                          name='alias'
-                          id='alias'
-                          className='mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
-                          placeholder=''
-                          value={nuevoValor}
-                          onChange={e => setNuevoValor(e.target.value)}
-                          required
-                        />
-                      )}
-                    </div>
+                    {tipoModal === 'agregarProtector' ? (
+                      <select
+                        className='mb-2 border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-full p-2.5'
+                        id={nuevoValor}
+                        value={nuevoValor}
+                        onChange={e => setNuevoValor(e.target.value)}
+                      >
+                        <option value='0'>Seleccione un Protector</option>
+                        {Object.keys(dataSeleccionable).length > 0
+                          ? dataSeleccionable.results.map(prot => (
+                              <option key={prot.id} value={prot.alias}>
+                                {prot.nombres}
+                              </option>
+                            ))
+                          : null}
+                      </select>
+                    ) : tipoModal === 'agregarTrabajador' ? (
+                      <select
+                        className='mb-2 border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-full p-2.5'
+                        id={nuevoValor}
+                        value={nuevoValor}
+                        onChange={e => setNuevoValor(e.target.value)}
+                      >
+                        <option value='0'>Seleccione un Trabajador</option>
+                        {Object.keys(dataSeleccionable).length > 0
+                          ? dataSeleccionable.results.map(prot => (
+                              <option key={prot.id} value={prot.alias}>
+                                {prot.nombres}
+                              </option>
+                            ))
+                          : null}
+                      </select>
+                    ) : (
+                      <div>
+                        {tipoModal === 'crearTextArea' ||
+                        tipoModal === 'actualizarTextArea' ? (
+                          <textarea
+                            type='text'
+                            name='alias'
+                            id='alias'
+                            className='mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
+                            placeholder=''
+                            value={nuevoValor}
+                            onChange={e => setNuevoValor(e.target.value)}
+                            required
+                          />
+                        ) : (
+                          <input
+                            type='text'
+                            name='alias'
+                            id='alias'
+                            className='mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-blue-900'
+                            placeholder=''
+                            value={nuevoValor}
+                            onChange={e => setNuevoValor(e.target.value)}
+                            required
+                          />
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
 

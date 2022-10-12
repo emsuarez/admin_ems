@@ -20,6 +20,7 @@ import {
   deleteNovedadTRSAction,
   getAllUsersReportAction,
   getInformeTrsNavegacion,
+  getProtectoresAction,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
@@ -89,9 +90,12 @@ const EditRecepcion = () => {
   const tipo = window.localStorage.getItem('tipo')
   //#endregion
 
+  const protectoresState = useSelector(state => state.recursos.allProtectores)
   useEffect(() => {
     const obtenerInfoVista = () => {
       if (actaSeleccionada) {
+        dispatch(getProtectoresAction())
+
         if (Object.keys(actaSeleccionada).length > 0) {
           setProtectores(
             actaSeleccionada.protectores !== null
@@ -657,12 +661,13 @@ const EditRecepcion = () => {
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     <CrearEditarModalGenerico
-                      tipoModal='crear'
+                      tipoModal='agregarProtector'
                       openModal={openModalAgregarProtector}
                       handleClose={handleCloseAgregarProtector}
                       tituloModal='Crear personal de Protección Guardia'
                       descripcionModal='A continuación escriba el nombre del agente:'
                       handleAction={handleAgregarProtector}
+                      dataSeleccionable={protectoresState}
                     />
                   </div>
 
@@ -745,12 +750,13 @@ const EditRecepcion = () => {
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     <CrearEditarModalGenerico
-                      tipoModal='crear'
+                      tipoModal='agregarTrabajador'
                       openModal={openModalAgregarCentralista}
                       handleClose={handleCloseAgregarCentralista}
                       tituloModal='Crear personal de Trabajo'
                       descripcionModal='A continuación escriba el nombre del agente:'
                       handleAction={handleAgregarCentralista}
+                      dataSeleccionable={protectoresState}
                     />
                   </div>
                   <div>
