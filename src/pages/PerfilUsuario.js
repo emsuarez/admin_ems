@@ -21,7 +21,8 @@ const PerfilUsuario = () => {
 
   useEffect(() => {
     setUsuarioState(infoUsuario)
-  }, [])
+    dispatch(getUserInfoAction())
+  }, [dispatch])
 
   const handleEditarInformacion = () => {
     setEditarInformacion(!editarInformacion)
@@ -39,7 +40,7 @@ const PerfilUsuario = () => {
     setImagenSeleccionada(URL.createObjectURL(file))
   }
 
-  const handleUpdateDataUser = usuarioState => {
+  const handleGuardar = usuarioState => {
     const usuario = {
       id: usuarioState.user_id,
       usuario: usuarioState.username,
@@ -49,21 +50,14 @@ const PerfilUsuario = () => {
       tipo: usuarioState.tipo,
       imagen: imagenNueva ? imagenNueva : usuarioState.imagen,
     }
+    console.log(usuario)
 
-    setNuevoUsuario(usuario)
     dispatch(updateUserInfoAction(usuario))
-    console.log(nuevoUsuario)
-  }
-
-  const handleGuardar = usuarioState => {
-    handleUpdateDataUser(usuarioState)
+    setNuevoUsuario(usuario)
+    // handleUpdateDataUser(usuarioState)
     setModal(false)
     setEditarInformacion(true)
   }
-
-  useEffect(() => {
-    dispatch(getUserInfoAction())
-  }, [dispatch])
 
   return (
     <div>
@@ -85,7 +79,7 @@ const PerfilUsuario = () => {
             <div className='flex justify-start w-full bg-blue-900 pt-20 h-56 z-10'>
               <div className='ml-28 group relative z-0'>
                 <label
-                  for='dropzone-file'
+                  htmlFor='dropzone-file'
                   className='flex flex-col justify-center items-center w-full h-64 cursor-pointer'
                 >
                   <div
@@ -240,6 +234,8 @@ const PerfilUsuario = () => {
                 modal={modal}
                 setModal={setModal}
                 handleGuardar={() => handleGuardar(usuarioState)}
+                tituloModal='Guardar'
+                descripcionModal='¿Está seguro que desea guardar los cambios?'
               />
             </div>
           </div>

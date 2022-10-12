@@ -169,6 +169,7 @@ export const updateUserInfoAction = data => {
 
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
+      console.log(typeof data.imagen, 'data')
 
       let form_data = new FormData()
 
@@ -178,7 +179,8 @@ export const updateUserInfoAction = data => {
       form_data.append('apellidos', data.apellidos)
       form_data.append('email', data.email)
       form_data.append('tipo', data.tipo)
-      form_data.append('imagen', data.imagen, data.imagen.name)
+
+      await form_data.append('imagen', data.imagen, data.imagen.name)
 
       console.log(form_data, 'EL FORM DATA CARGO')
       const respuesta = await httpRequest.patch(`/usuario/`, form_data, {
@@ -189,7 +191,7 @@ export const updateUserInfoAction = data => {
       })
 
       const result = respuesta.data
-      console.log(result)
+      console.log(result, 'result usuario perfil')
       dispatch({
         type: types.UPDATE_USERINFO_SUCCESS,
         payload: result.userData,

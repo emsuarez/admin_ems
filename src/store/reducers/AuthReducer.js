@@ -55,7 +55,13 @@ export default (state = initialState, { type, payload }) => {
               : { ...dato, dato }
           }),
         },
-        // usuarioSeleccionado: {},
+        user: {
+          ...state.user,
+          userData: {
+            ...state.user.userData,
+            imagen: payload.imagen,
+          },
+        },
       }
     case types.UPDATE_USERINFO_FAILED:
       return { ...state, isLoading: false }
