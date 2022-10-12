@@ -48,13 +48,13 @@ const PerfilUsuario = () => {
       apellidos: usuarioState.last_name,
       email: usuarioState.email,
       tipo: usuarioState.tipo,
-      imagen: imagenNueva ? imagenNueva : usuarioState.imagen,
+      // imagen: imagenNueva ? imagenNueva : usuarioState.imagen,
+      imagen: imagenNueva ? imagenNueva : null,
     }
     console.log(usuario)
 
     dispatch(updateUserInfoAction(usuario))
     setNuevoUsuario(usuario)
-    // handleUpdateDataUser(usuarioState)
     setModal(false)
     setEditarInformacion(true)
   }

@@ -169,26 +169,18 @@ export const updateUserInfoAction = data => {
 
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      console.log(typeof data.imagen, 'data')
 
-      let form_data = new FormData()
+      const respuesta = await httpRequest.patch(
+        `/usuario/`,
+        data,
 
-      form_data.append('id', data.id)
-      form_data.append('usuario', data.usuario)
-      form_data.append('nombres', data.nombres)
-      form_data.append('apellidos', data.apellidos)
-      form_data.append('email', data.email)
-      form_data.append('tipo', data.tipo)
-
-      await form_data.append('imagen', data.imagen, data.imagen.name)
-
-      console.log(form_data, 'EL FORM DATA CARGO')
-      const respuesta = await httpRequest.patch(`/usuario/`, form_data, {
-        headers: {
-          Authorization: Token,
-          'content-type': 'multipart/form-data',
-        },
-      })
+        {
+          headers: {
+            Authorization: Token,
+            'content-type': 'multipart/form-data',
+          },
+        }
+      )
 
       const result = respuesta.data
       console.log(result, 'result usuario perfil')
