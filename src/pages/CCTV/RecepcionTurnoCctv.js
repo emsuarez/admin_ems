@@ -231,6 +231,7 @@ const RecepcionTurnoCctv = () => {
                 handleOpenViewInforme={handleOpenViewInforme}
                 handleOpenEditInforme={handleOpenEditInforme}
                 handleOpenDeleteActa={handleOpenDeleteActa}
+                tipoTabla='cctv'
               />
             </div>
           )}

@@ -264,24 +264,34 @@ const EditMovimiento = ({
                           Ejecutivo:
                         </span>
                         {ejecutivos && (
-                          <select
-                            className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                            id={ejecutivo}
-                            value={ejecutivo}
-                            onChange={e => seleccionaEjecutivo(e)}
-                          >
-                            <option value='0'>Seleccione un ejecutivo</option>
-                            {Object.keys(ejecutivos).length > 0
-                              ? ejecutivos.results.map(ejecutivo => (
-                                  <option
-                                    key={ejecutivo.id}
-                                    value={ejecutivo.id}
-                                  >
-                                    {ejecutivo.nombres}
-                                  </option>
-                                ))
-                              : null}
-                          </select>
+                          <>
+                            <select
+                              className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
+                              id={ejecutivo}
+                              value={ejecutivo}
+                              onChange={e => seleccionaEjecutivo(e)}
+                            >
+                              <option value='0'>Seleccione un ejecutivo</option>
+                              {Object.keys(ejecutivos).length > 0
+                                ? ejecutivos.results.map(ejecutivo => (
+                                    <option
+                                      key={ejecutivo.id}
+                                      value={ejecutivo.id}
+                                    >
+                                      {ejecutivo.nombres}
+                                    </option>
+                                  ))
+                                : null}
+                            </select>
+                            <img
+                              src={
+                                require('../../assets/ib_obligatorio.svg')
+                                  .default
+                              }
+                              alt='mySvgImage'
+                              className='w-3 ml-1'
+                            />
+                          </>
                         )}
                       </p>
                       <p className='text-sm flex justify-start'>
@@ -350,21 +360,31 @@ const EditMovimiento = ({
                           Protector:
                         </span>
                         {protector && (
-                          <select
-                            className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                            id={protector}
-                            value={protector}
-                            onChange={e => setProtector(e.target.value)}
-                          >
-                            <option value='0'>Seleccione un protector</option>
-                            {Object.keys(protectores).length > 0
-                              ? protectores.results.map(p => (
-                                  <option key={p.id} value={p.id}>
-                                    {p.nombres}
-                                  </option>
-                                ))
-                              : null}
-                          </select>
+                          <>
+                            <select
+                              className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
+                              id={protector}
+                              value={protector}
+                              onChange={e => setProtector(e.target.value)}
+                            >
+                              <option value='0'>Seleccione un protector</option>
+                              {Object.keys(protectores).length > 0
+                                ? protectores.results.map(p => (
+                                    <option key={p.id} value={p.id}>
+                                      {p.nombres}
+                                    </option>
+                                  ))
+                                : null}
+                            </select>
+                            <img
+                              src={
+                                require('../../assets/ib_obligatorio.svg')
+                                  .default
+                              }
+                              alt='mySvgImage'
+                              className='w-3 ml-1'
+                            />
+                          </>
                         )}
                       </p>
                       <p className='text-sm flex justify-start'>
@@ -433,6 +453,13 @@ const EditMovimiento = ({
                             />
                           </>
                         )}
+                        <img
+                          src={
+                            require('../../assets/ib_obligatorio.svg').default
+                          }
+                          alt='mySvgImage'
+                          className='w-3 ml-1'
+                        />
                         <button
                           onClick={() =>
                             handleLugarSalidaComponente(!editarLugarSalida)

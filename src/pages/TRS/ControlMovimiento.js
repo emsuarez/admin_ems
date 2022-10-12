@@ -107,6 +107,7 @@ const ControlMovimiento = () => {
 
   const handleEditInformeModal = informe => {
     dispatch(patchControlMovimiento(informe))
+    setOpenEditModal(false)
   }
 
   const handleOpenDeleteEvento = itemEliminar => {

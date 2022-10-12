@@ -10,12 +10,14 @@ import {
 
 import {
   getAllEjecutivosAction,
+  getAllFamiliaresAction,
   GetAllLugaresAction,
   getAllProtectoresAction,
   getAllVehiculoProtectorAction,
   getAllVehiculosEjecutivoAction,
   getHistorialMovimientosAction,
   getInformeTrs,
+  patchControlMovimiento,
 } from '../../store/actions'
 
 import { format } from 'date-fns'
@@ -42,18 +44,6 @@ const HistorialMovimiento = () => {
 
   const [itemEliminar, setItemEliminar] = useState('')
 
-  useEffect(() => {
-    const obtenerInfoVista = () => {
-      dispatch(getHistorialMovimientosAction())
-      dispatch(getAllEjecutivosAction())
-      dispatch(getAllVehiculosEjecutivoAction())
-      dispatch(getAllProtectoresAction())
-      dispatch(getAllVehiculoProtectorAction())
-      dispatch(GetAllLugaresAction())
-    }
-    obtenerInfoVista()
-  }, [])
-
   const [fechaInicial, setFechaInicial] = useState(new Date())
   const [fechaFinal, setFechaFinal] = useState(new Date())
 
@@ -68,7 +58,27 @@ const HistorialMovimiento = () => {
   )
   const allLugares = useSelector(state => state.recursos.allLugares)
 
-  const [ejecutivo, setEjecutivo] = useState(allEjecutivos.results[0].id)
+  const [ejecutivo, setEjecutivo] = useState('')
+
+  const allFamiliaresEjecutivo = useSelector(
+    state => state.recursos.allFamiliares
+  )
+
+  useEffect(() => {
+    const fInicial = new Date()
+    fInicial.setMonth(fInicial.getMonth() - 1)
+    setFechaInicial(fInicial)
+    const obtenerInfoVista = () => {
+      dispatch(getHistorialMovimientosAction())
+      dispatch(getAllEjecutivosAction())
+      dispatch(getAllVehiculosEjecutivoAction())
+      dispatch(getAllProtectoresAction())
+      dispatch(getAllVehiculoProtectorAction())
+      dispatch(GetAllLugaresAction())
+      dispatch(getAllFamiliaresAction())
+    }
+    obtenerInfoVista()
+  }, [])
 
   const handleSearch = e => {
     dispatch(
@@ -96,7 +106,10 @@ const HistorialMovimiento = () => {
     setOpenEditModal(false)
   }
 
-  const handleEditInformeModal = informe => {}
+  const handleEditInformeModal = informe => {
+    dispatch(patchControlMovimiento(informe))
+    setOpenEditModal(false)
+  }
 
   const handleOpenDeleteEvento = itemEliminar => {
     console.log(itemEliminar, 'itemEliminar')
@@ -118,11 +131,16 @@ const HistorialMovimiento = () => {
     const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd')
     const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd')
 
-    dispatch(
-      getHistorialMovimientosAction(
-        `/controlmovimiento/?fechainicial=${fechaInficialFormat}&fechafinal=${fechaFinalFormat}&ejecutivo=${ejecutivo}`
+    console.log(ejecutivo, 'ejecutivo')
+    if (ejecutivo === '0') {
+      dispatch(getHistorialMovimientosAction())
+    } else {
+      dispatch(
+        getHistorialMovimientosAction(
+          `/controlmovimiento/?fechainicial=${fechaInficialFormat}&fechafinal=${fechaFinalFormat}&ejecutivo=${ejecutivo}`
+        )
       )
-    )
+    }
   }
 
   return (
@@ -154,7 +172,6 @@ const HistorialMovimiento = () => {
                         className:
                           ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                       }}
-                      // label='Date Time picker'
                       value={fechaInicial}
                       onChange={fInicial => setFechaInicial(fInicial)}
                       renderInput={params => (
@@ -304,17 +321,20 @@ const HistorialMovimiento = () => {
           handleClose={handleCloseViewModal}
           dataSeleccionada={itemVisualizar}
         />
-        <EditMovimiento
-          openModal={openEditModal}
-          handleClose={handleCloseEditModal}
-          dataSeleccionada={itemEditar}
-          ejecutivos={allEjecutivos}
-          vehiculosEjecutivo={allVehiculosEjecutivos}
-          protectores={allProtectores}
-          vehiculosProtector={allVehiculosProtectores}
-          lugares={allLugares}
-          handleAction={handleEditInformeModal}
-        />
+        {openEditModal && (
+          <EditMovimiento
+            dataSeleccionada={itemEditar}
+            ejecutivos={allEjecutivos}
+            familiaresEjecutivo={allFamiliaresEjecutivo}
+            vehiculosEjecutivo={allVehiculosEjecutivos}
+            protectores={allProtectores}
+            vehiculosProtector={allVehiculosProtectores}
+            lugares={allLugares}
+            handleAction={handleEditInformeModal}
+            openModal={openEditModal}
+            handleClose={handleCloseEditModal}
+          />
+        )}
         <EliminarModalGenerico
           tituloModal={'Eliminar Evento'}
           descripcionModal={

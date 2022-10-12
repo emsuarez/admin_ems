@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom'
 import {
   getGrupoFamiliarAction,
   getInformeCctv,
+  getInformeTrs,
   UpdateEstadoFamiliarAction,
 } from '../../store/actions'
 import { format } from 'date-fns'
@@ -72,6 +73,7 @@ const RecepcionTurnoTable = ({
   handleOpenViewInforme,
   handleOpenEditInforme,
   handleOpenDeleteActa,
+  tipoTabla,
 }) => {
   const dispatch = useDispatch()
   const { results, count } = data
@@ -82,8 +84,14 @@ const RecepcionTurnoTable = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const handleChangePage = (event, newPage) => {
-    dispatch(getInformeCctv(newPage > page ? data.next : data.previous))
-
+    console.log(newPage > page ? data.next : data.previous)
+    console.log(tipoTabla)
+    if (tipoTabla === 'trs') {
+      dispatch(getInformeTrs(newPage > page ? data.next : data.previous))
+    }
+    if (tipoTabla === 'cctv') {
+      dispatch(getInformeCctv(newPage > page ? data.next : data.previous))
+    }
     setPage(newPage)
   }
 

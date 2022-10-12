@@ -36,6 +36,9 @@ const RecepcionTurno = () => {
   const [fechaFinal, setFechaFinal] = useState(new Date())
 
   useEffect(() => {
+    const fInicial = new Date()
+    fInicial.setMonth(fInicial.getMonth() - 1)
+    setFechaInicial(fInicial)
     const obtenerInfoVista = () => {
       dispatch(getInformeTrs())
       dispatch(getAllEjecutivosAction())
@@ -240,6 +243,7 @@ const RecepcionTurno = () => {
                       handleOpenViewInforme={handleOpenViewInforme}
                       handleOpenEditInforme={handleOpenEditInforme}
                       handleOpenDeleteActa={handleOpenDeleteActa}
+                      tipoTabla='trs'
                     />
                   </div>
                 )}
