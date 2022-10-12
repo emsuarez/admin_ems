@@ -1,36 +1,63 @@
+import { Box, Modal } from '@mui/material'
 import React from 'react'
+import { ICONS } from '../constants'
 
-const AlertCrudConfirm = ({ modal, setModal, handleGuardar }) => {
+const AlertCrudConfirm = ({
+  modal,
+  setModal,
+  handleGuardar,
+  tituloModal,
+  descripcionModal,
+}) => {
   return (
     <>
-      {modal ? (
-        <div className='flex justify-center w-full z-50 fixed'>
-          <div className='mt-10 h-fit pb-4 rounded-md bg-white border-2 shadow-md z-50 lg:w-1/3 absolute'>
-            <div className=' z-50 text-left pl-4 pt-2'>
-              <h3 className='font-bold text-2xl'>
-                Esta seguro de guardar su información?
-              </h3>
-            </div>
+      <Modal
+        open={modal}
+        onClose={() => setModal(false)}
+        aria-labelledby='child-modal-title'
+        aria-describedby='child-modal-description'
+      >
+        <Box>
+          <div
+            id='defaultModal'
+            tabIndex='-1'
+            aria-hidden='true'
+            className=' overflow-y-auto overflow-x-hidden fixed top-1/3 left-1/3'
+          >
+            <div className='relative p-4 max-w-lg'>
+              <div className='relative bg-white rounded-lg shadow '>
+                <div className='flex justify-start items-start px-4 py-2 rounded-t border-b'>
+                  <ICONS.ExclamationIconS className='w-14 pt-2 hover:cursor-pointer px-4 text-red-600 ' />
+                  <h1 className='text-2xl font-bold'>{tituloModal}</h1>
+                </div>
 
-            <div className='flex justify-center space-x-4 mt-4'>
-              <h3
-                onClick={() => setModal(false)}
-                className='border-2 w-20 rounded-md text-center font-semibold hover:cursor-pointer
-                                hover:bg-slate-200 active:bg-slate-50'
-              >
-                Cancelar
-              </h3>
-              <h3
-                onClick={() => handleGuardar()}
-                className='border-2 w-20 rounded-md text-center font-semibold hover:cursor-pointer
-                                hover:bg-slate-200 active:bg-slate-50'
-              >
-                Confirmar
-              </h3>
+                <div className='px-6 pt-2 space-y-3'>
+                  <h2>{descripcionModal}</h2>
+                </div>
+
+                <div className='flex items-end justify-end px-6 py-3 space-x-2 rounded-b border-t border-gray-200 '>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
+                    onClick={handleGuardar}
+                  >
+                    Actualizar
+                  </button>
+                  <button
+                    data-modal-toggle='defaultModal'
+                    type='button'
+                    className=' text-white bg-blue-900 hover:bg-blue-700  focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-base font-medium px-5 py-1.5 focus:z-10 '
+                    onClick={() => setModal(false)}
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+        </Box>
+      </Modal>
     </>
   )
 }
