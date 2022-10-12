@@ -85,6 +85,8 @@ const EditRecepcion = () => {
 
   const [openModalAgregarOperadorCierre, setOpenModalAgregarOperadorCierre] =
     useState(false)
+
+  const tipo = window.localStorage.getItem('tipo')
   //#endregion
 
   useEffect(() => {
@@ -597,12 +599,15 @@ const EditRecepcion = () => {
         </div>
 
         <div className='flex justify-center items-center '>
-          <button onClick={() => handleInformeAnterior()}>
-            <Icon
-              svgName='ib_flechaizq'
-              className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
-            />
-          </button>
+          {tipo === '1' && (
+            <button onClick={() => handleInformeAnterior()}>
+              <Icon
+                svgName='ib_flechaizq'
+                className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+              />
+            </button>
+          )}
+
           <div className='flex justify-center bg-white h-[89rem]'>
             <div
               ref={componentRef}
@@ -867,28 +872,33 @@ const EditRecepcion = () => {
                             </div>
                             <div className='item3 border-b-2 border-l-2'>
                               <div className='flex items-center flex-col'>
-                                <button
-                                  onClick={() =>
-                                    handleOpenEditarNovedad(novedad)
-                                  }
-                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                >
-                                  <Icon
-                                    svgName='ib_editar'
-                                    className='h-3 my-1'
-                                  />
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleOpenEliminarNovedad(novedad)
-                                  }
-                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                >
-                                  <Icon
-                                    svgName='ib_eliminar'
-                                    className='h-3 my-1'
-                                  />
-                                </button>
+                                {tipo === '1' && (
+                                  <>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEditarNovedad(novedad)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_editar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEliminarNovedad(novedad)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_eliminar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                  </>
+                                )}
+
                                 {novedad.obs_cierre === null && (
                                   <button
                                     onClick={() =>
@@ -1034,28 +1044,33 @@ const EditRecepcion = () => {
                             </div>
                             <div className='item3 border-b-2 border-l-2'>
                               <div className='flex items-center flex-col '>
-                                <button
-                                  onClick={() =>
-                                    handleOpenEditarConsigna(consigna)
-                                  }
-                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                >
-                                  <Icon
-                                    svgName='ib_editar'
-                                    className='h-3 my-1'
-                                  />
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleOpenEliminarConsigna(consigna)
-                                  }
-                                  className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                >
-                                  <Icon
-                                    svgName='ib_eliminar'
-                                    className='h-3 my-1'
-                                  />
-                                </button>
+                                {tipo === '1' && (
+                                  <>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEditarConsigna(consigna)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_editar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEliminarConsigna(consigna)
+                                      }
+                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                                    >
+                                      <Icon
+                                        svgName='ib_eliminar'
+                                        className='h-3 my-1'
+                                      />
+                                    </button>
+                                  </>
+                                )}
+
                                 {consigna.obs_cierre === null && (
                                   <button
                                     onClick={() =>
@@ -1206,12 +1221,15 @@ const EditRecepcion = () => {
               />
             </div>
           </div>
-          <button onClick={() => handleSiguienteInforme()}>
-            <Icon
-              svgName='ib_flechader'
-              className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
-            />
-          </button>
+          {tipo === '1' && (
+            <button onClick={() => handleSiguienteInforme()}>
+              <Icon
+                svgName='ib_flechader'
+                className='h-14 mx-14 text-gray-400 hover:cursor-pointer'
+              />
+            </button>
+          )}
+
           <div className='mx-14 text-gray-400 self-end'>
             <button
               className='self-end bg-blue-900 px-10 py-2 text-white rounded-lg hover:bg-blue-800'
