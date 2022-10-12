@@ -171,13 +171,14 @@ const HistorialMovimientoTable = ({
                       <Icon svgName='luzRoja' className='h-4' />
                     )}
                   </div>
-
-                  <div
-                    className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
-                    onClick={() => handleOpenEditInforme(row)}
-                  >
-                    <Icon svgName='ib_editar' className='h-4 mx-auto' />
-                  </div>
+                  {row.estado !== 1 || tipo === '1' ? (
+                    <div
+                      className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
+                      onClick={() => handleOpenEditInforme(row)}
+                    >
+                      <Icon svgName='ib_editar' className='h-4 mx-auto' />
+                    </div>
+                  ) : null}
 
                   <div className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white hover:text-white-600  hover:rounded'>
                     <button

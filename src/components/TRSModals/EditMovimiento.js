@@ -47,6 +47,8 @@ const EditMovimiento = ({
   const [lugarSalidaTexto, setLugarSalidaTexto] = useState('')
   const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('')
 
+  const tipo = window.localStorage.getItem('tipo')
+
   useEffect(() => {
     if (!dataSeleccionada) {
       return
@@ -442,12 +444,14 @@ const EditMovimiento = ({
                           />
                         </button>
                       </p>
+
                       <p className='text-sm flex justify-start'>
                         <span className='font-semibold text-sm pr-4 w-40'>
                           Hora salida:
                         </span>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DateTimePicker
+                            disabled={tipo === '1' ? false : true}
                             inputProps={{
                               style: {
                                 padding: `0.5rem 10px`,
@@ -528,6 +532,7 @@ const EditMovimiento = ({
                           />
                         </button>
                       </p>
+
                       <p className='text-sm flex justify-start'>
                         <span className='font-semibold text-sm pr-4 w-40 '>
                           Hora llegada:

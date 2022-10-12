@@ -39,6 +39,9 @@ const FormCrearEvento = ({
   const [editarLugarLlegada, setEditarLugarLlegada] = useState(true)
   const [lugarSalidaTexto, setLugarSalidaTexto] = useState('')
   const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('')
+
+  const tipo = window.localStorage.getItem('tipo')
+
   const handleNuevoEvento = () => {
     const nuevoEvento = {
       ejecutivo: ejecutivo,
@@ -132,20 +135,27 @@ const FormCrearEvento = ({
                     Ejecutivo:
                   </span>
                   {ejecutivos && (
-                    <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                      id={ejecutivo}
-                      value={ejecutivo}
-                      onChange={e => seleccionaEjecutivo(e)}
-                    >
-                      <option value='0'>Seleccione un ejecutivo</option>
-                      {Object.keys(ejecutivos).length > 0 &&
-                        ejecutivos.results.map(ejecutivo => (
-                          <option key={ejecutivo.id} value={ejecutivo.id}>
-                            {ejecutivo.nombres}
-                          </option>
-                        ))}
-                    </select>
+                    <>
+                      <select
+                        className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
+                        id={ejecutivo}
+                        value={ejecutivo}
+                        onChange={e => seleccionaEjecutivo(e)}
+                      >
+                        <option value='0'>Seleccione un ejecutivo</option>
+                        {Object.keys(ejecutivos).length > 0 &&
+                          ejecutivos.results.map(ejecutivo => (
+                            <option key={ejecutivo.id} value={ejecutivo.id}>
+                              {ejecutivo.nombres}
+                            </option>
+                          ))}
+                      </select>
+                      <img
+                        src={require('../../assets/ib_obligatorio.svg').default}
+                        alt='mySvgImage'
+                        className='w-3 ml-1'
+                      />
+                    </>
                   )}
                 </p>
                 <p className='text-sm flex justify-start'>
@@ -213,21 +223,28 @@ const FormCrearEvento = ({
                     Protector:
                   </span>
                   {protectores && (
-                    <select
-                      className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
-                      id={protector}
-                      value={protector}
-                      onChange={e => setProtector(e.target.value)}
-                    >
-                      <option value='0'>Seleccione un protector</option>
-                      {Object.keys(protectores).length > 0
-                        ? protectores.results.map(p => (
-                            <option key={p.id} value={p.id}>
-                              {p.nombres}
-                            </option>
-                          ))
-                        : null}
-                    </select>
+                    <>
+                      <select
+                        className='border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-44'
+                        id={protector}
+                        value={protector}
+                        onChange={e => setProtector(e.target.value)}
+                      >
+                        <option value='0'>Seleccione un protector</option>
+                        {Object.keys(protectores).length > 0
+                          ? protectores.results.map(p => (
+                              <option key={p.id} value={p.id}>
+                                {p.nombres}
+                              </option>
+                            ))
+                          : null}
+                      </select>
+                      <img
+                        src={require('../../assets/ib_obligatorio.svg').default}
+                        alt='mySvgImage'
+                        className='w-3 ml-1'
+                      />
+                    </>
                   )}
                 </p>
                 <p className='text-sm flex justify-start'>
@@ -294,7 +311,11 @@ const FormCrearEvento = ({
                       />
                     </>
                   )}
-
+                  <img
+                    src={require('../../assets/ib_obligatorio.svg').default}
+                    alt='mySvgImage'
+                    className='w-3 ml-1'
+                  />
                   <button
                     onClick={() =>
                       handleLugarSalidaComponente(!editarLugarSalida)
@@ -306,39 +327,41 @@ const FormCrearEvento = ({
                     />
                   </button>
                 </p>
-                <p className='text-sm flex justify-start'>
-                  <span className='font-semibold text-sm pr-4 w-40 '>
-                    Hora salida:
-                  </span>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      inputProps={{
-                        style: {
-                          padding: `0.5rem 10px`,
-                          buttonColor: 'blue',
-                        },
-                      }}
-                      // label='Date Time picker'
-                      inputFormat='DD/MM/YYYY HH:mm A'
-                      value={horaSalida}
-                      onChange={hSalida => setHoraSalida(hSalida)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          sx={{
-                            svg: { color: '#26346E' },
-                            input: {
-                              fontSize: '0.85rem',
-                              padding: '0.1rem 5px !important',
-                              margin: '0',
-                            },
-                          }}
-                          className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </p>
+                {tipo === '1' ? (
+                  <p className='text-sm flex justify-start'>
+                    <span className='font-semibold text-sm pr-4 w-40 '>
+                      Hora salida:
+                    </span>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker
+                        inputProps={{
+                          style: {
+                            padding: `0.5rem 10px`,
+                            buttonColor: 'blue',
+                          },
+                        }}
+                        // label='Date Time picker'
+                        inputFormat='DD/MM/YYYY HH:mm A'
+                        value={horaSalida}
+                        onChange={hSalida => setHoraSalida(hSalida)}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            sx={{
+                              svg: { color: '#26346E' },
+                              input: {
+                                fontSize: '0.85rem',
+                                padding: '0.1rem 5px !important',
+                                margin: '0',
+                              },
+                            }}
+                            className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </p>
+                ) : null}
               </div>
               <div className='flex flex-col ml-2'>
                 <p className='text-sm flex justify-start mb-6'>
@@ -390,39 +413,41 @@ const FormCrearEvento = ({
                     />
                   </button>
                 </p>
-                <p className='text-sm flex justify-start'>
-                  <span className='font-semibold text-sm pr-4 w-40 '>
-                    Hora llegada:
-                  </span>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
-                      inputProps={{
-                        style: {
-                          padding: `0.5rem 10px`,
-                          buttonColor: 'blue',
-                        },
-                      }}
-                      // label='Date Time picker'
-                      inputFormat='DD/MM/YYYY HH:mm A'
-                      value={horaLlegada}
-                      onChange={hLlegada => setHoraLlegada(hLlegada)}
-                      renderInput={params => (
-                        <TextField
-                          {...params}
-                          sx={{
-                            svg: { color: '#26346E' },
-                            input: {
-                              fontSize: '0.85rem',
-                              padding: '0.1rem 5px !important',
-                              margin: '0',
-                            },
-                          }}
-                          className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </p>
+                {tipo === '1' ? (
+                  <p className='text-sm flex justify-start'>
+                    <span className='font-semibold text-sm pr-4 w-40 '>
+                      Hora llegada:
+                    </span>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker
+                        inputProps={{
+                          style: {
+                            padding: `0.5rem 10px`,
+                            buttonColor: 'blue',
+                          },
+                        }}
+                        // label='Date Time picker'
+                        inputFormat='DD/MM/YYYY HH:mm A'
+                        value={horaLlegada}
+                        onChange={hLlegada => setHoraLlegada(hLlegada)}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            sx={{
+                              svg: { color: '#26346E' },
+                              input: {
+                                fontSize: '0.85rem',
+                                padding: '0.1rem 5px !important',
+                                margin: '0',
+                              },
+                            }}
+                            className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </p>
+                ) : null}
               </div>
             </div>
 

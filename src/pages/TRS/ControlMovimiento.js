@@ -224,6 +224,7 @@ const ControlMovimiento = () => {
           handleClose={handleCloseViewModal}
           dataSeleccionada={itemVisualizar}
         />
+
         {openEditModal && (
           <EditMovimiento
             dataSeleccionada={itemEditar}
