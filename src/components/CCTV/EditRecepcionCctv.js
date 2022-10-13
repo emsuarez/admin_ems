@@ -22,8 +22,10 @@ import {
   crudPersonalActaCctvAction,
   deleteConsignaCCTVAction,
   deleteNovedadCCTVAction,
+  getAllProtectoresAction,
   getAllUsersReportAction,
   getInformeCctvNavegacion,
+  getProtectoresAction,
   setToast,
   updateConsignaCCTVAction,
   updateNovedadCCTVAction,
@@ -100,8 +102,10 @@ const EditRecepcionCctv = () => {
   const tipo = window.localStorage.getItem('tipo')
   //#endregion
 
+  const protectoresState = useSelector(state => state.recursos.allProtectores)
   useEffect(() => {
     const obtenerInfoVista = () => {
+      dispatch(getAllProtectoresAction())
       if (actaSeleccionada) {
         if (Object.keys(actaSeleccionada).length > 0) {
           setProtectores(
@@ -682,12 +686,13 @@ const EditRecepcionCctv = () => {
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     <CrearEditarModalGenerico
-                      tipoModal='crear'
+                      tipoModal='agregarProtector'
                       openModal={openModalAgregarProtector}
                       handleClose={handleCloseAgregarProtector}
                       tituloModal='Crear personal de Protección Guardia'
-                      descripcionModal='A continuación escriba el nombre del agente:'
+                      descripcionModal='A continuación seleccione el nombre del agente:'
                       handleAction={handleAgregarProtector}
+                      dataSeleccionable={protectoresState}
                     />
                   </div>
 
@@ -770,12 +775,13 @@ const EditRecepcionCctv = () => {
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     <CrearEditarModalGenerico
-                      tipoModal='crear'
+                      tipoModal='agregarTrabajador'
                       openModal={openModalAgregarCentralista}
                       handleClose={handleCloseAgregarCentralista}
                       tituloModal='Crear personal de Trabajo'
-                      descripcionModal='A continuación escriba el nombre del agente:'
+                      descripcionModal='A continuación seleccione el nombre del agente:'
                       handleAction={handleAgregarCentralista}
+                      dataSeleccionable={protectoresState}
                     />
                   </div>
                   <div>

@@ -18,6 +18,7 @@ import {
   crudPersonalActaAction,
   deleteConsignaTRSAction,
   deleteNovedadTRSAction,
+  getAllProtectoresAction,
   getAllUsersReportAction,
   getInformeTrsNavegacion,
   getProtectoresAction,
@@ -94,7 +95,7 @@ const EditRecepcion = () => {
   useEffect(() => {
     const obtenerInfoVista = () => {
       if (actaSeleccionada) {
-        dispatch(getProtectoresAction())
+        dispatch(getAllProtectoresAction())
 
         if (Object.keys(actaSeleccionada).length > 0) {
           setProtectores(
@@ -663,7 +664,7 @@ const EditRecepcion = () => {
                       openModal={openModalAgregarProtector}
                       handleClose={handleCloseAgregarProtector}
                       tituloModal='Crear personal de Protección Guardia'
-                      descripcionModal='A continuación escriba el nombre del agente:'
+                      descripcionModal='A continuación seleccione el nombre del agente:'
                       handleAction={handleAgregarProtector}
                       dataSeleccionable={protectoresState}
                     />
@@ -752,7 +753,7 @@ const EditRecepcion = () => {
                       openModal={openModalAgregarCentralista}
                       handleClose={handleCloseAgregarCentralista}
                       tituloModal='Crear personal de Trabajo'
-                      descripcionModal='A continuación escriba el nombre del agente:'
+                      descripcionModal='A continuación seleccione el nombre del agente:'
                       handleAction={handleAgregarCentralista}
                       dataSeleccionable={protectoresState}
                     />
