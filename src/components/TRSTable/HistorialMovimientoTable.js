@@ -136,8 +136,8 @@ const HistorialMovimientoTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {results.map(row => (
-            <TableRow key={row.id}>
+          {results.map((row, index) => (
+            <TableRow key={index}>
               <TableCell scope='row'>{row.ejecutivo}</TableCell>
               <TableCell>
                 {row.lugar_salida_texto

@@ -64,9 +64,12 @@ const FormCrearEvento = ({
           protectorItem => protectorItem.id === Number(protector)
         ).nombres,
         vehiculo_protector: vehiculoProtector,
-        vehiculo_protector_nombre: vehiculosProtector.results.find(
-          vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
-        ).alias,
+        vehiculo_protector_nombre:
+          vehiculoProtector === '0'
+            ? null
+            : vehiculosProtector.results.find(
+                vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
+              ).alias,
 
         lugar_salida: lugarSalida === '0' ? null : lugarSalida,
         lugar_salida_nombre:
