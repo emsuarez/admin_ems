@@ -9,6 +9,7 @@ import {
 } from '../../components'
 
 import {
+  deleteControlMovimientoAction,
   getAllEjecutivosAction,
   getAllFamiliaresAction,
   GetAllLugaresAction,
@@ -120,9 +121,9 @@ const HistorialMovimiento = () => {
     setOpenDeleteModal(false)
   }
 
-  const handleDeleteEvento = acta => {
-    // dispatch(deleteInformeTRSAction({ id: acta.id }))
-
+  const handleDeleteEvento = movimiento => {
+    console.log(movimiento, 'movimiento')
+    dispatch(deleteControlMovimientoAction({ id: movimiento.id }))
     setOpenDeleteModal(false)
   }
 

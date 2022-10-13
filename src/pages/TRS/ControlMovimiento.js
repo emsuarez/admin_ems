@@ -9,6 +9,8 @@ import {
 } from '../../components'
 
 import {
+  deleteControlMovimientoAction,
+  deleteInformeTRSAction,
   getAllEjecutivosAction,
   getAllFamiliaresAction,
   getAllHistorialMovimientosAction,
@@ -113,15 +115,16 @@ const ControlMovimiento = () => {
   const handleOpenDeleteEvento = itemEliminar => {
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
+    console.log(itemEliminar)
   }
 
   const handleCloseDeleteModal = () => {
     setOpenDeleteModal(false)
   }
 
-  const handleDeleteEvento = acta => {
-    // dispatch(deleteInformeTRSAction({ id: acta.id }))
-
+  const handleDeleteEvento = movimiento => {
+    console.log(movimiento, 'movimiento')
+     dispatch(deleteControlMovimientoAction({ id: movimiento.id }))
     setOpenDeleteModal(false)
   }
 

@@ -50,7 +50,7 @@ const FormCrearEvento = ({
         ejecutivo_nombre: ejecutivos.results.find(
           ejecutivoItem => ejecutivoItem.id === Number(ejecutivo)
         ).nombres,
-        familiar: grupoFamiliar,
+        familiar: grupoFamiliar === '0' ? null : grupoFamiliar,
         vehiculo_ejecutivo: vehiculoEjecutivo,
         vehiculo_ejecutivo_nombre:
           vehiculoEjecutivo === '0'

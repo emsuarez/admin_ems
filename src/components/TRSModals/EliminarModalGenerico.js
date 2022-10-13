@@ -45,7 +45,7 @@ const EliminarModalGenerico = ({
                     data-modal-toggle='defaultModal'
                     type='button'
                     className=' text-white bg-red-700 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-7 py-1.5 text-center '
-                    onClick={handleEjectAction}
+                    onClick={() => handleEjectAction()}
                   >
                     Eliminar
                   </button>

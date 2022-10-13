@@ -347,6 +347,24 @@ export default (state = initialState, { type, payload }) => {
     case types.PATCH_CONTROL_MOVIMIENTO_FAILED:
       return { ...state, isLoading: false }
 
+    case types.DELETE_CONTROLMOVIMIENTO_START:
+      return { ...state, isLoading: true }
+
+    case types.DELETE_CONTROLMOVIMIENTO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        historialMovimientos: {
+          ...state.historialMovimientos,
+          results: state.historialMovimientos.results.filter(
+            dato => dato.id !== payload.id
+          ),
+        },
+      }
+
+    case types.DELETE_CONTROLMOVIMIENTO_FAILED:
+      return { ...state, isLoading: false }
+
     case types.POST_INFORMECCTV_START:
       return { ...state, isLoading: true }
 

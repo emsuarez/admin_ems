@@ -862,6 +862,38 @@ export const patchControlMovimiento = data => {
   }
 }
 
+export const deleteControlMovimientoAction = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.DELETE_CONTROLMOVIMIENTO_START, payload: data })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.delete('/controlmovimiento/', {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
+        data: data,
+      })
+
+      const result = respuesta.data
+      console.log(data)
+      dispatch({
+        type: types.DELETE_CONTROLMOVIMIENTO_SUCCESS,
+        payload: data,
+      })
+      dispatch(setToast('success', result.message))
+
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.DELETE_CONTROLMOVIMIENTO_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
 export const postInformeCctv = data => {
   return async dispatch => {
     try {
