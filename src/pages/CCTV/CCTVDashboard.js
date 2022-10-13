@@ -5,13 +5,13 @@ import {
   Header,
   ICONS,
   LineChart,
-  RedirectWithoutLogin,
+  RedirectWithoutLogin
 } from '../../components'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
 import {
   getPersonalInformeCctv,
   obtenerConsignasCCTVAction,
-  obtenerConsignasGrafica,
+  obtenerConsignasGrafica
 } from '../../store/actions'
 
 const CCTVDashboard = () => {
@@ -19,13 +19,6 @@ const CCTVDashboard = () => {
 
   const [idConsigna] = useState(4)
 
-  const [modalCctv, setModalCctv] = useState(false)
-
-  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
-  const [protectores, setProtectores] = useState([])
-  const [centralistas, setCentralistas] = useState([])
-
-  const cargarConsignas = () => {}
   useEffect(() => {
     dispatch(getPersonalInformeCctv())
     dispatch(obtenerConsignasCCTVAction())
@@ -94,12 +87,7 @@ const CCTVDashboard = () => {
                   )}
                 </div>
               </div>
-              {/* <AlertCerrarConsigna
-                modal={modalCctv}
-                setModal={setModalCctv}
-                infoConsigna={consignaSeleccionada}
-                handleCerrarConsigna={handleCerrarConsignaCctv}
-              /> */}
+
               <div className='flex flex-col basis-2/4'>
                 <div className='flex items-stretch mb-3 h-1/2'>
                   <ConsignasTable
