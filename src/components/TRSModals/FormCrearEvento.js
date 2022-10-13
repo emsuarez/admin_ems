@@ -87,7 +87,7 @@ const FormCrearEvento = ({
         observacion: observacion,
       }
       console.log(nuevoEvento)
-      // handleAction(nuevoEvento)
+      handleAction(nuevoEvento)
     } else {
       dispatch(setToast('', 'Debe seleccionar un lugar de salida'))
     }
