@@ -161,7 +161,7 @@ const HistorialMovimientoTable = ({
               <TableCell>{row.observacion}</TableCell>
 
               <TableCell>
-                <div className='flex justify-center'>
+                <div className='flex justify-between'>
                   <div className='border-t-0 px-2 border-l-0 border-r-0 text-base whitespace-nowrap  text-white'>
                     {row.estado === 1 ? (
                       <Icon svgName='luzVerde' className='h-4' />

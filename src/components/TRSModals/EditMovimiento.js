@@ -7,9 +7,10 @@ import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
 import Icon from '../../assets/Icon'
 import logo from '../../assets/logo.png'
-import { getGrupoFamiliarByIdAction } from '../../store/actions'
+import { getGrupoFamiliarByIdAction, setToast } from '../../store/actions'
 import { data } from 'jquery'
 import { isAllOf } from '@reduxjs/toolkit'
+import { format } from 'date-fns'
 
 const EditMovimiento = ({
   openModal,
@@ -46,6 +47,8 @@ const EditMovimiento = ({
   const [editarLugarLlegada, setEditarLugarLlegada] = useState(true)
   const [lugarSalidaTexto, setLugarSalidaTexto] = useState('')
   const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('')
+
+  const [confirmoLlegada, setConfirmoLlegada] = useState(false)
 
   const tipo = window.localStorage.getItem('tipo')
 
@@ -183,6 +186,16 @@ const EditMovimiento = ({
 
   // #region Handle Editar
   const handleEditarEvento = () => {
+    if (lugarLlegada === '0' && lugarLlegadaTexto === '') {
+      dispatch(setToast('error', 'Debe seleccionar un lugar de llegada'))
+
+      return
+    }
+    if (confirmoLlegada === false) {
+      dispatch(setToast('error', 'Debe confirmar la llegada'))
+      return
+    }
+
     const eventoEditado = {
       id: dataSeleccionada.id,
       ejecutivo: ejecutivo,
@@ -470,7 +483,7 @@ const EditMovimiento = ({
                         <span className='font-semibold text-sm pr-4 w-40'>
                           Hora salida:
                         </span>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DateTimePicker
                             disabled={tipo === '1' ? false : true}
                             inputProps={{
@@ -498,7 +511,12 @@ const EditMovimiento = ({
                               />
                             )}
                           />
-                        </LocalizationProvider>
+                        </LocalizationProvider> */}
+                        {dataSeleccionada.created &&
+                          format(
+                            new Date(dataSeleccionada?.created),
+                            'dd/MM/yyyy HH:mm'
+                          )}
                       </p>
                     </div>
                     <div className='flex flex-col ml-2'>
@@ -556,36 +574,15 @@ const EditMovimiento = ({
 
                       <p className='text-sm flex justify-start'>
                         <span className='font-semibold text-sm pr-4 w-40 '>
-                          Hora llegada:
+                          Confirmación llegada:
                         </span>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DateTimePicker
-                            inputProps={{
-                              style: {
-                                padding: `0.5rem 10px`,
-                                buttonColor: 'blue',
-                              },
-                            }}
-                            // label='Date Time picker'
-                            inputFormat='DD/MM/YYYY HH:mm A'
-                            value={horaLlegada}
-                            onChange={hLlegada => setHoraLlegada(hLlegada)}
-                            renderInput={params => (
-                              <TextField
-                                {...params}
-                                sx={{
-                                  svg: { color: '#26346E' },
-                                  input: {
-                                    fontSize: '0.85rem',
-                                    padding: '0.1rem 5px !important',
-                                    margin: '0',
-                                  },
-                                }}
-                                className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
-                              />
-                            )}
-                          />
-                        </LocalizationProvider>
+
+                        <input
+                          type={'checkbox'}
+                          id='confirmaLlegada'
+                          value={confirmoLlegada}
+                          onChange={e => setConfirmoLlegada(e.target.checked)}
+                        />
                       </p>
                     </div>
                   </div>
