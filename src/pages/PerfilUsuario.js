@@ -19,6 +19,7 @@ const PerfilUsuario = () => {
 
   const [modal, setModal] = useState(false)
 
+  const tipo = window.localStorage.getItem('tipo')
   useEffect(() => {
     setUsuarioState(infoUsuario)
     dispatch(getUserInfoAction())
@@ -79,7 +80,7 @@ const PerfilUsuario = () => {
               <div className='ml-28 group relative z-0'>
                 <label
                   htmlFor='dropzone-file'
-                  className='flex flex-col justify-center items-center w-full h-64 cursor-pointer'
+                  className='flex flex-col justify-center items-center w-full h-64'
                 >
                   <div
                     className={
@@ -200,32 +201,36 @@ const PerfilUsuario = () => {
                       />
                     </div> */}
                   </div>
-                  {editarInformacion ? (
-                    <div className='mt-28'>
-                      <button
-                        className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
-                        onClick={() => handleEditarInformacion()}
-                      >
-                        Editar Información
-                      </button>
-                    </div>
-                  ) : (
-                    <div className='mt-28'>
-                      <div className='grid grid-cols-2  place-content-center ml-16 gap-x-12'>
-                        <button
-                          className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
-                          onClick={() => setModal(true)}
-                        >
-                          Guardar
-                        </button>
-                        <button
-                          className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
-                          onClick={() => handleCancelar()}
-                        >
-                          Cancelar
-                        </button>
-                      </div>
-                    </div>
+                  {tipo === '1' && (
+                    <>
+                      {editarInformacion ? (
+                        <div className='mt-28'>
+                          <button
+                            className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                            onClick={() => handleEditarInformacion()}
+                          >
+                            Editar Información
+                          </button>
+                        </div>
+                      ) : (
+                        <div className='mt-28'>
+                          <div className='grid grid-cols-2  place-content-center ml-16 gap-x-12'>
+                            <button
+                              className='bg-blue-900 hover:bg-blue-800 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                              onClick={() => setModal(true)}
+                            >
+                              Guardar
+                            </button>
+                            <button
+                              className='bg-red-700 hover:bg-red-600 text-white hover:cursor-pointer font-medium text-xl px-8 py-3 rounded-md'
+                              onClick={() => handleCancelar()}
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
