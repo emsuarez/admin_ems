@@ -5,7 +5,7 @@ import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
-import { getGrupoFamiliarByIdAction } from '../../store/actions'
+import { getGrupoFamiliarByIdAction, setToast } from '../../store/actions'
 import Icon from '../../assets/Icon'
 
 const FormCrearEvento = ({
@@ -25,10 +25,10 @@ const FormCrearEvento = ({
   const [vehiculoProtector, setVehiculoProtector] = useState('')
   const [grupoFamiliar, setGrupoFamiliar] = useState('')
   const [observacionVehiculo, setObservacionVehiculo] = useState('')
-  const [lugarSalida, setLugarSalida] = useState('')
+  const [lugarSalida, setLugarSalida] = useState('0')
   const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
 
-  const [lugarLlegada, setLugarLlegada] = useState('')
+  const [lugarLlegada, setLugarLlegada] = useState('0')
   const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
 
   const [observacion, setObservacion] = useState('')
@@ -43,48 +43,54 @@ const FormCrearEvento = ({
   const tipo = window.localStorage.getItem('tipo')
 
   const handleNuevoEvento = () => {
-    const nuevoEvento = {
-      ejecutivo: ejecutivo,
-      ejecutivo_nombre: ejecutivos.results.find(
-        ejecutivoItem => ejecutivoItem.id === Number(ejecutivo)
-      ).nombres,
-      familiar: grupoFamiliar,
-      vehiculo_ejecutivo: vehiculoEjecutivo,
-      vehiculo_ejecutivo_nombre: vehiculosEjecutivo.results.find(
-        vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
-      ).alias,
-      vehiculo_observacion: observacionVehiculo,
-      protector: protector,
-      protector_nombre: protectores.results.find(
-        protectorItem => protectorItem.id === Number(protector)
-      ).nombres,
-      vehiculo_protector: vehiculoProtector,
-      vehiculo_protector_nombre: vehiculosProtector.results.find(
-        vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
-      ).alias,
+    console.log(typeof lugarLlegada)
+    if (lugarSalida !== '0' || lugarSalidaTexto !== '') {
+      const nuevoEvento = {
+        ejecutivo: ejecutivo,
+        ejecutivo_nombre: ejecutivos.results.find(
+          ejecutivoItem => ejecutivoItem.id === Number(ejecutivo)
+        ).nombres,
+        familiar: grupoFamiliar,
+        vehiculo_ejecutivo: vehiculoEjecutivo,
+        vehiculo_ejecutivo_nombre: vehiculosEjecutivo.results.find(
+          vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
+        ).alias,
+        vehiculo_observacion: observacionVehiculo,
+        protector: protector,
+        protector_nombre: protectores.results.find(
+          protectorItem => protectorItem.id === Number(protector)
+        ).nombres,
+        vehiculo_protector: vehiculoProtector,
+        vehiculo_protector_nombre: vehiculosProtector.results.find(
+          vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
+        ).alias,
 
-      lugar_salida: lugarSalidaTexto === '' ? lugarSalida : null,
-      lugar_salida_nombre:
-        lugarSalidaTexto === ''
-          ? lugares.results.find(
-              lugarItem => lugarItem.id === Number(lugarSalida)
-            ).alias
-          : lugarSalidaTexto,
-      lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
-      lugar_llegada: lugarLlegada,
-      lugar_llegada_nombre:
-        lugarLlegadaTexto === ''
-          ? lugares.results.find(
-              lugarItem => lugarItem.id === Number(lugarLlegada)
-            ).alias
-          : lugarLlegadaTexto,
-      lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
-      hora_salida: new Date(horaSalida),
-      hora_llegada: new Date(horaLlegada),
-      observacion: observacion,
+        lugar_salida: lugarSalida === '0' ? null : lugarSalida,
+        lugar_salida_nombre:
+          lugarSalida !== '0'
+            ? lugares.results.find(
+                lugarItem => lugarItem.id === Number(lugarSalida)
+              ).alias
+            : lugarSalidaTexto,
+        lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
+        lugar_llegada: lugarLlegada === '0' ? null : lugarLlegada,
+        lugar_llegada_nombre:
+          lugarLlegada !== '0'
+            ? lugares.results.find(
+                lugarItem => lugarItem.id === Number(lugarLlegada)
+              ).alias
+            : lugarLlegadaTexto,
+        lugar_llegada_texto:
+          lugarLlegadaTexto !== '0' ? lugarLlegadaTexto : null,
+        hora_salida: new Date(horaSalida),
+        hora_llegada: lugarLlegada === '0' ? null : new Date(horaLlegada),
+        observacion: observacion,
+      }
+      console.log(nuevoEvento)
+      // handleAction(nuevoEvento)
+    } else {
+      dispatch(setToast('', 'Debe seleccionar un lugar de salida'))
     }
-
-    handleAction(nuevoEvento)
   }
 
   const seleccionaEjecutivo = e => {
@@ -282,7 +288,9 @@ const FormCrearEvento = ({
                           value={lugarSalida}
                           onChange={e => setLugarSalida(e.target.value)}
                         >
-                          <option value='0'>Seleccione un lugar</option>
+                          <option key='0' value='0'>
+                            Seleccione un lugar
+                          </option>
                           {Object.keys(lugares).length > 0
                             ? lugares.results.map(lugar => (
                                 <option key={lugar.id} value={lugar.id}>
@@ -372,7 +380,9 @@ const FormCrearEvento = ({
                           value={lugarLlegada}
                           onChange={e => setLugarLlegada(e.target.value)}
                         >
-                          <option value='0'>Seleccione un lugar</option>
+                          <option key='0' value={0}>
+                            Seleccione un lugar
+                          </option>
                           {Object.keys(lugares).length > 0
                             ? lugares.results.map(lugar => (
                                 <option key={lugar.id} value={lugar.id}>

@@ -155,7 +155,9 @@ const HistorialMovimientoTable = ({
                 {format(new Date(row.hora_salida), 'dd/MM/yyyy HH:mm')}
               </TableCell>
               <TableCell>
-                {format(new Date(row.hora_llegada), 'dd/MM/yyyy HH:mm')}
+                {row.hora_llegada === null
+                  ? ''
+                  : format(new Date(row.hora_llegada), 'dd/MM/yyyy HH:mm')}
               </TableCell>
               <TableCell>{row.protector}</TableCell>
               <TableCell>{row.observacion}</TableCell>
