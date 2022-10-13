@@ -19,11 +19,11 @@ const FormCrearEvento = ({
   familiaresEjecutivo,
 }) => {
   const dispatch = useDispatch()
-  const [ejecutivo, setEjecutivo] = useState('')
-  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('')
-  const [protector, setProtector] = useState('')
-  const [vehiculoProtector, setVehiculoProtector] = useState('')
-  const [grupoFamiliar, setGrupoFamiliar] = useState('')
+  const [ejecutivo, setEjecutivo] = useState('0')
+  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('0')
+  const [protector, setProtector] = useState('0')
+  const [vehiculoProtector, setVehiculoProtector] = useState('0')
+  const [grupoFamiliar, setGrupoFamiliar] = useState('0')
   const [observacionVehiculo, setObservacionVehiculo] = useState('')
   const [lugarSalida, setLugarSalida] = useState('0')
   const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
@@ -52,9 +52,12 @@ const FormCrearEvento = ({
         ).nombres,
         familiar: grupoFamiliar,
         vehiculo_ejecutivo: vehiculoEjecutivo,
-        vehiculo_ejecutivo_nombre: vehiculosEjecutivo.results.find(
-          vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
-        ).alias,
+        vehiculo_ejecutivo_nombre:
+          vehiculoEjecutivo === '0'
+            ? null
+            : vehiculosEjecutivo.results.find(
+                vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
+              ).alias,
         vehiculo_observacion: observacionVehiculo,
         protector: protector,
         protector_nombre: protectores.results.find(
