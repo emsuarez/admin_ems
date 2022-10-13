@@ -7,16 +7,17 @@ import {
   Header,
   ICONS,
   RedirectWithoutLogin,
-  VehiculosEjecutivoTable
+  VehiculosEjecutivoTable,
 } from '../../components'
 import CreateVehiculo from '../../components/RecursosModals/CreateVehiculo'
 import vehiculosEjecutivosReportPDF from '../../reports/Recursos/vehiculosEjecutivosReportPDF'
 import {
   createNewVehicleEjecutivoAction,
   DeleteVehiculoEjecutivoAction,
+  getAllEjecutivosAction,
   getAllVehiculosEjecutivoAction,
   getVehiculoEjecutivoAction,
-  UpdateVehicleEjecutivoAction
+  UpdateVehicleEjecutivoAction,
 } from '../../store/actions'
 
 const VehicleEjectivos = () => {
@@ -31,6 +32,7 @@ const VehicleEjectivos = () => {
   useEffect(() => {
     dispatch(getVehiculoEjecutivoAction())
     dispatch(getAllVehiculosEjecutivoAction())
+    dispatch(getAllEjecutivosAction())
   }, [dispatch])
 
   const vehiculoEjecutivoData = useSelector(
@@ -40,6 +42,8 @@ const VehicleEjectivos = () => {
   const allVehiculosEjecutivosData = useSelector(
     state => state.recursos.allVehiculosEjecutivos
   )
+
+  const propietarios = useSelector(state => state.recursos.allEjecutivos)
 
   const handleOpenEditModal = itemEditar => {
     setOpenEditModal(true)
@@ -54,10 +58,17 @@ const VehicleEjectivos = () => {
 
   const handleGuardarVehículoEjecutivo = vehiculoEjecutivo => {
     const nuevoVehiculo = {
+      ejecutivo:
+        propietarios &&
+        propietarios.results.find(
+          e => Number(e.id) === Number(vehiculoEjecutivo.propietario)
+        ).alias,
       id_ejecutivo: vehiculoEjecutivo.propietario,
       placas: vehiculoEjecutivo.placas,
       alias: vehiculoEjecutivo.alias,
       tipo: vehiculoEjecutivo.tipo,
+      is_active: true,
+      created: new Date(),
     }
 
     dispatch(createNewVehicleEjecutivoAction(nuevoVehiculo))
@@ -121,6 +132,7 @@ const VehicleEjectivos = () => {
                     'Aquí puedes crear un vehículo y asociarlo a un ejecutivo.'
                   }
                   handleAction={handleGuardarVehículoEjecutivo}
+                  propietarios={propietarios}
                 />
               </div>
 
@@ -165,27 +177,31 @@ const VehicleEjectivos = () => {
               )}
           </div>
           {/* Modales */}
-          <EditVehicle
-            tituloModal={'Editar un vehículo'}
-            descripcionModal={
-              'Aqui puedes editar un vehículo asociado a un Ejecutivo.'
-            }
-            openModal={openEditModal}
-            handleClose={handleCloseEditModal}
-            handleAction={handleEditarVehiculoEjecutivo}
-            itemEditar={itemEditar}
-          />
-          <DeleteEjecutivo
-            tipo='Vehiculo'
-            tituloModal={'Eliminar vehículo de ejecutivo'}
-            descripcionModal={
-              'Estas por eliminar un vehículo vinculado a un ejecutivo.'
-            }
-            openModal={openDeleteModal}
-            handleClose={handleCloseDeleteModal}
-            handleAction={handleDeleteVehiculoEjecutivo}
-            itemEliminar={itemEliminar}
-          />
+          {openEditModal && (
+            <EditVehicle
+              tituloModal={'Editar un vehículo'}
+              descripcionModal={
+                'Aqui puedes editar un vehículo asociado a un Ejecutivo.'
+              }
+              openModal={openEditModal}
+              handleClose={handleCloseEditModal}
+              handleAction={handleEditarVehiculoEjecutivo}
+              itemEditar={itemEditar}
+            />
+          )}
+          {openDeleteModal && (
+            <DeleteEjecutivo
+              tipo='Vehiculo'
+              tituloModal={'Eliminar vehículo de ejecutivo'}
+              descripcionModal={
+                'Estas por eliminar un vehículo vinculado a un ejecutivo.'
+              }
+              openModal={openDeleteModal}
+              handleClose={handleCloseDeleteModal}
+              handleAction={handleDeleteVehiculoEjecutivo}
+              itemEliminar={itemEliminar}
+            />
+          )}
         </>
       )}
     </div>

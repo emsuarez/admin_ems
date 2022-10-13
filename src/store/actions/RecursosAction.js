@@ -616,7 +616,12 @@ export const createNewVehicleEjecutivoAction = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    dispatch({ type: types.POST_VEHICLE_EJECUTIVO_SUCCESS, payload: result })
+    dispatch({
+      type: types.POST_VEHICLE_EJECUTIVO_SUCCESS,
+      payload: { ...data, id: result.id },
+    })
+    console.log(result)
+    console.log(data)
     dispatch(setToast('', result.message))
     progress.finish()
   } catch (error) {

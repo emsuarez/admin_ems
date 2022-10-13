@@ -449,7 +449,18 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_VEHICLE_EJECUTIVO_START:
       return { ...state, isLoading: true }
     case types.POST_VEHICLE_EJECUTIVO_SUCCESS:
-      return { ...state, isLoading: false }
+      return {
+        ...state,
+        isLoading: false,
+        vehiculosEjecutivos: {
+          ...state.vehiculosEjecutivos,
+          results: [payload, ...state.vehiculosEjecutivos.results],
+        },
+        allVehiculosEjecutivos: {
+          ...state.allVehiculosEjecutivos,
+          results: [payload, ...state.allVehiculosEjecutivos.results],
+        },
+      }
     case types.POST_VEHICLE_EJECUTIVO_FAILED:
       return { ...state, isLoading: false }
 
