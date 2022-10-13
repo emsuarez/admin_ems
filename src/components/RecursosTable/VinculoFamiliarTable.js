@@ -99,7 +99,7 @@ const VinculoFamiliarTable = ({
         getGrupoFamiliarAction(newPage > page ? data.next : data.previous)
       )
     }
-    console.log(data)
+
     setPage(newPage)
   }
 

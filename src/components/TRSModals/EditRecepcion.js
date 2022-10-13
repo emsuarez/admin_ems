@@ -161,7 +161,7 @@ const EditRecepcion = () => {
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-    console.log(newProtector, 'newProtector')
+
     dispatch(crudPersonalActaAction(newProtector))
 
     setProtectores([...protectores, protector])
@@ -186,7 +186,7 @@ const EditRecepcion = () => {
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-    console.log(protectorEditado, 'protectorEditado')
+
     dispatch(crudPersonalActaAction(protectorEditado))
 
     setProtectores(
@@ -211,7 +211,7 @@ const EditRecepcion = () => {
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-    console.log(protectorEliminado, 'protectorEliminado')
+
     dispatch(crudPersonalActaAction(protectorEliminado))
 
     setProtectores(protectores.filter(p => p !== protectorSeleccionado))
@@ -236,7 +236,7 @@ const EditRecepcion = () => {
       centralistas: String([...centralistas, centralista]),
       observacion: actaSeleccionada.observacion,
     }
-    console.log(newCentralista, 'newCentralista')
+
     dispatch(crudPersonalActaAction(newCentralista))
 
     setCentralistas([...centralistas, centralista])
@@ -261,7 +261,7 @@ const EditRecepcion = () => {
       ),
       observacion: actaSeleccionada.observacion,
     }
-    console.log(centralistaEditado, 'centralistaEditado')
+
     dispatch(crudPersonalActaAction(centralistaEditado))
 
     setCentralistas(
@@ -289,7 +289,6 @@ const EditRecepcion = () => {
       observacion: actaSeleccionada.observacion,
     }
 
-    console.log(centralistaEliminado, 'centralistaEliminado')
     dispatch(crudPersonalActaAction(centralistaEliminado))
 
     setCentralistas(centralistas.filter(c => c !== centralistaSeleccionado))
@@ -311,7 +310,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
-    console.log(newNovedad, 'newNovedad')
+
     dispatch(createNovedadTRSAction(newNovedad))
     setNovedades([
       ...novedades,
@@ -336,7 +335,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
-    console.log(novedadEditada, 'novedadEditada')
+
     dispatch(updateNovedadTRSAction(novedadEditada))
     setNovedades(
       novedades.map(n =>
@@ -377,7 +376,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: novedad,
     }
-    console.log(novedadEditada, 'novedadEditada')
+
     dispatch(updateNovedadTRSAction(novedadEditada))
     setNovedades(
       novedades.map(n =>
@@ -402,7 +401,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: novedad,
     }
-    console.log(novedadCerrada, 'novedadCerrada')
+
     dispatch(cerrarNovedadTRSAction(novedadCerrada))
     setNovedades(
       novedades.map(n =>
@@ -434,7 +433,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: consigna,
     }
-    console.log(newConsigna, 'newConsigna')
+
     dispatch(createConsignaTRSAction(newConsigna))
     setConsignas([
       ...consignas,
@@ -450,7 +449,6 @@ const EditRecepcion = () => {
   }
 
   const handleOpenEditarConsigna = consigna => {
-    console.log(consigna, 'consigna')
     setOpenModalEditarConsigna(true)
     setConsignaSeleccionada(consigna)
     setObservacionConsignaSeleccionada(consigna.obs_creacion)
@@ -469,7 +467,7 @@ const EditRecepcion = () => {
       obs_cierre: consignaSeleccionada.obs_cierre,
       estado: consignaSeleccionada.estado,
     }
-    console.log(consignaEditada, 'consignaEditada')
+
     dispatch(updateConsignaTRSAction(consignaEditada))
     setConsignas(
       consignas.map(c =>
@@ -510,7 +508,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: consigna,
     }
-    console.log(consignaEditada, 'consignaEditada')
+
     dispatch(updateConsignaTRSAction(consignaEditada))
     setNovedades(
       consignas.map(c =>
@@ -535,7 +533,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: consigna,
     }
-    console.log(consignaCerrada, 'consignaCerrada')
+
     dispatch(cerrarConsignaTRSAction(consignaCerrada))
     setConsignas(
       consignas.map(c =>

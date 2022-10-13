@@ -54,7 +54,6 @@ const EditMovimiento = ({
       return
     }
     if (!ejecutivos) {
-      console.log('no hay ejecutivos')
       return
     }
     if (!vehiculosEjecutivo) {
@@ -225,11 +224,6 @@ const EditMovimiento = ({
       hora_llegada: new Date(horaLlegada),
       observacion: observacion,
     }
-    console.log(
-      protectores.results.find(
-        protectorItem => protectorItem.id === Number(protector)
-      )
-    )
 
     handleAction(eventoEditado)
   }

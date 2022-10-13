@@ -33,8 +33,9 @@ const VehicleProtectores = () => {
     dispatch(getAllVehiculoProtectorAction())
   }, [dispatch])
 
-  const vehiculosProtectoresData =
-    useSelector(state => state.recursos.vehiculosProtectores)
+  const vehiculosProtectoresData = useSelector(
+    state => state.recursos.vehiculosProtectores
+  )
 
   const allVehiculosProtectores = useSelector(
     state => state.recursos.allVehiculosProtectores
@@ -69,12 +70,11 @@ const VehicleProtectores = () => {
   }
 
   const handleEditarVehiculoProtector = vehiculo => {
-    console.log(vehiculo, 'vehiculo')
     const vehiculoProtectorActualizado = {
       ...vehiculo,
       id: vehiculo.idVehiculo,
     }
-    console.log(vehiculoProtectorActualizado, 'vehiculoProtectorActualizado')
+
     dispatch(UpdateVehicleProtectorAction(vehiculoProtectorActualizado))
     setOpenEditModal(false)
   }

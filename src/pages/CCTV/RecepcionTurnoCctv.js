@@ -52,18 +52,15 @@ const RecepcionTurnoCctv = () => {
   }
 
   const handleOpenViewInforme = informe => {
-    console.log(informe)
     navigate('/viewrecepcioncctv')
   }
 
   const handleOpenEditInforme = informe => {
-    console.log(informe)
     navigate('/editrecepcioncctv')
     dispatch(getInformeCctvById(informe))
   }
 
   const handleOpenDeleteActa = itemEliminar => {
-    console.log(itemEliminar, 'itemEliminar')
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
   }
@@ -74,7 +71,7 @@ const RecepcionTurnoCctv = () => {
 
   const handleDeleteActa = acta => {
     dispatch(deleteInformeCctvAction({ id: acta.id }))
-    console.log(acta, 'acta')
+
     setOpenDeleteModal(false)
   }
 

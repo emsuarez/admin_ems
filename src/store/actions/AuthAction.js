@@ -44,7 +44,6 @@ export const UserLogin = data => async dispatch => {
         headers: { 'content-type': 'multipart/form-data' },
       })
       .catch(err => {
-        console.log(err.request.response)
         dispatch(setToast('error', err.request.response))
       })
     progress.finish()
@@ -55,7 +54,6 @@ export const UserLogin = data => async dispatch => {
 // REGISTER
 export const UserRegister = data => async dispatch => {
   var response
-  console.log('POL', data)
   const progress = new ProgressBar({
     size: 4,
     color: 'blue',
@@ -80,7 +78,6 @@ export const UserRegister = data => async dispatch => {
         headers: { 'content-type': 'multipart/form-data' },
       })
       .catch(err => {
-        console.log(err.request.response)
         dispatch(setToast('error', err.request.response))
       })
     progress.finish()
@@ -99,7 +96,6 @@ export const getTiposUsuarioAction = () => {
       dispatch(getTipoUserSuccess(response.data.results))
       progress.finish()
     } catch (error) {
-      console.log('Error getRoles ', error)
       dispatch(getTipoUserFailed(true))
       progress.finish()
     }
@@ -137,7 +133,6 @@ export const getUserInfoAction = () => {
       dispatch(getUserInfoSuccess(respuesta.data))
       progress.finish()
     } catch (error) {
-      console.log('Error getUserInfo ', error)
       progress.finish()
       dispatch(getUserInfoFailed(true))
       progress.finish()
@@ -183,7 +178,6 @@ export const updateUserInfoAction = data => {
       )
 
       const result = respuesta.data
-      console.log(result, 'result usuario perfil')
       dispatch({
         type: types.UPDATE_USERINFO_SUCCESS,
         payload: result.userData,
@@ -279,7 +273,6 @@ export const UpdateUserAction = data => {
         },
       })
       const result = response.data
-      console.log(result)
       dispatch({
         type: types.UPDATE_USERINFO_SUCCESS,
         payload: result.userData,
@@ -298,7 +291,6 @@ export const UpdateUserAction = data => {
 export const UpdatePasswordAction = data => {
   return async dispatch => {
     try {
-      console.log(data, 'DATA')
       dispatch({ type: types.UPDATE_PASSWORD_START })
       progress.start()
       let token = window.localStorage.getItem('token')

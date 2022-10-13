@@ -16,7 +16,6 @@ const AlertOperadorCierre = ({
   const usuarios = useSelector(state => state.auth.allUsers)
 
   const handleSi = () => {
-    console.log(JSON.parse(user), 'user')
     handleAction(JSON.parse(user))
   }
   return (

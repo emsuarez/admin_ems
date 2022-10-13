@@ -10,7 +10,6 @@ import { format } from 'date-fns'
 
 // define a generatePDF function that accepts a tickets argument
 const ejecutivosReportPDF = ejecutivos => {
-  console.log(ejecutivos, 'ejecutivos')
   // initialize jsPDF
   const doc = new jsPDF()
 

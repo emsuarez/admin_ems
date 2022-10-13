@@ -801,7 +801,6 @@ export const postControlMovimiento = data => {
       })
 
       const result = respuesta.data
-      console.log(result, 'result')
       dispatch({
         type: types.POST_CONTROL_MOVIMIENTO_SUCCESS,
         payload: {
@@ -839,7 +838,6 @@ export const patchControlMovimiento = data => {
       })
 
       const result = respuesta.data
-      console.log(result, 'result')
       dispatch({
         type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
         payload: {

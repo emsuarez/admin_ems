@@ -84,8 +84,6 @@ const RecepcionTurnoTable = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const handleChangePage = (event, newPage) => {
-    console.log(newPage > page ? data.next : data.previous)
-    console.log(tipoTabla)
     if (tipoTabla === 'trs') {
       dispatch(getInformeTrs(newPage > page ? data.next : data.previous))
     }

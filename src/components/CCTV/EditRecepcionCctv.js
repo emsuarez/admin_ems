@@ -167,7 +167,7 @@ const EditRecepcionCctv = () => {
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-    console.log(newProtector, 'newProtector')
+
     dispatch(crudPersonalActaCctvAction(newProtector))
 
     setProtectores([...protectores, protector])
@@ -217,7 +217,7 @@ const EditRecepcionCctv = () => {
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-    console.log(protectorEliminado, 'protectorEliminado')
+
     dispatch(crudPersonalActaCctvAction(protectorEliminado))
 
     setProtectores(protectores.filter(p => p !== protectorSeleccionado))
@@ -242,7 +242,7 @@ const EditRecepcionCctv = () => {
       centralistas: String([...centralistas, centralista]),
       observacion: actaSeleccionada.observacion,
     }
-    console.log(newCentralista, 'newCentralista')
+
     dispatch(crudPersonalActaCctvAction(newCentralista))
 
     setCentralistas([...centralistas, centralista])
@@ -267,7 +267,7 @@ const EditRecepcionCctv = () => {
       ),
       observacion: actaSeleccionada.observacion,
     }
-    console.log(centralistaEditado, 'centralistaEditado')
+
     dispatch(crudPersonalActaCctvAction(centralistaEditado))
 
     setCentralistas(
@@ -295,7 +295,6 @@ const EditRecepcionCctv = () => {
       observacion: actaSeleccionada.observacion,
     }
 
-    console.log(centralistaEliminado, 'centralistaEliminado')
     dispatch(crudPersonalActaCctvAction(centralistaEliminado))
 
     setCentralistas(centralistas.filter(c => c !== centralistaSeleccionado))
@@ -321,7 +320,7 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
-    console.log(newNovedad, 'newNovedad')
+
     dispatch(createNovedadCctvAction(newNovedad))
     setNovedades([
       ...novedades,
@@ -346,7 +345,7 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
-    console.log(novedadEditada, 'novedadEditada')
+
     dispatch(updateNovedadCCTVAction(novedadEditada))
     setNovedades(
       novedades.map(n =>
@@ -387,7 +386,7 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: novedad,
     }
-    console.log(novedadEditada, 'novedadEditada')
+
     dispatch(updateNovedadCCTVAction(novedadEditada))
     setNovedades(
       novedades.map(n =>
@@ -412,7 +411,7 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: novedad,
     }
-    console.log(novedadCerrada, 'novedadCerrada')
+
     dispatch(cerrarNovedadCCTVAction(novedadCerrada))
     setNovedades(
       novedades.map(n =>
@@ -448,7 +447,7 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: consigna,
     }
-    console.log(newConsigna, 'newConsigna')
+
     dispatch(createConsignaCctvAction(newConsigna))
     setConsignas([
       ...consignas,
@@ -464,7 +463,6 @@ const EditRecepcionCctv = () => {
   }
 
   const handleOpenEditarConsigna = consigna => {
-    console.log(consigna, 'consigna')
     setOpenModalEditarConsigna(true)
     setConsignaSeleccionada(consigna)
     setObservacionConsignaSeleccionada(consigna.obs_creacion)
@@ -483,7 +481,7 @@ const EditRecepcionCctv = () => {
       obs_cierre: consignaSeleccionada.obs_cierre,
       estado: consignaSeleccionada.estado,
     }
-    console.log(consignaEditada, 'consignaEditada')
+
     dispatch(updateConsignaCCTVAction(consignaEditada))
     setConsignas(
       consignas.map(c =>
@@ -524,7 +522,7 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: consigna,
     }
-    console.log(consignaEditada, 'consignaEditada')
+
     dispatch(updateConsignaCCTVAction(consignaEditada))
     setNovedades(
       consignas.map(c =>
@@ -549,7 +547,6 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: consigna,
     }
-    console.log(consignaCerrada, 'consignaCerrada')
     dispatch(cerrarConsignacCctvAction(consignaCerrada))
     setConsignas(
       consignas.map(c =>
@@ -600,7 +597,6 @@ const EditRecepcionCctv = () => {
       username: operador.username,
       nombre_saliente: `${operador.first_name} ${operador.last_name}`,
     }
-    console.log(operadorCierre, 'operadorCierre')
 
     dispatch(cerrarInformeCctv(operadorCierre))
   }
@@ -638,7 +634,7 @@ const EditRecepcionCctv = () => {
               className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86.5rem] py-2'
             >
               <div className='flex justify-between mb-2 mx-10'>
-                <img src={logo} className='h-14' alt='logo'/>
+                <img src={logo} className='h-14' alt='logo' />
                 <h2 className='font-bold text-lg'>
                   ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
                 </h2>

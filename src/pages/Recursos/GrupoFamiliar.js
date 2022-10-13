@@ -42,7 +42,6 @@ const GrupoFamiliar = () => {
   const allFamiliarData = useSelector(state => state.recursos.allFamiliares)
 
   const handleEditarGrupoFamiliar = grupoFamiliar => {
-    console.log(itemEditar, 'itemEditar')
     const familiarActualizado = {
       ...grupoFamiliar,
       id: itemEditar.id,
@@ -64,7 +63,7 @@ const GrupoFamiliar = () => {
   const handleOpenEditFamilyModal = itemEditar => {
     setOpenEditFamiliarModal(true)
     setItemEditarFamily(itemEditar)
-    console.log(itemEditar, 'itemEditar')
+
     dispatch(getGrupoFamiliarByIdAction(itemEditar.id_ejecutivo))
   }
 

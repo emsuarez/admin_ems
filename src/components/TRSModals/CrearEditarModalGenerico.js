@@ -19,7 +19,6 @@ const CrearEditarModalGenerico = ({
   }, [itemSeleccionado])
 
   const handleEjectAndClean = () => {
-    console.log(nuevoValor, 'nuevoValor')
     handleAction(nuevoValor)
     setNuevoValor('')
   }

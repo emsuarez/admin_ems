@@ -112,7 +112,6 @@ const HistorialMovimiento = () => {
   }
 
   const handleOpenDeleteEvento = itemEliminar => {
-    console.log(itemEliminar, 'itemEliminar')
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
   }
@@ -123,7 +122,7 @@ const HistorialMovimiento = () => {
 
   const handleDeleteEvento = acta => {
     // dispatch(deleteInformeTRSAction({ id: acta.id }))
-    console.log(acta, 'acta')
+
     setOpenDeleteModal(false)
   }
 
@@ -131,7 +130,6 @@ const HistorialMovimiento = () => {
     const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd')
     const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd')
 
-    console.log(ejecutivo, 'ejecutivo')
     if (ejecutivo === '0') {
       dispatch(getHistorialMovimientosAction())
     } else {

@@ -83,12 +83,7 @@ const FormCrearEvento = ({
       hora_llegada: new Date(horaLlegada),
       observacion: observacion,
     }
-    console.log(
-      protectores.results.find(
-        protectorItem => protectorItem.id === Number(protector)
-      )
-    )
-    console.log(nuevoEvento)
+
     handleAction(nuevoEvento)
   }
 

@@ -24,7 +24,6 @@ export function obtenerConsignasCCTVAction(
       progress.finish()
       dispatch(comenzarDescargaConsignasCCTVExitosa(respuesta.data))
     } catch (error) {
-      console.log(error, 'DESCARGA CONSIGNAS CCTV ERROR')
       dispatch(comenzarDescargaConsignasCCTVError(true))
     }
   }
@@ -61,7 +60,6 @@ export function obtenerConsignasTRSAction(
       progress.finish()
       dispatch(comenzarDescargaConsignasTRSExitosa(respuesta.data))
     } catch (error) {
-      console.log(error, 'DESCARGA CONSIGNAS TRS ERROR')
       dispatch(comenzarDescargaConsignasTRSError(true))
     }
   }
@@ -97,7 +95,6 @@ export function obtenerConsignasGrafica(id) {
       dispatch(comenzarDescargaConsignasGraficaExitosa(result))
       progress.finish()
     } catch (error) {
-      console.log(error, 'DESCARGA CONSIGNAS GRAFICA ERROR')
       dispatch(comenzarDescargaConsignasGraficaError(true))
       progress.finish()
     }
@@ -125,7 +122,6 @@ export function cerrarConsignacTrsAction(consignaTrs, observacionCierre) {
     try {
       dispatch(obtenerConsignaTrsCerrar(consignaTrs))
       progress.start()
-      console.log(consignaTrs, 'CONSIGNACERRARCTRS')
       const token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
 
@@ -141,7 +137,6 @@ export function cerrarConsignacTrsAction(consignaTrs, observacionCierre) {
       dispatch(cerrarConsignaTrsExitosa())
       progress.finish()
     } catch (error) {
-      console.log(error, 'CERRAR CONSIGNAS TRS ERROR')
       dispatch(cerrarConsignaTrsError(true))
       progress.finish()
     }
@@ -167,7 +162,6 @@ export function cerrarConsignacCctvAction(consignaCctv, observacionCierre) {
     try {
       dispatch(obtenerConsignaCctvCerrar(consignaCctv))
       progress.start()
-      console.log(consignaCctv, 'CONSIGNACERRARCCTV')
       const token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const consignaCerrar = {
@@ -180,7 +174,6 @@ export function cerrarConsignacCctvAction(consignaCctv, observacionCierre) {
       dispatch(cerrarConsignaCctvExitosa())
       progress.finish()
     } catch (error) {
-      console.log(error, 'CERRAR CONSIGNAS CCTV ERROR')
       dispatch(cerrarConsignaCctvError(true))
       progress.finish()
     }
@@ -217,7 +210,6 @@ export function obtenerNovedadesCCTVAction(
       dispatch(obtenerNovedadesCCTVExitosa(result))
       progress.finish()
     } catch (error) {
-      console.log(error, 'DESCARGA NOVEDADES CCTV ERROR')
       dispatch(obtenerNovedadesCCTVError(true))
       progress.finish()
     }
@@ -243,7 +235,6 @@ export function obtenerNovedadesTRSAction(
 ) {
   return async dispatch => {
     try {
-      console.log(enlacePaginacion, 'ENLACE PAGINACION')
       dispatch(comenzarDescargaNovedadesTRS())
       progress.start()
       let token = window.localStorage.getItem('token')
@@ -255,7 +246,6 @@ export function obtenerNovedadesTRSAction(
       dispatch(comenzarDescargaNovedadesTRSExitosa(respuesta.data))
       progress.finish()
     } catch (error) {
-      console.log(error, 'DESCARGA NOVEDADES TRS ERROR')
       dispatch(comenzarDescargaNovedadesTRSError(true))
     }
   }

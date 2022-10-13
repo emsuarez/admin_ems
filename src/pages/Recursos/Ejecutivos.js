@@ -74,7 +74,6 @@ const Ejecutivos = () => {
   const handleOpenEditFamilyModal = itemEditar => {
     setOpenEditFamiliarModal(true)
     setItemEditarFamily(itemEditar)
-    console.log(itemEditar, 'itemEditar')
     dispatch(getGrupoFamiliarByIdAction(itemEditar.id))
   }
 

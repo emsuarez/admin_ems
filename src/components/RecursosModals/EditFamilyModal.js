@@ -51,7 +51,7 @@ const EditFamilyModal = ({
       id: itemEditar.id,
       id_ejecutivo: itemEditar.id_ejecutivo,
     }
-    console.log(familiarActualizado, 'familiarActualizado')
+
     dispatch(UpdateFamiliarAction(familiarActualizado))
     setOpenEditModal(false)
   }

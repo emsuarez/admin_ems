@@ -9,7 +9,6 @@ import { format } from 'date-fns'
 
 // define a generatePDF function that accepts a tickets argument
 const controlMovimientoReportPDF = historialControlMovimiento => {
-  console.log(historialControlMovimiento, 'controlMovimiento')
   // initialize jsPDF
   const doc = new jsPDF()
 

@@ -64,7 +64,7 @@ const Usuarios = ({ item }) => {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
-        className='-ml-4'
+        className='-ml-4 mt-1.5'
       >
         <MenuItem
           onClick={() => {

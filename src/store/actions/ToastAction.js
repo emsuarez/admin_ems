@@ -9,9 +9,7 @@ export const setToast = (status, message) => dispatch => {
         message,
       },
     })
-  } catch (error) {
-    // console.log('error',error)
-  }
+  } catch (error) {}
 }
 
 export const clearToast = () => dispatch => {

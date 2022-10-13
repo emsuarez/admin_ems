@@ -230,7 +230,6 @@ export const getGrupoFamiliarByIdAction = data => async dispatch => {
     } else {
       urlGet = `/familiar/?id_ejecutivo=${data}`
     }
-    console.log(urlGet, 'urlGet')
 
     const response = await httpRequest.get(urlGet, {
       headers: {
@@ -264,7 +263,6 @@ export const createNewFamiliarAction = data => async dispatch => {
       headers: { Authorization: Token, 'content-type': 'multipart/form-data' },
     })
     const result = response.data
-    console.log(result, ' result grupo familiar')
 
     dispatch({
       type: types.POST_GRUPOFAMILIAR_SUCCESS,
@@ -573,7 +571,6 @@ export const getVehiculoEjecutivoAction =
         },
       })
       const result = response.data
-      console.log(result, 'vehiculo')
       dispatch({ type: types.GET_VEHICULOEJECUTIVO_SUCCESS, payload: result })
       progress.finish()
     } catch (error) {

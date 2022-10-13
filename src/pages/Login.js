@@ -17,7 +17,6 @@ const Login = props => {
     tipo = window.localStorage.getItem('tipo')
 
     if (token) {
-      console.log('TOKEN ', token, 'Tipo', tipo)
       switch (tipo) {
         case '1':
           navigate('/dashboard') //admin

@@ -44,8 +44,6 @@ const ViewRecepcion = () => {
       setAgenteEntrante(dataInformeActual.agente_entrante || '')
     }
     obtenerInfoVista()
-    console.log(dataInformeActual, 'dataInformeActual')
-    console.log(location.state, 'location.state')
   }, [dataInformeActual])
 
   const handleSalir = () => {
@@ -55,8 +53,6 @@ const ViewRecepcion = () => {
   const handleInformeAnterior = () => {
     dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=0`))
     setDataInformeActual(informeActual.results[0])
-
-    console.log(informeActual.results[0], 'dataInformeActual PREVIOUS')
   }
 
   const informeActual = useSelector(state => state.informes.informesTrs)
@@ -65,8 +61,6 @@ const ViewRecepcion = () => {
     dispatch(getInformeTrs(`/informetrs/?id=${dataInformeActual.id}&next=1`))
 
     setDataInformeActual(informeActual.results[0])
-
-    console.log(informeActual.results[0], 'dataInformeActual NEXT')
   }
 
   return (

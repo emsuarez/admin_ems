@@ -111,7 +111,6 @@ const ControlMovimiento = () => {
   }
 
   const handleOpenDeleteEvento = itemEliminar => {
-    console.log(itemEliminar, 'itemEliminar')
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
   }
@@ -122,7 +121,7 @@ const ControlMovimiento = () => {
 
   const handleDeleteEvento = acta => {
     // dispatch(deleteInformeTRSAction({ id: acta.id }))
-    console.log(acta, 'acta')
+
     setOpenDeleteModal(false)
   }
 

@@ -54,18 +54,15 @@ const RecepcionTurno = () => {
   }
 
   const handleOpenViewInforme = informe => {
-    console.log(informe)
     navigate('/viewrecepcion', { state: informe })
   }
 
   const handleOpenEditInforme = informe => {
-    console.log(informe)
     navigate('/editrecepcion')
     dispatch(getInformeTrsById(informe))
   }
 
   const handleOpenDeleteActa = itemEliminar => {
-    console.log(itemEliminar, 'itemEliminar')
     setOpenDeleteModal(true)
     setItemEliminar(itemEliminar)
   }
@@ -76,7 +73,6 @@ const RecepcionTurno = () => {
 
   const handleDeleteActa = acta => {
     dispatch(deleteInformeTRSAction({ id: acta.id }))
-    console.log(acta, 'acta')
     setOpenDeleteModal(false)
   }
 

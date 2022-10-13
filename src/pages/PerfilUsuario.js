@@ -35,7 +35,7 @@ const PerfilUsuario = () => {
 
   const handleImage = e => {
     const [file] = e.target.files
-    console.log(e.target.files[0], 'Archivo cargado')
+
     setImagenNueva(e.target.files[0])
     setImagenSeleccionada(URL.createObjectURL(file))
   }
@@ -51,7 +51,6 @@ const PerfilUsuario = () => {
       // imagen: imagenNueva ? imagenNueva : usuarioState.imagen,
       imagen: imagenNueva ? imagenNueva : null,
     }
-    console.log(usuario)
 
     dispatch(updateUserInfoAction(usuario))
     setNuevoUsuario(usuario)

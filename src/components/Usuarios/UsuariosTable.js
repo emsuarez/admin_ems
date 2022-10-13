@@ -93,13 +93,11 @@ const UsuariosTable = ({
 
   const handleImage = (e, usuario) => {
     const [file] = e.target.files
-    console.log(e.target.files[0], 'Archivo cargado')
+
     setImagenNueva(e.target.files[0])
     setImagenSeleccionada(URL.createObjectURL(file))
     setOpenModal(true)
     setUsuarioSeleccionado(usuario)
-
-    console.log(imagenSeleccionada, 'Imagen seleccionada')
   }
 
   const handleImageSubmit = () => {
@@ -111,7 +109,7 @@ const UsuariosTable = ({
       tipo: usuarioSeleccionado.tipo,
       imagen: imagenNueva,
     }
-    console.log(usuario, 'Usuario')
+
     dispatch(updateUserInfoAction(usuario))
     setOpenModal(false)
   }
