@@ -115,7 +115,7 @@ const RecepcionTurnoCctv = () => {
                         className:
                           ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                       }}
-                      // label='Date Time picker'
+                      inputFormat='DD/MM/YYYY'
                       value={fechaInicial}
                       onChange={fInicial => setFechaInicial(fInicial)}
                       renderInput={params => (
@@ -145,7 +145,7 @@ const RecepcionTurnoCctv = () => {
                         className:
                           ' border-[1px] border-neutral-300 pl-2 rounded-md py-2 w-80 focus:border-blue-800 outline-none',
                       }}
-                      // label='Date Time picker'
+                      inputFormat='DD/MM/YYYY'
                       value={fechaFinal}
                       onChange={fFinal => setFechaFinal(fFinal)}
                       renderInput={params => (
