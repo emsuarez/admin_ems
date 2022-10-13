@@ -742,10 +742,16 @@ export const getPersonalInformeCctv = () => {
       })
 
       const result = respuesta.data
-
+      console.log(result)
       const personal = {
-        protectores: result.lista.protectores.split(','),
-        centralistas: result.lista.centralistas.split(','),
+        protectores:
+          result.lista.protectores !== null
+            ? result.lista.protectores.split(',')
+            : [],
+        centralistas:
+          result.lista.centralistas !== null
+            ? result.lista.centralistas.split(',')
+            : [],
       }
       dispatch({
         type: types.GET_PERSONAL_INFORMECCTV_SUCCESS,

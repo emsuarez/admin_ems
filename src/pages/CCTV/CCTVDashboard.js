@@ -7,10 +7,8 @@ import {
   LineChart,
   RedirectWithoutLogin,
 } from '../../components'
-import AlertCerrarConsigna from '../../components/alerts/AlertCerrarConsigna'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
 import {
-  cerrarConsignacCctvAction,
   getPersonalInformeCctv,
   obtenerConsignasCCTVAction,
   obtenerConsignasGrafica,
@@ -27,14 +25,11 @@ const CCTVDashboard = () => {
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
 
-  const cargarConsignas = () => {
+  const cargarConsignas = () => {}
+  useEffect(() => {
+    dispatch(getPersonalInformeCctv())
     dispatch(obtenerConsignasCCTVAction())
     dispatch(obtenerConsignasGrafica(idConsigna))
-  }
-  useEffect(() => {
-    const obtenerPersonal = () => dispatch(getPersonalInformeCctv())
-    obtenerPersonal()
-    cargarConsignas()
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
