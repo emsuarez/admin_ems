@@ -59,7 +59,10 @@ export default (state = initialState, { type, payload }) => {
           ...state.user,
           userData: {
             ...state.user.userData,
-            imagen: payload.imagen,
+            imagen:
+              payload.user_id === state.user.userData.user_id
+                ? payload.imagen
+                : state.user.userData.imagen,
           },
         },
       }
