@@ -32,6 +32,7 @@ const EditRecepcion = () => {
   const dispatch = useDispatch()
 
   const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
+
   const consignasNovedadesPendientes = useSelector(
     state => state.informes.consignasNovedadesPendientes
   )
@@ -89,14 +90,17 @@ const EditRecepcion = () => {
     useState(false)
 
   const tipo = window.localStorage.getItem('tipo')
+
+  const [personalSeleccionable, setPersonalSeleccionable] = useState([])
   //#endregion
 
   const protectoresState = useSelector(state => state.recursos.allProtectores)
+  const usuariosState = useSelector(state => state.auth.allUsers)
   useEffect(() => {
     const obtenerInfoVista = () => {
+      dispatch(getAllProtectoresAction())
+      dispatch(getAllUsersReportAction())
       if (actaSeleccionada) {
-        dispatch(getAllProtectoresAction())
-
         if (Object.keys(actaSeleccionada).length > 0) {
           setProtectores(
             actaSeleccionada.protectores !== null
@@ -142,8 +146,27 @@ const EditRecepcion = () => {
     }
 
     obtenerInfoVista()
-    dispatch(getAllUsersReportAction())
   }, [actaSeleccionada])
+
+  useEffect(() => {
+    if (protectoresState && usuariosState) {
+      const nuevoProtectores = protectoresState.results.map(persona => {
+        return {
+          id: persona.id + new Date().getTime(),
+          nombres: persona.nombres,
+        }
+      })
+      const nuevoUsuarios = usuariosState.results.map(usuario => {
+        return {
+          id: usuario.user_id + new Date().getTime(),
+          nombres: `${usuario.first_name} ${usuario.last_name}`,
+        }
+      })
+      const personalCompleto = [...nuevoProtectores, ...nuevoUsuarios]
+      console.log(personalCompleto, 'personal completo')
+      setPersonalSeleccionable(personalCompleto)
+    }
+  }, [])
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
@@ -659,15 +682,17 @@ const EditRecepcion = () => {
                     <button onClick={handleOpenAgregarProtector}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='agregarProtector'
-                      openModal={openModalAgregarProtector}
-                      handleClose={handleCloseAgregarProtector}
-                      tituloModal='Crear personal de Protección Guardia'
-                      descripcionModal='A continuación seleccione el nombre del agente:'
-                      handleAction={handleAgregarProtector}
-                      dataSeleccionable={protectoresState}
-                    />
+                    {openModalAgregarProtector && (
+                      <CrearEditarModalGenerico
+                        tipoModal='agregarProtector'
+                        openModal={openModalAgregarProtector}
+                        handleClose={handleCloseAgregarProtector}
+                        tituloModal='Crear personal de Protección Guardia'
+                        descripcionModal='A continuación seleccione el nombre del agente:'
+                        handleAction={handleAgregarProtector}
+                        dataSeleccionable={personalSeleccionable}
+                      />
+                    )}
                   </div>
 
                   <div>
@@ -748,15 +773,17 @@ const EditRecepcion = () => {
                     <button onClick={handleOpenAgregarCentralista}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='agregarTrabajador'
-                      openModal={openModalAgregarCentralista}
-                      handleClose={handleCloseAgregarCentralista}
-                      tituloModal='Crear personal de Trabajo'
-                      descripcionModal='A continuación seleccione el nombre del agente:'
-                      handleAction={handleAgregarCentralista}
-                      dataSeleccionable={protectoresState}
-                    />
+                    {openModalAgregarCentralista && (
+                      <CrearEditarModalGenerico
+                        tipoModal='agregarTrabajador'
+                        openModal={openModalAgregarCentralista}
+                        handleClose={handleCloseAgregarCentralista}
+                        tituloModal='Crear personal de Trabajo'
+                        descripcionModal='A continuación seleccione el nombre del agente:'
+                        handleAction={handleAgregarCentralista}
+                        dataSeleccionable={personalSeleccionable}
+                      />
+                    )}
                   </div>
                   <div>
                     <ol style={{ listStyleType: 'number' }} className='pl-6'>

@@ -157,7 +157,8 @@ export const crudPersonalActaAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CRUD_PERSONAL_ACTA_SUCCESS, payload: result })
+      console.log('data', data)
+      dispatch({ type: types.CRUD_PERSONAL_ACTA_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {

@@ -64,7 +64,7 @@ const CrearEditarModalGenerico = ({
                       >
                         <option value='0'>Seleccione un Protector</option>
                         {Object.keys(dataSeleccionable).length > 0
-                          ? dataSeleccionable.results.map(prot => (
+                          ? dataSeleccionable.map(prot => (
                               <option key={prot.id} value={prot.alias}>
                                 {prot.nombres}
                               </option>
@@ -80,7 +80,7 @@ const CrearEditarModalGenerico = ({
                       >
                         <option value='0'>Seleccione un Trabajador</option>
                         {Object.keys(dataSeleccionable).length > 0
-                          ? dataSeleccionable.results.map(prot => (
+                          ? dataSeleccionable.map(prot => (
                               <option key={prot.id} value={prot.alias}>
                                 {prot.nombres}
                               </option>
