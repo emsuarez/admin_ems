@@ -11,6 +11,8 @@ const initialState = {
   personalInformeTrs: {},
   consignasNovedadesPendientes: {},
   actaSeleccionada: {},
+  idInformeCreado: null,
+  novedadesTrs: [],
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -31,7 +33,7 @@ export default (state = initialState, { type, payload }) => {
 
     case types.GET_INFORMETRS_BY_ID_START:
     case types.GET_INFORMECCTV_BY_ID_START:
-      return { ...state, isLoading: true }
+      return { ...state, isLoading: true, actaSeleccionada: {} }
 
     case types.GET_INFORMETRS_BY_ID_SUCCESS:
     case types.GET_INFORMECCTV_BY_ID_SUCCESS:
@@ -39,7 +41,7 @@ export default (state = initialState, { type, payload }) => {
 
     case types.GET_INFORMETRS_BY_ID_FAILED:
     case types.GET_INFORMECCTV_BY_ID_FAILED:
-      return { ...state, isLoading: false }
+      return { ...state, isLoading: false, actaSeleccionada: {} }
 
     case types.DELETE_INFORMETRS_START:
       return { ...state, isLoading: true, actaSeleccionada: payload }
@@ -87,11 +89,10 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesTrs: {
-          ...state.informesTrs,
-          results: state.informesTrs.results.map(dato =>
-            dato.id === payload.id ? payload : dato
-          ),
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          protectores: payload.protectores,
+          centralistas: payload.centralistas,
         },
       }
 
@@ -119,9 +120,9 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesTrs: {
-          ...state.informesTrs,
-          results: [payload, ...state.informesTrs.results],
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          trsnovedad: [...state.actaSeleccionada.trsnovedad, payload],
         },
       }
 
@@ -147,9 +148,9 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesTrs: {
-          ...state.informesTrs,
-          results: [payload, ...state.informesTrs.results],
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          trsconsigna: [...state.actaSeleccionada.trsconsigna, payload],
         },
       }
 
@@ -388,6 +389,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
+        idInformeCreado: payload,
         // informesTrs: {
         //   ...state.informesTrs,
         //   results: [payload, ...state.informesTrs.results],
@@ -395,7 +397,16 @@ export default (state = initialState, { type, payload }) => {
       }
 
     case types.POST_INFORMETRS_FAILED:
-      return { ...state, isLoading: false }
+      return { ...state, isLoading: false, idInformeCreado: null }
+
+    // case types.GET_NOVEDADESTRS_BY_ID_START:
+    //   return { ...state, isLoading: true }
+
+    // case types.GET_NOVEDADESTRS_BY_ID_SUCCESS:
+    //   return { ...state, isLoading: false, novedadesTrs: payload }
+
+    // case types.GET_NOVEDADESTRS_BY_ID_FAILED:
+    //   return { ...state, isLoading: false }
 
     case types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_START:
       return { ...state, isLoading: true }

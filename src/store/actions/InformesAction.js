@@ -32,20 +32,33 @@ export const getInformeTrs = (enlacePaginacion = '/informetrs/') => {
   }
 }
 
-export const getInformeTrsById = informeActual => {
+export const getInformeTrsById = idInformeActual => {
   return async dispatch => {
     try {
       progress.start()
+
       dispatch({ type: types.GET_INFORMETRS_BY_ID_START })
+
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(
+        `/informetrs/?id=${idInformeActual}`,
+        {
+          headers: { Authorization: Token },
+        }
+      )
+
+      const result = respuesta.data
 
       dispatch({
         type: types.GET_INFORMETRS_BY_ID_SUCCESS,
-        payload: informeActual,
+        payload: result.results[0],
       })
+
       progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_INFORMETRS_BY_ID_FAILED, payload: true })
-      dispatch(setToast('error', error.message))
+      dispatch(setToast('error', 'SysError_GET:' + error.message))
       progress.finish()
     }
   }
@@ -199,7 +212,7 @@ export const createNovedadTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.CREATE_NOVEDADTRS_START, payload: data })
+      dispatch({ type: types.CREATE_NOVEDADTRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.post('/novedadtrs/', data, {
@@ -210,8 +223,12 @@ export const createNovedadTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CREATE_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch({
+        type: types.CREATE_NOVEDADTRS_SUCCESS,
+        payload: { ...data, id: result.id },
+      })
       dispatch(setToast('success', result.message))
+      console.log(result, 'result nov trs')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CREATE_NOVEDADTRS_FAILED, payload: true })
@@ -409,7 +426,7 @@ export const createConsignaTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.CREATE_CONSIGNATRS_START, payload: data })
+      dispatch({ type: types.CREATE_CONSIGNATRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.post('/consignatrs/', data, {
@@ -420,8 +437,12 @@ export const createConsignaTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CREATE_CONSIGNATRS_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Consigna ingresada correctamente'))
+      dispatch({
+        type: types.CREATE_CONSIGNATRS_SUCCESS,
+        payload: { ...data, id: result.id },
+      })
+      dispatch(setToast('success', result.message))
+      console.log(result, 'result AGREGAR CONSIGNA')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CREATE_CONSIGNATRS_FAILED, payload: true })
@@ -958,23 +979,8 @@ export const postInformeTrs = data => {
 
       const resultado = respuesta.data
 
-      dispatch({ type: types.POST_INFORMETRS_SUCCESS, payload: data })
+      dispatch({ type: types.POST_INFORMETRS_SUCCESS, payload: resultado.id })
       dispatch(setToast('success', resultado.message))
-
-      const response = await httpRequest.get(
-        '/informetrs/?id=' + resultado.id,
-        {
-          headers: { Authorization: Token },
-        }
-      )
-
-      const result = response.data
-
-      dispatch({
-        type: types.GET_INFORMETRS_BY_ID_SUCCESS,
-        payload: result.results[0],
-      })
-
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_INFORMETRS_FAILED, payload: true })
@@ -1033,6 +1039,35 @@ export const cerrarInformeTrs = data => {
     }
   }
 }
+
+// export const getNovedadesTrsById = id => {
+//   return async dispatch => {
+//     try {
+//       progress.start()
+//       dispatch({ type: types.GET_NOVEDADESTRS_BY_ID_START })
+//       let token = window.localStorage.getItem('token')
+//       const Token = 'Token ' + token
+//       const respuesta = await httpRequest.get('/novedadestransito/?id=' + id, {
+//         headers: { Authorization: Token },
+//       })
+
+//       const result = respuesta.data
+
+//       dispatch({
+//         type: types.GET_NOVEDADESTRS_BY_ID_SUCCESS,
+//         payload: result.results[0],
+//       })
+
+//       progress.finish()
+//     } catch (error) {
+//       dispatch({ type: types.GET_NOVEDADESTRS_BY_ID_FAILED, payload: true })
+//       dispatch(setToast('error', error.message))
+//       progress.finish()
+//     }
+
+//     progress.finish()
+//   }
+// }
 
 export const getNovedadesConsignasTrsPendientes = () => {
   return async dispatch => {

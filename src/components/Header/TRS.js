@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
 import {
@@ -21,8 +21,11 @@ const TRS = ({ item }) => {
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [subMenu, setSubMenu] = useState()
+
+  const idInforme = useSelector(states => states.informes.idInformeCreado)
   const open = Boolean(anchorEl)
   const openSubMenu = Boolean(subMenu)
+
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
   }
@@ -49,14 +52,16 @@ const TRS = ({ item }) => {
   const handleNuevoInformeDiurno = () => {
     dispatch(postInformeTrs(1))
     setOpenModalCrearActaDiurna(false)
-    dispatch(getNovedadesConsignasTrsPendientes())
-    navigate('/editrecepcion')
+    if (idInforme) {
+      navigate('/editrecepcion', { state: idInforme })
+    }
   }
   const handleNuevoInformeNocturno = () => {
     dispatch(postInformeTrs(0))
     setOpenModalCrearActaNocturna(false)
-    dispatch(getNovedadesConsignasTrsPendientes())
-    navigate('/editrecepcion')
+    if (idInforme) {
+      navigate('/editrecepcion', { state: idInforme })
+    }
   }
   return (
     <div>

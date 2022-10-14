@@ -5,14 +5,14 @@ import {
   ICONS,
   RecepcionTurnoTable,
   RedirectWithoutLogin,
-  TRSAuthorized
+  TRSAuthorized,
 } from '../../components'
 
 import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeTrs,
-  getInformeTrsById
+  getInformeTrsById,
 } from '../../store/actions'
 
 import { format } from 'date-fns'
@@ -57,8 +57,9 @@ const RecepcionTurno = () => {
   }
 
   const handleOpenEditInforme = informe => {
-    navigate('/editrecepcion')
-    dispatch(getInformeTrsById(informe))
+    console.log(informe, 'informe')
+    navigate('/editrecepcion', { state: informe.id })
+    // dispatch(getInformeTrsById(informe))
   }
 
   const handleOpenDeleteActa = itemEliminar => {

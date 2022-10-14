@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
@@ -20,22 +20,20 @@ import {
   deleteNovedadTRSAction,
   getAllProtectoresAction,
   getAllUsersReportAction,
+  getInformeTrsById,
   getInformeTrsNavegacion,
-  getProtectoresAction,
+  getNovedadesConsignasTrsPendientes,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
 } from '../../store/actions'
 import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
+import ConsignasNovedades from '../Informes/ConsignasNovedades'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
 
-  const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
-
-  const consignasNovedadesPendientes = useSelector(
-    state => state.informes.consignasNovedadesPendientes
-  )
   // #region STATE_INICIAL
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
@@ -94,12 +92,24 @@ const EditRecepcion = () => {
   const [personalSeleccionable, setPersonalSeleccionable] = useState([])
   //#endregion
 
+  const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
+
+  const consignasNovedadesPendientes = useSelector(
+    state => state.informes.consignasNovedadesPendientes
+  )
+
   const protectoresState = useSelector(state => state.recursos.allProtectores)
   const usuariosState = useSelector(state => state.auth.allUsers)
+  const novedadesState = useSelector(state => state.informes.novedadesState)
+
   useEffect(() => {
+    dispatch(getInformeTrsById(location.state))
+
+    dispatch(getNovedadesConsignasTrsPendientes())
+    dispatch(getAllProtectoresAction())
+    dispatch(getAllUsersReportAction())
+    console.log(actaSeleccionada, 'actaSeleccionada')
     const obtenerInfoVista = () => {
-      dispatch(getAllProtectoresAction())
-      dispatch(getAllUsersReportAction())
       if (actaSeleccionada) {
         if (Object.keys(actaSeleccionada).length > 0) {
           setProtectores(
@@ -117,28 +127,29 @@ const EditRecepcion = () => {
           fechaActual.setHours(0, 0, 0, 0)
           fechaActaSeleccionada.setHours(0, 0, 0, 0)
 
-          if (
-            consignasNovedadesPendientes.consignas &&
-            fechaActaSeleccionada.getTime() == fechaActual.getTime()
-          ) {
-            setConsignas([
-              ...consignasNovedadesPendientes.consignas,
-              ...actaSeleccionada.trsconsigna,
-            ])
-          } else {
-            setConsignas(actaSeleccionada.trsconsigna || [])
-          }
-          if (
-            consignasNovedadesPendientes.novedades &&
-            fechaActaSeleccionada.getTime() == fechaActual.getTime()
-          ) {
-            setNovedades([
-              ...consignasNovedadesPendientes.novedades,
-              ...actaSeleccionada.trsnovedad,
-            ])
-          } else {
-            setNovedades(actaSeleccionada.trsnovedad || [])
-          }
+          // if (
+          //   consignasNovedadesPendientes.consignas &&
+          //   fechaActaSeleccionada.getTime() == fechaActual.getTime()
+          // ) {
+          //   setConsignas([
+          //     ...consignasNovedadesPendientes.consignas,
+          //     ...actaSeleccionada.trsconsigna,
+          //   ])
+          // } else {
+          setConsignas(actaSeleccionada.trsconsigna || [])
+          // }
+
+          // if (
+          //   consignasNovedadesPendientes.novedades &&
+          //   fechaActaSeleccionada.getTime() == fechaActual.getTime()
+          // ) {
+          //   setNovedades([
+          //     ...consignasNovedadesPendientes.novedades,
+          //     ...actaSeleccionada.trsnovedad,
+          //   ])
+          // } else {
+          setNovedades(actaSeleccionada.trsnovedad || [])
+          // }
           setAgenteSaliente(actaSeleccionada.agente_saliente || '')
           setAgenteEntrante(actaSeleccionada.agente_entrante || '')
         }
@@ -146,27 +157,28 @@ const EditRecepcion = () => {
     }
 
     obtenerInfoVista()
-  }, [actaSeleccionada])
+  }, [])
 
   useEffect(() => {
     if (protectoresState && usuariosState) {
-      const nuevoProtectores = protectoresState.results.map(persona => {
+      const nuevoProtectores = protectoresState.results?.map(persona => {
         return {
           id: persona.id + new Date().getTime(),
           nombres: persona.nombres,
         }
       })
-      const nuevoUsuarios = usuariosState.results.map(usuario => {
+      const nuevoUsuarios = usuariosState.results?.map(usuario => {
         return {
           id: usuario.user_id + new Date().getTime(),
           nombres: `${usuario.first_name} ${usuario.last_name}`,
         }
       })
+
       const personalCompleto = [...nuevoProtectores, ...nuevoUsuarios]
-      console.log(personalCompleto, 'personal completo')
+
       setPersonalSeleccionable(personalCompleto)
     }
-  }, [])
+  }, [protectoresState, usuariosState])
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
@@ -333,13 +345,15 @@ const EditRecepcion = () => {
     const newNovedad = {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
+      fecha_obs_cierre: null,
+      obs_cierre: null,
+      created: new Date(),
+      estado: 1,
     }
 
     dispatch(createNovedadTRSAction(newNovedad))
-    setNovedades([
-      ...novedades,
-      { id: Date.now(), obs_creacion: novedad, created: new Date(), estado: 1 },
-    ])
+
+    setNovedades([...novedades, newNovedad])
   }
 
   const handleOpenEditarNovedad = novedad => {
@@ -456,20 +470,15 @@ const EditRecepcion = () => {
     const newConsigna = {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: consigna,
+      fecha_obs_cierre: null,
+      obs_cierre: null,
+      created: new Date(),
+      estado: 1,
     }
 
     dispatch(createConsignaTRSAction(newConsigna))
-    setConsignas([
-      ...consignas,
-      {
-        id: Date.now(),
-        created: new Date(),
-        estado: 1,
-        fecha_obs_cierre: null,
-        obs_cierre: null,
-        obs_creacion: consigna,
-      },
-    ])
+
+    setConsignas([...consignas, newConsigna])
   }
 
   const handleOpenEditarConsigna = consigna => {
@@ -661,13 +670,15 @@ const EditRecepcion = () => {
               <div className='flex justify-between px-20'>
                 <p className='font-semibold text-sm'>
                   CENTRAL DE OPERACIONES:{' '}
-                  {actaSeleccionada.turno === 1 ? 'DIURNO' : 'NOCTURNO'}
+                  {actaSeleccionada && actaSeleccionada.turno === 1
+                    ? 'DIURNO'
+                    : 'NOCTURNO'}
                   <span className='text-blue-800 ml-2'>{agenteSaliente}</span>
                 </p>
                 <p className='font-semibold text-sm'>
                   FECHA:{' '}
                   {actaSeleccionada.created &&
-                    format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
+                    actaSeleccionada.created.split(' ')[0]}
                 </p>
               </div>
 
@@ -874,122 +885,18 @@ const EditRecepcion = () => {
                       handleAction={handleAgregarNovedad}
                     />
                   </div>
-                  <div className='ml-4'>
-                    <ol>
-                      {novedades.map((novedad, index) => (
-                        <li key={index} className='my-1'>
-                          <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
-                            <div className='item1 col-span-2 border-b-2'>
-                              <div
-                                className={
-                                  novedad.estado === 1
-                                    ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
-                                    : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
-                                }
-                              >
-                                <span>Creado</span>
-                                <span>
-                                  {format(
-                                    new Date(novedad.created),
-                                    'dd/MM/yyyy'
-                                  )}
-                                </span>
-                                <span>
-                                  {format(new Date(novedad.created), 'HH:mm')}
-                                </span>
-                              </div>
-                            </div>
-                            <div className='item2 col-span-9 border-b-2 text-xs text-center'>
-                              {novedad.obs_creacion}
-                            </div>
-                            <div className='item3 border-b-2 border-l-2'>
-                              <div className='flex items-center flex-col'>
-                                {tipo === '1' && (
-                                  <>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarNovedad(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEliminarNovedad(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_eliminar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                  </>
-                                )}
+                  {novedades && novedades.length > 0 && (
+                    <ConsignasNovedades
+                      lista={novedades}
+                      handleOpenEditar={handleOpenEditarNovedad}
+                      handleOpenEliminar={handleOpenEliminarNovedad}
+                      handleOpenCerrarItem={handleOpenCerrarNovedad}
+                      handleOpenEditarItemCerrado={
+                        handleOpenEditarNovedadCerrada
+                      }
+                    />
+                  )}
 
-                                {novedad.obs_cierre === null && (
-                                  <button
-                                    onClick={() =>
-                                      handleOpenCerrarNovedad(novedad)
-                                    }
-                                    className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                  >
-                                    <Icon
-                                      svgName='ib_cerrar'
-                                      className='h-3 my-1'
-                                    />
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                            {novedad.obs_cierre && (
-                              <>
-                                <div className='item-4 col-span-2'>
-                                  <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
-                                    <span>Cerrado</span>
-                                    <span>
-                                      {format(
-                                        new Date(novedad.fecha_obs_cierre),
-                                        'dd/MM/yyyy'
-                                      )}
-                                    </span>
-                                    <span>
-                                      {format(
-                                        new Date(novedad.fecha_obs_cierre),
-                                        'HH:mm'
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className='item-5 col-span-9 text-xs text-center'>
-                                  {novedad.obs_cierre}
-                                </div>
-                                <div className='item-6 col-span-1 border-l-2'>
-                                  <div className='flex items-center flex-col mt-3'>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarNovedadCerrada(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                  </div>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
                   <CrearEditarModalGenerico
                     tipoModal='actualizarTextArea'
                     openModal={openModalEditarNovedad}
@@ -1045,125 +952,17 @@ const EditRecepcion = () => {
                       handleAction={handleAgregarConsigna}
                     />
                   </div>
-
-                  <div className='ml-4'>
-                    <ol>
-                      {consignas.map((consigna, index) => (
-                        <li key={index} className='my-1'>
-                          <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
-                            <div className='item1 col-span-2 border-b-2'>
-                              <div
-                                className={
-                                  consigna.estado === 1
-                                    ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
-                                    : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
-                                }
-                              >
-                                <span>Creado</span>
-                                <span>
-                                  {format(
-                                    new Date(consigna.created),
-                                    'dd/MM/yyyy'
-                                  )}
-                                </span>
-                                <span>
-                                  {format(new Date(consigna.created), 'HH:mm')}
-                                </span>
-                              </div>
-                            </div>
-                            <div className='item2 col-span-9 border-b-2 text-xs text-center'>
-                              {consigna.obs_creacion}
-                            </div>
-                            <div className='item3 border-b-2 border-l-2'>
-                              <div className='flex items-center flex-col '>
-                                {tipo === '1' && (
-                                  <>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarConsigna(consigna)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEliminarConsigna(consigna)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_eliminar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                  </>
-                                )}
-
-                                {consigna.obs_cierre === null && (
-                                  <button
-                                    onClick={() =>
-                                      handleOpenCerrarConsigna(consigna)
-                                    }
-                                    className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                  >
-                                    <Icon
-                                      svgName='ib_cerrar'
-                                      className='h-3 my-1'
-                                    />
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                            {consigna.obs_cierre && (
-                              <>
-                                <div className='item-4 col-span-2'>
-                                  <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
-                                    <span>Cerrado</span>
-                                    <span>
-                                      {format(
-                                        new Date(consigna.fecha_obs_cierre),
-                                        'dd/MM/yyyy'
-                                      )}
-                                    </span>
-                                    <span>
-                                      {format(
-                                        new Date(consigna.fecha_obs_cierre),
-                                        'HH:mm'
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className='item-5 col-span-9 text-xs text-center'>
-                                  {consigna.obs_cierre}
-                                </div>
-                                <div className='item-6 col-span-1 border-l-2'>
-                                  <div className='flex items-center flex-col mt-3'>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarConsignaCerrada(
-                                          consigna
-                                        )
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                  </div>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
+                  {consignas && consignas.length > 0 && (
+                    <ConsignasNovedades
+                      lista={consignas}
+                      handleOpenEditar={handleOpenEditarConsigna}
+                      handleOpenEliminar={handleOpenEliminarConsigna}
+                      handleOpenCerrarItem={handleOpenCerrarConsigna}
+                      handleOpenEditarItemCerrado={
+                        handleOpenEditarConsignaCerrada
+                      }
+                    />
+                  )}
                 </div>
                 <CrearEditarModalGenerico
                   tipoModal='actualizarTextArea'
