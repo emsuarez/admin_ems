@@ -36,9 +36,7 @@ export const getInformeTrsById = idInformeActual => {
   return async dispatch => {
     try {
       progress.start()
-
       dispatch({ type: types.GET_INFORMETRS_BY_ID_START })
-
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.get(
@@ -170,7 +168,7 @@ export const crudPersonalActaAction = data => {
       })
 
       const result = respuesta.data
-      console.log('data', data)
+
       dispatch({ type: types.CRUD_PERSONAL_ACTA_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
@@ -197,7 +195,7 @@ export const crudPersonalActaCctvAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CRUD_PERSONAL_ACTACCTV_SUCCESS, payload: result })
+      dispatch({ type: types.CRUD_PERSONAL_ACTACCTV_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -698,20 +696,31 @@ export const getInformeCctv = (enlacePaginacion = '/informecctv/') => {
   }
 }
 
-export const getInformeCctvById = informeActual => {
+export const getInformeCctvById = idInformeActual => {
   return async dispatch => {
     try {
       progress.start()
       dispatch({ type: types.GET_INFORMECCTV_BY_ID_START })
 
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.get(
+        `/informecctv/?id=${idInformeActual}`,
+        {
+          headers: { Authorization: Token },
+        }
+      )
+
+      const result = respuesta.data
+
       dispatch({
         type: types.GET_INFORMECCTV_BY_ID_SUCCESS,
-        payload: informeActual,
+        payload: result.results[0],
       })
       progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_INFORMECCTV_BY_ID_FAILED, payload: true })
-      dispatch(setToast('error', error.message))
+      dispatch(setToast('error', 'SysError_GET' + error.message))
       progress.finish()
     }
   }
@@ -1022,6 +1031,7 @@ export const cerrarInformeTrs = data => {
       dispatch({ type: types.CERRAR_INFORMETRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
+      console.log(data)
       const respuesta = await httpRequest.put('/informetrs/', data, {
         headers: { Authorization: Token },
       })

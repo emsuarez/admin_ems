@@ -100,11 +100,10 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesCctv: {
-          ...state.informesCctv,
-          results: state.informesCctv.results.map(dato =>
-            dato.id === payload.id ? payload : dato
-          ),
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          protectores: payload.protectores,
+          centralistas: payload.centralistas,
         },
       }
 
@@ -439,6 +438,7 @@ export default (state = initialState, { type, payload }) => {
       }
 
     case types.CERRAR_INFORMECCTV_START:
+    case types.CERRAR_INFORMETRS_START:
       return { ...state, isLoading: true }
 
     case types.CERRAR_INFORMECCTV_SUCCESS:
@@ -447,9 +447,23 @@ export default (state = initialState, { type, payload }) => {
         isLoading: false,
         actaSeleccionada: {
           ...state.actaSeleccionada,
-          agente_entrante: payload.nombre_saliente,
+          agente_entrante: payload.nombre_entrante,
         },
       }
+
+    case types.CERRAR_INFORMETRS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          agente_entrante: payload.nombre_entrante,
+        },
+      }
+
+    case types.CERRAR_INFORMECCTV_FAILED:
+    case types.CERRAR_INFORMETRS_FAILED:
+      return { ...state, isLoading: false }
 
     default:
       return state

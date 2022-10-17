@@ -425,7 +425,7 @@ const EditMovimiento = ({
                         {editarLugarSalida ? (
                           <>
                             <span className='font-semibold text-sm pr-4 w-40 '>
-                              Lugar salida:
+                              Lugar salida: 
                             </span>
                             {lugares && (
                               <select
@@ -438,7 +438,7 @@ const EditMovimiento = ({
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>
-                                        {lugar.lugar}
+                                        {lugar.alias}
                                       </option>
                                     ))
                                   : null}
@@ -537,7 +537,7 @@ const EditMovimiento = ({
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>
-                                        {lugar.lugar}
+                                        {lugar.alias}
                                       </option>
                                     ))
                                   : null}

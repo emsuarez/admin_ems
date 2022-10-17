@@ -5,7 +5,6 @@ import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 import CrearEditarModalGenerico from './CrearEditarModalGenerico'
 import EliminarModalGenerico from './EliminarModalGenerico'
 
-import { format } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux'
 import { useReactToPrint } from 'react-to-print'
 import Icon from '../../assets/Icon'
@@ -34,6 +33,11 @@ const EditRecepcion = () => {
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
+
+  const consignasNovedadesPendientes = useSelector(
+    state => state.informes.consignasNovedadesPendientes
+  )
   // #region STATE_INICIAL
   const [protectores, setProtectores] = useState([])
   const [centralistas, setCentralistas] = useState([])
@@ -92,23 +96,15 @@ const EditRecepcion = () => {
   const [personalSeleccionable, setPersonalSeleccionable] = useState([])
   //#endregion
 
-  const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
-
-  const consignasNovedadesPendientes = useSelector(
-    state => state.informes.consignasNovedadesPendientes
-  )
-
   const protectoresState = useSelector(state => state.recursos.allProtectores)
   const usuariosState = useSelector(state => state.auth.allUsers)
   const novedadesState = useSelector(state => state.informes.novedadesState)
 
   useEffect(() => {
     dispatch(getInformeTrsById(location.state))
-
     dispatch(getNovedadesConsignasTrsPendientes())
     dispatch(getAllProtectoresAction())
     dispatch(getAllUsersReportAction())
-    console.log(actaSeleccionada, 'actaSeleccionada')
     const obtenerInfoVista = () => {
       if (actaSeleccionada) {
         if (Object.keys(actaSeleccionada).length > 0) {
@@ -589,7 +585,7 @@ const EditRecepcion = () => {
     navigate(-1)
   }
 
-  const handleInformeAnterior = async () => {
+  const handleInformeAnterior = () => {
     dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 0))
   }
 
@@ -614,7 +610,8 @@ const EditRecepcion = () => {
     setOpenModalAgregarOperadorCierre(false)
     const operadorCierre = {
       id: actaSeleccionada.id,
-      username: operador,
+      username: operador.username,
+      nombre_saliente: `${operador.first_name} ${operador.last_name}`,
     }
 
     dispatch(cerrarInformeTrs(operadorCierre))
@@ -744,15 +741,17 @@ const EditRecepcion = () => {
                                   </button>
                                 </div>
                               </div>
-                              <CrearEditarModalGenerico
-                                tipoModal='actualizar'
-                                openModal={openModalEditarProtector}
-                                handleClose={handleCloseEditarProtector}
-                                tituloModal='Editar personal de Grupo de protección Guardia'
-                                descripcionModal='Edite el nombre del agente:'
-                                handleAction={handleEditarProtector}
-                                itemSeleccionado={protectorSeleccionado}
-                              />
+                              {openModalEditarProtector && (
+                                <CrearEditarModalGenerico
+                                  tipoModal='actualizar'
+                                  openModal={openModalEditarProtector}
+                                  handleClose={handleCloseEditarProtector}
+                                  tituloModal='Editar personal de Grupo de protección Guardia'
+                                  descripcionModal='Edite el nombre del agente:'
+                                  handleAction={handleEditarProtector}
+                                  itemSeleccionado={protectorSeleccionado}
+                                />
+                              )}
                             </li>
                           ))
                         ) : (
@@ -843,15 +842,18 @@ const EditRecepcion = () => {
                             <p>No se han registrado centralistas</p>
                           </li>
                         )}
-                        <CrearEditarModalGenerico
-                          tipoModal='actualizar'
-                          openModal={openModalEditarCentralista}
-                          handleClose={handleCloseEditarCentralista}
-                          tituloModal='Editar personal de Grupo de trabajo'
-                          descripcionModal='Edite el nombre del agente:'
-                          handleAction={handleEditarCentralista}
-                          itemSeleccionado={centralistaSeleccionado}
-                        />
+                        {openModalEditarCentralista && (
+                          <CrearEditarModalGenerico
+                            tipoModal='actualizar'
+                            openModal={openModalEditarCentralista}
+                            handleClose={handleCloseEditarCentralista}
+                            tituloModal='Editar personal de Grupo de trabajo'
+                            descripcionModal='Edite el nombre del agente:'
+                            handleAction={handleEditarCentralista}
+                            itemSeleccionado={centralistaSeleccionado}
+                          />
+                        )}
+
                         <EliminarModalGenerico
                           openModal={openModalEliminarCentralista}
                           handleClose={handleCloseEliminarCentralista}
@@ -876,14 +878,16 @@ const EditRecepcion = () => {
                     <button onClick={handleOpenAgregarNovedad}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='crearTextArea'
-                      openModal={openModalAgregarNovedad}
-                      handleClose={handleCloseAgregarNovedad}
-                      tituloModal='Crear Novedad Especial'
-                      descripcionModal='A continuación escriba la nueva novedad:'
-                      handleAction={handleAgregarNovedad}
-                    />
+                    {openModalAgregarNovedad && (
+                      <CrearEditarModalGenerico
+                        tipoModal='crearTextArea'
+                        openModal={openModalAgregarNovedad}
+                        handleClose={handleCloseAgregarNovedad}
+                        tituloModal='Crear Novedad Especial'
+                        descripcionModal='A continuación escriba la nueva novedad:'
+                        handleAction={handleAgregarNovedad}
+                      />
+                    )}
                   </div>
                   {novedades && novedades.length > 0 && (
                     <ConsignasNovedades
@@ -896,16 +900,18 @@ const EditRecepcion = () => {
                       }
                     />
                   )}
+                  {openModalEditarNovedad && (
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalEditarNovedad}
+                      handleClose={handleCloseEditarNovedad}
+                      tituloModal='Editar Novedad Especial'
+                      descripcionModal='Edite la novedad especial:'
+                      handleAction={handleEditarNovedad}
+                      itemSeleccionado={observacionNovedadSeleccionada}
+                    />
+                  )}
 
-                  <CrearEditarModalGenerico
-                    tipoModal='actualizarTextArea'
-                    openModal={openModalEditarNovedad}
-                    handleClose={handleCloseEditarNovedad}
-                    tituloModal='Editar Novedad Especial'
-                    descripcionModal='Edite la novedad especial:'
-                    handleAction={handleEditarNovedad}
-                    itemSeleccionado={observacionNovedadSeleccionada}
-                  />
                   <EliminarModalGenerico
                     openModal={openModalEliminarNovedad}
                     handleClose={handleCloseEliminarNovedad}
@@ -914,24 +920,29 @@ const EditRecepcion = () => {
                     handleAction={handleEliminarNovedad}
                   />
                   {/* CIERRE DE NOVEDAD MODAL */}
-                  <CrearEditarModalGenerico
-                    tipoModal='actualizarTextArea'
-                    openModal={openModalCerrarNovedad}
-                    handleClose={handleCloseCerrarNovedad}
-                    tituloModal='Crear cierre de Novedad Especial'
-                    descripcionModal='Escriba una observación para cerar la novedad especial:'
-                    handleAction={handleCerrarNovedad}
-                  />
+                  {openModalCerrarNovedad && (
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalCerrarNovedad}
+                      handleClose={handleCloseCerrarNovedad}
+                      tituloModal='Crear cierre de Novedad Especial'
+                      descripcionModal='Escriba una observación para cerar la novedad especial:'
+                      handleAction={handleCerrarNovedad}
+                    />
+                  )}
+
                   {/* EDITAR NOVEDAD CERRADA MODAL */}
-                  <CrearEditarModalGenerico
-                    tipoModal='actualizarTextArea'
-                    openModal={openModalEditarNovedadCerrada}
-                    handleClose={handleCloseEditarNovedadCerrada}
-                    tituloModal='Editar cierre de Novedad Especial'
-                    descripcionModal='Edite el cierre de la novedad especial:'
-                    handleAction={handleEditarNovedadCerrada}
-                    itemSeleccionado={observacionNovedadSeleccionada}
-                  />
+                  {openModalEditarNovedadCerrada && (
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalEditarNovedadCerrada}
+                      handleClose={handleCloseEditarNovedadCerrada}
+                      tituloModal='Editar cierre de Novedad Especial'
+                      descripcionModal='Edite el cierre de la novedad especial:'
+                      handleAction={handleEditarNovedadCerrada}
+                      itemSeleccionado={observacionNovedadSeleccionada}
+                    />
+                  )}
                 </div>
 
                 {/* RIGHT */}
@@ -943,14 +954,16 @@ const EditRecepcion = () => {
                     <button onClick={handleOpenAgregarConsigna}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='crearTextArea'
-                      openModal={openModalAgregarConsigna}
-                      handleClose={handleCloseAgregarConsigna}
-                      tituloModal='Crear Consigna Especial'
-                      descripcionModal='A continuación escriba la nueva consigna:'
-                      handleAction={handleAgregarConsigna}
-                    />
+                    {openModalAgregarConsigna && (
+                      <CrearEditarModalGenerico
+                        tipoModal='crearTextArea'
+                        openModal={openModalAgregarConsigna}
+                        handleClose={handleCloseAgregarConsigna}
+                        tituloModal='Crear Consigna Especial'
+                        descripcionModal='A continuación escriba la nueva consigna:'
+                        handleAction={handleAgregarConsigna}
+                      />
+                    )}
                   </div>
                   {consignas && consignas.length > 0 && (
                     <ConsignasNovedades
@@ -964,15 +977,18 @@ const EditRecepcion = () => {
                     />
                   )}
                 </div>
-                <CrearEditarModalGenerico
-                  tipoModal='actualizarTextArea'
-                  openModal={openModalEditarConsigna}
-                  handleClose={handleCloseEditarConsigna}
-                  tituloModal='Editar Consigna Especial'
-                  descripcionModal='Edite la novedad especial:'
-                  handleAction={handleEditarConsigna}
-                  itemSeleccionado={observacionConsignaSeleccionada}
-                />
+                {openModalEditarConsigna && (
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalEditarConsigna}
+                    handleClose={handleCloseEditarConsigna}
+                    tituloModal='Editar Consigna Especial'
+                    descripcionModal='Edite la novedad especial:'
+                    handleAction={handleEditarConsigna}
+                    itemSeleccionado={observacionConsignaSeleccionada}
+                  />
+                )}
+
                 <EliminarModalGenerico
                   openModal={openModalEliminarConsigna}
                   handleClose={handleCloseEliminarConsigna}
@@ -981,24 +997,29 @@ const EditRecepcion = () => {
                   handleAction={handleEliminarConsigna}
                 />
                 {/* CIERRE DE CONSIGNA MODAL */}
-                <CrearEditarModalGenerico
-                  tipoModal='actualizarTextArea'
-                  openModal={openModalCerrarConsigna}
-                  handleClose={handleCloseCerrarConsigna}
-                  tituloModal='Crear cierre de Consigna Especial'
-                  descripcionModal='Escriba una observación para cerar la consigna especial:'
-                  handleAction={handleCerrarConsigna}
-                />
+                {openModalCerrarConsigna && (
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalCerrarConsigna}
+                    handleClose={handleCloseCerrarConsigna}
+                    tituloModal='Crear cierre de Consigna Especial'
+                    descripcionModal='Escriba una observación para cerar la consigna especial:'
+                    handleAction={handleCerrarConsigna}
+                  />
+                )}
+
                 {/* EDITAR CONSIGNA CERRADA MODAL */}
-                <CrearEditarModalGenerico
-                  tipoModal='actualizarTextArea'
-                  openModal={openModalEditarConsignaCerrada}
-                  handleClose={handleCloseEditarConsignaCerrada}
-                  tituloModal='Editar cierre de Consigna Especial'
-                  descripcionModal='Edite el cierre de la consigna especial:'
-                  handleAction={handleEditarConsignaCerrada}
-                  itemSeleccionado={observacionConsignaSeleccionada}
-                />
+                {openModalEditarConsignaCerrada && (
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalEditarConsignaCerrada}
+                    handleClose={handleCloseEditarConsignaCerrada}
+                    tituloModal='Editar cierre de Consigna Especial'
+                    descripcionModal='Edite el cierre de la consigna especial:'
+                    handleAction={handleEditarConsignaCerrada}
+                    itemSeleccionado={observacionConsignaSeleccionada}
+                  />
+                )}
               </div>
 
               {/* FOOTER SECTION */}
