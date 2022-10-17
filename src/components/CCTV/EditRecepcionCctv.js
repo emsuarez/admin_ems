@@ -215,13 +215,15 @@ const EditRecepcionCctv = () => {
     const protectorEditado = {
       id: actaSeleccionada.id,
       protectores: String(
-        protectores.map(p => (p === protectorSeleccionado ? protector : p))
+        protectores
+          ?.split(',')
+          ?.map(p => (p === protectorSeleccionado ? protector : p))
       ),
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-    console.log(protectorEditado, 'protectorEditado')
-    // dispatch(crudPersonalActaCctvAction(protectorEditado))
+
+    dispatch(crudPersonalActaCctvAction(protectorEditado))
   }
 
   const handleOpenEliminarProtector = protector => {
@@ -237,14 +239,15 @@ const EditRecepcionCctv = () => {
     setOpenModalEliminarProtector(false)
     const protectorEliminado = {
       id: actaSeleccionada.id,
-      protectores: String(protectores.filter(p => p !== protectorSeleccionado)),
+      protectores: String(
+        protectores?.split(',')?.filter(p => p !== protectorSeleccionado)
+      ),
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
 
+    console.log(protectorEliminado, 'protectorEliminado')
     dispatch(crudPersonalActaCctvAction(protectorEliminado))
-
-    // setProtectores(protectores.filter(p => p !== protectorSeleccionado))
   }
   //#endregion
 
@@ -686,13 +689,14 @@ const EditRecepcionCctv = () => {
                               </div>
                               {openModalEditarProtector && (
                                 <CrearEditarModalGenerico
-                                  tipoModal='actualizar'
+                                  tipoModal='agregarProtector'
                                   openModal={openModalEditarProtector}
                                   handleClose={handleCloseEditarProtector}
                                   tituloModal='Editar personal de Grupo de protección Guardia'
                                   descripcionModal='Edite el nombre del agente:'
                                   handleAction={handleEditarProtector}
                                   itemSeleccionado={protectorSeleccionado}
+                                  dataSeleccionable={personalSeleccionable}
                                 />
                               )}
                             </li>

@@ -15,6 +15,7 @@ const CrearEditarModalGenerico = ({
   const [nuevoValor, setNuevoValor] = useState('')
 
   useEffect(() => {
+    console.log(itemSeleccionado, 'itemSeleccionado')
     setNuevoValor(itemSeleccionado)
   }, [itemSeleccionado])
 
@@ -57,8 +58,8 @@ const CrearEditarModalGenerico = ({
                         <option value='0'>Seleccione un Protector</option>
                         {dataSeleccionable &&
                         Object.keys(dataSeleccionable).length > 0
-                          ? dataSeleccionable.map(prot => (
-                              <option key={prot.id} value={prot.alias}>
+                          ? dataSeleccionable.map((prot, index) => (
+                              <option key={index} value={prot.alias}>
                                 {prot.nombres}
                               </option>
                             ))
