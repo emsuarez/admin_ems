@@ -183,7 +183,6 @@ const EditRecepcionCctv = () => {
 
   const handleAgregarProtector = protector => {
     setOpenModalAgregarProtector(false)
-
     const prevProtectores = protectores?.split(',')?.map(protector => {
       return protector.trim()
     })
@@ -246,7 +245,6 @@ const EditRecepcionCctv = () => {
       observacion: actaSeleccionada.observacion,
     }
 
-    console.log(protectorEliminado, 'protectorEliminado')
     dispatch(crudPersonalActaCctvAction(protectorEliminado))
   }
   //#endregion
@@ -262,11 +260,16 @@ const EditRecepcionCctv = () => {
 
   const handleAgregarCentralista = centralista => {
     setOpenModalAgregarCentralista(false)
-    setOpenModalAgregarProtector(false)
+    const prevCentralistas = centralistas?.split(',')?.map(cent => {
+      return cent.trim()
+    })
+    console.log(prevCentralistas, 'prevCentralistas')
     const newCentralista = {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
-      centralistas: String([...centralistas, centralista]),
+      centralistas: prevCentralistas
+        ? String([...prevCentralistas, centralista])
+        : centralista,
       observacion: actaSeleccionada.observacion,
     }
 
@@ -288,7 +291,9 @@ const EditRecepcionCctv = () => {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
       centralistas: String(
-        centralistas.map(c => (c === centralistaSeleccionado ? centralista : c))
+        centralistas
+          ?.split(',')
+          ?.map(c => (c === centralistaSeleccionado ? centralista : c))
       ),
       observacion: actaSeleccionada.observacion,
     }
@@ -311,7 +316,7 @@ const EditRecepcionCctv = () => {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
       centralistas: String(
-        centralistas.filter(c => c !== centralistaSeleccionado)
+        centralistas?.split(',')?.filter(c => c !== centralistaSeleccionado)
       ),
       observacion: actaSeleccionada.observacion,
     }
@@ -795,13 +800,14 @@ const EditRecepcionCctv = () => {
                         )}
                         {openModalEditarCentralista && (
                           <CrearEditarModalGenerico
-                            tipoModal='actualizar'
+                            tipoModal='agregarTrabajador'
                             openModal={openModalEditarCentralista}
                             handleClose={handleCloseEditarCentralista}
                             tituloModal='Editar personal de Grupo de trabajo'
                             descripcionModal='Edite el nombre del agente:'
                             handleAction={handleEditarCentralista}
                             itemSeleccionado={centralistaSeleccionado}
+                            dataSeleccionable={personalSeleccionable}
                           />
                         )}
 
