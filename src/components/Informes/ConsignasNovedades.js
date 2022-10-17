@@ -14,7 +14,7 @@ const ConsignasNovedades = ({
   return (
     <div className='ml-4'>
       <ol>
-        {lista.map((item, index) => (
+        {lista?.map((item, index) => (
           <li key={index} className='my-1'>
             <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
               <div className='item1 col-span-2 border-b-2'>

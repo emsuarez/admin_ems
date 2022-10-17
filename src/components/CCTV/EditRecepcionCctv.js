@@ -1,13 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
-import { ReactComponent as svgCierreInforme } from '../../assets/cerrar-sesion 2.svg'
-import {
-  AdminAuthorized,
-  Header,
-  ICONS,
-  RedirectWithoutLogin,
-} from '../../components'
+import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 
 import { format } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,31 +18,39 @@ import {
   deleteNovedadCCTVAction,
   getAllProtectoresAction,
   getAllUsersReportAction,
+  getInformeCctvById,
   getInformeCctvNavegacion,
-  getProtectoresAction,
+  getNovedadesConsignasCctvPendientes,
   setToast,
   updateConsignaCCTVAction,
   updateNovedadCCTVAction,
 } from '../../store/actions'
+import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
 import CrearEditarModalGenerico from '../TRSModals/CrearEditarModalGenerico'
 import EliminarModalGenerico from '../TRSModals/EliminarModalGenerico'
-import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
+import ConsignasNovedades from '../Informes/ConsignasNovedades'
 
 const EditRecepcionCctv = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
+  const {
+    agente_saliente,
+    agente_entrante,
+    protectores,
+    centralistas,
+    cctvconsigna,
+    turno,
+    cctvnovedad,
+    created,
+  } = actaSeleccionada || {}
+
   const consignasNovedadesPendientes = useSelector(
     state => state.informes.consignasNovedadesPendientesCctv
   )
   // #region STATE_INICIAL
-  const [protectores, setProtectores] = useState([])
-  const [centralistas, setCentralistas] = useState([])
-  const [novedades, setNovedades] = useState([])
-  const [consignas, setConsignas] = useState([])
-  const [agenteSaliente, setAgenteSaliente] = useState('')
-  const [agenteEntrante, setAgenteEntrante] = useState('')
 
   const [openModalAgregarProtector, setOpenModalAgregarProtector] =
     useState(false)
@@ -95,66 +97,80 @@ const EditRecepcionCctv = () => {
   const [openModalAgregarOperadorCierre, setOpenModalAgregarOperadorCierre] =
     useState(false)
 
-  const [fechaActualValida, setFechaActualValida] = useState()
-  const [fechaActaSeleccionadaValida, setfechaActaSeleccionadaValida] =
-    useState()
-
   const tipo = window.localStorage.getItem('tipo')
+
+  const [personalSeleccionable, setPersonalSeleccionable] = useState([])
   //#endregion
 
   const protectoresState = useSelector(state => state.recursos.allProtectores)
+  const usuariosState = useSelector(state => state.auth.allUsers)
+  const novedadesState = useSelector(state => state.informes.novedadesState)
+
   useEffect(() => {
+    const cargarDatos = async () => {
+      await dispatch(getInformeCctvById(location.state))
+      await dispatch(getNovedadesConsignasCctvPendientes())
+      await dispatch(getAllProtectoresAction())
+      await dispatch(getAllUsersReportAction())
+    }
+    cargarDatos()
     const obtenerInfoVista = () => {
-      dispatch(getAllProtectoresAction())
       if (actaSeleccionada) {
         if (Object.keys(actaSeleccionada).length > 0) {
-          setProtectores(
-            actaSeleccionada.protectores !== null
-              ? actaSeleccionada.protectores.split(',') || []
-              : []
-          )
-          setCentralistas(
-            actaSeleccionada.centralistas !== null
-              ? actaSeleccionada.centralistas.split(',') || []
-              : []
-          )
           const fechaActual = new Date()
           const fechaActaSeleccionada = new Date(actaSeleccionada.created)
           fechaActual.setHours(0, 0, 0, 0)
           fechaActaSeleccionada.setHours(0, 0, 0, 0)
-          setFechaActualValida(fechaActual)
-          setfechaActaSeleccionadaValida(fechaActaSeleccionada)
-          if (
-            consignasNovedadesPendientes.consignas &&
-            fechaActaSeleccionada.getTime() == fechaActual.getTime()
-          ) {
-            setConsignas([
-              ...consignasNovedadesPendientes.consignas,
-              ...actaSeleccionada.cctvconsigna,
-            ])
-          } else {
-            setConsignas(actaSeleccionada.cctvconsigna || [])
-          }
-          if (
-            consignasNovedadesPendientes.novedades &&
-            fechaActaSeleccionada.getTime() == fechaActual.getTime()
-          ) {
-            setNovedades([
-              ...consignasNovedadesPendientes.novedades,
-              ...actaSeleccionada.cctvnovedad,
-            ])
-          } else {
-            setNovedades(actaSeleccionada.cctvnovedad || [])
-          }
+          // setFechaActualValida(fechaActual)
+          // setfechaActaSeleccionadaValida(fechaActaSeleccionada)
+          // if (
+          //   consignasNovedadesPendientes.consignas &&
+          //   fechaActaSeleccionada.getTime() == fechaActual.getTime()
+          // ) {
+          //   setConsignas([
+          //     ...consignasNovedadesPendientes.consignas,
+          //     ...actaSeleccionada.cctvconsigna,
+          //   ])
+          // } else {
 
-          setAgenteSaliente(actaSeleccionada.agente_saliente || '')
-          setAgenteEntrante(actaSeleccionada.agente_entrante || '')
+          // }
+          // if (
+          //   consignasNovedadesPendientes.novedades &&
+          //   fechaActaSeleccionada.getTime() == fechaActual.getTime()
+          // ) {
+          //   setNovedades([
+          //     ...consignasNovedadesPendientes.novedades,
+          //     ...actaSeleccionada.cctvnovedad,
+          //   ])
+          // } else {
+
+          // }
         }
       }
     }
     obtenerInfoVista()
-    dispatch(getAllUsersReportAction())
-  }, [actaSeleccionada])
+  }, [])
+
+  useEffect(() => {
+    if (protectoresState && usuariosState) {
+      const nuevoProtectores = protectoresState.results?.map(persona => {
+        return {
+          id: persona.id + new Date().getTime(),
+          nombres: persona.nombres,
+        }
+      })
+      const nuevoUsuarios = usuariosState.results?.map(usuario => {
+        return {
+          id: usuario.user_id + new Date().getTime(),
+          nombres: `${usuario.first_name} ${usuario.last_name}`,
+        }
+      })
+
+      const personalCompleto = [...nuevoProtectores, ...nuevoUsuarios]
+
+      setPersonalSeleccionable(personalCompleto)
+    }
+  }, [protectoresState, usuariosState])
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
@@ -167,16 +183,22 @@ const EditRecepcionCctv = () => {
 
   const handleAgregarProtector = protector => {
     setOpenModalAgregarProtector(false)
+
+    const prevProtectores = protectores?.split(',')?.map(protector => {
+      return protector.trim()
+    })
+    console.log('prevProtectores', prevProtectores)
     const newProtector = {
       id: actaSeleccionada.id,
-      protectores: String([...protectores, protector]),
+      protectores: prevProtectores
+        ? String([...prevProtectores, protector])
+        : protector,
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
 
     dispatch(crudPersonalActaCctvAction(newProtector))
-
-    setProtectores([...protectores, protector])
+    // navigate(0)
   }
 
   const handleOpenEditarProtector = protector => {
@@ -198,12 +220,8 @@ const EditRecepcionCctv = () => {
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
     }
-
-    dispatch(crudPersonalActaCctvAction(protectorEditado))
-
-    setProtectores(
-      protectores.map(p => (p === protectorSeleccionado ? protector : p))
-    )
+    console.log(protectorEditado, 'protectorEditado')
+    // dispatch(crudPersonalActaCctvAction(protectorEditado))
   }
 
   const handleOpenEliminarProtector = protector => {
@@ -226,7 +244,7 @@ const EditRecepcionCctv = () => {
 
     dispatch(crudPersonalActaCctvAction(protectorEliminado))
 
-    setProtectores(protectores.filter(p => p !== protectorSeleccionado))
+    // setProtectores(protectores.filter(p => p !== protectorSeleccionado))
   }
   //#endregion
 
@@ -250,8 +268,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(crudPersonalActaCctvAction(newCentralista))
-
-    setCentralistas([...centralistas, centralista])
   }
 
   const handleOpenEditarCentralista = centralista => {
@@ -275,10 +291,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(crudPersonalActaCctvAction(centralistaEditado))
-
-    setCentralistas(
-      centralistas.map(c => (c === centralistaSeleccionado ? centralista : c))
-    )
   }
 
   const handleOpenEliminarCentralista = centralista => {
@@ -302,14 +314,12 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(crudPersonalActaCctvAction(centralistaEliminado))
-
-    setCentralistas(centralistas.filter(c => c !== centralistaSeleccionado))
   }
   //#endregion
 
   // #region CRUD_NOVEDADES
   const handleOpenAgregarNovedad = () => {
-    if (novedades.length > 14) {
+    if (cctvnovedad.length > 14) {
       dispatch(setToast('Error', 'No se pueden agregar más novedades'))
       return
     }
@@ -328,10 +338,7 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(createNovedadCctvAction(newNovedad))
-    setNovedades([
-      ...novedades,
-      { id: Date.now(), obs_creacion: novedad, created: new Date(), estado: 1 },
-    ])
+    navigate(0)
   }
 
   const handleOpenEditarNovedad = novedad => {
@@ -353,11 +360,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(updateNovedadCCTVAction(novedadEditada))
-    setNovedades(
-      novedades.map(n =>
-        n.id === novedadSeleccionada.id ? { ...n, obs_creacion: novedad } : n
-      )
-    )
   }
 
   const handleOpenEliminarNovedad = novedad => {
@@ -372,7 +374,6 @@ const EditRecepcionCctv = () => {
   const handleEliminarNovedad = () => {
     setOpenModalEliminarNovedad(false)
     dispatch(deleteNovedadCCTVAction({ id: novedadSeleccionada.id }))
-    setNovedades(novedades.filter(n => n.id !== novedadSeleccionada.id))
   }
 
   const handleOpenEditarNovedadCerrada = novedad => {
@@ -394,11 +395,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(updateNovedadCCTVAction(novedadEditada))
-    setNovedades(
-      novedades.map(n =>
-        n.id === novedadSeleccionada.id ? { ...n, obs_cierre: novedad } : n
-      )
-    )
   }
 
   const handleOpenCerrarNovedad = novedad => {
@@ -419,24 +415,12 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(cerrarNovedadCCTVAction(novedadCerrada))
-    setNovedades(
-      novedades.map(n =>
-        n.id === novedadSeleccionada.id
-          ? {
-              ...n,
-              obs_cierre: novedad,
-              estado: 0,
-              fecha_obs_cierre: new Date(),
-            }
-          : n
-      )
-    )
   }
   //#endregion
 
   // #region CRUD_CONSIGNAS
   const handleOpenAgregarConsigna = () => {
-    if (consignas.length > 14) {
+    if (cctvconsigna.length > 13) {
       dispatch(setToast('Error', 'No se pueden agregar más consignas'))
       return
     }
@@ -455,17 +439,7 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(createConsignaCctvAction(newConsigna))
-    setConsignas([
-      ...consignas,
-      {
-        id: Date.now(),
-        created: new Date(),
-        estado: 1,
-        fecha_obs_cierre: null,
-        obs_cierre: null,
-        obs_creacion: consigna,
-      },
-    ])
+    navigate(0)
   }
 
   const handleOpenEditarConsigna = consigna => {
@@ -489,11 +463,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(updateConsignaCCTVAction(consignaEditada))
-    setConsignas(
-      consignas.map(c =>
-        c.id === consignaSeleccionada.id ? { ...c, obs_creacion: consigna } : c
-      )
-    )
   }
 
   const handleOpenEliminarConsigna = consigna => {
@@ -508,7 +477,6 @@ const EditRecepcionCctv = () => {
   const handleEliminarConsigna = () => {
     setOpenModalEliminarConsigna(false)
     dispatch(deleteConsignaCCTVAction({ id: consignaSeleccionada.id }))
-    setConsignas(consignas.filter(c => c.id !== consignaSeleccionada.id))
   }
 
   const handleOpenEditarConsignaCerrada = consigna => {
@@ -530,11 +498,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(updateConsignaCCTVAction(consignaEditada))
-    setNovedades(
-      consignas.map(c =>
-        c.id === consignaSeleccionada.id ? { ...c, obs_cierre: consigna } : c
-      )
-    )
   }
 
   const handleOpenCerrarConsigna = consigna => {
@@ -554,18 +517,6 @@ const EditRecepcionCctv = () => {
       obs_cierre: consigna,
     }
     dispatch(cerrarConsignacCctvAction(consignaCerrada))
-    setConsignas(
-      consignas.map(c =>
-        c.id === consignaSeleccionada.id
-          ? {
-              ...c,
-              obs_cierre: consigna,
-              estado: 0,
-              fecha_obs_cierre: new Date(),
-            }
-          : c
-      )
-    )
   }
 
   // #endregion
@@ -575,7 +526,7 @@ const EditRecepcionCctv = () => {
     navigate(-1)
   }
 
-  const handleInformeAnterior = async () => {
+  const handleInformeAnterior = () => {
     dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 0))
   }
 
@@ -663,14 +614,11 @@ const EditRecepcionCctv = () => {
 
               <div className='flex justify-between px-20'>
                 <p className='font-semibold text-sm'>
-                  CENTRAL DE OPERACIONES:{' '}
-                  {actaSeleccionada.turno === 1 ? 'DIURNO' : 'NOCTURNO'}
-                  <span className='text-blue-800 ml-2'>{agenteSaliente}</span>
+                  CENTRAL DE OPERACIONES: {turno === 1 ? 'DIURNO' : 'NOCTURNO'}
+                  <span className='text-blue-800 ml-2'>{agente_saliente}</span>
                 </p>
                 <p className='font-semibold text-sm'>
-                  FECHA:{' '}
-                  {actaSeleccionada.created &&
-                    format(new Date(actaSeleccionada.created), 'dd/MM/yyyy')}
+                  FECHA: {created?.split(' ')[0]}
                 </p>
               </div>
 
@@ -685,22 +633,24 @@ const EditRecepcionCctv = () => {
                     <button onClick={handleOpenAgregarProtector}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='agregarProtector'
-                      openModal={openModalAgregarProtector}
-                      handleClose={handleCloseAgregarProtector}
-                      tituloModal='Crear personal de Protección Guardia'
-                      descripcionModal='A continuación seleccione el nombre del agente:'
-                      handleAction={handleAgregarProtector}
-                      dataSeleccionable={protectoresState}
-                    />
+                    {openModalAgregarProtector && (
+                      <CrearEditarModalGenerico
+                        tipoModal='agregarProtector'
+                        openModal={openModalAgregarProtector}
+                        handleClose={handleCloseAgregarProtector}
+                        tituloModal='Crear personal de Protección Guardia'
+                        descripcionModal='A continuación seleccione el nombre del agente:'
+                        handleAction={handleAgregarProtector}
+                        dataSeleccionable={personalSeleccionable}
+                      />
+                    )}
                   </div>
 
                   <div>
                     <ol style={{ listStyleType: 'number' }} className='pl-6'>
                       <div className='border-2 border-gray-500 rounded-md'>
-                        {protectores.length > 0 ? (
-                          protectores.map((protector, index) => (
+                        {protectores?.length > 0 ? (
+                          protectores?.split(',')?.map((protector, index) => (
                             <li
                               key={index}
                               className='px-2 border-b-2 border-gray-500'
@@ -734,15 +684,17 @@ const EditRecepcionCctv = () => {
                                   </button>
                                 </div>
                               </div>
-                              <CrearEditarModalGenerico
-                                tipoModal='actualizar'
-                                openModal={openModalEditarProtector}
-                                handleClose={handleCloseEditarProtector}
-                                tituloModal='Editar personal de Grupo de protección Guardia'
-                                descripcionModal='Edite el nombre del agente:'
-                                handleAction={handleEditarProtector}
-                                itemSeleccionado={protectorSeleccionado}
-                              />
+                              {openModalEditarProtector && (
+                                <CrearEditarModalGenerico
+                                  tipoModal='actualizar'
+                                  openModal={openModalEditarProtector}
+                                  handleClose={handleCloseEditarProtector}
+                                  tituloModal='Editar personal de Grupo de protección Guardia'
+                                  descripcionModal='Edite el nombre del agente:'
+                                  handleAction={handleEditarProtector}
+                                  itemSeleccionado={protectorSeleccionado}
+                                />
+                              )}
                             </li>
                           ))
                         ) : (
@@ -774,72 +726,81 @@ const EditRecepcionCctv = () => {
                     <button onClick={handleOpenAgregarCentralista}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='agregarTrabajador'
-                      openModal={openModalAgregarCentralista}
-                      handleClose={handleCloseAgregarCentralista}
-                      tituloModal='Crear personal de Trabajo'
-                      descripcionModal='A continuación seleccione el nombre del agente:'
-                      handleAction={handleAgregarCentralista}
-                      dataSeleccionable={protectoresState}
-                    />
+                    {openModalAgregarCentralista && (
+                      <CrearEditarModalGenerico
+                        tipoModal='agregarTrabajador'
+                        openModal={openModalAgregarCentralista}
+                        handleClose={handleCloseAgregarCentralista}
+                        tituloModal='Crear personal de Trabajo'
+                        descripcionModal='A continuación seleccione el nombre del agente:'
+                        handleAction={handleAgregarCentralista}
+                        dataSeleccionable={personalSeleccionable}
+                      />
+                    )}
                   </div>
                   <div>
                     <ol style={{ listStyleType: 'number' }} className='pl-6'>
                       <div className='border-2 border-gray-500 rounded-md'>
-                        {centralistas.length > 0 ? (
-                          centralistas.map((centralista, index) => (
-                            <li
-                              key={index}
-                              className='pl-2 border-b-2 border-gray-500'
-                            >
-                              <div className='flex flex-row justify-between'>
-                                <p className='font-semibold text-xs'>
-                                  {centralista}
-                                </p>
-                                <div className='flex flex-row'>
-                                  <button
-                                    onClick={() =>
-                                      handleOpenEditarCentralista(centralista)
-                                    }
-                                  >
-                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 mx-1'
-                                      />
-                                    </div>
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      handleOpenEliminarCentralista(centralista)
-                                    }
-                                  >
-                                    <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
-                                      <Icon
-                                        svgName='ib_eliminar'
-                                        className='h-3 mx-1'
-                                      />
-                                    </div>
-                                  </button>
+                        {centralistas?.length > 0 ? (
+                          centralistas
+                            ?.split(',')
+                            ?.map((centralista, index) => (
+                              <li
+                                key={index}
+                                className='pl-2 border-b-2 border-gray-500'
+                              >
+                                <div className='flex flex-row justify-between'>
+                                  <p className='font-semibold text-xs'>
+                                    {centralista}
+                                  </p>
+                                  <div className='flex flex-row'>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEditarCentralista(centralista)
+                                      }
+                                    >
+                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                        <Icon
+                                          svgName='ib_editar'
+                                          className='h-3 mx-1'
+                                        />
+                                      </div>
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleOpenEliminarCentralista(
+                                          centralista
+                                        )
+                                      }
+                                    >
+                                      <div className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'>
+                                        <Icon
+                                          svgName='ib_eliminar'
+                                          className='h-3 mx-1'
+                                        />
+                                      </div>
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            </li>
-                          ))
+                              </li>
+                            ))
                         ) : (
                           <li className='pl-2 border-b-2 border-gray-500'>
                             <p>No se han registrado centralistas</p>
                           </li>
                         )}
-                        <CrearEditarModalGenerico
-                          tipoModal='actualizar'
-                          openModal={openModalEditarCentralista}
-                          handleClose={handleCloseEditarCentralista}
-                          tituloModal='Editar personal de Grupo de trabajo'
-                          descripcionModal='Edite el nombre del agente:'
-                          handleAction={handleEditarCentralista}
-                          itemSeleccionado={centralistaSeleccionado}
-                        />
+                        {openModalEditarCentralista && (
+                          <CrearEditarModalGenerico
+                            tipoModal='actualizar'
+                            openModal={openModalEditarCentralista}
+                            handleClose={handleCloseEditarCentralista}
+                            tituloModal='Editar personal de Grupo de trabajo'
+                            descripcionModal='Edite el nombre del agente:'
+                            handleAction={handleEditarCentralista}
+                            itemSeleccionado={centralistaSeleccionado}
+                          />
+                        )}
+
                         <EliminarModalGenerico
                           openModal={openModalEliminarCentralista}
                           handleClose={handleCloseEliminarCentralista}
@@ -864,140 +825,38 @@ const EditRecepcionCctv = () => {
                     <button onClick={handleOpenAgregarNovedad}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='crearTextArea'
-                      openModal={openModalAgregarNovedad}
-                      handleClose={handleCloseAgregarNovedad}
-                      tituloModal='Crear Novedad Especial'
-                      descripcionModal='A continuación escriba la nueva novedad:'
-                      handleAction={handleAgregarNovedad}
-                    />
+                    {openModalAgregarNovedad && (
+                      <CrearEditarModalGenerico
+                        tipoModal='crearTextArea'
+                        openModal={openModalAgregarNovedad}
+                        handleClose={handleCloseAgregarNovedad}
+                        tituloModal='Crear Novedad Especial'
+                        descripcionModal='A continuación escriba la nueva novedad:'
+                        handleAction={handleAgregarNovedad}
+                      />
+                    )}
                   </div>
-                  <div className='ml-4'>
-                    <ol>
-                      {novedades.map((novedad, index) => (
-                        <li key={index} className='my-1'>
-                          <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
-                            <div className='item1 col-span-2 border-b-2'>
-                              <div
-                                className={
-                                  novedad.estado === 1
-                                    ? 'flex flex-col items-center text-[10px] border-r-2 text-red-500 font-bold h-full'
-                                    : 'flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'
-                                }
-                              >
-                                <span>Creado</span>
-                                <span>
-                                  {format(
-                                    new Date(novedad.created),
-                                    'dd/MM/yyyy'
-                                  )}
-                                </span>
-                                <span>
-                                  {format(new Date(novedad.created), 'HH:mm')}
-                                </span>
-                              </div>
-                            </div>
-                            <div className='item2 col-span-9 border-b-2 text-xs text-center'>
-                              {novedad.obs_creacion}
-                            </div>
-                            <div className='item3 border-b-2 border-l-2'>
-                              <div className='flex items-center flex-col'>
-                                {tipo === '1' && (
-                                  <>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarNovedad(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEliminarNovedad(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_eliminar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                  </>
-                                )}
 
-                                {novedad.obs_cierre === null && (
-                                  <button
-                                    onClick={() =>
-                                      handleOpenCerrarNovedad(novedad)
-                                    }
-                                    className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                  >
-                                    <Icon
-                                      svgName='ib_cerrar'
-                                      className='h-3 my-1'
-                                    />
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                            {novedad.obs_cierre && (
-                              <>
-                                <div className='item-4 col-span-2'>
-                                  <div className='flex flex-col items-center text-[10px] border-r-2 text-green-500 font-bold'>
-                                    <span>Cerrado</span>
-                                    <span>
-                                      {format(
-                                        new Date(novedad.fecha_obs_cierre),
-                                        'dd/MM/yyyy'
-                                      )}
-                                    </span>
-                                    <span>
-                                      {format(
-                                        new Date(novedad.fecha_obs_cierre),
-                                        'HH:mm'
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className='item-5 col-span-9 text-xs text-center'>
-                                  {novedad.obs_cierre}
-                                </div>
-                                <div className='item-6 col-span-1 border-l-2'>
-                                  <div className='flex items-center flex-col mt-3'>
-                                    <button
-                                      onClick={() =>
-                                        handleOpenEditarNovedadCerrada(novedad)
-                                      }
-                                      className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                                    >
-                                      <Icon
-                                        svgName='ib_editar'
-                                        className='h-3 my-1'
-                                      />
-                                    </button>
-                                  </div>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                  <CrearEditarModalGenerico
-                    tipoModal='actualizarTextArea'
-                    openModal={openModalEditarNovedad}
-                    handleClose={handleCloseEditarNovedad}
-                    tituloModal='Editar Novedad Especial'
-                    descripcionModal='Edite la novedad especial:'
-                    handleAction={handleEditarNovedad}
-                    itemSeleccionado={observacionNovedadSeleccionada}
+                  <ConsignasNovedades
+                    lista={cctvnovedad}
+                    handleOpenEditar={handleOpenEditarNovedad}
+                    handleOpenEliminar={handleOpenEliminarNovedad}
+                    handleOpenCerrarItem={handleOpenCerrarNovedad}
+                    handleOpenEditarItemCerrado={handleOpenEditarNovedadCerrada}
                   />
+
+                  {openModalEditarNovedad && (
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalEditarNovedad}
+                      handleClose={handleCloseEditarNovedad}
+                      tituloModal='Editar Novedad Especial'
+                      descripcionModal='Edite la novedad especial:'
+                      handleAction={handleEditarNovedad}
+                      itemSeleccionado={observacionNovedadSeleccionada}
+                    />
+                  )}
+
                   <EliminarModalGenerico
                     openModal={openModalEliminarNovedad}
                     handleClose={handleCloseEliminarNovedad}
@@ -1006,24 +865,29 @@ const EditRecepcionCctv = () => {
                     handleAction={handleEliminarNovedad}
                   />
                   {/* CIERRE DE NOVEDAD MODAL */}
-                  <CrearEditarModalGenerico
-                    tipoModal='actualizarTextArea'
-                    openModal={openModalCerrarNovedad}
-                    handleClose={handleCloseCerrarNovedad}
-                    tituloModal='Crear cierre de Novedad Especial'
-                    descripcionModal='Escriba una observación para cerar la novedad especial:'
-                    handleAction={handleCerrarNovedad}
-                  />
+                  {openModalCerrarNovedad && (
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalCerrarNovedad}
+                      handleClose={handleCloseCerrarNovedad}
+                      tituloModal='Crear cierre de Novedad Especial'
+                      descripcionModal='Escriba una observación para cerar la novedad especial:'
+                      handleAction={handleCerrarNovedad}
+                    />
+                  )}
+
                   {/* EDITAR NOVEDAD CERRADA MODAL */}
-                  <CrearEditarModalGenerico
-                    tipoModal='actualizarTextArea'
-                    openModal={openModalEditarNovedadCerrada}
-                    handleClose={handleCloseEditarNovedadCerrada}
-                    tituloModal='Editar cierre de Novedad Especial'
-                    descripcionModal='Edite el cierre de la novedad especial:'
-                    handleAction={handleEditarNovedadCerrada}
-                    itemSeleccionado={observacionNovedadSeleccionada}
-                  />
+                  {openModalEditarNovedadCerrada && (
+                    <CrearEditarModalGenerico
+                      tipoModal='actualizarTextArea'
+                      openModal={openModalEditarNovedadCerrada}
+                      handleClose={handleCloseEditarNovedadCerrada}
+                      tituloModal='Editar cierre de Novedad Especial'
+                      descripcionModal='Edite el cierre de la novedad especial:'
+                      handleAction={handleEditarNovedadCerrada}
+                      itemSeleccionado={observacionNovedadSeleccionada}
+                    />
+                  )}
                 </div>
 
                 {/* RIGHT */}
@@ -1035,19 +899,21 @@ const EditRecepcionCctv = () => {
                     <button onClick={handleOpenAgregarConsigna}>
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
-                    <CrearEditarModalGenerico
-                      tipoModal='crearTextArea'
-                      openModal={openModalAgregarConsigna}
-                      handleClose={handleCloseAgregarConsigna}
-                      tituloModal='Crear Consigna Especial'
-                      descripcionModal='A continuación escriba la nueva consigna:'
-                      handleAction={handleAgregarConsigna}
-                    />
+                    {openModalAgregarConsigna && (
+                      <CrearEditarModalGenerico
+                        tipoModal='crearTextArea'
+                        openModal={openModalAgregarConsigna}
+                        handleClose={handleCloseAgregarConsigna}
+                        tituloModal='Crear Consigna Especial'
+                        descripcionModal='A continuación escriba la nueva consigna:'
+                        handleAction={handleAgregarConsigna}
+                      />
+                    )}
                   </div>
 
                   <div className='ml-4'>
                     <ol>
-                      {consignas.map((consigna, index) => (
+                      {cctvconsigna?.map((consigna, index) => (
                         <li key={index} className='my-1'>
                           <div className='grid grid-row-2 grid-cols-12 border-2 border-gray-700'>
                             <div className='item1 col-span-2 border-b-2'>
@@ -1164,15 +1030,18 @@ const EditRecepcionCctv = () => {
                     </ol>
                   </div>
                 </div>
-                <CrearEditarModalGenerico
-                  tipoModal='actualizarTextArea'
-                  openModal={openModalEditarConsigna}
-                  handleClose={handleCloseEditarConsigna}
-                  tituloModal='Editar Consigna Especial'
-                  descripcionModal='Edite la novedad especial:'
-                  handleAction={handleEditarConsigna}
-                  itemSeleccionado={observacionConsignaSeleccionada}
-                />
+                {openModalEditarConsigna && (
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalEditarConsigna}
+                    handleClose={handleCloseEditarConsigna}
+                    tituloModal='Editar Consigna Especial'
+                    descripcionModal='Edite la novedad especial:'
+                    handleAction={handleEditarConsigna}
+                    itemSeleccionado={observacionConsignaSeleccionada}
+                  />
+                )}
+
                 <EliminarModalGenerico
                   openModal={openModalEliminarConsigna}
                   handleClose={handleCloseEliminarConsigna}
@@ -1181,24 +1050,29 @@ const EditRecepcionCctv = () => {
                   handleAction={handleEliminarConsigna}
                 />
                 {/* CIERRE DE CONSIGNA MODAL */}
-                <CrearEditarModalGenerico
-                  tipoModal='actualizarTextArea'
-                  openModal={openModalCerrarConsigna}
-                  handleClose={handleCloseCerrarConsigna}
-                  tituloModal='Crear cierre de Consigna Especial'
-                  descripcionModal='Escriba una observación para cerar la consigna especial:'
-                  handleAction={handleCerrarConsigna}
-                />
+                {openModalCerrarConsigna && (
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalCerrarConsigna}
+                    handleClose={handleCloseCerrarConsigna}
+                    tituloModal='Crear cierre de Consigna Especial'
+                    descripcionModal='Escriba una observación para cerar la consigna especial:'
+                    handleAction={handleCerrarConsigna}
+                  />
+                )}
+
                 {/* EDITAR CONSIGNA CERRADA MODAL */}
-                <CrearEditarModalGenerico
-                  tipoModal='actualizarTextArea'
-                  openModal={openModalEditarConsignaCerrada}
-                  handleClose={handleCloseEditarConsignaCerrada}
-                  tituloModal='Editar cierre de Consigna Especial'
-                  descripcionModal='Edite el cierre de la consigna especial:'
-                  handleAction={handleEditarConsignaCerrada}
-                  itemSeleccionado={observacionConsignaSeleccionada}
-                />
+                {openModalEditarConsignaCerrada && (
+                  <CrearEditarModalGenerico
+                    tipoModal='actualizarTextArea'
+                    openModal={openModalEditarConsignaCerrada}
+                    handleClose={handleCloseEditarConsignaCerrada}
+                    tituloModal='Editar cierre de Consigna Especial'
+                    descripcionModal='Edite el cierre de la consigna especial:'
+                    handleAction={handleEditarConsignaCerrada}
+                    itemSeleccionado={observacionConsignaSeleccionada}
+                  />
+                )}
               </div>
 
               {/* FOOTER SECTION */}
@@ -1207,15 +1081,17 @@ const EditRecepcionCctv = () => {
                   <div className='flex border-b-2 border-gray-500'>
                     <div className='p-1 w-1/2 border-r-2 border-gray-500 font-semibold text-sm'>
                       <p>CENTRALISTA DE OPERACIONES SALIENTE:</p>
-                      <p className='text-blue-800'>{agenteSaliente}</p>
+                      <p className='text-blue-800'>{agente_saliente}</p>
                     </div>
 
                     <div className='w-1/2 font-semibold p-1 text-sm flex justify-between'>
                       <div>
                         <p>CENTRALISTA DE OPERACIONES ENTRANTE:</p>
-                        <p className='text-blue-800'>{agenteEntrante}</p>
+                        <p className='text-blue-800'>
+                          {agente_entrante || 'N/A'}
+                        </p>
                       </div>
-                      {validarFecha(actaSeleccionada.created) && (
+                      {validarFecha(created) && (
                         <img
                           src={
                             require('../../assets/cerrar-sesion 2.svg').default

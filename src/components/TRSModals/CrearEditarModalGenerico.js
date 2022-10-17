@@ -47,14 +47,6 @@ const CrearEditarModalGenerico = ({
                   <h2>{descripcionModal}</h2>
 
                   <div className='flex flex-col mx-3'>
-                    {/* <div className='flex justify-between'>
-                      <label
-                        for='alias'
-                        className='block text-sm font-medium text-gray-900 '
-                      >
-                        Alias<span className='text-red-600'>*</span>:
-                      </label>
-                    </div> */}
                     {tipoModal === 'agregarProtector' ? (
                       <select
                         className='mb-2 border-[1px] border-neutral-300 rounded-md focus:border-blue-800 outline-none w-full p-2.5'
@@ -63,7 +55,8 @@ const CrearEditarModalGenerico = ({
                         onChange={e => setNuevoValor(e.target.value)}
                       >
                         <option value='0'>Seleccione un Protector</option>
-                        {Object.keys(dataSeleccionable).length > 0
+                        {dataSeleccionable &&
+                        Object.keys(dataSeleccionable).length > 0
                           ? dataSeleccionable.map(prot => (
                               <option key={prot.id} value={prot.alias}>
                                 {prot.nombres}
