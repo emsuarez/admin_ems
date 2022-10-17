@@ -251,8 +251,12 @@ export const createNovedadCctvAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CREATE_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch({
+        type: types.CREATE_NOVEDADCCTV_SUCCESS,
+        payload: { ...data, id: result.id },
+      })
       dispatch(setToast('success', result.message))
+      console.log(result, 'result nov cctv')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CREATE_NOVEDADCCTV_FAILED, payload: true })
@@ -465,7 +469,10 @@ export const createConsignaCctvAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CREATE_CONSIGNACCTV_SUCCESS, payload: result })
+      dispatch({
+        type: types.CREATE_CONSIGNACCTV_SUCCESS,
+        payload: { ...data, id: result.id },
+      })
       dispatch(setToast('success', 'Consigna ingresada correctamente'))
       progress.finish()
     } catch (error) {

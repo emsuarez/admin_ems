@@ -166,7 +166,8 @@ const EditRecepcionCctv = () => {
         }
       })
 
-      const personalCompleto = [...nuevoProtectores, ...nuevoUsuarios]
+      const personalCompleto = nuevoProtectores &&
+        nuevoUsuarios && [...nuevoProtectores, ...nuevoUsuarios]
 
       setPersonalSeleccionable(personalCompleto)
     }
@@ -327,8 +328,10 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_NOVEDADES
   const handleOpenAgregarNovedad = () => {
-    if (cctvnovedad.length > 14) {
-      dispatch(setToast('Error', 'No se pueden agregar más novedades'))
+    if (cctvnovedad.length > 13) {
+      dispatch(
+        setToast('Error', 'Se ha alcanzado el límite máximo de novedades')
+      )
       return
     }
     setOpenModalAgregarNovedad(true)
@@ -343,10 +346,14 @@ const EditRecepcionCctv = () => {
     const newNovedad = {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: novedad,
+      obs_cierre: null,
+      fecha_obs_cierre: null,
+      estado: 1,
+      created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     }
 
     dispatch(createNovedadCctvAction(newNovedad))
-    navigate(0)
+    // navigate(0)
   }
 
   const handleOpenEditarNovedad = novedad => {
@@ -444,10 +451,14 @@ const EditRecepcionCctv = () => {
     const newConsigna = {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: consigna,
+      obs_cierre: null,
+      fecha_obs_cierre: null,
+      estado: 1,
+      created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     }
 
     dispatch(createConsignaCctvAction(newConsigna))
-    navigate(0)
+    // navigate(0)
   }
 
   const handleOpenEditarConsigna = consigna => {

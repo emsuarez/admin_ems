@@ -129,9 +129,9 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesCctv: {
-          ...state.informesCctv,
-          results: [payload, ...state.informesCctv.results],
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          cctvnovedad: [...state.actaSeleccionada.cctvnovedad, payload],
         },
       }
 
@@ -157,9 +157,9 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesCctv: {
-          ...state.informesCctv,
-          results: [payload, ...state.informesCctv.results],
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          cctvconsigna: [...state.actaSeleccionada.cctvconsigna, payload],
         },
       }
 
