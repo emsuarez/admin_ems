@@ -413,7 +413,7 @@ const EditRecepcionCctv = () => {
       obs_cierre: novedad,
       estado: 0,
     }
-
+    console.log(novedadCerrada, 'novedadCerrada')
     dispatch(cerrarNovedadCCTVAction(novedadCerrada))
   }
   //#endregion
@@ -556,7 +556,7 @@ const EditRecepcionCctv = () => {
     const operadorCierre = {
       id: actaSeleccionada.id,
       username: operador.username,
-      nombre_saliente: `${operador.first_name} ${operador.last_name}`,
+      nombre_entrante: `${operador.first_name} ${operador.last_name}`,
     }
 
     dispatch(cerrarInformeCctv(operadorCierre))

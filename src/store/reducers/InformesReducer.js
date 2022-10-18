@@ -9,7 +9,6 @@ const initialState = {
   consignasNovedadesPendientesCctv: {},
   informesTrs: {},
   personalInformeTrs: {},
-  consignasNovedadesPendientes: {},
   actaSeleccionada: {},
   idInformeCreado: null,
   novedadesTrs: [],
@@ -175,10 +174,16 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesTrs: {
-          ...state.informesTrs,
-          results: state.informesTrs.results.map(dato =>
-            dato.id === payload.id ? payload : dato
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          trsnovedad: state.actaSeleccionada.trsnovedad.map(novedad =>
+            novedad.id === payload.id ? payload : novedad
+          ),
+        },
+        consignasNovedadesPendientes: {
+          ...state.consignasNovedadesPendientes,
+          novedades: state.consignasNovedadesPendientes.novedades.map(novedad =>
+            novedad.id === payload.id ? payload : novedad
           ),
         },
       }
@@ -191,6 +196,12 @@ export default (state = initialState, { type, payload }) => {
           ...state.actaSeleccionada,
           cctvnovedad: state.actaSeleccionada.cctvnovedad.map(dato =>
             dato.id === payload.id ? payload : dato
+          ),
+        },
+        consignasNovedadesPendientesCctv: {
+          ...state.consignasNovedadesPendientesCctv,
+          novedades: state.consignasNovedadesPendientesCctv.novedades.map(
+            dato => (dato.id === payload.id ? payload : dato)
           ),
         },
       }
@@ -212,6 +223,12 @@ export default (state = initialState, { type, payload }) => {
             dato => dato.id !== payload.id
           ),
         },
+        consignasNovedadesPendientesCctv: {
+          ...state.consignasNovedadesPendientesCctv,
+          novedades: state.consignasNovedadesPendientesCctv.novedades.filter(
+            dato => dato.id !== payload.id
+          ),
+        },
       }
 
     case types.DELETE_NOVEDADTRS_SUCCESS:
@@ -221,6 +238,12 @@ export default (state = initialState, { type, payload }) => {
         actaSeleccionada: {
           ...state.actaSeleccionada,
           trsnovedad: state.actaSeleccionada.trsnovedad.filter(
+            dato => dato.id !== payload.id
+          ),
+        },
+        consignasNovedadesPendientes: {
+          ...state.consignasNovedadesPendientes,
+          novedades: state.consignasNovedadesPendientes.novedades.filter(
             dato => dato.id !== payload.id
           ),
         },
@@ -244,6 +267,12 @@ export default (state = initialState, { type, payload }) => {
             dato => dato.id !== payload.id
           ),
         },
+        consignasNovedadesPendientes: {
+          ...state.consignasNovedadesPendientes,
+          consignas: state.consignasNovedadesPendientes.consignas.filter(
+            dato => dato.id !== payload.id
+          ),
+        },
       }
 
     case types.DELETE_CONSIGNACCTV_SUCCESS:
@@ -253,6 +282,12 @@ export default (state = initialState, { type, payload }) => {
         actaSeleccionada: {
           ...state.actaSeleccionada,
           cctvconsigna: state.actaSeleccionada.cctvconsigna.filter(
+            dato => dato.id !== payload.id
+          ),
+        },
+        consignasNovedadesPendientesCctv: {
+          ...state.consignasNovedadesPendientesCctv,
+          consignas: state.consignasNovedadesPendientesCctv.consignas.filter(
             dato => dato.id !== payload.id
           ),
         },
@@ -270,10 +305,16 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesTrs: {
-          ...state.informesTrs,
-          results: state.informesTrs.results.map(dato =>
-            dato.id === payload.id ? payload : dato
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          trsnovedad: state.actaSeleccionada.trsnovedad.map(novedad =>
+            novedad.id === payload.id ? payload : novedad
+          ),
+        },
+        consignasNovedadesPendientes: {
+          ...state.consignasNovedadesPendientes,
+          novedades: state.consignasNovedadesPendientes.novedades.map(novedad =>
+            novedad.id === payload.id ? payload : novedad
           ),
         },
       }
@@ -286,6 +327,12 @@ export default (state = initialState, { type, payload }) => {
           ...state.actaSeleccionada,
           cctvnovedad: state.actaSeleccionada.cctvnovedad.map(dato =>
             dato.id === payload.id ? payload : dato
+          ),
+        },
+        consignasNovedadesPendientesCctv: {
+          ...state.consignasNovedadesPendientesCctv,
+          novedades: state.consignasNovedadesPendientesCctv.novedades.map(
+            dato => (dato.id === payload.id ? payload : dato)
           ),
         },
       }
@@ -308,6 +355,12 @@ export default (state = initialState, { type, payload }) => {
             dato.id === payload.id ? payload : dato
           ),
         },
+        consignasNovedadesPendientes: {
+          ...state.consignasNovedadesPendientes,
+          consignas: state.consignasNovedadesPendientes.consignas.map(dato =>
+            dato.id === payload.id ? payload : dato
+          ),
+        },
       }
 
     case types.UPDATE_CONSIGNACCTV_SUCCESS:
@@ -318,6 +371,12 @@ export default (state = initialState, { type, payload }) => {
           ...state.actaSeleccionada,
           cctvconsigna: state.actaSeleccionada.cctvconsigna.map(dato =>
             dato.id === payload.id ? payload : dato
+          ),
+        },
+        consignasNovedadesPendientesCctv: {
+          ...state.consignasNovedadesPendientesCctv,
+          consignas: state.consignasNovedadesPendientesCctv.consignas.map(
+            dato => (dato.id === payload.id ? payload : dato)
           ),
         },
       }
@@ -340,6 +399,12 @@ export default (state = initialState, { type, payload }) => {
             dato.id === payload.id ? payload : dato
           ),
         },
+        consignasNovedadesPendientes: {
+          ...state.consignasNovedadesPendientes,
+          consignas: state.consignasNovedadesPendientes.consignas.map(dato =>
+            dato.id === payload.id ? payload : dato
+          ),
+        },
       }
 
     case types.CERRAR_CONSIGNACCTV_SUCCESS:
@@ -350,6 +415,12 @@ export default (state = initialState, { type, payload }) => {
           ...state.actaSeleccionada,
           cctvconsigna: state.actaSeleccionada.cctvconsigna.map(dato =>
             dato.id === payload.id ? payload : dato
+          ),
+        },
+        consignasNovedadesPendientesCctv: {
+          ...state.consignasNovedadesPendientesCctv,
+          consignas: state.consignasNovedadesPendientesCctv.consignas.map(
+            dato => (dato.id === payload.id ? payload : dato)
           ),
         },
       }
@@ -449,10 +520,6 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        // informesCctv: {
-        //   ...state.informesCctv,
-        //   results: [payload, ...state.informesCctv.results],
-        // },
       }
 
     case types.POST_INFORMECCTV_FAILED:
@@ -466,23 +533,10 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isLoading: false,
         idInformeCreado: payload,
-        // informesTrs: {
-        //   ...state.informesTrs,
-        //   results: [payload, ...state.informesTrs.results],
-        // },
       }
 
     case types.POST_INFORMETRS_FAILED:
       return { ...state, isLoading: false, idInformeCreado: null }
-
-    // case types.GET_NOVEDADESTRS_BY_ID_START:
-    //   return { ...state, isLoading: true }
-
-    // case types.GET_NOVEDADESTRS_BY_ID_SUCCESS:
-    //   return { ...state, isLoading: false, novedadesTrs: payload }
-
-    // case types.GET_NOVEDADESTRS_BY_ID_FAILED:
-    //   return { ...state, isLoading: false }
 
     case types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_START:
       return { ...state, isLoading: true }
