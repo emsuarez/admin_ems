@@ -187,9 +187,9 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesCctv: {
-          ...state.informesCctv,
-          results: state.informesCctv.results.map(dato =>
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          cctvnovedad: state.actaSeleccionada.cctvnovedad.map(dato =>
             dato.id === payload.id ? payload : dato
           ),
         },
@@ -197,6 +197,37 @@ export default (state = initialState, { type, payload }) => {
 
     case types.UPDATE_NOVEDADTRS_FAILED:
     case types.UPDATE_NOVEDADCCTV_FAILED:
+      return { ...state, isLoading: false }
+
+    case types.DELETE_NOVEDADTRS_START:
+    case types.DELETE_NOVEDADCCTV_START:
+      return { ...state, isLoading: true }
+    case types.DELETE_NOVEDADCCTV_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          cctvnovedad: state.actaSeleccionada.cctvnovedad.filter(
+            dato => dato.id !== payload.id
+          ),
+        },
+      }
+
+    case types.DELETE_NOVEDADTRS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          trsnovedad: state.actaSeleccionada.trsnovedad.filter(
+            dato => dato.id !== payload.id
+          ),
+        },
+      }
+
+    case types.DELETE_NOVEDADTRS_FAILED:
+    case types.DELETE_NOVEDADCCTV_FAILED:
       return { ...state, isLoading: false }
 
     case types.CERRAR_NOVEDADTRS_START:
@@ -219,9 +250,9 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        informesCctv: {
-          ...state.informesCctv,
-          results: state.informesCctv.results.map(dato =>
+        actaSeleccionada: {
+          ...state.actaSeleccionada,
+          cctvnovedad: state.actaSeleccionada.cctvnovedad.map(dato =>
             dato.id === payload.id ? payload : dato
           ),
         },

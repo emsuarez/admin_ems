@@ -296,7 +296,7 @@ export const updateNovedadCCTVAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.UPDATE_NOVEDADCCTV_START, payload: data })
+      dispatch({ type: types.UPDATE_NOVEDADCCTV_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.patch('/novedadcctv/', data, {
@@ -307,7 +307,7 @@ export const updateNovedadCCTVAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.UPDATE_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch({ type: types.UPDATE_NOVEDADCCTV_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -349,7 +349,7 @@ export const deleteNovedadCCTVAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.DELETE_NOVEDADCCTV_START, payload: data })
+      dispatch({ type: types.DELETE_NOVEDADCCTV_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.delete('/novedadcctv/', {
@@ -361,7 +361,7 @@ export const deleteNovedadCCTVAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.DELETE_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch({ type: types.DELETE_NOVEDADCCTV_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -402,7 +402,7 @@ export const cerrarNovedadCCTVAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.CERRAR_NOVEDADCCTV_START, payload: data })
+      dispatch({ type: types.CERRAR_NOVEDADCCTV_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.put('/novedadcctv/', data, {
@@ -413,7 +413,7 @@ export const cerrarNovedadCCTVAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CERRAR_NOVEDADCCTV_SUCCESS, payload: result })
+      dispatch({ type: types.CERRAR_NOVEDADCCTV_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {

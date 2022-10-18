@@ -7,7 +7,7 @@ const ConsignasNovedades = ({
   handleOpenEditar,
   handleOpenEliminar,
   handleOpenCerrarItem,
-  handleOpenEditarNovedadCerrada: handleOpenEditarItemCerrado,
+  handleOpenEditarItemCerrado,
 }) => {
   const tipo = window.localStorage.getItem('tipo')
 

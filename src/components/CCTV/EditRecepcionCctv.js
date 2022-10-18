@@ -353,7 +353,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(createNovedadCctvAction(newNovedad))
-    // navigate(0)
   }
 
   const handleOpenEditarNovedad = novedad => {
@@ -368,12 +367,13 @@ const EditRecepcionCctv = () => {
 
   const handleEditarNovedad = novedad => {
     setOpenModalEditarNovedad(false)
+
     const novedadEditada = {
-      id: novedadSeleccionada.id,
+      ...novedadSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
-
+    console.log(novedadEditada, 'novedadEditada')
     dispatch(updateNovedadCCTVAction(novedadEditada))
   }
 
@@ -404,7 +404,7 @@ const EditRecepcionCctv = () => {
   const handleEditarNovedadCerrada = novedad => {
     setOpenModalEditarNovedadCerrada(false)
     const novedadEditada = {
-      id: novedadSeleccionada.id,
+      ...novedadSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: novedad,
     }
@@ -424,9 +424,10 @@ const EditRecepcionCctv = () => {
   const handleCerrarNovedad = novedad => {
     setOpenModalCerrarNovedad(false)
     const novedadCerrada = {
-      id: novedadSeleccionada.id,
+      ...novedadSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: novedad,
+      estado: 0,
     }
 
     dispatch(cerrarNovedadCCTVAction(novedadCerrada))
@@ -458,7 +459,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(createConsignaCctvAction(newConsigna))
-    // navigate(0)
   }
 
   const handleOpenEditarConsigna = consigna => {
