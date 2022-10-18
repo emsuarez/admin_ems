@@ -35,6 +35,9 @@ const EditRecepcionCctv = () => {
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const ultimaActaCreada = useSelector(
+    state => state.informes.informesCctv.results[0]
+  )
   const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
   const {
     agente_saliente,
@@ -50,6 +53,8 @@ const EditRecepcionCctv = () => {
   const consignasNovedadesPendientes = useSelector(
     state => state.informes.consignasNovedadesPendientesCctv
   )
+  const { consignas, novedades } = consignasNovedadesPendientes || {}
+
   // #region STATE_INICIAL
 
   const [openModalAgregarProtector, setOpenModalAgregarProtector] =
@@ -104,51 +109,16 @@ const EditRecepcionCctv = () => {
 
   const protectoresState = useSelector(state => state.recursos.allProtectores)
   const usuariosState = useSelector(state => state.auth.allUsers)
-  const novedadesState = useSelector(state => state.informes.novedadesState)
 
   useEffect(() => {
-    const cargarDatos = async () => {
-      await dispatch(getInformeCctvById(location.state))
-      await dispatch(getNovedadesConsignasCctvPendientes())
-      await dispatch(getAllProtectoresAction())
-      await dispatch(getAllUsersReportAction())
+    const cargarDatos = () => {
+      dispatch(getInformeCctvById(location.state))
+      dispatch(getNovedadesConsignasCctvPendientes())
+      dispatch(getAllProtectoresAction())
+      dispatch(getAllUsersReportAction())
     }
+
     cargarDatos()
-    const obtenerInfoVista = () => {
-      if (actaSeleccionada) {
-        if (Object.keys(actaSeleccionada).length > 0) {
-          const fechaActual = new Date()
-          const fechaActaSeleccionada = new Date(actaSeleccionada.created)
-          fechaActual.setHours(0, 0, 0, 0)
-          fechaActaSeleccionada.setHours(0, 0, 0, 0)
-          // setFechaActualValida(fechaActual)
-          // setfechaActaSeleccionadaValida(fechaActaSeleccionada)
-          // if (
-          //   consignasNovedadesPendientes.consignas &&
-          //   fechaActaSeleccionada.getTime() == fechaActual.getTime()
-          // ) {
-          //   setConsignas([
-          //     ...consignasNovedadesPendientes.consignas,
-          //     ...actaSeleccionada.cctvconsigna,
-          //   ])
-          // } else {
-
-          // }
-          // if (
-          //   consignasNovedadesPendientes.novedades &&
-          //   fechaActaSeleccionada.getTime() == fechaActual.getTime()
-          // ) {
-          //   setNovedades([
-          //     ...consignasNovedadesPendientes.novedades,
-          //     ...actaSeleccionada.cctvnovedad,
-          //   ])
-          // } else {
-
-          // }
-        }
-      }
-    }
-    obtenerInfoVista()
   }, [])
 
   useEffect(() => {
@@ -175,6 +145,13 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
+    const prevProtectores = protectores?.split(',')?.map(protector => {
+      return protector.trim()
+    })
+    if (prevProtectores.length > 4) {
+      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
+      return
+    }
     setOpenModalAgregarProtector(true)
   }
 
@@ -252,6 +229,13 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_CENTRALISTAS
   const handleOpenAgregarCentralista = () => {
+    const prevCentralistas = centralistas?.split(',')?.map(cent => {
+      return cent.trim()
+    })
+    if (prevCentralistas.length > 4) {
+      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'))
+      return
+    }
     setOpenModalAgregarCentralista(true)
   }
 
@@ -858,6 +842,21 @@ const EditRecepcionCctv = () => {
                       />
                     )}
                   </div>
+                  {/* Novedades Pendientes */}
+                  {novedades &&
+                    ultimaActaCreada?.id === actaSeleccionada?.id && (
+                      <ConsignasNovedades
+                        lista={novedades?.filter(
+                          n => !cctvnovedad?.some(n2 => n.id == n2.id)
+                        )}
+                        handleOpenEditar={handleOpenEditarNovedad}
+                        handleOpenEliminar={handleOpenEliminarNovedad}
+                        handleOpenCerrarItem={handleOpenCerrarNovedad}
+                        handleOpenEditarItemCerrado={
+                          handleOpenEditarNovedadCerrada
+                        }
+                      />
+                    )}
 
                   <ConsignasNovedades
                     lista={cctvnovedad}
