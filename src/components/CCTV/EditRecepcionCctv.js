@@ -50,10 +50,10 @@ const EditRecepcionCctv = () => {
     created,
   } = actaSeleccionada || {}
 
-  const consignasNovedadesPendientes = useSelector(
+  const consignasNovedadesPendientesCctv = useSelector(
     state => state.informes.consignasNovedadesPendientesCctv
   )
-  const { consignas, novedades } = consignasNovedadesPendientes || {}
+  const { consignas, novedades } = consignasNovedadesPendientesCctv || {}
 
   // #region STATE_INICIAL
 
@@ -164,7 +164,7 @@ const EditRecepcionCctv = () => {
     const prevProtectores = protectores?.split(',')?.map(protector => {
       return protector.trim()
     })
-    console.log('prevProtectores', prevProtectores)
+
     const newProtector = {
       id: actaSeleccionada.id,
       protectores: prevProtectores
@@ -175,7 +175,6 @@ const EditRecepcionCctv = () => {
     }
 
     dispatch(crudPersonalActaCctvAction(newProtector))
-    // navigate(0)
   }
 
   const handleOpenEditarProtector = protector => {
@@ -248,7 +247,7 @@ const EditRecepcionCctv = () => {
     const prevCentralistas = centralistas?.split(',')?.map(cent => {
       return cent.trim()
     })
-    console.log(prevCentralistas, 'prevCentralistas')
+
     const newCentralista = {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
@@ -413,7 +412,7 @@ const EditRecepcionCctv = () => {
       obs_cierre: novedad,
       estado: 0,
     }
-    console.log(novedadCerrada, 'novedadCerrada')
+
     dispatch(cerrarNovedadCCTVAction(novedadCerrada))
   }
   //#endregion

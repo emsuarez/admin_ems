@@ -12,7 +12,6 @@ import {
   getAllEjecutivosAction,
   getInformeCctv,
   getInformeCctvById,
-  getInformeTrs,
 } from '../../store/actions'
 
 import { format } from 'date-fns'
@@ -22,7 +21,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 import { DatePicker } from '@mui/x-date-pickers'
-import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 
@@ -45,7 +43,7 @@ const RecepcionTurnoCctv = () => {
   const [fechaFinal, setFechaFinal] = useState(new Date())
 
   const recepcionesTurnoData = useSelector(state => state.informes.informesCctv)
-  const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
+
 
   const handleSearch = e => {
     dispatch(getInformeCctv('/informetrs/?query=' + e.target.value))
@@ -53,11 +51,12 @@ const RecepcionTurnoCctv = () => {
 
   const handleOpenViewInforme = informe => {
     navigate('/viewrecepcioncctv')
+    dispatch(getInformeCctvById(informe))
   }
 
   const handleOpenEditInforme = informe => {
     navigate('/editrecepcioncctv', { state: informe.id })
-    console.log(informe, ' informe')
+
     dispatch(getInformeCctvById(informe))
   }
 
@@ -163,20 +162,7 @@ const RecepcionTurnoCctv = () => {
                   </LocalizationProvider>
                 </div>
               </div>
-              {/* <div className='flex justify-between text-center mt-4'>
-                <div className='ml-10 mt-2 mr-4 font-semibold'>Ejecutivo:</div>
-                <div className='w-60'>
-                  <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
-                    {Object.keys(allEjecutivos).length > 0
-                      ? allEjecutivos.results.map(ejecutivo => (
-                          <option value={ejecutivo.id}>
-                            {ejecutivo.nombres}
-                          </option>
-                        ))
-                      : null}
-                  </select>
-                </div>
-              </div> */}
+
               <div className='flex justify-between align-middle text-center mt-4'>
                 <span className='ml-10 mt-2 mr-4 font-semibold text-white cursor-default'>
                   Buscar:

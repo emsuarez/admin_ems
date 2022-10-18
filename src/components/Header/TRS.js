@@ -1,9 +1,12 @@
 import { Button, Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
+import { setToast } from '../../store/actions'
 import {
+  getInformeTrs,
   getNovedadesConsignasTrsPendientes,
   postInformeTrs,
 } from '../../store/actions/InformesAction'
@@ -25,6 +28,12 @@ const TRS = ({ item }) => {
   const idInforme = useSelector(states => states.informes.idInformeCreado)
   const open = Boolean(anchorEl)
   const openSubMenu = Boolean(subMenu)
+
+  const informesTrsControl = useSelector(state => state.informes.informesTrs)
+  const { results } = informesTrsControl
+  useEffect(() => {
+    dispatch(getInformeTrs())
+  }, [])
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
@@ -50,18 +59,34 @@ const TRS = ({ item }) => {
   }
 
   const handleNuevoInformeDiurno = () => {
+    if (results[0].turno === 1) {
+      dispatch(
+        setToast({
+          open: true,
+          message: 'Ya existe un informe diurno',
+          type: 'error',
+        })
+      )
+      setOpenModalCrearActaDiurna(false)
+      return
+    }
     dispatch(postInformeTrs(1))
     setOpenModalCrearActaDiurna(false)
-    if (idInforme) {
-      navigate('/editrecepcion', { state: idInforme })
-    }
+    dispatch(getNovedadesConsignasTrsPendientes())
+
+    navigate('/editrecepcion', { state: idInforme })
   }
   const handleNuevoInformeNocturno = () => {
+    if (results[0].turno === 0) {
+      dispatch(setToast('error', 'Ya existe un informe nocturno'))
+      setOpenModalCrearActaNocturna(false)
+      return
+    }
+
     dispatch(postInformeTrs(0))
     setOpenModalCrearActaNocturna(false)
-    if (idInforme) {
-      navigate('/editrecepcion', { state: idInforme })
-    }
+
+    navigate('/editrecepcion', { state: idInforme })
   }
   return (
     <div>

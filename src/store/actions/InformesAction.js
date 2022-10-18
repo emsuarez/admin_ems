@@ -270,7 +270,7 @@ export const updateNovedadTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.UPDATE_NOVEDADTRS_START, payload: data })
+      dispatch({ type: types.UPDATE_NOVEDADTRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.patch('/novedadtrs/', data, {
@@ -281,7 +281,7 @@ export const updateNovedadTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.UPDATE_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch({ type: types.UPDATE_NOVEDADTRS_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -322,7 +322,7 @@ export const deleteNovedadTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.DELETE_NOVEDADTRS_START, payload: data })
+      dispatch({ type: types.DELETE_NOVEDADTRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.delete('/novedadtrs/', {
@@ -334,7 +334,7 @@ export const deleteNovedadTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.DELETE_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch({ type: types.DELETE_NOVEDADTRS_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -376,7 +376,7 @@ export const cerrarNovedadTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.CERRAR_NOVEDADTRS_START, payload: data })
+      dispatch({ type: types.CERRAR_NOVEDADTRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.put('/novedadtrs/', data, {
@@ -387,7 +387,7 @@ export const cerrarNovedadTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CERRAR_NOVEDADTRS_SUCCESS, payload: result })
+      dispatch({ type: types.CERRAR_NOVEDADTRS_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -487,7 +487,7 @@ export const updateConsignaTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.UPDATE_CONSIGNATRS_START, payload: data })
+      dispatch({ type: types.UPDATE_CONSIGNATRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.patch('/consignatrs/', data, {
@@ -498,7 +498,7 @@ export const updateConsignaTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.UPDATE_CONSIGNATRS_SUCCESS, payload: result })
+      dispatch({ type: types.UPDATE_CONSIGNATRS_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -538,7 +538,7 @@ export const deleteConsignaTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.DELETE_CONSIGNATRS_START, payload: data })
+      dispatch({ type: types.DELETE_CONSIGNATRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.delete('/consignatrs/', {
@@ -550,8 +550,8 @@ export const deleteConsignaTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.DELETE_CONSIGNATRS_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Consigna eliminada correctamente'))
+      dispatch({ type: types.DELETE_CONSIGNATRS_SUCCESS, payload: data })
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.DELETE_CONSIGNATRS_FAILED, payload: true })
@@ -592,7 +592,7 @@ export const cerrarConsignaTRSAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.CERRAR_CONSIGNATRS_START, payload: data })
+      dispatch({ type: types.CERRAR_CONSIGNATRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.put('/consignatrs/', data, {
@@ -603,7 +603,7 @@ export const cerrarConsignaTRSAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.CERRAR_CONSIGNATRS_SUCCESS, payload: result })
+      dispatch({ type: types.CERRAR_CONSIGNATRS_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {

@@ -24,6 +24,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers'
 import { useNavigate } from 'react-router-dom'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
+
 const RecepcionTurno = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -46,7 +47,6 @@ const RecepcionTurno = () => {
   }, [])
 
   const recepcionesTurnoData = useSelector(state => state.informes.informesTrs)
-  const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
 
   const handleSearch = e => {
     dispatch(getInformeTrs('/informetrs/?query=' + e.target.value))
@@ -54,12 +54,12 @@ const RecepcionTurno = () => {
 
   const handleOpenViewInforme = informe => {
     navigate('/viewrecepcion', { state: informe })
+    dispatch(getInformeTrsById(informe))
   }
 
   const handleOpenEditInforme = informe => {
-    console.log(informe, 'informe')
     navigate('/editrecepcion', { state: informe.id })
-    // dispatch(getInformeTrsById(informe))
+    dispatch(getInformeTrsById(informe))
   }
 
   const handleOpenDeleteActa = itemEliminar => {
@@ -170,22 +170,7 @@ const RecepcionTurno = () => {
                       </LocalizationProvider>
                     </div>
                   </div>
-                  {/* <div className='flex justify-between text-center mt-4'>
-                    <div className='ml-10 mt-2 mr-4 font-semibold'>
-                      Ejecutivo:
-                    </div>
-                    <div className='w-60'>
-                      <select className='border-[1px] border-neutral-300 rounded-md py-1.5 w-full focus:border-blue-800 outline-none'>
-                        {Object.keys(allEjecutivos).length > 0
-                          ? allEjecutivos.results.map(ejecutivo => (
-                              <option value={ejecutivo.id}>
-                                {ejecutivo.nombres}
-                              </option>
-                            ))
-                          : null}
-                      </select>
-                    </div>
-                  </div> */}
+
                   <div className='flex justify-between align-middle text-center mt-4'>
                     <span className='ml-10 mt-2 mr-4 font-semibold text-white cursor-default'>
                       Buscar:
@@ -231,18 +216,17 @@ const RecepcionTurno = () => {
                   </div>
                 </div>
               </div>
-              {recepcionesTurnoData &&
-                Object.keys(recepcionesTurnoData).length > 0 && (
-                  <div className=' pt-4 p-16 flex flex-col'>
-                    <RecepcionTurnoTable
-                      data={recepcionesTurnoData}
-                      handleOpenViewInforme={handleOpenViewInforme}
-                      handleOpenEditInforme={handleOpenEditInforme}
-                      handleOpenDeleteActa={handleOpenDeleteActa}
-                      tipoTabla='trs'
-                    />
-                  </div>
-                )}
+              {Object.keys(recepcionesTurnoData).length > 0 && (
+                <div className=' pt-4 p-16 flex flex-col'>
+                  <RecepcionTurnoTable
+                    data={recepcionesTurnoData}
+                    handleOpenViewInforme={handleOpenViewInforme}
+                    handleOpenEditInforme={handleOpenEditInforme}
+                    handleOpenDeleteActa={handleOpenDeleteActa}
+                    tipoTabla='trs'
+                  />
+                </div>
+              )}
             </div>
             {/* Modales */}
 
