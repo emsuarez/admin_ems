@@ -30,8 +30,8 @@ const usuariosReportPDF = usuarios => {
       usuario.tipo === '1'
         ? 'Administrador'
         : usuario.tipo === '2'
-        ? 'Sup. CCTV'
-        : 'Sup. TRS',
+        ? 'CCTV'
+        : 'TRS',
       format(new Date(usuario.created), 'yyyy-MM-dd'),
     ]
 
