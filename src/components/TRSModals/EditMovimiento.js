@@ -116,9 +116,12 @@ const EditMovimiento = ({
         )
     )
 
-    const idFamiliar = familiaresEjecutivo.results.find(
-      fam => fam.alias === dataSeleccionada.familiar
-    ).id
+    const idFamiliar =
+      familiaresEjecutivo.results &&
+      familiaresEjecutivo.results?.find(
+        fam => fam.alias === dataSeleccionada.familiar
+      )?.id
+
     setGrupoFamiliar(idFamiliar ? idFamiliar : '0')
 
     if (dataSeleccionada.lugar_salida_texto !== null) {
@@ -425,7 +428,7 @@ const EditMovimiento = ({
                         {editarLugarSalida ? (
                           <>
                             <span className='font-semibold text-sm pr-4 w-40 '>
-                              Lugar salida: 
+                              Lugar salida:
                             </span>
                             {lugares && (
                               <select
