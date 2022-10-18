@@ -16,17 +16,11 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import {
-  getGrupoFamiliarAction,
-  getInformeCctv,
-  getInformeTrs,
-  UpdateEstadoFamiliarAction,
-} from '../../store/actions'
 import { format } from 'date-fns'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import Icon from '../../assets/Icon'
+import { getInformeCctv, getInformeTrs } from '../../store/actions'
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -79,6 +73,7 @@ const RecepcionTurnoTable = ({
   const { results, count } = data
 
   const tipo = window.localStorage.getItem('tipo')
+  const idUsuario = window.localStorage.getItem('userid')
 
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
@@ -165,7 +160,9 @@ const RecepcionTurnoTable = ({
                         </span>
                       </div>
                     </>
-                  ) : row === results[0] && validarFecha(row.created) ? (
+                  ) : row === results[0] &&
+                    validarFecha(row.created) &&
+                    row.id_agente_saliente === Number(idUsuario) ? (
                     <>
                       <div
                         className='border-t-0 px-2  border-l-0 border-r-0 text-base whitespace-nowrap hover:cursor-pointer text-white  hover:bg-gray-300 hover:rounded'
