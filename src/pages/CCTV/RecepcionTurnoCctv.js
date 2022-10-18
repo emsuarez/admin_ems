@@ -57,6 +57,7 @@ const RecepcionTurnoCctv = () => {
 
   const handleOpenEditInforme = informe => {
     navigate('/editrecepcioncctv', { state: informe.id })
+    console.log(informe, ' informe')
     dispatch(getInformeCctvById(informe))
   }
 
