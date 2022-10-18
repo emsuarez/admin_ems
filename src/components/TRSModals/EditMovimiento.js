@@ -124,30 +124,24 @@ const EditMovimiento = ({
 
     setGrupoFamiliar(idFamiliar ? idFamiliar : '0')
 
-    if (dataSeleccionada.lugar_salida_texto !== null) {
-      setLugarSalidaTexto(dataSeleccionada.lugar_salida_texto)
-      setEditarLugarSalida(false)
-    } else {
-      const lugarSalidaId = dataSeleccionada.lugar_salida
-        ? lugares.results.find(
-            lugar => lugar.alias === dataSeleccionada.lugar_salida
-          ).id
-        : '0'
-      setLugarSalida(lugarSalidaId ? lugarSalidaId : '0')
-    }
+    const lugarSalidaId = dataSeleccionada.lugar_salida
+      ? lugares.results.find(
+          lugar => lugar.alias === dataSeleccionada.lugar_salida
+        ).id
+      : '0'
+    setLugarSalida(lugarSalidaId ? lugarSalidaId : '0')
 
-    if (dataSeleccionada.lugar_llegada_texto !== null) {
-      setLugarLlegadaTexto(dataSeleccionada.lugar_llegada_texto)
-      setEditarLugarLlegada(false)
-    } else {
-      const lugarLlegadaId = dataSeleccionada.lugar_llegada
-        ? lugares.results.find(
-            lugar => lugar.alias === dataSeleccionada.lugar_llegada
-          ).id
-        : '0'
+    setLugarSalidaTexto(dataSeleccionada.lugar_salida_texto)
 
-      setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : '0')
-    }
+    const lugarLlegadaId = dataSeleccionada.lugar_llegada
+      ? lugares.results?.find(
+          lugar => lugar.alias === dataSeleccionada.lugar_llegada
+        ).id
+      : '0'
+    setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : '0')
+
+    setLugarLlegadaTexto(dataSeleccionada.lugar_llegada_texto)
+    console.log(dataSeleccionada)
 
     setObservacion(
       dataSeleccionada.observacion ? dataSeleccionada.observacion : ''
@@ -486,35 +480,7 @@ const EditMovimiento = ({
                         <span className='font-semibold text-sm pr-4 w-40'>
                           Hora salida:
                         </span>
-                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DateTimePicker
-                            disabled={tipo === '1' ? false : true}
-                            inputProps={{
-                              style: {
-                                padding: `0.5rem 10px`,
-                                buttonColor: 'blue',
-                              },
-                            }}
-                            // label='Date Time picker'
-                            inputFormat='DD/MM/YYYY HH:mm A'
-                            value={horaSalida}
-                            onChange={hSalida => setHoraSalida(hSalida)}
-                            renderInput={params => (
-                              <TextField
-                                {...params}
-                                sx={{
-                                  svg: { color: '#26346E' },
-                                  input: {
-                                    fontSize: '0.85rem',
-                                    padding: '0.1rem 5px !important',
-                                    margin: '0',
-                                  },
-                                }}
-                                className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
-                              />
-                            )}
-                          />
-                        </LocalizationProvider> */}
+
                         {dataSeleccionada.created &&
                           format(
                             new Date(dataSeleccionada?.created),

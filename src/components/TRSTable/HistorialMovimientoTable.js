@@ -158,7 +158,7 @@ const HistorialMovimientoTable = ({
                 {
                   allEjecutivos.results?.find(
                     ejecutivo => ejecutivo.alias === row.ejecutivo
-                  ).nombres
+                  )?.nombres
                 }
               </TableCell>
               <TableCell>
