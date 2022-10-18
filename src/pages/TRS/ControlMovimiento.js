@@ -66,11 +66,13 @@ const ControlMovimiento = () => {
     state => state.informes.allHistorialMovimientos
   )
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
+
   const allVehiculosEjecutivos = useSelector(
     state => state.recursos.allVehiculosEjecutivos
   )
 
   const allProtectores = useSelector(state => state.recursos.allProtectores)
+
   const allVehiculosProtectores = useSelector(
     state => state.recursos.allVehiculosProtectores
   )
@@ -218,8 +220,8 @@ const ControlMovimiento = () => {
                 handleOpenViewInforme={handleOpenViewInforme}
                 handleOpenEditInforme={handleOpenEditInforme}
                 handleOpenDelete={handleOpenDeleteEvento}
-                ejecutivos={allEjecutivos}
-                protectores={allProtectores}
+                ejecutivos={allEjecutivos.results}
+                protectores={allProtectores.results}
               />
             </div>
           )}

@@ -18,9 +18,15 @@ import {
 } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Icon from '../../assets/Icon'
-import { getHistorialMovimientosAction } from '../../store/actions'
+import {
+  getAllEjecutivosAction,
+  getAllProtectoresAction,
+  getHistorialMovimientosAction,
+} from '../../store/actions'
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -69,10 +75,18 @@ const HistorialMovimientoTable = ({
   handleOpenViewInforme,
   handleOpenEditInforme,
   handleOpenDelete,
-  ejecutivos,
-  protectores,
 }) => {
   const dispatch = useDispatch()
+  const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
+  const allProtectores = useSelector(state => state.recursos.allProtectores)
+  console.log(allEjecutivos)
+  useEffect(() => {
+    const cargaEjecutivos = () => dispatch(getAllEjecutivosAction())
+    const cargaProtectores = () => dispatch(getAllProtectoresAction())
+    cargaEjecutivos()
+    cargaProtectores()
+  }, [])
+
   const { results, count } = data
 
   const [page, setPage] = React.useState(0)
@@ -142,7 +156,7 @@ const HistorialMovimientoTable = ({
             <TableRow key={index}>
               <TableCell scope='row'>
                 {
-                  ejecutivos.results?.find(
+                  allEjecutivos.results?.find(
                     ejecutivo => ejecutivo.alias === row.ejecutivo
                   ).nombres
                 }
@@ -169,7 +183,7 @@ const HistorialMovimientoTable = ({
               </TableCell>
               <TableCell>
                 {
-                  protectores.results?.find(
+                  allProtectores.results?.find(
                     protector => protector.alias === row.protector
                   ).nombres
                 }
