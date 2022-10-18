@@ -2,6 +2,7 @@ import { types } from '../actionTypes'
 
 import ProgressBar from '@badrap/bar-of-progress'
 import { httpRequest } from '../../config'
+import { setToast } from './ToastAction'
 
 const progress = new ProgressBar({
   size: 4,
@@ -157,42 +158,32 @@ const cerrarConsignaTrsError = estado => ({
   payload: estado,
 })
 
-export function cerrarConsignacCctvAction(consignaCctv, observacionCierre) {
+export const cerrarConsignacCctvAction = data => {
   return async dispatch => {
     try {
-      dispatch(obtenerConsignaCctvCerrar(consignaCctv))
       progress.start()
-      const token = window.localStorage.getItem('token')
+      dispatch({ type: types.CERRAR_CONSIGNACCTV_START })
+      let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      const consignaCerrar = {
-        id: consignaCctv.id,
-        estado: observacionCierre,
-      }
-      await httpRequest.put(`/consignacctv/`, consignaCerrar, {
-        headers: { Authorization: Token },
+
+      const respuesta = await httpRequest.put(`/consignacctv/`, data, {
+        headers: {
+          Authorization: Token,
+          'content-type': 'multipart/form-data',
+        },
       })
-      dispatch(cerrarConsignaCctvExitosa())
+
+      const result = respuesta.data
+      dispatch({ type: types.CERRAR_CONSIGNACCTV_SUCCESS, payload: data })
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
-      dispatch(cerrarConsignaCctvError(true))
+      dispatch({ type: types.CERRAR_CONSIGNACCTV_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
       progress.finish()
     }
   }
 }
-
-const obtenerConsignaCctvCerrar = consignaCctv => ({
-  type: types.GET_CONSIGNACERRARCCTV_START,
-  payload: consignaCctv,
-})
-
-const cerrarConsignaCctvExitosa = () => ({
-  type: types.CONSIGNACERRARCCTV_SUCCESS,
-})
-
-const cerrarConsignaCctvError = estado => ({
-  type: types.CONSIGNACERRARCCTV_FAILED,
-  payload: estado,
-})
 
 export function obtenerNovedadesCCTVAction(
   enlacePaginacion = '/novedadcctv/?id=0'

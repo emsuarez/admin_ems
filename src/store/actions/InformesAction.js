@@ -458,7 +458,7 @@ export const createConsignaCctvAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.CREATE_CONSIGNACCTV_START, payload: data })
+      dispatch({ type: types.CREATE_CONSIGNACCTV_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.post('/consignacctv/', data, {
@@ -512,7 +512,7 @@ export const updateConsignaCCTVAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.UPDATE_CONSIGNACCTV_START, payload: data })
+      dispatch({ type: types.UPDATE_CONSIGNACCTV_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.patch('/consignacctv/', data, {
@@ -523,7 +523,7 @@ export const updateConsignaCCTVAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.UPDATE_CONSIGNACCTV_SUCCESS, payload: result })
+      dispatch({ type: types.UPDATE_CONSIGNACCTV_SUCCESS, payload: data })
       dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
@@ -565,7 +565,7 @@ export const deleteConsignaCCTVAction = data => {
   return async dispatch => {
     try {
       progress.start()
-      dispatch({ type: types.DELETE_CONSIGNACCTV_START, payload: data })
+      dispatch({ type: types.DELETE_CONSIGNACCTV_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.delete('/consignacctv/', {
@@ -577,8 +577,8 @@ export const deleteConsignaCCTVAction = data => {
       })
 
       const result = respuesta.data
-      dispatch({ type: types.DELETE_CONSIGNACCTV_SUCCESS, payload: result })
-      dispatch(setToast('success', 'Consigna eliminada correctamente'))
+      dispatch({ type: types.DELETE_CONSIGNACCTV_SUCCESS, payload: data })
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.DELETE_CONSIGNACCTV_FAILED, payload: true })

@@ -373,7 +373,7 @@ const EditRecepcionCctv = () => {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
-    console.log(novedadEditada, 'novedadEditada')
+
     dispatch(updateNovedadCCTVAction(novedadEditada))
   }
 
@@ -437,7 +437,9 @@ const EditRecepcionCctv = () => {
   // #region CRUD_CONSIGNAS
   const handleOpenAgregarConsigna = () => {
     if (cctvconsigna.length > 13) {
-      dispatch(setToast('Error', 'No se pueden agregar más consignas'))
+      dispatch(
+        setToast('Error', 'Se ha alcanzado el límite máximo de consignas')
+      )
       return
     }
     setOpenModalAgregarConsigna(true)
@@ -473,12 +475,11 @@ const EditRecepcionCctv = () => {
 
   const handleEditarConsigna = consigna => {
     setOpenModalEditarConsigna(false)
+
     const consignaEditada = {
-      id: consignaSeleccionada.id,
+      ...consignaSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: consigna,
-      obs_cierre: consignaSeleccionada.obs_cierre,
-      estado: consignaSeleccionada.estado,
     }
 
     dispatch(updateConsignaCCTVAction(consignaEditada))
@@ -511,7 +512,7 @@ const EditRecepcionCctv = () => {
   const handleEditarConsignaCerrada = consigna => {
     setOpenModalEditarConsignaCerrada(false)
     const consignaEditada = {
-      id: consignaSeleccionada.id,
+      ...consignaSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: consigna,
     }
@@ -531,13 +532,13 @@ const EditRecepcionCctv = () => {
   const handleCerrarConsigna = consigna => {
     setOpenModalCerrarConsigna(false)
     const consignaCerrada = {
-      id: consignaSeleccionada.id,
+      ...consignaSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: consigna,
+      estado: 0,
     }
     dispatch(cerrarConsignacCctvAction(consignaCerrada))
   }
-
   // #endregion
 
   // #region FUNCIONES_ADICIONALES
