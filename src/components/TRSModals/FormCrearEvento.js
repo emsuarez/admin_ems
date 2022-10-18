@@ -43,7 +43,6 @@ const FormCrearEvento = ({
   const tipo = window.localStorage.getItem('tipo')
 
   const handleNuevoEvento = () => {
-    console.log(typeof lugarLlegada)
     if (lugarSalida !== '0' || lugarSalidaTexto !== '') {
       const nuevoEvento = {
         ejecutivo: ejecutivo,
@@ -94,6 +93,7 @@ const FormCrearEvento = ({
       }
       console.log(nuevoEvento)
       handleAction(nuevoEvento)
+      limpiarCampos()
     } else {
       dispatch(setToast('', 'Debe seleccionar un lugar de salida'))
     }
@@ -123,6 +123,22 @@ const FormCrearEvento = ({
     if (lugarLlegadaTF === true) {
       setLugarLlegadaTexto('')
     }
+  }
+
+  const limpiarCampos = () => {
+    setEjecutivo('0')
+    setVehiculoEjecutivo('0')
+    setProtector('0')
+    setVehiculoProtector('0')
+    setGrupoFamiliar('0')
+    setObservacionVehiculo('')
+    setLugarSalida('0')
+    setHoraSalida(dayjs(new Date()))
+    setLugarLlegada('0')
+    setHoraLlegada(dayjs(new Date()))
+    setObservacion('')
+    setLugarSalidaTexto('')
+    setLugarLlegadaTexto('')
   }
 
   return (
