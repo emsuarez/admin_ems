@@ -61,6 +61,7 @@ const ControlMovimiento = () => {
   }, [dispatch])
 
   const historiales = useSelector(state => state.informes.historialMovimientos)
+  console.log(historiales, 'historiales')
   const allHistoriales = useSelector(
     state => state.informes.allHistorialMovimientos
   )
@@ -124,7 +125,7 @@ const ControlMovimiento = () => {
 
   const handleDeleteEvento = movimiento => {
     console.log(movimiento, 'movimiento')
-     dispatch(deleteControlMovimientoAction({ id: movimiento.id }))
+    dispatch(deleteControlMovimientoAction({ id: movimiento.id }))
     setOpenDeleteModal(false)
   }
 
@@ -217,6 +218,8 @@ const ControlMovimiento = () => {
                 handleOpenViewInforme={handleOpenViewInforme}
                 handleOpenEditInforme={handleOpenEditInforme}
                 handleOpenDelete={handleOpenDeleteEvento}
+                ejecutivos={allEjecutivos}
+                protectores={allProtectores}
               />
             </div>
           )}

@@ -69,6 +69,8 @@ const HistorialMovimientoTable = ({
   handleOpenViewInforme,
   handleOpenEditInforme,
   handleOpenDelete,
+  ejecutivos,
+  protectores,
 }) => {
   const dispatch = useDispatch()
   const { results, count } = data
@@ -138,7 +140,13 @@ const HistorialMovimientoTable = ({
         <TableBody>
           {results.map((row, index) => (
             <TableRow key={index}>
-              <TableCell scope='row'>{row.ejecutivo}</TableCell>
+              <TableCell scope='row'>
+                {
+                  ejecutivos.results?.find(
+                    ejecutivo => ejecutivo.alias === row.ejecutivo
+                  ).nombres
+                }
+              </TableCell>
               <TableCell>
                 {row.lugar_salida_texto
                   ? row.lugar_salida_texto
@@ -159,7 +167,13 @@ const HistorialMovimientoTable = ({
                   ? ''
                   : format(new Date(row.hora_llegada), 'dd/MM/yyyy HH:mm')}
               </TableCell>
-              <TableCell>{row.protector}</TableCell>
+              <TableCell>
+                {
+                  protectores.results?.find(
+                    protector => protector.alias === row.protector
+                  ).nombres
+                }
+              </TableCell>
               <TableCell>{row.observacion}</TableCell>
 
               <TableCell>
