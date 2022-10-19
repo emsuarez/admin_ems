@@ -10,7 +10,7 @@ import { format } from 'date-fns'
 // define a generatePDF function that accepts a tickets argument
 const controlMovimientoReportPDF = historialControlMovimiento => {
   // initialize jsPDF
-  const doc = new jsPDF()
+  const doc = new jsPDF('landscape')
 
   // define the columns we want and their titles
   const tableColumn = [
@@ -56,7 +56,7 @@ const controlMovimientoReportPDF = historialControlMovimiento => {
     body: tableRows,
     margin: { top: 40 },
     didDrawPage: function (data) {
-      doc.addImage(logoEmpresa, 'PNG', 78, 0, 50, 30)
+      doc.addImage(logoEmpresa, 'PNG', 115, 0, 70, 30)
       doc.text('Historial de control de movimiento.', 14, 35)
     },
   })

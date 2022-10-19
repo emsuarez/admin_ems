@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
 import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
 import VerEventoModal from '../../components/TRSModals/VerEventoModal'
+import controlMovimientoReportPDF from '../../reports/TRS/controlMovimientoReportPDF'
 const HistorialMovimiento = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -279,9 +280,7 @@ const HistorialMovimiento = () => {
             <div></div>
             <div className='flex'>
               <button
-              // onClick={() =>
-              //   ejecutivosReportPDF(allEjecutivosData.results)
-              // }
+                onClick={() => controlMovimientoReportPDF(historiales.results)}
               >
                 <div className='flex'>
                   <p className='text-blue-800 hover:cursor-pointer'>

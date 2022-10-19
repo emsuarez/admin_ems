@@ -33,7 +33,7 @@ const VehicleEjectivos = () => {
     dispatch(getVehiculoEjecutivoAction())
     dispatch(getAllVehiculosEjecutivoAction())
     dispatch(getAllEjecutivosAction())
-  }, [dispatch])
+  }, [])
 
   const vehiculoEjecutivoData = useSelector(
     state => state.recursos.vehiculosEjecutivos
@@ -99,6 +99,7 @@ const VehicleEjectivos = () => {
   }
 
   const handleSearch = e => {
+    console.log(e.target.value)
     dispatch(
       getVehiculoEjecutivoAction('/vehiculoejecutivo/?query=' + e.target.value)
     )

@@ -79,7 +79,7 @@ const HistorialMovimientoTable = ({
   const dispatch = useDispatch()
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
   const allProtectores = useSelector(state => state.recursos.allProtectores)
-  console.log(allEjecutivos)
+
   useEffect(() => {
     const cargaEjecutivos = () => dispatch(getAllEjecutivosAction())
     const cargaProtectores = () => dispatch(getAllProtectoresAction())
