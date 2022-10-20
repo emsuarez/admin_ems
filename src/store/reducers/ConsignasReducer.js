@@ -6,7 +6,8 @@ const initialState = {
   novedadesCctv: {},
   consignasTrs: {},
   novedadesTrs: {},
-  consignasGrafica: {},
+  consignasGraficaTrs: {},
+  consignasGraficaCctv: {},
   consignaCerrar: null,
   error: null,
   loading: false,
@@ -17,6 +18,7 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_CONSIGNASCCTV_START:
     case types.GET_CONSIGNASTRS_START:
     case types.GET_CONSIGNASGRAFICA_START:
+    case types.GET_CONSIGNASGRAFICACCTV_START:
     case types.GET_NOVEDADESCCTV_START:
     case types.GET_NOVEDADESTRS_START:
       return { ...state, loading: payload }
@@ -29,6 +31,7 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_CONSIGNASCCTV_FAILED:
     case types.GET_CONSIGNASTRS_FAILED:
     case types.GET_CONSIGNASGRAFICA_FAILED:
+    case types.GET_CONSIGNASGRAFICACCTV_FAILED:
     case types.CONSIGNACERRARTRS_FAILED:
     case types.CONSIGNACERRARCCTV_FAILED:
     case types.GET_NOVEDADESCCTV_FAILED:
@@ -41,7 +44,9 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, loading: false, novedadesTrs: payload }
 
     case types.GET_CONSIGNASGRAFICA_SUCCESS:
-      return { ...state, loading: false, consignasGrafica: payload }
+      return { ...state, loading: false, consignasGraficaTrs: payload }
+    case types.GET_CONSIGNASGRAFICACCTV_SUCCESS:
+      return { ...state, loading: false, consignasGraficaCctv: payload }
 
     case types.GET_CONSIGNACERRARCCTV_START:
     case types.GET_CONSIGNACERRARCTRS_START:

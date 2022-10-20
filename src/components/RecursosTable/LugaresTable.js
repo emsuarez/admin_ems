@@ -1,7 +1,7 @@
 import ChevronLeftIcon from '@heroicons/react/outline/ChevronLeftIcon'
 import ChevronRightIcon from '@heroicons/react/outline/ChevronRightIcon'
 import { format } from 'date-fns'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Icon from '../../assets/Icon'
 import { GetLugaresAction, UpdateEstadoLugarAction } from '../../store/actions'
@@ -22,6 +22,7 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material'
+import { Navigate } from 'react-router-dom'
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -64,8 +65,8 @@ function TablePaginationActions(props) {
 }
 
 const LugaresTable = ({ data, handleOpenEditModal, handleOpenDeleteModal }) => {
-  const { results, count } = data
   const dispatch = useDispatch()
+  const { results, count } = data
 
   const handleChangeStatusLugar = data => {
     const nuevoStatus = {

@@ -42,16 +42,24 @@ const Dashboard = () => {
   const consignas = useSelector(state => state.consignas)
 
   const {
-    consignasGrafica,
+    consignasGraficaTrs,
+    consignasGraficaCctv,
     consignasCctv,
     consignasTrs,
     novedadesCctv,
     novedadesTrs,
   } = consignas
 
-  const handleTimeGraficas = consigna => {
+  const handleTimeGraficaCctv = consigna => {
     // setIdConsigna(consigna)
-    dispatch(obtenerConsignasGrafica(consigna))
+    console.log(consigna, 'consigna')
+    dispatch(obtenerConsignasGrafica(consigna, 'cctv'))
+  }
+
+  const handleTimeGraficaTrs = consigna => {
+    // setIdConsigna(consigna)
+    console.log(consigna, 'consigna')
+    dispatch(obtenerConsignasGrafica(consigna, 'trs'))
   }
 
   const confirmarCerrarConsignaTrs = consigna => {
@@ -94,16 +102,16 @@ const Dashboard = () => {
               <div className='flex mt-4 mb-8'>
                 <div className='w-1/2 ml-12 mr-3'>
                   <Piechart
-                    data={consignasGrafica.datos?.trs}
-                    handleTimeConsignas={handleTimeGraficas}
+                    data={consignasGraficaTrs}
+                    handleTimeConsignas={handleTimeGraficaTrs}
                     rol='TRS'
                   />
                 </div>
 
                 <div className='w-1/2 mr-12 ml-3'>
                   <Piechart
-                    data={consignasGrafica.datos?.cctv}
-                    handleTimeConsignas={handleTimeGraficas}
+                    data={consignasGraficaCctv}
+                    handleTimeConsignas={handleTimeGraficaCctv}
                     rol='CCTV'
                   />
                 </div>

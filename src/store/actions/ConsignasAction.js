@@ -81,22 +81,38 @@ const comenzarDescargaConsignasTRSError = estado => ({
   payload: estado,
 })
 
-export function obtenerConsignasGrafica(id) {
+export function obtenerConsignasGrafica(id, tipo) {
   return async dispatch => {
     try {
       progress.start()
-      dispatch(comenzarDescargaConsignasGrafica(id))
+      if (tipo === 'trs') {
+        dispatch(comenzarDescargaConsignasGrafica(id))
+      } else {
+        dispatch(comenzarDescargaConsignasGraficaCctv(id))
+      }
+
       const token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.get(`/grafica/?tipo=${id || 1}`, {
         headers: { Authorization: Token },
       })
-      const result = respuesta.data
+      const result = respuesta.data.datos
+      console.log(tipo)
 
-      dispatch(comenzarDescargaConsignasGraficaExitosa(result))
+      if (tipo === 'trs') {
+        dispatch(comenzarDescargaConsignasGraficaExitosa(result.trs))
+      } else {
+        dispatch(comenzarDescargaConsignasGraficaExitosaCctv(result.cctv))
+      }
+      console.log(result, 'result')
+
       progress.finish()
     } catch (error) {
-      dispatch(comenzarDescargaConsignasGraficaError(true))
+      if (tipo === 'trs') {
+        dispatch(comenzarDescargaConsignasGraficaError(true))
+      } else {
+        dispatch(comenzarDescargaConsignasGraficaErrorCctv(true))
+      }
       progress.finish()
     }
   }
@@ -114,6 +130,21 @@ const comenzarDescargaConsignasGraficaExitosa = consignas => ({
 
 const comenzarDescargaConsignasGraficaError = estado => ({
   type: types.GET_CONSIGNASGRAFICA_FAILED,
+  payload: estado,
+})
+
+const comenzarDescargaConsignasGraficaCctv = id => ({
+  type: types.GET_CONSIGNASGRAFICACCTV_START,
+  payload: id,
+})
+
+const comenzarDescargaConsignasGraficaExitosaCctv = consignas => ({
+  type: types.GET_CONSIGNASGRAFICACCTV_SUCCESS,
+  payload: consignas,
+})
+
+const comenzarDescargaConsignasGraficaErrorCctv = estado => ({
+  type: types.GET_CONSIGNASGRAFICACCTV_FAILED,
   payload: estado,
 })
 

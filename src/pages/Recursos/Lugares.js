@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Navigate, useNavigate } from 'react-router-dom'
 import {
   AdminAuthorized,
   CreateEjecutivo,
@@ -23,6 +24,7 @@ import {
 
 const Lugares = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [openEditModal, setOpenEditModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
@@ -58,6 +60,7 @@ const Lugares = () => {
     }
 
     dispatch(CreateNewLugarAction(nuevoLugar))
+    navigate(0)
   }
 
   const handleCloseEditModal = () => {
