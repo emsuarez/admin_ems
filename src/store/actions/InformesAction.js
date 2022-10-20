@@ -77,7 +77,7 @@ export const getInformeTrsNavegacion = (informeActual, navega) => {
       )
 
       const result = respuesta.data
-
+      console.log(informeActual, 'informeActual')
       if (result.results.length === 0) {
         dispatch(setToast('error', 'Ah llegado al final de la lista'))
         progress.finish()
@@ -88,6 +88,7 @@ export const getInformeTrsNavegacion = (informeActual, navega) => {
         type: types.GET_INFORMETRS_BY_ID_SUCCESS,
         payload: result.results[0],
       })
+      console.log('se ejecuto el dispatch')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_INFORMETRS_BY_ID_FAILED, payload: true })

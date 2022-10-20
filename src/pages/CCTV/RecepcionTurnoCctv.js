@@ -44,13 +44,12 @@ const RecepcionTurnoCctv = () => {
 
   const recepcionesTurnoData = useSelector(state => state.informes.informesCctv)
 
-
   const handleSearch = e => {
     dispatch(getInformeCctv('/informetrs/?query=' + e.target.value))
   }
 
   const handleOpenViewInforme = informe => {
-    navigate('/viewrecepcioncctv')
+    navigate('/viewrecepcioncctv', { state: informe.id })
     dispatch(getInformeCctvById(informe))
   }
 

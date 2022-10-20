@@ -527,13 +527,31 @@ const EditRecepcion = () => {
   const handleSalir = () => {
     navigate(-1)
   }
+  const listaInformesTrs = useSelector(state => state.informes.informesTrs)
 
   const handleInformeAnterior = () => {
-    dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 0))
+    console.log(actaSeleccionada, 'acta anterior')
+    if (
+      actaSeleccionada.id !==
+      listaInformesTrs.results[listaInformesTrs.results.length - 1].id
+    ) {
+      dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 0))
+    } else {
+      dispatch(getInformeTrsById(listaInformesTrs.results[0].id))
+    }
   }
 
   const handleSiguienteInforme = () => {
-    dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 1))
+    console.log(actaSeleccionada, 'acta siguiente')
+    if (actaSeleccionada.id !== listaInformesTrs.results[0].id) {
+      dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 1))
+    } else {
+      dispatch(
+        getInformeTrsById(
+          listaInformesTrs.results[listaInformesTrs.results.length - 1].id
+        )
+      )
+    }
   }
 
   const componentRef = useRef()

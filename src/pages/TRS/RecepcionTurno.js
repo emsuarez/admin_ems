@@ -53,7 +53,7 @@ const RecepcionTurno = () => {
   }
 
   const handleOpenViewInforme = informe => {
-    navigate('/viewrecepcion', { state: informe })
+    navigate('/viewrecepcion', { state: informe.id })
     dispatch(getInformeTrsById(informe))
   }
 

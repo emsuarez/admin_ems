@@ -528,13 +528,30 @@ const EditRecepcionCctv = () => {
   const handleSalir = () => {
     navigate(-1)
   }
-
+  const listaInformesCctv = useSelector(state => state.informes.informesCctv)
   const handleInformeAnterior = () => {
-    dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 0))
+    console.log(actaSeleccionada, 'acta anterior')
+    if (
+      actaSeleccionada.id !==
+      listaInformesCctv.results[listaInformesCctv.results.length - 1].id
+    ) {
+      dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 0))
+    } else {
+      dispatch(getInformeCctvById(listaInformesCctv.results[0].id))
+    }
   }
 
   const handleSiguienteInforme = () => {
-    dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 1))
+    console.log(actaSeleccionada, 'acta siguiente')
+    if (actaSeleccionada.id !== listaInformesCctv.results[0].id) {
+      dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 1))
+    } else {
+      dispatch(
+        getInformeCctvById(
+          listaInformesCctv.results[listaInformesCctv.results.length - 1].id
+        )
+      )
+    }
   }
 
   const componentRef = useRef()
