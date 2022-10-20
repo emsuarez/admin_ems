@@ -183,9 +183,9 @@ const HistorialMovimientoTable = ({
               </TableCell>
               <TableCell>
                 {
-                  allProtectores.results?.find(
+                  allProtectores?.results?.find(
                     protector => protector.alias === row.protector
-                  ).nombres
+                  )?.nombres
                 }
               </TableCell>
               <TableCell>{row.observacion}</TableCell>

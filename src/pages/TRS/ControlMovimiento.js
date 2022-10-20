@@ -61,7 +61,7 @@ const ControlMovimiento = () => {
   }, [dispatch])
 
   const historiales = useSelector(state => state.informes.historialMovimientos)
-  console.log(historiales, 'historiales')
+
   const allHistoriales = useSelector(
     state => state.informes.allHistorialMovimientos
   )

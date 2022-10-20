@@ -68,10 +68,10 @@ const EditMovimiento = ({
     if (!familiaresEjecutivo) {
       return
     }
-
+    console.log(dataSeleccionada, 'dataSeleccionada')
     const ejecutivoSeleccionado =
       ejecutivos.results &&
-      ejecutivos.results.find(eje => eje.alias === dataSeleccionada.ejecutivo)
+      ejecutivos.results?.find(eje => eje.alias === dataSeleccionada.ejecutivo)
         .id
     const protectorSeleccionado =
       protectores.results &&
@@ -122,13 +122,13 @@ const EditMovimiento = ({
         fam => fam.alias === dataSeleccionada.familiar
       )?.id
 
-    setGrupoFamiliar(idFamiliar ? idFamiliar : '0')
+    setGrupoFamiliar(idFamiliar ? idFamiliar : null)
 
-    const lugarSalidaId = dataSeleccionada.lugar_salida
-      ? lugares.results.find(
-          lugar => lugar.alias === dataSeleccionada.lugar_salida
-        ).id
-      : '0'
+    const lugarSalidaId =
+      lugares.results?.find(
+        lugar => lugar.alias === dataSeleccionada.lugar_salida
+      ).id || '0'
+    console.log(lugarSalidaId, 'lugarSalidaId')
     setLugarSalida(lugarSalidaId ? lugarSalidaId : '0')
 
     setLugarSalidaTexto(dataSeleccionada.lugar_salida_texto)
@@ -141,7 +141,6 @@ const EditMovimiento = ({
     setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : '0')
 
     setLugarLlegadaTexto(dataSeleccionada.lugar_llegada_texto)
-    console.log(dataSeleccionada)
 
     setObservacion(
       dataSeleccionada.observacion ? dataSeleccionada.observacion : ''
@@ -214,7 +213,7 @@ const EditMovimiento = ({
         vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
       ).alias,
 
-      lugar_salida: lugarSalidaTexto === '' ? lugarSalida : null,
+      lugar_salida: lugarSalida,
       lugar_salida_nombre:
         lugarSalidaTexto === ''
           ? lugares.results.find(
@@ -235,6 +234,7 @@ const EditMovimiento = ({
       observacion: observacion,
     }
 
+    console.log(eventoEditado)
     handleAction(eventoEditado)
   }
   // #endregion
