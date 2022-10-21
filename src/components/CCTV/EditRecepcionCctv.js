@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 
@@ -39,6 +39,7 @@ const EditRecepcionCctv = () => {
   const informes = useSelector(state => state.informes)
   const { informesCctv } = informes || {}
   const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
+
   const {
     agente_saliente,
     agente_entrante,
@@ -111,8 +112,6 @@ const EditRecepcionCctv = () => {
 
   useEffect(() => {
     const cargarDatos = () => {
-      console.log(location.state)
-      dispatch(getInformeCctvById(location.state))
       dispatch(getNovedadesConsignasCctvPendientes())
       dispatch(getAllProtectoresAction())
       dispatch(getAllUsersReportAction())
@@ -146,9 +145,10 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
-    const prevProtectores = protectores?.split(',')?.map(protector => {
-      return protector.trim()
-    })
+    const prevProtectores =
+      protectores?.split(',')?.map(protector => {
+        return protector.trim()
+      }) || []
     if (prevProtectores.length > 4) {
       dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
       return

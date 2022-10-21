@@ -26,12 +26,12 @@ const CCTV = ({ item }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [subMenu, setSubMenu] = useState()
 
-  const idInforme = useSelector(states => states.informes.idInformeCreado)
   const open = Boolean(anchorEl)
   const openSubMenu = Boolean(subMenu)
 
   const informesCctvControl = useSelector(state => state.informes.informesCctv)
   const { results } = informesCctvControl
+
   useEffect(() => {
     dispatch(getInformeCctv())
   }, [])
@@ -59,36 +59,24 @@ const CCTV = ({ item }) => {
     setOpenModalCrearActaNocturna(false)
   }
 
+  const validarFecha = fecha => {
+    const fechaActual = new Date().setHours(0, 0, 0, 0)
+    const fechaValidar = new Date(fecha).setHours(0, 0, 0, 0)
+
+    return fechaActual === fechaValidar
+  }
+
   const handleNuevoInformeDiurno = () => {
-    if (results[0].turno === 1) {
-      dispatch(
-        setToast({
-          open: true,
-          message: 'Ya existe un informe diurno',
-          type: 'error',
-        })
-      )
-      setOpenModalCrearActaDiurna(false)
-      return
-    }
     dispatch(postInformeCctv(1))
     setOpenModalCrearActaDiurna(false)
-    dispatch(getNovedadesConsignasCctvPendientes())
-    const id = idInforme
-    navigate('/editrecepcioncctv', { state: id })
+
+    navigate('/editrecepcioncctv')
   }
   const handleNuevoInformeNocturno = () => {
-    if (results[0].turno === 0) {
-      dispatch(setToast('error', 'Ya existe un informe nocturno'))
-      setOpenModalCrearActaNocturna(false)
-      return
-    }
-
     dispatch(postInformeCctv(0))
     setOpenModalCrearActaNocturna(false)
-    dispatch(getNovedadesConsignasCctvPendientes())
 
-    navigate('/editrecepcioncctv', { state: idInforme })
+    navigate('/editrecepcioncctv')
   }
 
   return (

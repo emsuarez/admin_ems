@@ -10,7 +10,7 @@ const initialState = {
   informesTrs: {},
   personalInformeTrs: {},
   actaSeleccionada: {},
-  idInformeCreado: null,
+  idInformeSeleccionado: 0,
   novedadesTrs: [],
 }
 
@@ -520,11 +520,11 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        idInformeCreado: payload.id,
+        idInformeSeleccionado: payload.id,
       }
 
     case types.POST_INFORMECCTV_FAILED:
-      return { ...state, isLoading: false, idInformeCreado: null }
+      return { ...state, isLoading: false, idInformeSeleccionado: null }
 
     case types.POST_INFORMETRS_START:
       return { ...state, isLoading: true }
@@ -533,11 +533,11 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        idInformeCreado: payload,
+        idInformeSeleccionado: payload,
       }
 
     case types.POST_INFORMETRS_FAILED:
-      return { ...state, isLoading: false, idInformeCreado: null }
+      return { ...state, isLoading: false, idInformeSeleccionado: null }
 
     case types.GET_CONSIGNAS_NOVEDADES_PENDIENTES_START:
       return { ...state, isLoading: true }

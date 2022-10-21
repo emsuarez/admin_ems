@@ -31,16 +31,18 @@ const RecepcionTurnoCctv = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [itemEliminar, setItemEliminar] = useState('')
 
+  const [fechaInicial, setFechaInicial] = useState(new Date())
+  const [fechaFinal, setFechaFinal] = useState(new Date())
   useEffect(() => {
-    const obtenerInfoVista = async () => {
-      await dispatch(getInformeCctv())
-      await dispatch(getAllEjecutivosAction())
+    const fInicial = new Date()
+    fInicial.setMonth(fInicial.getMonth() - 1)
+    setFechaInicial(fInicial)
+    const obtenerInfoVista = () => {
+      dispatch(getInformeCctv())
+      dispatch(getAllEjecutivosAction())
     }
     obtenerInfoVista()
   }, [])
-
-  const [fechaInicial, setFechaInicial] = useState(new Date())
-  const [fechaFinal, setFechaFinal] = useState(new Date())
 
   const recepcionesTurnoData = useSelector(state => state.informes.informesCctv)
 
@@ -49,14 +51,13 @@ const RecepcionTurnoCctv = () => {
   }
 
   const handleOpenViewInforme = informe => {
-    navigate('/viewrecepcioncctv', { state: informe.id })
-    dispatch(getInformeCctvById(informe))
+    navigate('/viewrecepcioncctv')
+    dispatch(getInformeCctvById(informe.id))
   }
 
   const handleOpenEditInforme = informe => {
-    navigate('/editrecepcioncctv', { state: informe.id })
-
-    dispatch(getInformeCctvById(informe))
+    dispatch(getInformeCctvById(informe.id))
+    navigate('/editrecepcioncctv')
   }
 
   const handleOpenDeleteActa = itemEliminar => {
