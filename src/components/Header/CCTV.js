@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
 import { setToast } from '../../store/actions'
 import {
+  getInformeCctv,
   getInformeTrs,
   getNovedadesConsignasCctvPendientes,
   postInformeCctv,
@@ -32,7 +33,7 @@ const CCTV = ({ item }) => {
   const informesCctvControl = useSelector(state => state.informes.informesCctv)
   const { results } = informesCctvControl || []
   useEffect(() => {
-    dispatch(getInformeTrs())
+    dispatch(getInformeCctv())
   }, [])
 
   const handleClick = event => {
