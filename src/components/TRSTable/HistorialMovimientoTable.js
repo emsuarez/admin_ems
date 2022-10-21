@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Icon from '../../assets/Icon'
 import {
   getAllEjecutivosAction,
+  GetAllLugaresAction,
   getAllProtectoresAction,
   getHistorialMovimientosAction,
 } from '../../store/actions'
@@ -79,13 +80,13 @@ const HistorialMovimientoTable = ({
   const dispatch = useDispatch()
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
   const allProtectores = useSelector(state => state.recursos.allProtectores)
-
-  useEffect(() => {
-    const cargaEjecutivos = () => dispatch(getAllEjecutivosAction())
-    const cargaProtectores = () => dispatch(getAllProtectoresAction())
-    cargaEjecutivos()
-    cargaProtectores()
-  }, [])
+  const allLugares = useSelector(state => state.recursos.allLugares)
+  const allVehiculosEjecutivos = useSelector(
+    state => state.recursos.allVehiculosEjecutivos
+  )
+  const allVehiculosProtectores = useSelector(
+    state => state.recursos.allVehiculosProtectores
+  )
 
   const { results, count } = data
 
@@ -152,29 +153,50 @@ const HistorialMovimientoTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {results.map((row, index) => (
+          {results?.map((row, index) => (
             <TableRow key={index}>
               <TableCell scope='row'>
                 {
                   allEjecutivos.results?.find(
-                    ejecutivo => ejecutivo.alias === row.ejecutivo
+                    ejecutivo => ejecutivo.id === row.ejecutivo
                   )?.nombres
                 }
               </TableCell>
               <TableCell>
                 {row.lugar_salida_texto
                   ? row.lugar_salida_texto
-                  : row.lugar_salida}
+                  : row.lugar_salida
+                  ? allLugares.results?.find(
+                      lugar => lugar.id === row.lugar_salida
+                    )?.alias
+                  : ''}
               </TableCell>
               <TableCell>
                 {row.lugar_llegada_texto
                   ? row.lugar_llegada_texto
-                  : row.lugar_llegada}
+                  : row.lugar_llegada &&
+                    allLugares.results?.find(
+                      lugar => lugar.id === row.lugar_llegada
+                    )?.alias}
               </TableCell>
-              <TableCell>{row.vehiculo_ejecutivo}</TableCell>
-              <TableCell>{row.vehiculo_protector}</TableCell>
               <TableCell>
-                {format(new Date(row.hora_salida), 'dd/MM/yyyy HH:mm')}
+                {
+                  allVehiculosEjecutivos.results?.find(
+                    vehiculo => vehiculo.id === row.vehiculo_ejecutivo
+                  )?.alias
+                }
+              </TableCell>
+              <TableCell>
+                {
+                  allVehiculosProtectores.results?.find(
+                    vehiculo => vehiculo.id === row.vehiculo_protector
+                  )?.alias
+                }
+              </TableCell>
+              <TableCell>
+                {row.hora_salida === null
+                  ? ''
+                  : format(new Date(row.hora_salida), 'dd/MM/yyyy HH:mm')}
               </TableCell>
               <TableCell>
                 {row.hora_llegada === null
@@ -184,7 +206,7 @@ const HistorialMovimientoTable = ({
               <TableCell>
                 {
                   allProtectores?.results?.find(
-                    protector => protector.alias === row.protector
+                    protector => protector.id === row.protector
                   )?.nombres
                 }
               </TableCell>

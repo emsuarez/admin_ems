@@ -45,50 +45,24 @@ const FormCrearEvento = ({
   const handleNuevoEvento = () => {
     if (lugarSalida !== '0' || lugarSalidaTexto !== '') {
       const nuevoEvento = {
-        ejecutivo: ejecutivo,
-        ejecutivo_nombre: ejecutivos.results.find(
-          ejecutivoItem => ejecutivoItem.id === Number(ejecutivo)
-        ).nombres,
-        familiar: grupoFamiliar === '0' ? null : grupoFamiliar,
-        vehiculo_ejecutivo: vehiculoEjecutivo,
-        vehiculo_ejecutivo_nombre:
-          vehiculoEjecutivo === '0'
-            ? null
-            : vehiculosEjecutivo.results.find(
-                vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
-              ).alias,
-        vehiculo_observacion: observacionVehiculo,
-        protector: protector,
-        protector_nombre: protectores.results.find(
-          protectorItem => protectorItem.id === Number(protector)
-        ).nombres,
-        vehiculo_protector: vehiculoProtector,
-        vehiculo_protector_nombre:
-          vehiculoProtector === '0'
-            ? null
-            : vehiculosProtector.results.find(
-                vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
-              ).alias,
+        ejecutivo: Number(ejecutivo),
 
-        lugar_salida: lugarSalida === '0' ? null : lugarSalida,
-        lugar_salida_nombre:
-          lugarSalida !== '0'
-            ? lugares.results.find(
-                lugarItem => lugarItem.id === Number(lugarSalida)
-              ).alias
-            : lugarSalidaTexto,
+        familiar: grupoFamiliar === '0' ? null : Number(grupoFamiliar),
+        vehiculo_ejecutivo: Number(vehiculoEjecutivo),
+
+        vehiculo_observacion: observacionVehiculo,
+        protector: Number(protector),
+
+        vehiculo_protector: Number(vehiculoProtector),
+
+        lugar_salida: lugarSalida === '0' ? null : Number(lugarSalida),
         lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
+
         lugar_llegada: lugarLlegada === '0' ? null : lugarLlegada,
-        lugar_llegada_nombre:
-          lugarLlegada !== '0'
-            ? lugares.results.find(
-                lugarItem => lugarItem.id === Number(lugarLlegada)
-              ).alias
-            : lugarLlegadaTexto,
         lugar_llegada_texto:
           lugarLlegadaTexto !== '0' ? lugarLlegadaTexto : null,
-        hora_salida: new Date(horaSalida),
-        hora_llegada: lugarLlegada === '0' ? null : new Date(horaLlegada),
+
+        hora_salida: true,
         observacion: observacion,
       }
       console.log(nuevoEvento)

@@ -837,6 +837,7 @@ export const postControlMovimiento = data => {
   return async dispatch => {
     try {
       progress.start()
+
       dispatch({ type: types.POST_CONTROL_MOVIMIENTO_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
@@ -850,15 +851,12 @@ export const postControlMovimiento = data => {
         payload: {
           ...data,
           id: result.id,
-          ejecutivo: data.ejecutivo_nombre,
-          vehiculo_ejecutivo: data.vehiculo_ejecutivo_nombre,
-          protector: data.protector_nombre,
-          vehiculo_protector: data.vehiculo_protector_nombre,
-          lugar_salida: data.lugar_salida_nombre,
-          lugar_llegada: data.lugar_llegada_nombre,
+          hora_salida: new Date(),
+          hora_llegada: null,
           estado: result.estado,
         },
       })
+
       dispatch(setToast('success', result.message))
 
       progress.finish()
