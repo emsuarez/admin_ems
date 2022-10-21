@@ -31,7 +31,7 @@ const CCTV = ({ item }) => {
   const openSubMenu = Boolean(subMenu)
 
   const informesCctvControl = useSelector(state => state.informes.informesCctv)
-  const { results } = informesCctvControl || []
+  const { results } = informesCctvControl
   useEffect(() => {
     dispatch(getInformeCctv())
   }, [])

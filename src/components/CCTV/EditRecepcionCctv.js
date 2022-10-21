@@ -111,7 +111,7 @@ const EditRecepcionCctv = () => {
 
   useEffect(() => {
     const cargarDatos = async () => {
-      await dispatch(getInformeCctvById(location.state))
+      dispatch(getInformeCctvById(location.state))
       dispatch(getNovedadesConsignasCctvPendientes())
       dispatch(getAllProtectoresAction())
       dispatch(getAllUsersReportAction())

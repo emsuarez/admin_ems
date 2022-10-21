@@ -966,6 +966,7 @@ export const postInformeCctv = data => {
     }
   }
 }
+
 export const postInformeTrs = data => {
   return async dispatch => {
     try {
