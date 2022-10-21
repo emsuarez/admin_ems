@@ -16,13 +16,9 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material'
-import React, { useEffect } from 'react'
 import { format } from 'date-fns'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-  obtenerConsignasCCTVAction,
-  obtenerConsignasTRSAction,
-} from '../../store/actions'
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -192,66 +188,6 @@ const ConsignasTable = ({
         </Table>
       </TableContainer>
     </div>
-    // <div className='flex flex-col break-words bg-white w-full shadow-lg h-full'>
-    //   <div className='mb-0 px-4 py-3 border-0'>
-    //     <div className='flex flex-wrap items-center'>
-    //       <div className='relative w-full px-4  flex-grow flex-1'>
-    //         <h3 className='font-semibold text-lg text-blueGray-700 '>
-    //           {tituloTipoTable}
-    //         </h3>
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   <div className='overflow-y-auto'>
-    //     <table className='items-center bg-transparent w-full border-collapse '>
-    //       <thead className='bg-gray-200'>
-    //         <tr>
-    //           <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
-    //             FECHA/HORA
-    //           </th>
-    //           <th className='px-6 bg-blueGray-50 text-blue-900 align-middle border border-solid border-blueGray-100 py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left'>
-    //             CONSIGNAS
-    //           </th>
-    //         </tr>
-    //       </thead>
-
-    //       {Object.keys(data).length > 0 ? (
-    //         <tbody className='overflow-x-auto'>
-    //           {data.results.map((item, index) => (
-    //             <tr key={index}>
-    //               <th className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 text-left text-blueGray-700 '>
-    //                 {item.created}
-    //               </th>
-    //               <td className='border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4 '>
-    //                 {item.obs_creacion}
-    //               </td>
-    //             </tr>
-    //           ))}
-    //         </tbody>
-    //       ) : null}
-    //     </table>
-    //   </div>
-
-    //   {/* Paginación */}
-    //   <div className='bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'>
-    //     <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
-    //       <div>
-    //         <p className='text-sm text-gray-700'>
-    //           Mostrando <span className='font-medium'>1</span> -{' '}
-    //           <span className='font-medium'>
-    //             {Object.keys(data).length > 0 ? results.length : null}
-    //           </span>{' '}
-    //           de{' '}
-    //           <span className='font-medium'>
-    //             {Object.keys(data).length > 0 ? count : null}
-    //           </span>{' '}
-    //           resultados
-    //         </p>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   )
 }
 

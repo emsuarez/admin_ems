@@ -110,7 +110,8 @@ const EditRecepcionCctv = () => {
   const usuariosState = useSelector(state => state.auth.allUsers)
 
   useEffect(() => {
-    const cargarDatos = async () => {
+    const cargarDatos = () => {
+      console.log(location.state)
       dispatch(getInformeCctvById(location.state))
       dispatch(getNovedadesConsignasCctvPendientes())
       dispatch(getAllProtectoresAction())
