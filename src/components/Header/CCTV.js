@@ -1,10 +1,12 @@
 import { Button, Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
 import { setToast } from '../../store/actions'
 import {
+  getInformeTrs,
   getNovedadesConsignasCctvPendientes,
   postInformeCctv,
 } from '../../store/actions/InformesAction'
@@ -28,7 +30,11 @@ const CCTV = ({ item }) => {
   const openSubMenu = Boolean(subMenu)
 
   const informesCctvControl = useSelector(state => state.informes.informesCctv)
-  const { results } = informesCctvControl
+  const { results } = informesCctvControl || []
+  useEffect(() => {
+    dispatch(getInformeTrs())
+  }, [])
+
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
   }
