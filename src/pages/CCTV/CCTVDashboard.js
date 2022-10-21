@@ -5,13 +5,13 @@ import {
   Header,
   ICONS,
   LineChart,
-  RedirectWithoutLogin
+  RedirectWithoutLogin,
 } from '../../components'
 import ConsignasTable from '../../components/CCTV/ConsignasTable'
 import {
   getPersonalInformeCctv,
   obtenerConsignasCCTVAction,
-  obtenerConsignasGrafica
+  obtenerConsignasGrafica,
 } from '../../store/actions'
 
 const CCTVDashboard = () => {
@@ -26,6 +26,7 @@ const CCTVDashboard = () => {
   }, [dispatch])
 
   const consignas = useSelector(state => state.consignas)
+  const { consignasGrafica, consignasCctv, novedadesCctv } = consignas || {}
   const informes = useSelector(state => state.informes)
 
   return (
@@ -33,7 +34,7 @@ const CCTVDashboard = () => {
       <RedirectWithoutLogin />
 
       {CCTVAuthorized() === -1 ? (
-        <div className='h-full bg-white flex flex-col justify-center'>
+        <div className='z-50 h-screen bg-white flex flex-col justify-center'>
           <h1 className='font-bold text-3xl text-center'>
             No tiene permisos para acceder a esta página
           </h1>
@@ -44,13 +45,13 @@ const CCTVDashboard = () => {
           <div className='flex flex-col mx-8'>
             <div className='mt-4 flex flex-row'>
               <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
-              <p className=' ml-1 font-semibold'>CCTV</p>
+              <p className='ml-1 font-semibold'>CCTV</p>
             </div>
 
             <div className='flex mt-4 justify-center mb-8'>
-              <div className='flex flex-col basis-2/4 mx-8'>
+              <div className='flex flex-col w-1/2 mx-8'>
                 <div className='bg-white w-full mb-3 border-2 border-gray-200 p-20'>
-                  <LineChart data={consignas?.consignasGrafica} />
+                  <LineChart data={consignasGrafica} />
                 </div>
 
                 <div className='bg-white p-6 shadow-md mb-3 w-full border-2 border-gray-200'>
@@ -88,20 +89,22 @@ const CCTVDashboard = () => {
                 </div>
               </div>
 
-              <div className='flex flex-col basis-2/4'>
-                <div className='flex items-stretch mb-3 h-1/2'>
-                  <ConsignasTable
-                    data={consignas?.consignasCctv}
-                    tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
-                  />
+              {consignas && (
+                <div className='flex flex-col w-1/2'>
+                  <div className='mb-3'>
+                    <ConsignasTable
+                      data={consignasCctv}
+                      tituloTipoTable='CONSIGNAS ESPECIALES PENDIENTES CCTV'
+                    />
+                  </div>
+                  <div>
+                    <ConsignasTable
+                      data={novedadesCctv}
+                      tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
+                    />
+                  </div>
                 </div>
-                <div className='basis-2/4 flex items-stretch h-1/2'>
-                  <ConsignasTable
-                    data={consignas?.novedadesCctv}
-                    tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES CCTV'
-                  />
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </>

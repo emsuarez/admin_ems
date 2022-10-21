@@ -46,11 +46,11 @@ const TRSDashboard = () => {
         </div>
       ) : (
         <>
-          <Header items='cctv' />
+          <Header items='trs' />
           <div className='flex flex-col mx-8'>
             <div className='mt-4 flex flex-row'>
               <ICONS.HomeIconS className='h-6 ml-10 text-gray-600' />
-              <p className=' ml-1 font-semibold'>TRS</p>
+              <p className='ml-1 font-semibold'>TRS</p>
             </div>
 
             <div className='flex mt-4 justify-center mb-8'>
@@ -95,12 +95,7 @@ const TRSDashboard = () => {
                   )}
                 </div>
               </div>
-              {/* <AlertCerrarConsigna
-                modal={modalTrs}
-                setModal={setModalTrs}
-                infoConsigna={consignaSeleccionada}
-                handleCerrarConsigna={handleCerrarConsignaTrs}
-              /> */}
+
               {consignas && (
                 <div className='flex flex-col w-1/2'>
                   <div className='mb-3'>
@@ -110,7 +105,7 @@ const TRSDashboard = () => {
                       functionChangePage={obtenerConsignasTRSAction}
                     />
                   </div>
-                  <div className=''>
+                  <div>
                     <ConsignasTable
                       data={consignas?.novedadesTrs}
                       tituloTipoTable='NOVEDADES ESPECIALES PENDIENTES TRS'

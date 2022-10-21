@@ -63,14 +63,14 @@ export default function LineChart({ data }) {
     },
   }
 
-  const labels = data.datos && Object.keys(data.datos).reverse()
+  const labels = data && Object.keys(data.datos).reverse()
 
   const dataFormat = {
     labels,
     datasets: [
       {
         label: 'CONSIGNAS',
-        data: data.datos && Object.values(data.datos).reverse(),
+        data: data && Object.values(data.datos).reverse(),
         borderColor: 'rgb(38, 52, 110, 1)',
         backgroundColor: 'rgba(38, 52, 110, 1)',
         fill: false,
