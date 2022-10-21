@@ -74,8 +74,8 @@ const CCTV = ({ item }) => {
     dispatch(postInformeCctv(1))
     setOpenModalCrearActaDiurna(false)
     dispatch(getNovedadesConsignasCctvPendientes())
-    console.log(idInforme)
-    navigate('/editrecepcioncctv', { state: idInforme })
+    const id = idInforme
+    navigate('/editrecepcioncctv', { state: id })
   }
   const handleNuevoInformeNocturno = () => {
     if (results[0].turno === 0) {
