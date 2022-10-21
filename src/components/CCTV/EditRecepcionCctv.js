@@ -18,6 +18,7 @@ import {
   deleteNovedadCCTVAction,
   getAllProtectoresAction,
   getAllUsersReportAction,
+  getInformeCctv,
   getInformeCctvById,
   getInformeCctvNavegacion,
   getNovedadesConsignasCctvPendientes,
@@ -35,9 +36,8 @@ const EditRecepcionCctv = () => {
   const dispatch = useDispatch()
   const location = useLocation()
 
-  const ultimaActaCreada = useSelector(
-    state => state.informes.informesCctv.results[0]
-  )
+  const informes = useSelector(state => state.informes)
+  const { informesCctv } = informes || {}
   const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
   const {
     agente_saliente,
@@ -49,7 +49,6 @@ const EditRecepcionCctv = () => {
     cctvnovedad,
     created,
   } = actaSeleccionada || {}
-
   const consignasNovedadesPendientesCctv = useSelector(
     state => state.informes.consignasNovedadesPendientesCctv
   )
@@ -111,11 +110,12 @@ const EditRecepcionCctv = () => {
   const usuariosState = useSelector(state => state.auth.allUsers)
 
   useEffect(() => {
-    const cargarDatos = () => {
-      dispatch(getInformeCctvById(location.state))
+    const cargarDatos = async () => {
+      await dispatch(getInformeCctvById(location.state))
       dispatch(getNovedadesConsignasCctvPendientes())
       dispatch(getAllProtectoresAction())
       dispatch(getAllUsersReportAction())
+      dispatch(getInformeCctv())
     }
 
     cargarDatos()
@@ -530,7 +530,6 @@ const EditRecepcionCctv = () => {
   }
   const listaInformesCctv = useSelector(state => state.informes.informesCctv)
   const handleInformeAnterior = () => {
-    console.log(actaSeleccionada, 'acta anterior')
     if (
       actaSeleccionada.id !==
       listaInformesCctv.results[listaInformesCctv.results.length - 1].id
@@ -542,7 +541,6 @@ const EditRecepcionCctv = () => {
   }
 
   const handleSiguienteInforme = () => {
-    console.log(actaSeleccionada, 'acta siguiente')
     if (actaSeleccionada.id !== listaInformesCctv.results[0].id) {
       dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 1))
     } else {
@@ -860,7 +858,7 @@ const EditRecepcionCctv = () => {
                   </div>
                   {/* Novedades Pendientes */}
                   {novedades &&
-                    ultimaActaCreada?.id === actaSeleccionada?.id && (
+                    informesCctv.results[0]?.id === actaSeleccionada?.id && (
                       <ConsignasNovedades
                         lista={novedades?.filter(
                           n => !cctvnovedad?.some(n2 => n.id == n2.id)
@@ -949,7 +947,7 @@ const EditRecepcionCctv = () => {
                   </div>
                   {/* Consignas Pendientes */}
                   {consignas &&
-                    ultimaActaCreada?.id === actaSeleccionada?.id && (
+                    informesCctv.results[0]?.id === actaSeleccionada?.id && (
                       <ConsignasNovedades
                         lista={consignas?.filter(
                           c => !cctvconsigna?.some(c2 => c.id == c2.id)

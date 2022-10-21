@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
+import { setToast } from '../../store/actions'
 import {
   getNovedadesConsignasCctvPendientes,
   postInformeCctv,
@@ -25,6 +26,9 @@ const CCTV = ({ item }) => {
   const idInforme = useSelector(states => states.informes.idInformeCreado)
   const open = Boolean(anchorEl)
   const openSubMenu = Boolean(subMenu)
+
+  const informesCctvControl = useSelector(state => state.informes.informesCctv)
+  const { results } = informesCctvControl
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
   }
@@ -49,16 +53,34 @@ const CCTV = ({ item }) => {
   }
 
   const handleNuevoInformeDiurno = () => {
+    if (results[0].turno === 1) {
+      dispatch(
+        setToast({
+          open: true,
+          message: 'Ya existe un informe diurno',
+          type: 'error',
+        })
+      )
+      setOpenModalCrearActaDiurna(false)
+      return
+    }
     dispatch(postInformeCctv(1))
     setOpenModalCrearActaDiurna(false)
     dispatch(getNovedadesConsignasCctvPendientes())
-    console.log('idInforme', idInforme)
+
     navigate('/editrecepcioncctv', { state: idInforme })
   }
   const handleNuevoInformeNocturno = () => {
+    if (results[0].turno === 0) {
+      dispatch(setToast('error', 'Ya existe un informe nocturno'))
+      setOpenModalCrearActaNocturna(false)
+      return
+    }
+
     dispatch(postInformeCctv(0))
     setOpenModalCrearActaNocturna(false)
     dispatch(getNovedadesConsignasCctvPendientes())
+
     navigate('/editrecepcioncctv', { state: idInforme })
   }
 

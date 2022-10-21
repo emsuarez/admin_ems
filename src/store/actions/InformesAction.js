@@ -3,6 +3,7 @@ import { types } from '../actionTypes'
 
 import ProgressBar from '@badrap/bar-of-progress'
 import { setToast } from './ToastAction'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const progress = new ProgressBar({
   size: 4,
@@ -77,7 +78,7 @@ export const getInformeTrsNavegacion = (informeActual, navega) => {
       )
 
       const result = respuesta.data
-      console.log(informeActual, 'informeActual')
+
       if (result.results.length === 0) {
         dispatch(setToast('error', 'Ah llegado al final de la lista'))
         progress.finish()
@@ -88,7 +89,6 @@ export const getInformeTrsNavegacion = (informeActual, navega) => {
         type: types.GET_INFORMETRS_BY_ID_SUCCESS,
         payload: result.results[0],
       })
-      console.log('se ejecuto el dispatch')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.GET_INFORMETRS_BY_ID_FAILED, payload: true })
@@ -227,7 +227,6 @@ export const createNovedadTRSAction = data => {
         payload: { ...data, id: result.id },
       })
       dispatch(setToast('success', result.message))
-      console.log(result, 'result nov trs')
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CREATE_NOVEDADTRS_FAILED, payload: true })
@@ -257,7 +256,7 @@ export const createNovedadCctvAction = data => {
         payload: { ...data, id: result.id },
       })
       dispatch(setToast('success', result.message))
-      console.log(result, 'result nov cctv')
+
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CREATE_NOVEDADCCTV_FAILED, payload: true })
@@ -445,7 +444,7 @@ export const createConsignaTRSAction = data => {
         payload: { ...data, id: result.id },
       })
       dispatch(setToast('success', result.message))
-      console.log(result, 'result AGREGAR CONSIGNA')
+
       progress.finish()
     } catch (error) {
       dispatch({ type: types.CREATE_CONSIGNATRS_FAILED, payload: true })
@@ -781,7 +780,7 @@ export const getPersonalInformeCctv = () => {
       })
 
       const result = respuesta.data
-      console.log(result)
+
       const personal = {
         protectores:
           result.lista.protectores !== null
@@ -923,7 +922,7 @@ export const deleteControlMovimientoAction = data => {
       })
 
       const result = respuesta.data
-      console.log(data)
+
       dispatch({
         type: types.DELETE_CONTROLMOVIMIENTO_SUCCESS,
         payload: data,
@@ -955,27 +954,14 @@ export const postInformeCctv = data => {
 
       const resultado = respuesta.data
 
-      dispatch({ type: types.POST_INFORMECCTV_SUCCESS, payload: data })
+      dispatch({ type: types.POST_INFORMECCTV_SUCCESS, payload: resultado })
       dispatch(setToast('success', resultado.message))
-
-      const response = await httpRequest.get(
-        '/informecctv/?id=' + resultado.id,
-        {
-          headers: { Authorization: Token },
-        }
-      )
-
-      const result = response.data
-
-      dispatch({
-        type: types.GET_INFORMECCTV_BY_ID_SUCCESS,
-        payload: result.results[0],
-      })
 
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_INFORMECCTV_FAILED, payload: true })
       dispatch(setToast('error', error.message))
+      console.log(error)
       progress.finish()
     }
   }
@@ -1039,7 +1025,7 @@ export const cerrarInformeTrs = data => {
       dispatch({ type: types.CERRAR_INFORMETRS_START })
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
-      console.log(data)
+
       const respuesta = await httpRequest.put('/informetrs/', data, {
         headers: { Authorization: Token },
       })

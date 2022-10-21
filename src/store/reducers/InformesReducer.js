@@ -520,10 +520,11 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
+        idInformeCreado: payload.id,
       }
 
     case types.POST_INFORMECCTV_FAILED:
-      return { ...state, isLoading: false }
+      return { ...state, isLoading: false, idInformeCreado: null }
 
     case types.POST_INFORMETRS_START:
       return { ...state, isLoading: true }

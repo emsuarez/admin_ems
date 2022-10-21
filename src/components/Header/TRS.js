@@ -85,6 +85,7 @@ const TRS = ({ item }) => {
 
     dispatch(postInformeTrs(0))
     setOpenModalCrearActaNocturna(false)
+    dispatch(getNovedadesConsignasTrsPendientes())
 
     navigate('/editrecepcion', { state: idInforme })
   }
