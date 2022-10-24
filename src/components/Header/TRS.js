@@ -59,35 +59,16 @@ const TRS = ({ item }) => {
   }
 
   const handleNuevoInformeDiurno = () => {
-    if (results[0].turno === 1) {
-      dispatch(
-        setToast({
-          open: true,
-          message: 'Ya existe un informe diurno',
-          type: 'error',
-        })
-      )
-      setOpenModalCrearActaDiurna(false)
-      return
-    }
     dispatch(postInformeTrs(1))
     setOpenModalCrearActaDiurna(false)
-    dispatch(getNovedadesConsignasTrsPendientes())
 
-    navigate('/editrecepcion', { state: idInforme })
+    navigate('/editrecepcion')
   }
   const handleNuevoInformeNocturno = () => {
-    if (results[0].turno === 0) {
-      dispatch(setToast('error', 'Ya existe un informe nocturno'))
-      setOpenModalCrearActaNocturna(false)
-      return
-    }
-
     dispatch(postInformeTrs(0))
     setOpenModalCrearActaNocturna(false)
-    dispatch(getNovedadesConsignasTrsPendientes())
 
-    navigate('/editrecepcion', { state: idInforme })
+    navigate('/editrecepcion')
   }
   return (
     <div>
