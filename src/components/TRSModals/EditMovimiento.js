@@ -71,24 +71,21 @@ const EditMovimiento = ({
     console.log(dataSeleccionada, 'dataSeleccionada')
     const ejecutivoSeleccionado =
       ejecutivos.results &&
-      ejecutivos.results?.find(eje => eje.alias === dataSeleccionada.ejecutivo)
-        .id
+      ejecutivos.results?.find(eje => eje.id === dataSeleccionada.ejecutivo)?.id
     const protectorSeleccionado =
       protectores.results &&
-      protectores.results.find(pro => pro.alias === dataSeleccionada.protector)
-        .id
+      protectores.results.find(pro => pro.id === dataSeleccionada.protector)?.id
 
     const vehiculoProtectorSeleccionado =
       Array.isArray(vehiculosProtector.results) &&
       vehiculosProtector.results.find(
-        veh => veh.alias === dataSeleccionada.vehiculo_protector
-      ).id
+        veh => veh.id === dataSeleccionada.vehiculo_protector
+      )?.id
 
     const idEjecutivo = ejecutivos.results.find(
-      eje => eje.alias === dataSeleccionada.ejecutivo
-    ).id
+      eje => eje.id === dataSeleccionada.ejecutivo
+    )?.id
     dispatch(getGrupoFamiliarByIdAction(idEjecutivo))
-
     setEjecutivo(ejecutivoSeleccionado ? ejecutivoSeleccionado : '0')
 
     setProtector(protectorSeleccionado ? protectorSeleccionado : '0')
@@ -101,8 +98,8 @@ const EditMovimiento = ({
     )
 
     const idVehiculoEjec = vehiculosEjecutivo.results.find(
-      vehiculo => vehiculo.alias === dataSeleccionada.vehiculo_ejecutivo
-    ).id
+      vehiculo => vehiculo.id === dataSeleccionada.vehiculo_ejecutivo
+    )?.id
 
     setVehiculoEjecutivo(idVehiculoEjec ? idVehiculoEjec : '0')
     setVehiculoProtector(
@@ -119,15 +116,14 @@ const EditMovimiento = ({
     const idFamiliar =
       familiaresEjecutivo.results &&
       familiaresEjecutivo.results?.find(
-        fam => fam.alias === dataSeleccionada.familiar
+        fam => fam.id === dataSeleccionada.familiar
       )?.id
 
     setGrupoFamiliar(idFamiliar ? idFamiliar : null)
 
     const lugarSalidaId =
-      lugares.results?.find(
-        lugar => lugar.alias === dataSeleccionada.lugar_salida
-      ).id || '0'
+      lugares.results?.find(lugar => lugar.id === dataSeleccionada.lugar_salida)
+        ?.id || '0'
     console.log(lugarSalidaId, 'lugarSalidaId')
     setLugarSalida(lugarSalidaId ? lugarSalidaId : '0')
 
@@ -135,8 +131,8 @@ const EditMovimiento = ({
 
     const lugarLlegadaId = dataSeleccionada.lugar_llegada
       ? lugares.results?.find(
-          lugar => lugar.alias === dataSeleccionada.lugar_llegada
-        ).id
+          lugar => lugar.id === dataSeleccionada.lugar_llegada
+        )?.id
       : '0'
     setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : '0')
 
@@ -195,39 +191,19 @@ const EditMovimiento = ({
     const eventoEditado = {
       id: dataSeleccionada.id,
       ejecutivo: ejecutivo,
-      ejecutivo_nombre: ejecutivos.results.find(
-        ejecutivoItem => ejecutivoItem.id === Number(ejecutivo)
-      ).nombres,
       familiar: grupoFamiliar,
       vehiculo_ejecutivo: vehiculoEjecutivo,
-      vehiculo_ejecutivo_nombre: vehiculosEjecutivo.results.find(
-        vehiculoItem => vehiculoItem.id === Number(vehiculoEjecutivo)
-      ).alias,
+
       vehiculo_observacion: observacionVehiculo,
       protector: protector,
-      protector_nombre: protectores.results.find(
-        protectorItem => protectorItem.id === Number(protector)
-      ).nombres,
+
       vehiculo_protector: vehiculoProtector,
-      vehiculo_protector_nombre: vehiculosProtector.results.find(
-        vehiculoItem => vehiculoItem.id === Number(vehiculoProtector)
-      ).alias,
 
       lugar_salida: lugarSalida,
-      lugar_salida_nombre:
-        lugarSalidaTexto === ''
-          ? lugares.results.find(
-              lugarItem => lugarItem.id === Number(lugarSalida)
-            ).alias
-          : lugarSalidaTexto,
+
       lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
       lugar_llegada: lugarLlegada,
-      lugar_llegada_nombre:
-        lugarLlegadaTexto === ''
-          ? lugares.results.find(
-              lugarItem => lugarItem.id === Number(lugarLlegada)
-            ).alias
-          : lugarLlegadaTexto,
+
       lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
       hora_salida: new Date(horaSalida),
       hora_llegada: new Date(horaLlegada),

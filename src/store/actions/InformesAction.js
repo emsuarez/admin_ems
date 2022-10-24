@@ -884,12 +884,7 @@ export const patchControlMovimiento = data => {
         type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
         payload: {
           ...data,
-          ejecutivo: data.ejecutivo_nombre,
-          vehiculo_ejecutivo: data.vehiculo_ejecutivo_nombre,
-          protector: data.protector_nombre,
-          vehiculo_protector: data.vehiculo_protector_nombre,
-          lugar_salida: data.lugar_salida_nombre,
-          lugar_llegada: data.lugar_llegada_nombre,
+          hora_llegada: new Date(),
           estado: result.estado,
         },
       })
