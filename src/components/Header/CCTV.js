@@ -1,15 +1,10 @@
 import { Button, Menu, MenuItem } from '@mui/material'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../../assets/Icon'
-import { setToast } from '../../store/actions'
 import {
-  getInformeCctv,
-  getInformeTrs,
-  getNovedadesConsignasCctvPendientes,
-  postInformeCctv,
+  getInformeCctv, postInformeCctv
 } from '../../store/actions/InformesAction'
 import AlertCrearInforme from '../alerts/AlertCrearInforme'
 import { ICONS } from '../constants'

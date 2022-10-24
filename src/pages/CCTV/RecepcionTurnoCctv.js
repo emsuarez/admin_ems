@@ -33,6 +33,7 @@ const RecepcionTurnoCctv = () => {
 
   const [fechaInicial, setFechaInicial] = useState(new Date())
   const [fechaFinal, setFechaFinal] = useState(new Date())
+
   useEffect(() => {
     const fInicial = new Date()
     fInicial.setMonth(fInicial.getMonth() - 1)
@@ -51,8 +52,8 @@ const RecepcionTurnoCctv = () => {
   }
 
   const handleOpenViewInforme = informe => {
-    navigate('/viewrecepcioncctv')
     dispatch(getInformeCctvById(informe.id))
+    navigate('/viewrecepcioncctv')
   }
 
   const handleOpenEditInforme = informe => {

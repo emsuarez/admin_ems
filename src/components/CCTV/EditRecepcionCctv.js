@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 
@@ -27,14 +27,13 @@ import {
   updateNovedadCCTVAction,
 } from '../../store/actions'
 import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
+import ConsignasNovedades from '../Informes/ConsignasNovedades'
 import CrearEditarModalGenerico from '../TRSModals/CrearEditarModalGenerico'
 import EliminarModalGenerico from '../TRSModals/EliminarModalGenerico'
-import ConsignasNovedades from '../Informes/ConsignasNovedades'
 
 const EditRecepcionCctv = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location = useLocation()
 
   const informes = useSelector(state => state.informes)
   const { informesCctv } = informes || {}

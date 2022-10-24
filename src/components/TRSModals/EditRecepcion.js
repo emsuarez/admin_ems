@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import logo from '../../assets/logo.png'
-import { Header, ICONS, RedirectWithoutLogin } from '../../components'
-import CrearEditarModalGenerico from './CrearEditarModalGenerico'
-import EliminarModalGenerico from './EliminarModalGenerico'
 import { format } from 'date-fns'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print'
 import Icon from '../../assets/Icon'
+import logo from '../../assets/logo.png'
+import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 import {
   cerrarConsignaTRSAction,
   cerrarInformeTrs,
@@ -19,6 +17,7 @@ import {
   deleteNovedadTRSAction,
   getAllProtectoresAction,
   getAllUsersReportAction,
+  getInformeTrs,
   getInformeTrsById,
   getInformeTrsNavegacion,
   getNovedadesConsignasTrsPendientes,
@@ -28,11 +27,12 @@ import {
 } from '../../store/actions'
 import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
 import ConsignasNovedades from '../Informes/ConsignasNovedades'
+import CrearEditarModalGenerico from './CrearEditarModalGenerico'
+import EliminarModalGenerico from './EliminarModalGenerico'
 
 const EditRecepcion = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location = useLocation()
 
   const ultimaActaCreada = useSelector(
     state => state.informes.informesTrs.results[0]
@@ -112,10 +112,10 @@ const EditRecepcion = () => {
 
   useEffect(() => {
     const cargarDatos = () => {
-      dispatch(getInformeTrsById(location.state))
       dispatch(getNovedadesConsignasTrsPendientes())
       dispatch(getAllProtectoresAction())
       dispatch(getAllUsersReportAction())
+      dispatch(getInformeTrs())
     }
     cargarDatos()
   }, [])
@@ -144,9 +144,10 @@ const EditRecepcion = () => {
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
-    const prevProtectores = protectores?.split(',')?.map(protector => {
-      return protector.trim()
-    })
+    const prevProtectores =
+      protectores?.split(',')?.map(protector => {
+        return protector.trim()
+      }) || []
     if (prevProtectores.length > 4) {
       dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
       return
@@ -299,7 +300,7 @@ const EditRecepcion = () => {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
       centralistas: String(
-        centralistas.filter(c => c !== centralistaSeleccionado)
+        centralistas?.split(',')?.filter(c => c !== centralistaSeleccionado)
       ),
       observacion: actaSeleccionada.observacion,
     }
@@ -328,10 +329,10 @@ const EditRecepcion = () => {
     const newNovedad = {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
-      fecha_obs_cierre: null,
       obs_cierre: null,
-      created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      fecha_obs_cierre: null,
       estado: 1,
+      created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     }
 
     dispatch(createNovedadTRSAction(newNovedad))
@@ -350,7 +351,7 @@ const EditRecepcion = () => {
   const handleEditarNovedad = novedad => {
     setOpenModalEditarNovedad(false)
     const novedadEditada = {
-      id: novedadSeleccionada.id,
+      ...novedadSeleccionada,
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
     }
@@ -435,10 +436,10 @@ const EditRecepcion = () => {
     const newConsigna = {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: consigna,
-      fecha_obs_cierre: null,
       obs_cierre: null,
-      created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      fecha_obs_cierre: null,
       estado: 1,
+      created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     }
 
     dispatch(createConsignaTRSAction(newConsigna))
@@ -456,6 +457,7 @@ const EditRecepcion = () => {
 
   const handleEditarConsigna = consigna => {
     setOpenModalEditarConsigna(false)
+
     const consignaEditada = {
       ...consignaSeleccionada,
       informe_trs_id: actaSeleccionada.id,
@@ -528,9 +530,7 @@ const EditRecepcion = () => {
     navigate(-1)
   }
   const listaInformesTrs = useSelector(state => state.informes.informesTrs)
-
   const handleInformeAnterior = () => {
-    console.log(actaSeleccionada, 'acta anterior')
     if (
       actaSeleccionada.id !==
       listaInformesTrs.results[listaInformesTrs.results.length - 1].id
@@ -542,7 +542,6 @@ const EditRecepcion = () => {
   }
 
   const handleSiguienteInforme = () => {
-    console.log(actaSeleccionada, 'acta siguiente')
     if (actaSeleccionada.id !== listaInformesTrs.results[0].id) {
       dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 1))
     } else {
@@ -614,7 +613,7 @@ const EditRecepcion = () => {
               className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86.5rem] py-2'
             >
               <div className='flex justify-between mb-2 mx-10'>
-                <img src={logo} className='h-14' />
+                <img src={logo} className='h-14' alt='logo'/>
                 <h2 className='font-bold text-lg'>
                   ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
                 </h2>

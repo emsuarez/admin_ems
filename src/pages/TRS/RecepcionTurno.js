@@ -53,13 +53,13 @@ const RecepcionTurno = () => {
   }
 
   const handleOpenViewInforme = informe => {
-    navigate('/viewrecepcion', { state: informe.id })
-    dispatch(getInformeTrsById(informe))
+    dispatch(getInformeTrsById(informe.id))
+    navigate('/viewrecepcion')
   }
 
   const handleOpenEditInforme = informe => {
-    navigate('/editrecepcion', { state: informe.id })
-    dispatch(getInformeTrsById(informe))
+    navigate('/editrecepcion')
+    dispatch(getInformeTrsById(informe.id))
   }
 
   const handleOpenDeleteActa = itemEliminar => {

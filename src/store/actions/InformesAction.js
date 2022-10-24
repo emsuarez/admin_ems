@@ -989,10 +989,22 @@ export const postInformeTrs = data => {
         headers: { Authorization: Token },
       })
 
-      const resultado = respuesta.data
+      const result = respuesta.data
 
-      dispatch({ type: types.POST_INFORMETRS_SUCCESS, payload: resultado.id })
-      dispatch(setToast('success', resultado.message))
+      dispatch({ type: types.POST_INFORMETRS_SUCCESS, payload: result })
+
+      const response = await httpRequest.get(`/informetrs/?id=${result.id}`, {
+        headers: { Authorization: Token },
+      })
+
+      const result2 = response.data
+
+      dispatch({
+        type: types.GET_INFORMETRS_BY_ID_SUCCESS,
+        payload: result2.results[0],
+      })
+
+      dispatch(setToast('success', result.message))
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_INFORMETRS_FAILED, payload: true })

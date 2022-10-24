@@ -533,7 +533,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        idInformeSeleccionado: payload,
+        idInformeSeleccionado: payload.id,
       }
 
     case types.POST_INFORMETRS_FAILED:
