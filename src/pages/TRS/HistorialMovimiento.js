@@ -72,6 +72,7 @@ const HistorialMovimiento = () => {
     setFechaInicial(fInicial)
     const obtenerInfoVista = () => {
       dispatch(getHistorialMovimientosAction())
+
       dispatch(getAllEjecutivosAction())
       dispatch(getAllVehiculosEjecutivoAction())
       dispatch(getAllProtectoresAction())
@@ -80,7 +81,7 @@ const HistorialMovimiento = () => {
       dispatch(getAllFamiliaresAction())
     }
     obtenerInfoVista()
-  }, [])
+  }, [dispatch])
 
   const handleSearch = e => {
     dispatch(
@@ -315,11 +316,20 @@ const HistorialMovimiento = () => {
           )}
         </div>
         {/* Modales */}
-        <VerEventoModal
-          openModal={openViewModal}
-          handleClose={handleCloseViewModal}
-          dataSeleccionada={itemVisualizar}
-        />
+        {openViewModal && (
+          <VerEventoModal
+            openModal={openViewModal}
+            handleClose={handleCloseViewModal}
+            dataSeleccionada={itemVisualizar}
+            ejecutivos={allEjecutivos}
+            familiaresEjecutivo={allFamiliaresEjecutivo}
+            vehiculosEjecutivo={allVehiculosEjecutivos}
+            protectores={allProtectores}
+            vehiculosProtector={allVehiculosProtectores}
+            lugares={allLugares}
+          />
+        )}
+
         {openEditModal && (
           <EditMovimiento
             dataSeleccionada={itemEditar}

@@ -228,11 +228,19 @@ const ControlMovimiento = () => {
           )}
         </div>
         {/* Modales */}
-        <VerEventoModal
-          openModal={openViewModal}
-          handleClose={handleCloseViewModal}
-          dataSeleccionada={itemVisualizar}
-        />
+        {openViewModal && (
+          <VerEventoModal
+            openModal={openViewModal}
+            handleClose={handleCloseViewModal}
+            dataSeleccionada={itemVisualizar}
+            ejecutivos={allEjecutivos}
+            familiaresEjecutivo={allFamiliaresEjecutivo}
+            vehiculosEjecutivo={allVehiculosEjecutivos}
+            protectores={allProtectores}
+            vehiculosProtector={allVehiculosProtectores}
+            lugares={allLugares}
+          />
+        )}
 
         {openEditModal && (
           <EditMovimiento

@@ -21,7 +21,7 @@ const CerrarSesionModal = ({ userInfo, openModal, setModal }) => {
             )
           )
           setModal(false)
-          navigate('/recepcionturnocctv')
+          // navigate('/recepcionturnocctv')
           return
         }
       }
@@ -35,7 +35,7 @@ const CerrarSesionModal = ({ userInfo, openModal, setModal }) => {
             )
           )
           setModal(false)
-          navigate('/recepcionturno')
+          // navigate('/recepcionturno')
           return
         }
       }

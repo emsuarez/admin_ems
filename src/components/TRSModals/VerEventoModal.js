@@ -14,6 +14,12 @@ const VerEventoModal = ({
   descripcionModal,
   handleAction,
   dataSeleccionada,
+  ejecutivos,
+  vehiculosEjecutivo,
+  protectores,
+  vehiculosProtector,
+  lugares,
+  familiaresEjecutivo,
 }) => {
   const componentRef = useRef()
   const handleGenerarReportePdf = useReactToPrint({
@@ -83,7 +89,11 @@ const VerEventoModal = ({
                         <label className='font-semibold text-sm pr-2'>
                           Ejecutivo Alias:
                         </label>
-                        {dataSeleccionada?.ejecutivo}
+                        {(ejecutivos.results &&
+                          ejecutivos.results?.find(
+                            eje => eje.id === dataSeleccionada.ejecutivo
+                          )?.alias) ||
+                          'Sin Asignar'}
                       </p>
                     </div>
                   </div>
@@ -94,13 +104,22 @@ const VerEventoModal = ({
                         <label className='font-semibold text-sm pr-4 w-36'>
                           Familiar:
                         </label>
-                        {dataSeleccionada?.familiar}
+                        {familiaresEjecutivo.results &&
+                          familiaresEjecutivo.results?.find(
+                            fam => fam.id === dataSeleccionada.familiar
+                          )?.nombres}
                       </p>
                       <p className='text-sm flex justify-start'>
                         <label className='font-semibold text-sm pr-4 w-36'>
                           Vehículo:
                         </label>
-                        {dataSeleccionada?.vehiculo_ejecutivo}
+                        {
+                          vehiculosEjecutivo.results.find(
+                            vehiculo =>
+                              vehiculo.id ===
+                              dataSeleccionada.vehiculo_ejecutivo
+                          )?.alias
+                        }
                       </p>
                       <p className='text-sm flex justify-start'>
                         <label className='font-semibold text-sm pr-4 w-36'>
@@ -118,19 +137,32 @@ const VerEventoModal = ({
                         <label className='font-semibold text-sm pr-4 w-36'>
                           Protector:
                         </label>
-                        {dataSeleccionada?.protector}
+                        {protectores.results &&
+                          protectores.results.find(
+                            pro => pro.id === dataSeleccionada.protector
+                          )?.nombres}
                       </p>
                       <p className='text-sm flex justify-start'>
                         <label className='font-semibold text-sm pr-4 w-36'>
                           Vehiculo Protector:
                         </label>
-                        {dataSeleccionada?.vehiculo_protector}
+                        {
+                          vehiculosProtector.results.find(
+                            veh =>
+                              veh.id === dataSeleccionada.vehiculo_protector
+                          )?.alias
+                        }
                       </p>
                       <p className='text-sm flex justify-start'>
                         <label className='font-semibold text-sm pr-4 w-36'>
                           Placa:
                         </label>
-                        {dataSeleccionada?.placa}
+                        {
+                          vehiculosProtector.results.find(
+                            veh =>
+                              veh.id === dataSeleccionada.vehiculo_protector
+                          )?.placas
+                        }
                       </p>
                       <p className='text-sm flex justify-start'>
                         <label className='font-semibold text-sm pr-4 w-36'>
@@ -148,13 +180,19 @@ const VerEventoModal = ({
                         <span className='font-semibold text-sm pr-4 w-36'>
                           Lugar Salida:
                         </span>
-                        {dataSeleccionada?.lugar_salida}
+                        {dataSeleccionada.lugar_salida &&
+                          lugares.results?.find(
+                            lugar => lugar.id === dataSeleccionada.lugar_salida
+                          )?.alias}
                       </p>
                       <p className='text-sm flex justify-start'>
                         <span className='font-semibold text-sm pr-4 w-36'>
                           Lugar Llegada:
                         </span>
-                        {dataSeleccionada?.lugar_llegada}
+                        {dataSeleccionada.lugar_llegada &&
+                          lugares.results?.find(
+                            lugar => lugar.id === dataSeleccionada.lugar_llegada
+                          )?.alias}
                       </p>
                     </div>
                     <div className='flex flex-col'>
