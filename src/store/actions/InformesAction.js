@@ -862,7 +862,7 @@ export const postControlMovimiento = data => {
       progress.finish()
     } catch (error) {
       dispatch({ type: types.POST_CONTROL_MOVIMIENTO_FAILED, payload: true })
-      dispatch(setToast('error', error.message))
+      dispatch(setToast('', error))
       progress.finish()
     }
   }
@@ -876,6 +876,37 @@ export const patchControlMovimiento = data => {
       let token = window.localStorage.getItem('token')
       const Token = 'Token ' + token
       const respuesta = await httpRequest.patch('/controlmovimiento/', data, {
+        headers: { Authorization: Token },
+      })
+
+      const result = respuesta.data
+      dispatch({
+        type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
+        payload: {
+          ...data,
+          hora_llegada: new Date(),
+          estado: result.estado,
+        },
+      })
+      dispatch(setToast('success', result.message))
+
+      progress.finish()
+    } catch (error) {
+      dispatch({ type: types.PATCH_CONTROL_MOVIMIENTO_FAILED, payload: true })
+      dispatch(setToast('error', error.message))
+      progress.finish()
+    }
+  }
+}
+
+export const putControMovimiento = data => {
+  return async dispatch => {
+    try {
+      progress.start()
+      dispatch({ type: types.PATCH_CONTROL_MOVIMIENTO_START })
+      let token = window.localStorage.getItem('token')
+      const Token = 'Token ' + token
+      const respuesta = await httpRequest.put('/controlmovimiento/', data, {
         headers: { Authorization: Token },
       })
 

@@ -43,34 +43,33 @@ const FormCrearEvento = ({
   const tipo = window.localStorage.getItem('tipo')
 
   const handleNuevoEvento = () => {
-    if (lugarSalida !== '0' || lugarSalidaTexto !== '') {
-      const nuevoEvento = {
-        ejecutivo: Number(ejecutivo),
-
-        familiar: grupoFamiliar === '0' ? null : Number(grupoFamiliar),
-        vehiculo_ejecutivo: Number(vehiculoEjecutivo),
-
-        vehiculo_observacion: observacionVehiculo,
-        protector: Number(protector),
-
-        vehiculo_protector: Number(vehiculoProtector),
-
-        lugar_salida: lugarSalida === '0' ? null : Number(lugarSalida),
-        lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
-
-        lugar_llegada: lugarLlegada === '0' ? null : lugarLlegada,
-        lugar_llegada_texto:
-          lugarLlegadaTexto !== '0' ? lugarLlegadaTexto : null,
-
-        hora_salida: true,
-        observacion: observacion,
-      }
-      console.log(nuevoEvento)
-      handleAction(nuevoEvento)
-      limpiarCampos()
-    } else {
-      dispatch(setToast('', 'Debe seleccionar un lugar de salida'))
+    if (lugarSalida === '0' || lugarSalida === '' || lugarSalida === null) {
+      dispatch(setToast(true, 'error', 'Debe seleccionar un lugar de salida'))
+      return
     }
+    const nuevoEvento = {
+      ejecutivo: Number(ejecutivo),
+
+      familiar: grupoFamiliar === '0' ? null : Number(grupoFamiliar),
+      vehiculo_ejecutivo: Number(vehiculoEjecutivo),
+
+      vehiculo_observacion: observacionVehiculo,
+      protector: Number(protector),
+
+      vehiculo_protector: Number(vehiculoProtector),
+
+      lugar_salida: lugarSalida === '0' ? null : Number(lugarSalida),
+      lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
+
+      lugar_llegada: lugarLlegada === '0' ? null : lugarLlegada,
+      lugar_llegada_texto: lugarLlegadaTexto !== '0' ? lugarLlegadaTexto : null,
+
+      hora_salida: true,
+      observacion: observacion,
+    }
+
+    handleAction(nuevoEvento)
+    limpiarCampos()
   }
 
   const seleccionaEjecutivo = e => {

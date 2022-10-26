@@ -24,6 +24,7 @@ import {
   getVehiculoEjecutivoAction,
   patchControlMovimiento,
   postControlMovimiento,
+  putControMovimiento,
 } from '../../store/actions'
 
 // import dayjs from 'dayjs'
@@ -111,8 +112,14 @@ const ControlMovimiento = () => {
     dispatch(postControlMovimiento(infoEvento))
   }
 
+  const tipo = window.localStorage.getItem('tipo')
   const handleEditInformeModal = informe => {
-    dispatch(patchControlMovimiento(informe))
+    if (tipo === '1') {
+      dispatch(patchControlMovimiento(informe))
+    } else {
+      dispatch(putControMovimiento(informe))
+    }
+
     setOpenEditModal(false)
   }
 

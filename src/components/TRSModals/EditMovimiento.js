@@ -26,7 +26,7 @@ const EditMovimiento = ({
 }) => {
   const dispatch = useDispatch()
 
-  const [ejecutivo, setEjecutivo] = useState('0')
+  const [ejecutivo, setEjecutivo] = useState('')
   const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('')
   const [protector, setProtector] = useState('')
   const [vehiculoProtector, setVehiculoProtector] = useState('')
@@ -101,9 +101,9 @@ const EditMovimiento = ({
       vehiculo => vehiculo.id === dataSeleccionada.vehiculo_ejecutivo
     )?.id
 
-    setVehiculoEjecutivo(idVehiculoEjec ? idVehiculoEjec : '0')
+    setVehiculoEjecutivo(idVehiculoEjec ? idVehiculoEjec : null)
     setVehiculoProtector(
-      vehiculoProtectorSeleccionado ? vehiculoProtectorSeleccionado : '0'
+      vehiculoProtectorSeleccionado ? vehiculoProtectorSeleccionado : null
     )
 
     setFamiliares(
@@ -133,14 +133,17 @@ const EditMovimiento = ({
       ? lugares.results?.find(
           lugar => lugar.id === dataSeleccionada.lugar_llegada
         )?.id
-      : '0'
-    setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : '0')
+      : null
+    setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : null)
 
     setLugarLlegadaTexto(dataSeleccionada.lugar_llegada_texto)
 
     setObservacion(
       dataSeleccionada.observacion ? dataSeleccionada.observacion : ''
     )
+
+    setEditarLugarSalida(dataSeleccionada.lugar_salida_texto ? false : true)
+    setEditarLugarLlegada(dataSeleccionada.lugar_llegada_texto ? false : true)
   }, [dataSeleccionada])
 
   const seleccionaEjecutivo = e => {
@@ -178,11 +181,24 @@ const EditMovimiento = ({
 
   // #region Handle Editar
   const handleEditarEvento = () => {
-    if (lugarLlegada === '0' && lugarLlegadaTexto === '') {
-      dispatch(setToast('error', 'Debe seleccionar un lugar de llegada'))
-
-      return
+    if (lugarSalidaTexto === '') {
+      if (lugarSalida === '0' || lugarSalida === '' || lugarSalida === null) {
+        dispatch(setToast('error', 'Debe seleccionar un lugar de salida'))
+        return
+      }
     }
+    if (lugarLlegadaTexto === '') {
+      if (
+        lugarLlegada === '0' ||
+        lugarLlegada === '' ||
+        lugarLlegada === null
+      ) {
+        dispatch(setToast('error', 'Debe seleccionar un lugar de llegada'))
+
+        return
+      }
+    }
+
     if (confirmoLlegada === false) {
       dispatch(setToast('error', 'Debe confirmar la llegada'))
       return
@@ -205,8 +221,7 @@ const EditMovimiento = ({
       lugar_llegada: lugarLlegada,
 
       lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
-      hora_salida: new Date(horaSalida),
-      hora_llegada: new Date(horaLlegada),
+      horaLlegada: confirmoLlegada,
       observacion: observacion,
     }
 
@@ -250,6 +265,7 @@ const EditMovimiento = ({
                               id={ejecutivo}
                               value={ejecutivo}
                               onChange={e => seleccionaEjecutivo(e)}
+                              disabled={tipo !== '1'}
                             >
                               <option value='0'>Seleccione un ejecutivo</option>
                               {Object.keys(ejecutivos).length > 0
@@ -284,8 +300,9 @@ const EditMovimiento = ({
                             id={vehiculoEjecutivo}
                             value={vehiculoEjecutivo}
                             onChange={e => setVehiculoEjecutivo(e.target.value)}
+                            disabled={tipo !== '1'}
                           >
-                            <option value='0'>Seleccione un vehículo</option>
+                            <option value={null}>Seleccione un vehículo</option>
                             {Object.keys(vehiculosEjecutivos).length > 0
                               ? vehiculosEjecutivos.map(vehiculo => (
                                   <option key={vehiculo.id} value={vehiculo.id}>
@@ -308,6 +325,7 @@ const EditMovimiento = ({
                             id={grupoFamiliar}
                             value={grupoFamiliar}
                             onChange={e => setGrupoFamiliar(e.target.value)}
+                            disabled={tipo !== '1'}
                           >
                             <option value='0'>Seleccione un familiar</option>
                             {Object.keys(familiares).length > 0
@@ -329,6 +347,7 @@ const EditMovimiento = ({
                           className='border-[1px] px-1 border-neutral-300 rounded-md text-sm focus:border-blue-800 outline-none w-48'
                           value={observacionVehiculo || ''}
                           onChange={e => setObservacionVehiculo(e.target.value)}
+                          disabled={tipo !== '1'}
                         />
                       </p>
                     </div>
@@ -346,6 +365,7 @@ const EditMovimiento = ({
                               id={protector}
                               value={protector}
                               onChange={e => setProtector(e.target.value)}
+                              disabled={tipo !== '1'}
                             >
                               <option value='0'>Seleccione un protector</option>
                               {Object.keys(protectores).length > 0
@@ -377,8 +397,9 @@ const EditMovimiento = ({
                             id={vehiculoProtector}
                             value={vehiculoProtector}
                             onChange={e => setVehiculoProtector(e.target.value)}
+                            disabled={tipo !== '1'}
                           >
-                            <option value='0'>Seleccione un vehículo</option>
+                            <option value={null}>Seleccione un vehículo</option>
                             {Object.keys(vehiculosProtector).length > 0
                               ? vehiculosProtector.results.map(vP => (
                                   <option key={vP.id} value={vP.id}>
@@ -406,8 +427,11 @@ const EditMovimiento = ({
                                 id={lugarSalida}
                                 value={lugarSalida}
                                 onChange={e => setLugarSalida(e.target.value)}
+                                disabled={tipo !== '1'}
                               >
-                                <option value='0'>Seleccione un lugar</option>
+                                <option value={null}>
+                                  Seleccione un lugar
+                                </option>
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>
@@ -430,6 +454,7 @@ const EditMovimiento = ({
                               onChange={e =>
                                 setLugarSalidaTexto(e.target.value)
                               }
+                              disabled={tipo !== '1'}
                             />
                           </>
                         )}
@@ -457,9 +482,9 @@ const EditMovimiento = ({
                           Hora salida:
                         </span>
 
-                        {dataSeleccionada.created &&
+                        {dataSeleccionada.hora_salida &&
                           format(
-                            new Date(dataSeleccionada?.created),
+                            new Date(dataSeleccionada?.hora_salida),
                             'dd/MM/yyyy HH:mm'
                           )}
                       </p>
@@ -478,7 +503,9 @@ const EditMovimiento = ({
                                 value={lugarLlegada}
                                 onChange={e => setLugarLlegada(e.target.value)}
                               >
-                                <option value='0'>Seleccione un lugar</option>
+                                <option value={null}>
+                                  Seleccione un lugar
+                                </option>
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>
