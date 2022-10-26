@@ -144,14 +144,6 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
-    const prevProtectores =
-      protectores?.split(',')?.map(protector => {
-        return protector.trim()
-      }) || []
-    if (prevProtectores.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
-      return
-    }
     setOpenModalAgregarProtector(true)
   }
 
@@ -161,10 +153,14 @@ const EditRecepcionCctv = () => {
 
   const handleAgregarProtector = protector => {
     setOpenModalAgregarProtector(false)
-    const prevProtectores = protectores?.split(',')?.map(protector => {
-      return protector.trim()
-    })
-
+    const prevProtectores =
+      protectores?.split(',')?.map(protector => {
+        return protector.trim()
+      }) || []
+    if (prevProtectores.length > 4) {
+      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
+      return
+    }
     const newProtector = {
       id: actaSeleccionada.id,
       protectores: prevProtectores
@@ -228,13 +224,6 @@ const EditRecepcionCctv = () => {
 
   // #region CRUD_CENTRALISTAS
   const handleOpenAgregarCentralista = () => {
-    const prevCentralistas = centralistas?.split(',')?.map(cent => {
-      return cent.trim()
-    })
-    if (prevCentralistas.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'))
-      return
-    }
     setOpenModalAgregarCentralista(true)
   }
 
@@ -244,10 +233,15 @@ const EditRecepcionCctv = () => {
 
   const handleAgregarCentralista = centralista => {
     setOpenModalAgregarCentralista(false)
-    const prevCentralistas = centralistas?.split(',')?.map(cent => {
-      return cent.trim()
-    })
 
+    const prevCentralistas =
+      centralistas?.split(',')?.map(cent => {
+        return cent.trim()
+      }) || []
+    if (prevCentralistas.length > 4) {
+      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'))
+      return
+    }
     const newCentralista = {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,

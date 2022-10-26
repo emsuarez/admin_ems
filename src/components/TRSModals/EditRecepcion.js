@@ -144,14 +144,6 @@ const EditRecepcion = () => {
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
-    const prevProtectores =
-      protectores?.split(',')?.map(protector => {
-        return protector.trim()
-      }) || []
-    if (prevProtectores.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
-      return
-    }
     setOpenModalAgregarProtector(true)
   }
 
@@ -161,9 +153,14 @@ const EditRecepcion = () => {
 
   const handleAgregarProtector = protector => {
     setOpenModalAgregarProtector(false)
-    const prevProtectores = protectores?.split(',')?.map(protector => {
-      return protector.trim()
-    })
+    const prevProtectores =
+      protectores?.split(',')?.map(protector => {
+        return protector.trim()
+      }) || []
+    if (prevProtectores.length > 4) {
+      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
+      return
+    }
 
     const newProtector = {
       id: actaSeleccionada.id,
@@ -228,13 +225,6 @@ const EditRecepcion = () => {
 
   // #region CRUD_CENTRALISTAS
   const handleOpenAgregarCentralista = () => {
-    const prevCentralistas = centralistas?.split(',')?.map(cent => {
-      return cent.trim()
-    })
-    if (prevCentralistas.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'))
-      return
-    }
     setOpenModalAgregarCentralista(true)
   }
 
@@ -244,9 +234,14 @@ const EditRecepcion = () => {
 
   const handleAgregarCentralista = centralista => {
     setOpenModalAgregarCentralista(false)
-    const prevCentralistas = centralistas?.split(',')?.map(cent => {
-      return cent.trim()
-    })
+    const prevCentralistas =
+      centralistas?.split(',')?.map(cent => {
+        return cent.trim()
+      }) || []
+    if (prevCentralistas.length > 4) {
+      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'))
+      return
+    }
 
     const newCentralista = {
       id: actaSeleccionada.id,
@@ -613,7 +608,7 @@ const EditRecepcion = () => {
               className='flex  flex-col px-4 border-2 hover:shadow-xl hover:border-2 shadow-sm w-[67rem] h-[86.5rem] py-2'
             >
               <div className='flex justify-between mb-2 mx-10'>
-                <img src={logo} className='h-14' alt='logo'/>
+                <img src={logo} className='h-14' alt='logo' />
                 <h2 className='font-bold text-lg'>
                   ACTA ENTREGA RECEPCION DE GUARDIA EMSECOR
                 </h2>
