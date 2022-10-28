@@ -871,6 +871,8 @@ export const postControlMovimiento = data => {
 export const patchControlMovimiento = data => {
   return async dispatch => {
     try {
+      console.log(data, 'data')
+
       progress.start()
       dispatch({ type: types.PATCH_CONTROL_MOVIMIENTO_START })
       let token = window.localStorage.getItem('token')
@@ -880,14 +882,15 @@ export const patchControlMovimiento = data => {
       })
 
       const result = respuesta.data
-      dispatch({
-        type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
-        payload: {
-          ...data,
-          hora_llegada: new Date(),
-          estado: result.estado,
-        },
-      })
+      console.log(result, 'result')
+      // dispatch({
+      //   type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
+      //   payload: {
+      //     ...data,
+      //     hora_llegada: new Date(),
+      //     estado: result.estado,
+      //   },
+      // })
       dispatch(setToast('success', result.message))
 
       progress.finish()
@@ -911,14 +914,16 @@ export const putControMovimiento = data => {
       })
 
       const result = respuesta.data
+      console.log(result, 'result')
       dispatch({
         type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
         payload: {
           ...data,
-          hora_llegada: new Date(),
+          hora_llegada: new Date(result.hora),
           estado: result.estado,
         },
       })
+      
       dispatch(setToast('success', result.message))
 
       progress.finish()

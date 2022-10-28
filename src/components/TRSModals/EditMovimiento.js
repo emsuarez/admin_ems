@@ -121,11 +121,11 @@ const EditMovimiento = ({
 
     setGrupoFamiliar(idFamiliar ? idFamiliar : null)
 
-    const lugarSalidaId =
-      lugares.results?.find(lugar => lugar.id === dataSeleccionada.lugar_salida)
-        ?.id || '0'
+    const lugarSalidaId = lugares.results?.find(
+      lugar => lugar.id === dataSeleccionada.lugar_salida
+    )?.id
     console.log(lugarSalidaId, 'lugarSalidaId')
-    setLugarSalida(lugarSalidaId ? lugarSalidaId : '0')
+    setLugarSalida(lugarSalidaId ? lugarSalidaId : null)
 
     setLugarSalidaTexto(dataSeleccionada.lugar_salida_texto)
 
@@ -144,6 +144,9 @@ const EditMovimiento = ({
 
     setEditarLugarSalida(dataSeleccionada.lugar_salida_texto ? false : true)
     setEditarLugarLlegada(dataSeleccionada.lugar_llegada_texto ? false : true)
+
+    setHoraSalida(dataSeleccionada.hora_salida)
+    setHoraLlegada(dayjs(dataSeleccionada.hora_llegada))
   }, [dataSeleccionada])
 
   const seleccionaEjecutivo = e => {
@@ -203,30 +206,46 @@ const EditMovimiento = ({
       dispatch(setToast('error', 'Debe confirmar la llegada'))
       return
     }
+    if (tipo === '1') {
+      const eventoEditado = {
+        ...dataSeleccionada,
+        ejecutivo: ejecutivo,
+        familiar: grupoFamiliar,
+        vehiculo_ejecutivo: vehiculoEjecutivo,
 
-    const eventoEditado = {
-      id: dataSeleccionada.id,
-      ejecutivo: ejecutivo,
-      familiar: grupoFamiliar,
-      vehiculo_ejecutivo: vehiculoEjecutivo,
+        vehiculo_observacion: observacionVehiculo,
+        protector: protector,
 
-      vehiculo_observacion: observacionVehiculo,
-      protector: protector,
+        vehiculo_protector: vehiculoProtector,
 
-      vehiculo_protector: vehiculoProtector,
+        lugar_salida: lugarSalida,
 
-      lugar_salida: lugarSalida,
+        lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
+        lugar_llegada: lugarLlegada,
 
-      lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
-      lugar_llegada: lugarLlegada,
+        lugar_llegada_texto:
+          lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
+        hora_llegada: 'True',
+        observacion: observacion,
+      }
 
-      lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
-      horaLlegada: confirmoLlegada,
-      observacion: observacion,
+      console.log(eventoEditado)
+      handleAction(eventoEditado)
+    } else {
+      const eventoEditado = {
+        ...dataSeleccionada,
+        lugar_llegada: lugarLlegada,
+        lugar_llegada_texto:
+          lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
+
+        hora_llegada: 'True',
+
+        observacion: observacion,
+      }
+
+      console.log(eventoEditado)
+      handleAction(eventoEditado)
     }
-
-    console.log(eventoEditado)
-    handleAction(eventoEditado)
   }
   // #endregion
 
