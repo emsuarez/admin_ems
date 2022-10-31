@@ -33,10 +33,8 @@ const EditMovimiento = ({
   const [grupoFamiliar, setGrupoFamiliar] = useState('')
   const [observacionVehiculo, setObservacionVehiculo] = useState('')
   const [lugarSalida, setLugarSalida] = useState('')
-  const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
 
   const [lugarLlegada, setLugarLlegada] = useState('')
-  const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
 
   const [observacion, setObservacion] = useState('')
 
@@ -49,7 +47,8 @@ const EditMovimiento = ({
   const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('')
 
   const [confirmoLlegada, setConfirmoLlegada] = useState(false)
-
+  const [horaSalida, setHoraSalida] = useState(dayjs(new Date()))
+  const [horaLlegada, setHoraLlegada] = useState(dayjs(new Date()))
   const tipo = window.localStorage.getItem('tipo')
 
   useEffect(() => {
@@ -86,9 +85,9 @@ const EditMovimiento = ({
       eje => eje.id === dataSeleccionada.ejecutivo
     )?.id
     dispatch(getGrupoFamiliarByIdAction(idEjecutivo))
-    setEjecutivo(ejecutivoSeleccionado ? ejecutivoSeleccionado : '0')
+    setEjecutivo(ejecutivoSeleccionado ? ejecutivoSeleccionado : null)
 
-    setProtector(protectorSeleccionado ? protectorSeleccionado : '0')
+    setProtector(protectorSeleccionado ? protectorSeleccionado : null)
 
     setVehiculosEjecutivos(
       vehiculosEjecutivo.results &&
@@ -142,11 +141,11 @@ const EditMovimiento = ({
       dataSeleccionada.observacion ? dataSeleccionada.observacion : ''
     )
 
+    setHoraSalida(dayjs(new Date(dataSeleccionada.hora_salida)))
+    setHoraLlegada(dayjs(new Date(dataSeleccionada.hora_llegada)))
+
     setEditarLugarSalida(dataSeleccionada.lugar_salida_texto ? false : true)
     setEditarLugarLlegada(dataSeleccionada.lugar_llegada_texto ? false : true)
-
-    setHoraSalida(dataSeleccionada.hora_salida)
-    setHoraLlegada(dayjs(dataSeleccionada.hora_llegada))
   }, [dataSeleccionada])
 
   const seleccionaEjecutivo = e => {
@@ -185,30 +184,27 @@ const EditMovimiento = ({
   // #region Handle Editar
   const handleEditarEvento = () => {
     if (lugarSalidaTexto === '') {
-      if (lugarSalida === '0' || lugarSalida === '' || lugarSalida === null) {
+      if (lugarSalida === '' || lugarSalida === null) {
         dispatch(setToast('error', 'Debe seleccionar un lugar de salida'))
         return
       }
     }
     if (lugarLlegadaTexto === '') {
-      if (
-        lugarLlegada === '0' ||
-        lugarLlegada === '' ||
-        lugarLlegada === null
-      ) {
+      if (lugarLlegada === '' || lugarLlegada === null) {
         dispatch(setToast('error', 'Debe seleccionar un lugar de llegada'))
 
         return
       }
     }
 
-    if (confirmoLlegada === false) {
+    if (Number(tipo) !== 1 && confirmoLlegada === false) {
+      console.log(tipo, 'tipo')
       dispatch(setToast('error', 'Debe confirmar la llegada'))
       return
     }
     if (tipo === '1') {
       const eventoEditado = {
-        ...dataSeleccionada,
+        id: dataSeleccionada.id,
         ejecutivo: ejecutivo,
         familiar: grupoFamiliar,
         vehiculo_ejecutivo: vehiculoEjecutivo,
@@ -220,30 +216,29 @@ const EditMovimiento = ({
 
         lugar_salida: lugarSalida,
 
-        lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
+        lugar_salida_texto: lugarSalidaTexto !== null && lugarSalidaTexto,
         lugar_llegada: lugarLlegada,
 
-        lugar_llegada_texto:
-          lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
-        hora_llegada: 'True',
+        lugar_llegada_texto: lugarLlegadaTexto !== null && lugarLlegadaTexto,
+        hora_salida: format(new Date(horaSalida), 'yyyy-MM-dd HH:mm:ss'),
+        hora_llegada: format(new Date(horaLlegada), 'yyyy-MM-dd HH:mm:ss'),
         observacion: observacion,
       }
 
-      console.log(eventoEditado)
+      console.log(eventoEditado, 'eventoEditado')
       handleAction(eventoEditado)
     } else {
       const eventoEditado = {
         ...dataSeleccionada,
         lugar_llegada: lugarLlegada,
-        lugar_llegada_texto:
-          lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
+        lugar_llegada_texto: lugarLlegadaTexto !== null && lugarLlegadaTexto,
 
         hora_llegada: 'True',
 
         observacion: observacion,
       }
 
-      console.log(eventoEditado)
+      console.log(eventoEditado, 'eventoEditado')
       handleAction(eventoEditado)
     }
   }
@@ -286,7 +281,7 @@ const EditMovimiento = ({
                               onChange={e => seleccionaEjecutivo(e)}
                               disabled={tipo !== '1'}
                             >
-                              <option value='0'>Seleccione un ejecutivo</option>
+                              <option value=''>Seleccione un ejecutivo</option>
                               {Object.keys(ejecutivos).length > 0
                                 ? ejecutivos.results.map(ejecutivo => (
                                     <option
@@ -321,7 +316,7 @@ const EditMovimiento = ({
                             onChange={e => setVehiculoEjecutivo(e.target.value)}
                             disabled={tipo !== '1'}
                           >
-                            <option value={null}>Seleccione un vehículo</option>
+                            <option value=''>Seleccione un vehículo</option>
                             {Object.keys(vehiculosEjecutivos).length > 0
                               ? vehiculosEjecutivos.map(vehiculo => (
                                   <option key={vehiculo.id} value={vehiculo.id}>
@@ -346,7 +341,7 @@ const EditMovimiento = ({
                             onChange={e => setGrupoFamiliar(e.target.value)}
                             disabled={tipo !== '1'}
                           >
-                            <option value='0'>Seleccione un familiar</option>
+                            <option value=''>Seleccione un familiar</option>
                             {Object.keys(familiares).length > 0
                               ? familiares.map(familiar => (
                                   <option key={familiar.id} value={familiar.id}>
@@ -386,7 +381,7 @@ const EditMovimiento = ({
                               onChange={e => setProtector(e.target.value)}
                               disabled={tipo !== '1'}
                             >
-                              <option value='0'>Seleccione un protector</option>
+                              <option value=''>Seleccione un protector</option>
                               {Object.keys(protectores).length > 0
                                 ? protectores.results.map(p => (
                                     <option key={p.id} value={p.id}>
@@ -418,7 +413,7 @@ const EditMovimiento = ({
                             onChange={e => setVehiculoProtector(e.target.value)}
                             disabled={tipo !== '1'}
                           >
-                            <option value={null}>Seleccione un vehículo</option>
+                            <option value=''>Seleccione un vehículo</option>
                             {Object.keys(vehiculosProtector).length > 0
                               ? vehiculosProtector.results.map(vP => (
                                   <option key={vP.id} value={vP.id}>
@@ -448,9 +443,7 @@ const EditMovimiento = ({
                                 onChange={e => setLugarSalida(e.target.value)}
                                 disabled={tipo !== '1'}
                               >
-                                <option value={null}>
-                                  Seleccione un lugar
-                                </option>
+                                <option value=''>Seleccione un lugar</option>
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>
@@ -495,18 +488,53 @@ const EditMovimiento = ({
                           />
                         </button>
                       </p>
+                      {tipo === '1' ? (
+                        <p className='text-sm flex justify-start'>
+                          <span className='font-semibold text-sm pr-4 w-40 '>
+                            Hora salida:
+                          </span>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker
+                              inputProps={{
+                                style: {
+                                  padding: `0.5rem 10px`,
+                                  buttonColor: 'blue',
+                                },
+                              }}
+                              // label='Date Time picker'
+                              inputFormat='DD/MM/YYYY HH:mm A'
+                              value={horaSalida}
+                              onChange={hSalida => setHoraSalida(hSalida)}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    svg: { color: '#26346E' },
+                                    input: {
+                                      fontSize: '0.85rem',
+                                      padding: '0.1rem 5px !important',
+                                      margin: '0',
+                                    },
+                                  }}
+                                  className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
+                                />
+                              )}
+                            />
+                          </LocalizationProvider>
+                        </p>
+                      ) : (
+                        <p className='text-sm flex justify-start'>
+                          <span className='font-semibold text-sm pr-4 w-40'>
+                            Hora salida:
+                          </span>
 
-                      <p className='text-sm flex justify-start'>
-                        <span className='font-semibold text-sm pr-4 w-40'>
-                          Hora salida:
-                        </span>
-
-                        {dataSeleccionada.hora_salida &&
-                          format(
-                            new Date(dataSeleccionada?.hora_salida),
-                            'dd/MM/yyyy HH:mm'
-                          )}
-                      </p>
+                          {dataSeleccionada.hora_salida &&
+                            format(
+                              new Date(dataSeleccionada?.hora_salida),
+                              'dd/MM/yyyy HH:mm'
+                            )}
+                        </p>
+                      )}
                     </div>
                     <div className='flex flex-col ml-2'>
                       <p className='text-sm flex justify-start mb-6'>
@@ -522,9 +550,7 @@ const EditMovimiento = ({
                                 value={lugarLlegada}
                                 onChange={e => setLugarLlegada(e.target.value)}
                               >
-                                <option value={null}>
-                                  Seleccione un lugar
-                                </option>
+                                <option value=''>Seleccione un lugar</option>
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>
@@ -562,19 +588,54 @@ const EditMovimiento = ({
                           />
                         </button>
                       </p>
+                      {tipo === '1' ? (
+                        <p className='text-sm flex justify-start'>
+                          <span className='font-semibold text-sm pr-4 w-40 '>
+                            Hora llegada:
+                          </span>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker
+                              inputProps={{
+                                style: {
+                                  padding: `0.5rem 10px`,
+                                  buttonColor: 'blue',
+                                },
+                              }}
+                              // label='Date Time picker'
+                              inputFormat='DD/MM/YYYY HH:mm A'
+                              value={horaLlegada}
+                              onChange={hLlegada => setHoraLlegada(hLlegada)}
+                              renderInput={params => (
+                                <TextField
+                                  {...params}
+                                  sx={{
+                                    svg: { color: '#26346E' },
+                                    input: {
+                                      fontSize: '0.85rem',
+                                      padding: '0.1rem 5px !important',
+                                      margin: '0',
+                                    },
+                                  }}
+                                  className='text-sm border-[1px] border-neutral-300 pl-2 rounded-md w-48 focus:border-blue-800 outline-none'
+                                />
+                              )}
+                            />
+                          </LocalizationProvider>
+                        </p>
+                      ) : (
+                        <p className='text-sm flex justify-start'>
+                          <span className='font-semibold text-sm pr-4 w-40 '>
+                            Confirmación llegada:
+                          </span>
 
-                      <p className='text-sm flex justify-start'>
-                        <span className='font-semibold text-sm pr-4 w-40 '>
-                          Confirmación llegada:
-                        </span>
-
-                        <input
-                          type={'checkbox'}
-                          id='confirmaLlegada'
-                          value={confirmoLlegada}
-                          onChange={e => setConfirmoLlegada(e.target.checked)}
-                        />
-                      </p>
+                          <input
+                            type={'checkbox'}
+                            id='confirmaLlegada'
+                            value={confirmoLlegada}
+                            onChange={e => setConfirmoLlegada(e.target.checked)}
+                          />
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className='flex flex-col px-6 py-3 border-gray-200 items-center'>

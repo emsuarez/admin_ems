@@ -12,6 +12,7 @@ import {
   deleteControlMovimientoAction,
   getAllEjecutivosAction,
   getAllFamiliaresAction,
+  getAllHistorialMovimientosAction,
   GetAllLugaresAction,
   getAllProtectoresAction,
   getAllVehiculoProtectorAction,
@@ -50,6 +51,9 @@ const HistorialMovimiento = () => {
   const [fechaFinal, setFechaFinal] = useState(new Date())
 
   const historiales = useSelector(state => state.informes.historialMovimientos)
+  const allHistoriales = useSelector(
+    state => state.informes.allHistorialMovimientos
+  )
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
   const allVehiculosEjecutivos = useSelector(
     state => state.recursos.allVehiculosEjecutivos
@@ -72,7 +76,7 @@ const HistorialMovimiento = () => {
     setFechaInicial(fInicial)
     const obtenerInfoVista = () => {
       dispatch(getHistorialMovimientosAction())
-
+      dispatch(getAllHistorialMovimientosAction())
       dispatch(getAllEjecutivosAction())
       dispatch(getAllVehiculosEjecutivoAction())
       dispatch(getAllProtectoresAction())
@@ -142,6 +146,32 @@ const HistorialMovimiento = () => {
         )
       )
     }
+  }
+
+  const handleExportarPDF = () => {
+    const historialMovimientos = allHistoriales.results?.map(historial => ({
+      ...historial,
+      ejecutivo: allEjecutivos.results?.find(
+        ejecutivo => ejecutivo.id === historial.ejecutivo
+      )?.nombres,
+      lugar_salida: allLugares.results?.find(
+        lugar => lugar.id === historial.lugar_salida
+      )?.alias,
+      lugar_llegada: allLugares.results?.find(
+        lugar => lugar.id === historial.lugar_llegada
+      )?.alias,
+      vehiculo_ejecutivo: allVehiculosEjecutivos.results?.find(
+        vehiculo => vehiculo.id === historial.vehiculo_ejecutivo
+      )?.alias,
+      vehiculo_protector: allVehiculosProtectores.results?.find(
+        vehiculo => vehiculo.id === historial.vehiculo_protector
+      )?.alias,
+      protector: allProtectores.results?.find(
+        protector => protector.id === historial.protector
+      )?.nombres,
+    }))
+
+    controlMovimientoReportPDF(historialMovimientos)
   }
 
   return (
@@ -280,9 +310,7 @@ const HistorialMovimiento = () => {
           <div className='flex flex-row justify-between align-bottom mx-16'>
             <div></div>
             <div className='flex'>
-              <button
-                onClick={() => controlMovimientoReportPDF(historiales.results)}
-              >
+              <button onClick={() => handleExportarPDF()}>
                 <div className='flex'>
                   <p className='text-blue-800 hover:cursor-pointer'>
                     Exportar a PDF

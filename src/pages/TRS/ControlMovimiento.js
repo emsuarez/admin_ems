@@ -45,27 +45,11 @@ const ControlMovimiento = () => {
 
   const [itemEliminar, setItemEliminar] = useState('')
 
-  useEffect(() => {
-    const obtenerInfoVista = () => {
-      dispatch(getAllEjecutivosAction())
-      dispatch(getVehiculoEjecutivoAction('/vehiculoejecutivo/?id=-1'))
-      dispatch(getAllProtectoresAction())
-      dispatch(getAllVehiculosEjecutivoAction())
-      dispatch(getAllVehiculoProtectorAction())
-      dispatch(GetAllLugaresAction())
-      dispatch(getHistorialMovimientosAction())
-      dispatch(getAllHistorialMovimientosAction())
-      dispatch(getGrupoFamiliarByIdAction())
-      dispatch(getAllFamiliaresAction())
-    }
-    obtenerInfoVista()
-  }, [dispatch])
-
   const historiales = useSelector(state => state.informes.historialMovimientos)
-
   const allHistoriales = useSelector(
     state => state.informes.allHistorialMovimientos
   )
+
   const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
 
   const allVehiculosEjecutivos = useSelector(
@@ -84,6 +68,22 @@ const ControlMovimiento = () => {
   const allFamiliaresEjecutivo = useSelector(
     state => state.recursos.allFamiliares
   )
+
+  useEffect(() => {
+    // const obtenerInfoVista = () => {
+    dispatch(getAllEjecutivosAction())
+    dispatch(getVehiculoEjecutivoAction('/vehiculoejecutivo/?id=-1'))
+    dispatch(getAllProtectoresAction())
+    dispatch(getAllVehiculosEjecutivoAction())
+    dispatch(getAllVehiculoProtectorAction())
+    dispatch(GetAllLugaresAction())
+    dispatch(getHistorialMovimientosAction())
+    dispatch(getAllHistorialMovimientosAction())
+    dispatch(getGrupoFamiliarByIdAction())
+    dispatch(getAllFamiliaresAction())
+    // }
+    // obtenerInfoVista()
+  }, [dispatch])
 
   const handleSearch = e => {
     dispatch(getInformeTrs('/controlmovimiento/?query=' + e.target.value))
@@ -139,6 +139,31 @@ const ControlMovimiento = () => {
     setOpenDeleteModal(false)
   }
 
+  const handleExportarPDF = () => {
+    const historialMovimientos = allHistoriales.results?.map(historial => ({
+      ...historial,
+      ejecutivo: allEjecutivos.results?.find(
+        ejecutivo => ejecutivo.id === historial.ejecutivo
+      )?.nombres,
+      lugar_salida: allLugares.results?.find(
+        lugar => lugar.id === historial.lugar_salida
+      )?.alias,
+      lugar_llegada: allLugares.results?.find(
+        lugar => lugar.id === historial.lugar_llegada
+      )?.alias,
+      vehiculo_ejecutivo: allVehiculosEjecutivos.results?.find(
+        vehiculo => vehiculo.id === historial.vehiculo_ejecutivo
+      )?.alias,
+      vehiculo_protector: allVehiculosProtectores.results?.find(
+        vehiculo => vehiculo.id === historial.vehiculo_protector
+      )?.alias,
+      protector: allProtectores.results?.find(
+        protector => protector.id === historial.protector
+      )?.nombres,
+    }))
+
+    controlMovimientoReportPDF(historialMovimientos)
+  }
   return (
     <>
       <div>
@@ -195,11 +220,7 @@ const ControlMovimiento = () => {
           <div className='flex flex-row justify-between align-bottom mx-16'>
             <div></div>
             <div className='flex'>
-              <button
-                onClick={() =>
-                  controlMovimientoReportPDF(allHistoriales.results)
-                }
-              >
+              <button onClick={() => handleExportarPDF()}>
                 <div className='flex'>
                   <p className='text-blue-800 hover:cursor-pointer'>
                     Exportar a PDF
@@ -228,8 +249,6 @@ const ControlMovimiento = () => {
                 handleOpenViewInforme={handleOpenViewInforme}
                 handleOpenEditInforme={handleOpenEditInforme}
                 handleOpenDelete={handleOpenDeleteEvento}
-                ejecutivos={allEjecutivos.results}
-                protectores={allProtectores.results}
               />
             </div>
           )}

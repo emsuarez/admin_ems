@@ -18,16 +18,9 @@ import {
 } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from '../../assets/Icon'
-import {
-  getAllEjecutivosAction,
-  GetAllLugaresAction,
-  getAllProtectoresAction,
-  getHistorialMovimientosAction,
-} from '../../store/actions'
+import { getHistorialMovimientosAction } from '../../store/actions'
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -154,7 +147,7 @@ const HistorialMovimientoTable = ({
         </TableHead>
         <TableBody>
           {results?.map((row, index) => (
-            <TableRow key={index}>
+            <TableRow key={row.id}>
               <TableCell scope='row'>
                 {
                   allEjecutivos.results?.find(

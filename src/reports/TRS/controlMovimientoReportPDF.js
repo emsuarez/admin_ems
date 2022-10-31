@@ -24,13 +24,14 @@ const controlMovimientoReportPDF = historialControlMovimiento => {
     'Protector',
     'Observaciones',
   ]
+
   // define an empty array of rows
   const tableRows = []
-
   // for each ticket pass all its data into an array
   historialControlMovimiento.forEach(controlMovimiento => {
     const lugaresData = [
       controlMovimiento.ejecutivo,
+
       controlMovimiento.lugar_salida_texto
         ? controlMovimiento.lugar_salida_texto
         : controlMovimiento.lugar_salida,
