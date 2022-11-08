@@ -500,7 +500,10 @@ export const createNewProtectorAction = data => async dispatch => {
     });
     const result = response.data;
 
-    dispatch({ type: types.POST_PROTECTOR_SUCCESS, payload: result });
+    dispatch({
+      type: types.POST_PROTECTOR_SUCCESS,
+      payload: { ...data, id: result.id },
+    });
     dispatch(setToast('', result.message));
     progress.finish();
   } catch (error) {

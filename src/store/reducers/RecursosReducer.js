@@ -290,7 +290,19 @@ export default (state = initialState, { type, payload }) => {
     case types.POST_PROTECTOR_START:
       return { ...state, isLoading: true };
     case types.POST_PROTECTOR_SUCCESS:
-      return { ...state, isLoading: false, message: payload };
+      return {
+        ...state,
+        protectores: {
+          ...state.protectores,
+          count: state.protectores.count + 1,
+          results: [payload, ...state.protectores.results],
+        },
+        allProtectores: {
+          ...state.allProtectores,
+          count: state.allProtectores.count + 1,
+          results: [payload, ...state.allProtectores.results],
+        },
+      };
     case types.POST_PROTECTOR_FAILED:
       return { ...state, isLoading: false };
 

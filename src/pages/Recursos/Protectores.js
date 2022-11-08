@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   AdminAuthorized,
   CreateEjecutivo,
@@ -9,8 +9,8 @@ import {
   ICONS,
   ProtectoresTable,
   RedirectWithoutLogin,
-} from '../../components'
-import protectoresReportPDF from '../../reports/Recursos/protectoresReportPDF'
+} from '../../components';
+import protectoresReportPDF from '../../reports/Recursos/protectoresReportPDF';
 import {
   createNewProtectorAction,
   DeleteProtectorAction,
@@ -18,60 +18,67 @@ import {
   GetLugaresAction,
   getProtectoresAction,
   UpdateProtectorAction,
-} from '../../store/actions'
+} from '../../store/actions';
 
 const Protectores = () => {
-  const dispatch = useDispatch()
-  const [openEditModal, setOpenEditModal] = useState(false)
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const dispatch = useDispatch();
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const [itemEditar, setItemEditar] = useState('')
-  const [itemEliminar, setItemEliminar] = useState('')
+  const [itemEditar, setItemEditar] = useState('');
+  const [itemEliminar, setItemEliminar] = useState('');
 
   useEffect(() => {
-    dispatch(getProtectoresAction())
-    dispatch(getAllProtectoresAction())
-  }, [dispatch])
+    dispatch(getProtectoresAction());
+    dispatch(getAllProtectoresAction());
+  }, [dispatch]);
 
-  const protectoresData = useSelector(state => state.recursos.protectores)
-  const allProtectoresData = useSelector(state => state.recursos.allProtectores)
+  const protectoresData = useSelector(state => state.recursos.protectores);
+  const allProtectoresData = useSelector(
+    state => state.recursos.allProtectores
+  );
 
-  const handleGuardarProtector = ejecutivo => {
-    dispatch(createNewProtectorAction(ejecutivo))
-  }
+  const handleGuardarProtector = protector => {
+    const newProtector = {
+      ...protector,
+      is_active: true,
+      created: new Date(),
+    };
+    dispatch(createNewProtectorAction(newProtector));
+  };
 
   const handleCloseEditModal = () => {
-    setOpenEditModal(false)
-  }
+    setOpenEditModal(false);
+  };
 
   const handleOpenEditModal = itemEditar => {
-    setOpenEditModal(true)
-    setItemEditar(itemEditar)
-  }
+    setOpenEditModal(true);
+    setItemEditar(itemEditar);
+  };
 
   const handleOpenDeleteModal = itemEliminar => {
-    setOpenDeleteModal(true)
-    setItemEliminar(itemEliminar)
-  }
+    setOpenDeleteModal(true);
+    setItemEliminar(itemEliminar);
+  };
 
   const handleEditarProtector = protector => {
-    const protectorActualizado = { ...protector, id: itemEditar.id }
-    dispatch(UpdateProtectorAction(protectorActualizado))
-    setOpenEditModal(false)
-  }
+    const protectorActualizado = { ...protector, id: itemEditar.id };
+    dispatch(UpdateProtectorAction(protectorActualizado));
+    setOpenEditModal(false);
+  };
 
   const handleCloseDeleteModal = () => {
-    setOpenDeleteModal(false)
-  }
+    setOpenDeleteModal(false);
+  };
 
   const handleDeleteProtector = protector => {
-    dispatch(DeleteProtectorAction({ id: protector.id }))
-    setOpenDeleteModal(false)
-  }
+    dispatch(DeleteProtectorAction({ id: protector.id }));
+    setOpenDeleteModal(false);
+  };
 
   const handleSearch = e => {
-    dispatch(getProtectoresAction('/protector/?query=' + e.target.value))
-  }
+    dispatch(getProtectoresAction('/protector/?query=' + e.target.value));
+  };
   return (
     <div>
       <RedirectWithoutLogin />
@@ -122,7 +129,7 @@ const Protectores = () => {
                     placeholder='Buscar'
                     className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
                     onChange={e => {
-                      handleSearch(e)
+                      handleSearch(e);
                     }}
                   />
                 </div>
@@ -159,7 +166,7 @@ const Protectores = () => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Protectores
+export default Protectores;
