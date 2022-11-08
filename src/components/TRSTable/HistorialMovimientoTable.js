@@ -17,7 +17,7 @@ import {
   useTheme,
 } from '@mui/material'
 import { format } from 'date-fns'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from '../../assets/Icon'
 import { getHistorialMovimientosAction } from '../../store/actions'
@@ -25,8 +25,6 @@ import { getHistorialMovimientosAction } from '../../store/actions'
 function TablePaginationActions(props) {
   const theme = useTheme()
   const { count, page, rowsPerPage, onPageChange } = props
-
-  const fechaActual = new Date()
 
   const handleBackButtonClick = event => {
     onPageChange(event, page - 1)
@@ -93,6 +91,7 @@ const HistorialMovimientoTable = ({
 
     setPage(newPage)
   }
+
   const tipo = window.localStorage.getItem('tipo')
   return (
     <TableContainer className='shadow-lg' component={Paper}>

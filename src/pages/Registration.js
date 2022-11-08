@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import logo from '../assets/logo.png'
-import { RedirectWithLogin } from '../components'
-import { getTiposUsuarioAction, UserRegister } from '../store/actions'
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
+import { RedirectWithLogin } from '../components';
+import { getTiposUsuarioAction, UserRegister } from '../store/actions';
 
 const Registration = props => {
-  const [usuario, setUsuario] = useState()
-  const [nombres, setNombres] = useState()
-  const [apellidos, setApellidos] = useState()
-  const [email, setEmail] = useState()
-  const [contraseña, setContraseña] = useState()
-  const [confirmPassword, setConfirmPassword] = useState()
+  const [usuario, setUsuario] = useState();
+  const [nombres, setNombres] = useState();
+  const [apellidos, setApellidos] = useState();
+  const [email, setEmail] = useState();
+  const [contraseña, setContraseña] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
-  const [tipo, setTipo] = useState(0)
+  const [tipo, setTipo] = useState(0);
 
-  const [showPassword, setShowPassword] = useState(true)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(true)
+  const [showPassword, setShowPassword] = useState(true);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(true);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const cargarDataNivelUsuario = () => dispatch(getTiposUsuarioAction())
+    const cargarDataNivelUsuario = () => dispatch(getTiposUsuarioAction());
 
-    cargarDataNivelUsuario()
-  }, [])
+    cargarDataNivelUsuario();
+  }, []);
 
-  const roles = useSelector(state => state.auth.roles)
+  const roles = useSelector(state => state.auth.roles);
 
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   const togglePassword = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   const toggleConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword)
-  }
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const handleRegister = async dispatch => {
     const obj = {
@@ -46,18 +46,19 @@ const Registration = props => {
       email: 'temporal@mail.com',
       contraseña,
       tipo,
-    }
+    };
 
     if (usuario && contraseña && nombres && apellidos) {
       if (contraseña !== confirmPassword) {
-        alert('[ERROR]. Las contraseñas no coinciden!')
+        alert('[ERROR]. Las contraseñas no coinciden!');
       } else {
-        props.UserRegister(obj)
+        props.UserRegister(obj);
+        navigate('/');
       }
     } else {
-      alert('[ERROR]. Llene todos los campos!')
+      alert('[ERROR]. Llene todos los campos!');
     }
-  }
+  };
 
   return (
     <div className='flex bg-white justify-center my-5'>
@@ -252,13 +253,13 @@ const Registration = props => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = props => {
   return {
     isLoading: props.auth.isLoading,
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, { UserRegister })(Registration)
+export default connect(mapStateToProps, { UserRegister })(Registration);
