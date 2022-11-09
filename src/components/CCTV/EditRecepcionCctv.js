@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import logo from '../../assets/logo.png'
-import { Header, ICONS, RedirectWithoutLogin } from '../../components'
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/logo.png';
+import { Header, ICONS, RedirectWithoutLogin } from '../../components';
 
-import { format } from 'date-fns'
-import { useDispatch, useSelector } from 'react-redux'
-import { useReactToPrint } from 'react-to-print'
-import Icon from '../../assets/Icon'
+import { format } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
+import { useReactToPrint } from 'react-to-print';
+import Icon from '../../assets/Icon';
 import {
   cerrarConsignacCctvAction,
   cerrarInformeCctv,
@@ -25,19 +25,21 @@ import {
   setToast,
   updateConsignaCCTVAction,
   updateNovedadCCTVAction,
-} from '../../store/actions'
-import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
-import ConsignasNovedades from '../Informes/ConsignasNovedades'
-import CrearEditarModalGenerico from '../TRSModals/CrearEditarModalGenerico'
-import EliminarModalGenerico from '../TRSModals/EliminarModalGenerico'
+} from '../../store/actions';
+import AlertOperadorCierre from '../alerts/AlertOperadorCierre';
+import ConsignasNovedades from '../Informes/ConsignasNovedades';
+import CrearEditarModalGenerico from '../TRSModals/CrearEditarModalGenerico';
+import EliminarModalGenerico from '../TRSModals/EliminarModalGenerico';
 
 const EditRecepcionCctv = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const informes = useSelector(state => state.informes)
-  const { informesCctv } = informes || {}
-  const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
+  const informes = useSelector(state => state.informes);
+  const { informesCctv } = informes || {};
+  const actaSeleccionada = useSelector(
+    state => state.informes.actaSeleccionada
+  );
 
   const {
     agente_saliente,
@@ -48,77 +50,77 @@ const EditRecepcionCctv = () => {
     turno,
     cctvnovedad,
     created,
-  } = actaSeleccionada || {}
+  } = actaSeleccionada || {};
   const consignasNovedadesPendientesCctv = useSelector(
     state => state.informes.consignasNovedadesPendientesCctv
-  )
-  const { consignas, novedades } = consignasNovedadesPendientesCctv || {}
+  );
+  const { consignas, novedades } = consignasNovedadesPendientesCctv || {};
 
   // #region STATE_INICIAL
 
   const [openModalAgregarProtector, setOpenModalAgregarProtector] =
-    useState(false)
+    useState(false);
   const [openModalEditarProtector, setOpenModalEditarProtector] =
-    useState(false)
+    useState(false);
   const [openModalEliminarProtector, setOpenModalEliminarProtector] =
-    useState(false)
+    useState(false);
 
   const [openModalAgregarCentralista, setOpenModalAgregarCentralista] =
-    useState(false)
+    useState(false);
   const [openModalEditarCentralista, setOpenModalEditarCentralista] =
-    useState(false)
+    useState(false);
   const [openModalEliminarCentralista, setOpenModalEliminarCentralista] =
-    useState(false)
+    useState(false);
 
-  const [openModalAgregarNovedad, setOpenModalAgregarNovedad] = useState(false)
-  const [openModalEditarNovedad, setOpenModalEditarNovedad] = useState(false)
+  const [openModalAgregarNovedad, setOpenModalAgregarNovedad] = useState(false);
+  const [openModalEditarNovedad, setOpenModalEditarNovedad] = useState(false);
   const [openModalEditarNovedadCerrada, setOpenModalEditarNovedadCerrada] =
-    useState(false)
+    useState(false);
   const [openModalEliminarNovedad, setOpenModalEliminarNovedad] =
-    useState(false)
+    useState(false);
 
   const [openModalAgregarConsigna, setOpenModalAgregarConsigna] =
-    useState(false)
-  const [openModalEditarConsigna, setOpenModalEditarConsigna] = useState(false)
+    useState(false);
+  const [openModalEditarConsigna, setOpenModalEditarConsigna] = useState(false);
   const [openModalEditarConsignaCerrada, setOpenModalEditarConsignaCerrada] =
-    useState(false)
+    useState(false);
   const [openModalEliminarConsigna, setOpenModalEliminarConsigna] =
-    useState(false)
+    useState(false);
 
-  const [openModalCerrarNovedad, setOpenModalCerrarNovedad] = useState(false)
-  const [openModalCerrarConsigna, setOpenModalCerrarConsigna] = useState(false)
+  const [openModalCerrarNovedad, setOpenModalCerrarNovedad] = useState(false);
+  const [openModalCerrarConsigna, setOpenModalCerrarConsigna] = useState(false);
 
-  const [protectorSeleccionado, setProtectorSeleccionado] = useState()
-  const [centralistaSeleccionado, setCentralistaSeleccionado] = useState()
+  const [protectorSeleccionado, setProtectorSeleccionado] = useState();
+  const [centralistaSeleccionado, setCentralistaSeleccionado] = useState();
 
-  const [novedadSeleccionada, setNovedadSeleccionada] = useState()
+  const [novedadSeleccionada, setNovedadSeleccionada] = useState();
   const [observacionNovedadSeleccionada, setObservacionNovedadSeleccionada] =
-    useState()
-  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
+    useState();
+  const [consignaSeleccionada, setConsignaSeleccionada] = useState();
   const [observacionConsignaSeleccionada, setObservacionConsignaSeleccionada] =
-    useState()
+    useState();
 
   const [openModalAgregarOperadorCierre, setOpenModalAgregarOperadorCierre] =
-    useState(false)
+    useState(false);
 
-  const tipo = window.localStorage.getItem('tipo')
+  const tipo = window.localStorage.getItem('tipo');
 
-  const [personalSeleccionable, setPersonalSeleccionable] = useState([])
+  const [personalSeleccionable, setPersonalSeleccionable] = useState([]);
   //#endregion
 
-  const protectoresState = useSelector(state => state.recursos.allProtectores)
-  const usuariosState = useSelector(state => state.auth.allUsers)
+  const protectoresState = useSelector(state => state.recursos.allProtectores);
+  const usuariosState = useSelector(state => state.auth.allUsers);
 
   useEffect(() => {
     const cargarDatos = () => {
-      dispatch(getNovedadesConsignasCctvPendientes())
-      dispatch(getAllProtectoresAction())
-      dispatch(getAllUsersReportAction())
-      dispatch(getInformeCctv())
-    }
+      dispatch(getNovedadesConsignasCctvPendientes());
+      dispatch(getAllProtectoresAction());
+      dispatch(getAllUsersReportAction());
+      dispatch(getInformeCctv());
+    };
 
-    cargarDatos()
-  }, [])
+    cargarDatos();
+  }, []);
 
   useEffect(() => {
     if (protectoresState && usuariosState) {
@@ -126,40 +128,40 @@ const EditRecepcionCctv = () => {
         return {
           id: persona.id + new Date().getTime(),
           nombres: persona.nombres,
-        }
-      })
+        };
+      });
       const nuevoUsuarios = usuariosState.results?.map(usuario => {
         return {
           id: usuario.user_id + new Date().getTime(),
           nombres: `${usuario.first_name} ${usuario.last_name}`,
-        }
-      })
+        };
+      });
 
       const personalCompleto = nuevoProtectores &&
-        nuevoUsuarios && [...nuevoProtectores, ...nuevoUsuarios]
+        nuevoUsuarios && [...nuevoProtectores, ...nuevoUsuarios];
 
-      setPersonalSeleccionable(personalCompleto)
+      setPersonalSeleccionable(personalCompleto);
     }
-  }, [protectoresState, usuariosState])
+  }, [protectoresState, usuariosState]);
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
-    setOpenModalAgregarProtector(true)
-  }
+    setOpenModalAgregarProtector(true);
+  };
 
   const handleCloseAgregarProtector = () => {
-    setOpenModalAgregarProtector(false)
-  }
+    setOpenModalAgregarProtector(false);
+  };
 
   const handleAgregarProtector = protector => {
-    setOpenModalAgregarProtector(false)
+    setOpenModalAgregarProtector(false);
     const prevProtectores =
       protectores?.split(',')?.map(protector => {
-        return protector.trim()
-      }) || []
+        return protector.trim();
+      }) || [];
     if (prevProtectores.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
-      return
+      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'));
+      return;
     }
     const newProtector = {
       id: actaSeleccionada.id,
@@ -168,22 +170,22 @@ const EditRecepcionCctv = () => {
         : protector,
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
-    }
+    };
 
-    dispatch(crudPersonalActaCctvAction(newProtector))
-  }
+    dispatch(crudPersonalActaCctvAction(newProtector));
+  };
 
   const handleOpenEditarProtector = protector => {
-    setOpenModalEditarProtector(true)
-    setProtectorSeleccionado(protector)
-  }
+    setOpenModalEditarProtector(true);
+    setProtectorSeleccionado(protector);
+  };
 
   const handleCloseEditarProtector = () => {
-    setOpenModalEditarProtector(false)
-  }
+    setOpenModalEditarProtector(false);
+  };
 
   const handleEditarProtector = protector => {
-    setOpenModalEditarProtector(false)
+    setOpenModalEditarProtector(false);
     const protectorEditado = {
       id: actaSeleccionada.id,
       protectores: String(
@@ -193,22 +195,22 @@ const EditRecepcionCctv = () => {
       ),
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
-    }
+    };
 
-    dispatch(crudPersonalActaCctvAction(protectorEditado))
-  }
+    dispatch(crudPersonalActaCctvAction(protectorEditado));
+  };
 
   const handleOpenEliminarProtector = protector => {
-    setOpenModalEliminarProtector(true)
-    setProtectorSeleccionado(protector)
-  }
+    setOpenModalEliminarProtector(true);
+    setProtectorSeleccionado(protector);
+  };
 
   const handleCloseEliminarProtector = () => {
-    setOpenModalEliminarProtector(false)
-  }
+    setOpenModalEliminarProtector(false);
+  };
 
   const handleEliminarProtector = () => {
-    setOpenModalEliminarProtector(false)
+    setOpenModalEliminarProtector(false);
     const protectorEliminado = {
       id: actaSeleccionada.id,
       protectores: String(
@@ -216,31 +218,31 @@ const EditRecepcionCctv = () => {
       ),
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
-    }
+    };
 
-    dispatch(crudPersonalActaCctvAction(protectorEliminado))
-  }
+    dispatch(crudPersonalActaCctvAction(protectorEliminado));
+  };
   //#endregion
 
   // #region CRUD_CENTRALISTAS
   const handleOpenAgregarCentralista = () => {
-    setOpenModalAgregarCentralista(true)
-  }
+    setOpenModalAgregarCentralista(true);
+  };
 
   const handleCloseAgregarCentralista = () => {
-    setOpenModalAgregarCentralista(false)
-  }
+    setOpenModalAgregarCentralista(false);
+  };
 
   const handleAgregarCentralista = centralista => {
-    setOpenModalAgregarCentralista(false)
+    setOpenModalAgregarCentralista(false);
 
     const prevCentralistas =
       centralistas?.split(',')?.map(cent => {
-        return cent.trim()
-      }) || []
+        return cent.trim();
+      }) || [];
     if (prevCentralistas.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'))
-      return
+      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'));
+      return;
     }
     const newCentralista = {
       id: actaSeleccionada.id,
@@ -249,22 +251,22 @@ const EditRecepcionCctv = () => {
         ? String([...prevCentralistas, centralista])
         : centralista,
       observacion: actaSeleccionada.observacion,
-    }
+    };
 
-    dispatch(crudPersonalActaCctvAction(newCentralista))
-  }
+    dispatch(crudPersonalActaCctvAction(newCentralista));
+  };
 
   const handleOpenEditarCentralista = centralista => {
-    setOpenModalEditarCentralista(true)
-    setCentralistaSeleccionado(centralista)
-  }
+    setOpenModalEditarCentralista(true);
+    setCentralistaSeleccionado(centralista);
+  };
 
   const handleCloseEditarCentralista = () => {
-    setOpenModalEditarCentralista(false)
-  }
+    setOpenModalEditarCentralista(false);
+  };
 
   const handleEditarCentralista = centralista => {
-    setOpenModalEditarCentralista(false)
+    setOpenModalEditarCentralista(false);
     const centralistaEditado = {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
@@ -274,22 +276,22 @@ const EditRecepcionCctv = () => {
           ?.map(c => (c === centralistaSeleccionado ? centralista : c))
       ),
       observacion: actaSeleccionada.observacion,
-    }
+    };
 
-    dispatch(crudPersonalActaCctvAction(centralistaEditado))
-  }
+    dispatch(crudPersonalActaCctvAction(centralistaEditado));
+  };
 
   const handleOpenEliminarCentralista = centralista => {
-    setOpenModalEliminarCentralista(true)
-    setCentralistaSeleccionado(centralista)
-  }
+    setOpenModalEliminarCentralista(true);
+    setCentralistaSeleccionado(centralista);
+  };
 
   const handleCloseEliminarCentralista = () => {
-    setOpenModalEliminarCentralista(false)
-  }
+    setOpenModalEliminarCentralista(false);
+  };
 
   const handleEliminarCentralista = () => {
-    setOpenModalEliminarCentralista(false)
+    setOpenModalEliminarCentralista(false);
     const centralistaEliminado = {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
@@ -297,10 +299,10 @@ const EditRecepcionCctv = () => {
         centralistas?.split(',')?.filter(c => c !== centralistaSeleccionado)
       ),
       observacion: actaSeleccionada.observacion,
-    }
+    };
 
-    dispatch(crudPersonalActaCctvAction(centralistaEliminado))
-  }
+    dispatch(crudPersonalActaCctvAction(centralistaEliminado));
+  };
   //#endregion
 
   // #region CRUD_NOVEDADES
@@ -308,18 +310,18 @@ const EditRecepcionCctv = () => {
     if (cctvnovedad.length > 13) {
       dispatch(
         setToast('Error', 'Se ha alcanzado el límite máximo de novedades')
-      )
-      return
+      );
+      return;
     }
-    setOpenModalAgregarNovedad(true)
-  }
+    setOpenModalAgregarNovedad(true);
+  };
 
   const handleCloseAgregarNovedad = () => {
-    setOpenModalAgregarNovedad(false)
-  }
+    setOpenModalAgregarNovedad(false);
+  };
 
   const handleAgregarNovedad = novedad => {
-    setOpenModalAgregarNovedad(false)
+    setOpenModalAgregarNovedad(false);
     const newNovedad = {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: novedad,
@@ -327,88 +329,89 @@ const EditRecepcionCctv = () => {
       fecha_obs_cierre: null,
       estado: 1,
       created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    }
+    };
 
-    dispatch(createNovedadCctvAction(newNovedad))
-  }
+    dispatch(createNovedadCctvAction(newNovedad));
+  };
 
   const handleOpenEditarNovedad = novedad => {
-    setOpenModalEditarNovedad(true)
-    setNovedadSeleccionada(novedad)
-    setObservacionNovedadSeleccionada(novedad.obs_creacion)
-  }
+    setOpenModalEditarNovedad(true);
+    setNovedadSeleccionada(novedad);
+    setObservacionNovedadSeleccionada(novedad.obs_creacion);
+  };
 
   const handleCloseEditarNovedad = () => {
-    setOpenModalEditarNovedad(false)
-  }
+    setOpenModalEditarNovedad(false);
+  };
 
   const handleEditarNovedad = novedad => {
-    setOpenModalEditarNovedad(false)
+    setOpenModalEditarNovedad(false);
 
     const novedadEditada = {
       ...novedadSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: novedad,
-    }
+    };
 
-    dispatch(updateNovedadCCTVAction(novedadEditada))
-  }
+    dispatch(updateNovedadCCTVAction(novedadEditada));
+  };
 
   const handleOpenEliminarNovedad = novedad => {
-    setOpenModalEliminarNovedad(true)
-    setNovedadSeleccionada(novedad)
-  }
+    setOpenModalEliminarNovedad(true);
+    setNovedadSeleccionada(novedad);
+  };
 
   const handleCloseEliminarNovedad = () => {
-    setOpenModalEliminarNovedad(false)
-  }
+    setOpenModalEliminarNovedad(false);
+  };
 
   const handleEliminarNovedad = () => {
-    setOpenModalEliminarNovedad(false)
-    dispatch(deleteNovedadCCTVAction({ id: novedadSeleccionada.id }))
-  }
+    setOpenModalEliminarNovedad(false);
+    dispatch(deleteNovedadCCTVAction({ id: novedadSeleccionada.id }));
+  };
 
   const handleOpenEditarNovedadCerrada = novedad => {
-    setOpenModalEditarNovedadCerrada(true)
-    setNovedadSeleccionada(novedad)
-    setObservacionNovedadSeleccionada(novedad.obs_cierre)
-  }
+    setOpenModalEditarNovedadCerrada(true);
+    setNovedadSeleccionada(novedad);
+    setObservacionNovedadSeleccionada(novedad.obs_cierre);
+  };
 
   const handleCloseEditarNovedadCerrada = () => {
-    setOpenModalEditarNovedadCerrada(false)
-  }
+    setOpenModalEditarNovedadCerrada(false);
+  };
 
   const handleEditarNovedadCerrada = novedad => {
-    setOpenModalEditarNovedadCerrada(false)
+    setOpenModalEditarNovedadCerrada(false);
     const novedadEditada = {
       ...novedadSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: novedad,
-    }
+    };
 
-    dispatch(updateNovedadCCTVAction(novedadEditada))
-  }
+    dispatch(updateNovedadCCTVAction(novedadEditada));
+  };
 
   const handleOpenCerrarNovedad = novedad => {
-    setOpenModalCerrarNovedad(true)
-    setNovedadSeleccionada(novedad)
-  }
+    setOpenModalCerrarNovedad(true);
+    setNovedadSeleccionada(novedad);
+  };
 
   const handleCloseCerrarNovedad = () => {
-    setOpenModalCerrarNovedad(false)
-  }
+    setOpenModalCerrarNovedad(false);
+  };
 
   const handleCerrarNovedad = novedad => {
-    setOpenModalCerrarNovedad(false)
+    setOpenModalCerrarNovedad(false);
     const novedadCerrada = {
       ...novedadSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: novedad,
       estado: 0,
-    }
+      fecha_obs_cierre: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+    };
 
-    dispatch(cerrarNovedadCCTVAction(novedadCerrada))
-  }
+    dispatch(cerrarNovedadCCTVAction(novedadCerrada));
+  };
   //#endregion
 
   // #region CRUD_CONSIGNAS
@@ -416,18 +419,18 @@ const EditRecepcionCctv = () => {
     if (cctvconsigna.length > 13) {
       dispatch(
         setToast('Error', 'Se ha alcanzado el límite máximo de consignas')
-      )
-      return
+      );
+      return;
     }
-    setOpenModalAgregarConsigna(true)
-  }
+    setOpenModalAgregarConsigna(true);
+  };
 
   const handleCloseAgregarConsigna = () => {
-    setOpenModalAgregarConsigna(false)
-  }
+    setOpenModalAgregarConsigna(false);
+  };
 
   const handleAgregarConsigna = consigna => {
-    setOpenModalAgregarConsigna(false)
+    setOpenModalAgregarConsigna(false);
     const newConsigna = {
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: consigna,
@@ -435,147 +438,148 @@ const EditRecepcionCctv = () => {
       fecha_obs_cierre: null,
       estado: 1,
       created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    }
+    };
 
-    dispatch(createConsignaCctvAction(newConsigna))
-  }
+    dispatch(createConsignaCctvAction(newConsigna));
+  };
 
   const handleOpenEditarConsigna = consigna => {
-    setOpenModalEditarConsigna(true)
-    setConsignaSeleccionada(consigna)
-    setObservacionConsignaSeleccionada(consigna.obs_creacion)
-  }
+    setOpenModalEditarConsigna(true);
+    setConsignaSeleccionada(consigna);
+    setObservacionConsignaSeleccionada(consigna.obs_creacion);
+  };
 
   const handleCloseEditarConsigna = () => {
-    setOpenModalEditarConsigna(false)
-  }
+    setOpenModalEditarConsigna(false);
+  };
 
   const handleEditarConsigna = consigna => {
-    setOpenModalEditarConsigna(false)
+    setOpenModalEditarConsigna(false);
 
     const consignaEditada = {
       ...consignaSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_creacion: consigna,
-    }
+    };
 
-    dispatch(updateConsignaCCTVAction(consignaEditada))
-  }
+    dispatch(updateConsignaCCTVAction(consignaEditada));
+  };
 
   const handleOpenEliminarConsigna = consigna => {
-    setOpenModalEliminarConsigna(true)
-    setConsignaSeleccionada(consigna)
-  }
+    setOpenModalEliminarConsigna(true);
+    setConsignaSeleccionada(consigna);
+  };
 
   const handleCloseEliminarConsigna = () => {
-    setOpenModalEliminarConsigna(false)
-  }
+    setOpenModalEliminarConsigna(false);
+  };
 
   const handleEliminarConsigna = () => {
-    setOpenModalEliminarConsigna(false)
-    dispatch(deleteConsignaCCTVAction({ id: consignaSeleccionada.id }))
-  }
+    setOpenModalEliminarConsigna(false);
+    dispatch(deleteConsignaCCTVAction({ id: consignaSeleccionada.id }));
+  };
 
   const handleOpenEditarConsignaCerrada = consigna => {
-    setOpenModalEditarConsignaCerrada(true)
-    setConsignaSeleccionada(consigna)
-    setObservacionConsignaSeleccionada(consigna.obs_cierre)
-  }
+    setOpenModalEditarConsignaCerrada(true);
+    setConsignaSeleccionada(consigna);
+    setObservacionConsignaSeleccionada(consigna.obs_cierre);
+  };
 
   const handleCloseEditarConsignaCerrada = () => {
-    setOpenModalEditarConsignaCerrada(false)
-  }
+    setOpenModalEditarConsignaCerrada(false);
+  };
 
   const handleEditarConsignaCerrada = consigna => {
-    setOpenModalEditarConsignaCerrada(false)
+    setOpenModalEditarConsignaCerrada(false);
     const consignaEditada = {
       ...consignaSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: consigna,
-    }
+    };
 
-    dispatch(updateConsignaCCTVAction(consignaEditada))
-  }
+    dispatch(updateConsignaCCTVAction(consignaEditada));
+  };
 
   const handleOpenCerrarConsigna = consigna => {
-    setOpenModalCerrarConsigna(true)
-    setConsignaSeleccionada(consigna)
-  }
+    setOpenModalCerrarConsigna(true);
+    setConsignaSeleccionada(consigna);
+  };
 
   const handleCloseCerrarConsigna = () => {
-    setOpenModalCerrarConsigna(false)
-  }
+    setOpenModalCerrarConsigna(false);
+  };
 
   const handleCerrarConsigna = consigna => {
-    setOpenModalCerrarConsigna(false)
+    setOpenModalCerrarConsigna(false);
     const consignaCerrada = {
       ...consignaSeleccionada,
       informe_cctv_id: actaSeleccionada.id,
       obs_cierre: consigna,
       estado: 0,
-    }
-    dispatch(cerrarConsignacCctvAction(consignaCerrada))
-  }
+      fecha_obs_cierre: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+    };
+    dispatch(cerrarConsignacCctvAction(consignaCerrada));
+  };
   // #endregion
 
   // #region FUNCIONES_ADICIONALES
   const handleSalir = () => {
-    navigate(-1)
-  }
-  const listaInformesCctv = useSelector(state => state.informes.informesCctv)
+    navigate(-1);
+  };
+  const listaInformesCctv = useSelector(state => state.informes.informesCctv);
   const handleInformeAnterior = () => {
     if (
       actaSeleccionada.id !==
       listaInformesCctv.results[listaInformesCctv.results.length - 1].id
     ) {
-      dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 0))
+      dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 0));
     } else {
-      dispatch(getInformeCctvById(listaInformesCctv.results[0].id))
+      dispatch(getInformeCctvById(listaInformesCctv.results[0].id));
     }
-  }
+  };
 
   const handleSiguienteInforme = () => {
     if (actaSeleccionada.id !== listaInformesCctv.results[0].id) {
-      dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 1))
+      dispatch(getInformeCctvNavegacion(actaSeleccionada.id, 1));
     } else {
       dispatch(
         getInformeCctvById(
           listaInformesCctv.results[listaInformesCctv.results.length - 1].id
         )
-      )
+      );
     }
-  }
+  };
 
-  const componentRef = useRef()
+  const componentRef = useRef();
   const handleGenerarInformePdf = useReactToPrint({
     content: () => componentRef.current,
-  })
+  });
 
   const handleOpenModalAgregarOperadorCierre = () => {
-    setOpenModalAgregarOperadorCierre(true)
-  }
+    setOpenModalAgregarOperadorCierre(true);
+  };
 
   const handleCloseAgregarOperadorCierre = () => {
-    setOpenModalAgregarOperadorCierre(false)
-  }
+    setOpenModalAgregarOperadorCierre(false);
+  };
 
   const handleAgregarOperadorCierre = operador => {
-    setOpenModalAgregarOperadorCierre(false)
+    setOpenModalAgregarOperadorCierre(false);
     const operadorCierre = {
       id: actaSeleccionada.id,
       username: operador.username,
       nombre_entrante: `${operador.first_name} ${operador.last_name}`,
-    }
+    };
 
-    dispatch(cerrarInformeCctv(operadorCierre))
-  }
+    dispatch(cerrarInformeCctv(operadorCierre));
+  };
 
   const validarFecha = fecha => {
-    const fechaActual = new Date().setHours(0, 0, 0, 0)
-    const fechaValidar = new Date(fecha).setHours(0, 0, 0, 0)
+    const fechaActual = new Date().setHours(0, 0, 0, 0);
+    const fechaValidar = new Date(fecha).setHours(0, 0, 0, 0);
 
-    return fechaActual === fechaValidar
-  }
+    return fechaActual === fechaValidar;
+  };
   // #endregion
   return (
     <>
@@ -1084,7 +1088,7 @@ const EditRecepcionCctv = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default EditRecepcionCctv
+export default EditRecepcionCctv;
