@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Header,
   ICONS,
   LineChart,
   RedirectWithoutLogin,
   TRSAuthorized,
-} from '../../components'
-import ConsignasTable from '../../components/CCTV/ConsignasTable'
+} from '../../components';
+import ConsignasTable from '../../components/CCTV/ConsignasTable';
 import {
   getPersonalInformeTrs,
   obtenerConsignasGrafica,
   obtenerConsignasTRSAction,
   obtenerNovedadesTRSAction,
-} from '../../store/actions'
+} from '../../store/actions';
 
 const TRSDashboard = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [idConsigna] = useState(3)
+  const [idConsigna] = useState(3);
 
   const cargarConsignas = () => {
-    dispatch(obtenerConsignasTRSAction())
-    dispatch(obtenerConsignasGrafica(idConsigna))
-  }
+    dispatch(obtenerConsignasTRSAction());
+    dispatch(obtenerNovedadesTRSAction());
+    dispatch(obtenerConsignasGrafica(idConsigna));
+  };
 
   useEffect(() => {
-    const obtenerPersonal = () => dispatch(getPersonalInformeTrs())
-    obtenerPersonal()
-    cargarConsignas()
-  }, [dispatch])
+    const obtenerPersonal = () => dispatch(getPersonalInformeTrs());
+    obtenerPersonal();
+    cargarConsignas();
+  }, [dispatch]);
 
-  const consignas = useSelector(state => state.consignas)
-  const informes = useSelector(state => state.informes)
+  const consignas = useSelector(state => state.consignas);
+  const informes = useSelector(state => state.informes);
 
   return (
     <div className='h-full w-full'>
@@ -119,7 +120,7 @@ const TRSDashboard = () => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TRSDashboard
+export default TRSDashboard;

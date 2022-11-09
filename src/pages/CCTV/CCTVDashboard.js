@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   CCTVAuthorized,
   Header,
   ICONS,
   LineChart,
   RedirectWithoutLogin,
-} from '../../components'
-import ConsignasTable from '../../components/CCTV/ConsignasTable'
+} from '../../components';
+import ConsignasTable from '../../components/CCTV/ConsignasTable';
 import {
   getPersonalInformeCctv,
   obtenerConsignasCCTVAction,
   obtenerConsignasGrafica,
-} from '../../store/actions'
+  obtenerNovedadesCCTVAction,
+} from '../../store/actions';
 
 const CCTVDashboard = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [idConsigna] = useState(4)
+  const [idConsigna] = useState(4);
 
   useEffect(() => {
-    dispatch(getPersonalInformeCctv())
-    dispatch(obtenerConsignasCCTVAction())
-    dispatch(obtenerConsignasGrafica(idConsigna))
-  }, [dispatch])
+    dispatch(getPersonalInformeCctv());
+    dispatch(obtenerConsignasCCTVAction());
+    dispatch(obtenerNovedadesCCTVAction());
+    dispatch(obtenerConsignasGrafica(idConsigna));
+  }, [dispatch]);
 
-  const consignas = useSelector(state => state.consignas)
-  const { consignasGrafica, consignasCctv, novedadesCctv } = consignas || {}
-  const informes = useSelector(state => state.informes)
+  const consignas = useSelector(state => state.consignas);
+  const { consignasGrafica, consignasCctv, novedadesCctv } = consignas || {};
+  const informes = useSelector(state => state.informes);
 
   return (
     <div className='h-full w-full'>
@@ -110,7 +112,7 @@ const CCTVDashboard = () => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CCTVDashboard
+export default CCTVDashboard;
