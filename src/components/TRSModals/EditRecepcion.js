@@ -407,6 +407,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: novedad,
       estado: 0,
+      fecha_obs_cierre: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     };
 
     dispatch(cerrarNovedadTRSAction(novedadCerrada));
@@ -515,6 +516,7 @@ const EditRecepcion = () => {
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: consigna,
       estado: 0,
+      fecha_obs_cierre: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     };
 
     dispatch(cerrarConsignaTRSAction(consignaCerrada));

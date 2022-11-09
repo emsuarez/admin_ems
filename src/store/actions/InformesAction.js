@@ -417,7 +417,6 @@ export const cerrarNovedadCCTVAction = data => {
         type: types.CERRAR_NOVEDADCCTV_SUCCESS,
         payload: data,
       });
-      console.log(result, 'result desde cerrar novedad');
       dispatch(setToast('success', result.message));
       progress.finish();
     } catch (error) {
@@ -889,8 +888,6 @@ export const patchControlMovimiento = data => {
         type: types.PATCH_CONTROL_MOVIMIENTO_SUCCESS,
         payload: {
           ...result,
-          // hora_llegada: new Date(result.hora_llegada),
-          // hora_salida: new Date(result.hora_salida),
         },
       });
       dispatch(setToast('success', result.message));
