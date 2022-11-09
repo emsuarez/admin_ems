@@ -35,6 +35,8 @@ const TRSDashboard = () => {
   const consignas = useSelector(state => state.consignas);
   const informes = useSelector(state => state.informes);
 
+  const { consignasGrafica } = consignas || {};
+
   return (
     <div className='h-full w-full'>
       <RedirectWithoutLogin />
@@ -56,11 +58,9 @@ const TRSDashboard = () => {
 
             <div className='flex mt-4 justify-center mb-8'>
               <div className='flex flex-col w-1/2 mx-8'>
-                {consignas.consignasGrafica && (
-                  <div className='bg-white w-full mb-3 border-2 border-gray-200 p-20'>
-                    <LineChart data={consignas.consignasGrafica} />
-                  </div>
-                )}
+                <div className='bg-white w-full mb-3 border-2 border-gray-200 p-20'>
+                  <LineChart data={consignasGrafica} />
+                </div>
 
                 <div className='bg-white p-6 shadow-md mb-3 w-full border-2 border-gray-200'>
                   <h2 className='font-semibold text-lg'>
