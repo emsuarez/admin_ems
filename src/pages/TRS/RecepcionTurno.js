@@ -1,91 +1,92 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Header,
   ICONS,
   RecepcionTurnoTable,
   RedirectWithoutLogin,
   TRSAuthorized,
-} from '../../components'
+} from '../../components';
 
 import {
   deleteInformeTRSAction,
   getAllEjecutivosAction,
   getInformeTrs,
   getInformeTrsById,
-} from '../../store/actions'
+} from '../../store/actions';
 
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 
-import TextField from '@mui/material/TextField'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { DatePicker } from '@mui/x-date-pickers'
-import { useNavigate } from 'react-router-dom'
-import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
+import { DatePicker } from '@mui/x-date-pickers';
+import { useNavigate } from 'react-router-dom';
+import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico';
+import recepcionTurnoReportPDF from '../../reports/TRS/recepcionTurnoReportPDF';
 
 const RecepcionTurno = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  const [itemEliminar, setItemEliminar] = useState('')
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [itemEliminar, setItemEliminar] = useState('');
 
-  const [fechaInicial, setFechaInicial] = useState(new Date())
-  const [fechaFinal, setFechaFinal] = useState(new Date())
+  const [fechaInicial, setFechaInicial] = useState(new Date());
+  const [fechaFinal, setFechaFinal] = useState(new Date());
 
   useEffect(() => {
-    const fInicial = new Date()
-    fInicial.setMonth(fInicial.getMonth() - 1)
-    setFechaInicial(fInicial)
+    const fInicial = new Date();
+    fInicial.setMonth(fInicial.getMonth() - 1);
+    setFechaInicial(fInicial);
     const obtenerInfoVista = () => {
-      dispatch(getInformeTrs())
-      dispatch(getAllEjecutivosAction())
-    }
-    obtenerInfoVista()
-  }, [])
+      dispatch(getInformeTrs());
+      dispatch(getAllEjecutivosAction());
+    };
+    obtenerInfoVista();
+  }, []);
 
-  const recepcionesTurnoData = useSelector(state => state.informes.informesTrs)
+  const recepcionesTurnoData = useSelector(state => state.informes.informesTrs);
 
   const handleSearch = e => {
-    dispatch(getInformeTrs('/informetrs/?query=' + e.target.value))
-  }
+    dispatch(getInformeTrs('/informetrs/?query=' + e.target.value));
+  };
 
   const handleOpenViewInforme = informe => {
-    dispatch(getInformeTrsById(informe.id))
-    navigate('/viewrecepcion')
-  }
+    dispatch(getInformeTrsById(informe.id));
+    navigate('/viewrecepcion');
+  };
 
   const handleOpenEditInforme = informe => {
-    navigate('/editrecepcion')
-    dispatch(getInformeTrsById(informe.id))
-  }
+    navigate('/editrecepcion');
+    dispatch(getInformeTrsById(informe.id));
+  };
 
   const handleOpenDeleteActa = itemEliminar => {
-    setOpenDeleteModal(true)
-    setItemEliminar(itemEliminar)
-  }
+    setOpenDeleteModal(true);
+    setItemEliminar(itemEliminar);
+  };
 
   const handleCloseDeleteModal = () => {
-    setOpenDeleteModal(false)
-  }
+    setOpenDeleteModal(false);
+  };
 
   const handleDeleteActa = acta => {
-    dispatch(deleteInformeTRSAction({ id: acta.id }))
-    setOpenDeleteModal(false)
-  }
+    dispatch(deleteInformeTRSAction({ id: acta.id }));
+    setOpenDeleteModal(false);
+  };
 
   const handleFiltrarPorFecha = () => {
-    const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd')
-    const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd')
+    const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd');
+    const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd');
 
     dispatch(
       getInformeTrs(
         `/informetrs/?fechainicial=${fechaInficialFormat}&fechafinal=${fechaFinalFormat}`
       )
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -191,9 +192,9 @@ const RecepcionTurno = () => {
                 <div></div>
                 <div className='flex'>
                   <button
-                  // onClick={() =>
-                  //   ejecutivosReportPDF(allEjecutivosData.results)
-                  // }
+                    onClick={() =>
+                      recepcionTurnoReportPDF(recepcionesTurnoData.results)
+                    }
                   >
                     <div className='flex'>
                       <p className='text-blue-800 hover:cursor-pointer'>
@@ -210,7 +211,7 @@ const RecepcionTurno = () => {
                       placeholder='Buscar'
                       className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
                       onChange={e => {
-                        handleSearch(e)
+                        handleSearch(e);
                       }}
                     />
                   </div>
@@ -244,7 +245,7 @@ const RecepcionTurno = () => {
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RecepcionTurno
+export default RecepcionTurno;

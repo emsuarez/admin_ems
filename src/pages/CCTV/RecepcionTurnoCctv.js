@@ -1,91 +1,94 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Header,
   ICONS,
   RecepcionTurnoTable,
   RedirectWithoutLogin,
-} from '../../components'
+} from '../../components';
 
 import {
   deleteInformeCctvAction,
   getAllEjecutivosAction,
   getInformeCctv,
   getInformeCctvById,
-} from '../../store/actions'
+} from '../../store/actions';
 
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 
-import TextField from '@mui/material/TextField'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { DatePicker } from '@mui/x-date-pickers'
-import { useNavigate } from 'react-router-dom'
-import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
+import { DatePicker } from '@mui/x-date-pickers';
+import { useNavigate } from 'react-router-dom';
+import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico';
+import recepcionTurnoCctvReportPDF from '../../reports/CCTV/recepcionTurnoCctvReportPDF';
 
 const RecepcionTurnoCctv = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  const [itemEliminar, setItemEliminar] = useState('')
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [itemEliminar, setItemEliminar] = useState('');
 
-  const [fechaInicial, setFechaInicial] = useState(new Date())
-  const [fechaFinal, setFechaFinal] = useState(new Date())
+  const [fechaInicial, setFechaInicial] = useState(new Date());
+  const [fechaFinal, setFechaFinal] = useState(new Date());
 
   useEffect(() => {
-    const fInicial = new Date()
-    fInicial.setMonth(fInicial.getMonth() - 1)
-    setFechaInicial(fInicial)
+    const fInicial = new Date();
+    fInicial.setMonth(fInicial.getMonth() - 1);
+    setFechaInicial(fInicial);
     const obtenerInfoVista = () => {
-      dispatch(getInformeCctv())
-      dispatch(getAllEjecutivosAction())
-    }
-    obtenerInfoVista()
-  }, [])
+      dispatch(getInformeCctv());
+      dispatch(getAllEjecutivosAction());
+    };
+    obtenerInfoVista();
+  }, []);
 
-  const recepcionesTurnoData = useSelector(state => state.informes.informesCctv)
+  const recepcionesTurnoData = useSelector(
+    state => state.informes.informesCctv
+  );
 
   const handleSearch = e => {
-    dispatch(getInformeCctv('/informetrs/?query=' + e.target.value))
-  }
+    dispatch(getInformeCctv('/informetrs/?query=' + e.target.value));
+  };
 
   const handleOpenViewInforme = informe => {
-    dispatch(getInformeCctvById(informe.id))
-    navigate('/viewrecepcioncctv')
-  }
+    dispatch(getInformeCctvById(informe.id));
+    navigate('/viewrecepcioncctv');
+  };
 
   const handleOpenEditInforme = informe => {
-    dispatch(getInformeCctvById(informe.id))
-    navigate('/editrecepcioncctv')
-  }
+    dispatch(getInformeCctvById(informe.id));
+    navigate('/editrecepcioncctv');
+  };
 
   const handleOpenDeleteActa = itemEliminar => {
-    setOpenDeleteModal(true)
-    setItemEliminar(itemEliminar)
-  }
+    setOpenDeleteModal(true);
+    setItemEliminar(itemEliminar);
+  };
 
   const handleCloseDeleteModal = () => {
-    setOpenDeleteModal(false)
-  }
+    setOpenDeleteModal(false);
+  };
 
   const handleDeleteActa = acta => {
-    dispatch(deleteInformeCctvAction({ id: acta.id }))
+    dispatch(deleteInformeCctvAction({ id: acta.id }));
 
-    setOpenDeleteModal(false)
-  }
+    setOpenDeleteModal(false);
+  };
 
   const handleFiltrarPorFecha = () => {
-    const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd')
-    const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd')
+    const fechaInficialFormat = format(new Date(fechaInicial), 'yyyy-MM-dd');
+    const fechaFinalFormat = format(new Date(fechaFinal), 'yyyy-MM-dd');
 
     dispatch(
       getInformeCctv(
         `/informecctv/?fechainicial=${fechaInficialFormat}&fechafinal=${fechaFinalFormat}`
       )
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -184,9 +187,9 @@ const RecepcionTurnoCctv = () => {
             <div></div>
             <div className='flex'>
               <button
-              // onClick={() =>
-              //   ejecutivosReportPDF(allEjecutivosData.results)
-              // }
+                onClick={() =>
+                  recepcionTurnoCctvReportPDF(recepcionesTurnoData.results)
+                }
               >
                 <div className='flex'>
                   <p className='text-blue-800 hover:cursor-pointer'>
@@ -203,7 +206,7 @@ const RecepcionTurnoCctv = () => {
                   placeholder='Buscar'
                   className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
                   onChange={e => {
-                    handleSearch(e)
+                    handleSearch(e);
                   }}
                 />
               </div>
@@ -235,7 +238,7 @@ const RecepcionTurnoCctv = () => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RecepcionTurnoCctv
+export default RecepcionTurnoCctv;

@@ -8,7 +8,7 @@ import logoEmpresa from '../../assets/logo.png';
 import { format } from 'date-fns';
 
 // define a generatePDF function that accepts a tickets argument
-const recepcionTurnoReportPDF = historialRecepcionTurno => {
+const recepcionTurnoCctvReportPDF = historialRecepcionTurno => {
   // initialize jsPDF
   const doc = new jsPDF('landscape');
 
@@ -41,7 +41,7 @@ const recepcionTurnoReportPDF = historialRecepcionTurno => {
     margin: { top: 40 },
     didDrawPage: function (data) {
       doc.addImage(logoEmpresa, 'PNG', 115, 0, 70, 30);
-      doc.text('Historial de recepcion turno TRS.', 14, 35);
+      doc.text('Historial de recepcion turno CCTV.', 14, 35);
     },
   });
   const date = Date().split(' ');
@@ -50,7 +50,7 @@ const recepcionTurnoReportPDF = historialRecepcionTurno => {
   // ticket title. and margin-top + margin-left
 
   // we define the name of our PDF file.
-  doc.save(`report_historial_recepcion_turno_trs_${dateStr}.pdf`);
+  doc.save(`report_historial_recepcion_turno_cctv_${dateStr}.pdf`);
 };
 
-export default recepcionTurnoReportPDF;
+export default recepcionTurnoCctvReportPDF;
