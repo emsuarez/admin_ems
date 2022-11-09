@@ -875,8 +875,6 @@ export const postControlMovimiento = data => {
 export const patchControlMovimiento = data => {
   return async dispatch => {
     try {
-      console.log(data, 'data');
-
       progress.start();
       dispatch({ type: types.PATCH_CONTROL_MOVIMIENTO_START });
       let token = window.localStorage.getItem('token');
@@ -927,6 +925,8 @@ export const putControMovimiento = data => {
           estado: result.estado,
         },
       });
+      console.log(data, 'data');
+      console.log(result, 'result');
 
       dispatch(setToast('success', result.message));
 

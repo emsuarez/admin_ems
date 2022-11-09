@@ -1,16 +1,16 @@
-import { Box, Modal, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Box, Modal, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs from 'dayjs'
-import { useDispatch } from 'react-redux'
-import Icon from '../../assets/Icon'
-import logo from '../../assets/logo.png'
-import { getGrupoFamiliarByIdAction, setToast } from '../../store/actions'
-import { data } from 'jquery'
-import { isAllOf } from '@reduxjs/toolkit'
-import { format } from 'date-fns'
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
+import Icon from '../../assets/Icon';
+import logo from '../../assets/logo.png';
+import { getGrupoFamiliarByIdAction, setToast } from '../../store/actions';
+import { data } from 'jquery';
+import { isAllOf } from '@reduxjs/toolkit';
+import { format } from 'date-fns';
 
 const EditMovimiento = ({
   openModal,
@@ -24,183 +24,185 @@ const EditMovimiento = ({
   lugares,
   familiaresEjecutivo,
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [ejecutivo, setEjecutivo] = useState('')
-  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('')
-  const [protector, setProtector] = useState('')
-  const [vehiculoProtector, setVehiculoProtector] = useState('')
-  const [grupoFamiliar, setGrupoFamiliar] = useState('')
-  const [observacionVehiculo, setObservacionVehiculo] = useState('')
-  const [lugarSalida, setLugarSalida] = useState('')
+  const [ejecutivo, setEjecutivo] = useState('');
+  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('');
+  const [protector, setProtector] = useState('');
+  const [vehiculoProtector, setVehiculoProtector] = useState('');
+  const [grupoFamiliar, setGrupoFamiliar] = useState('');
+  const [observacionVehiculo, setObservacionVehiculo] = useState('');
+  const [lugarSalida, setLugarSalida] = useState('');
 
-  const [lugarLlegada, setLugarLlegada] = useState('')
+  const [lugarLlegada, setLugarLlegada] = useState('');
 
-  const [observacion, setObservacion] = useState('')
+  const [observacion, setObservacion] = useState('');
 
-  const [vehiculosEjecutivos, setVehiculosEjecutivos] = useState([])
-  const [familiares, setFamiliares] = useState([])
+  const [vehiculosEjecutivos, setVehiculosEjecutivos] = useState([]);
+  const [familiares, setFamiliares] = useState([]);
 
-  const [editarLugarSalida, setEditarLugarSalida] = useState(true)
-  const [editarLugarLlegada, setEditarLugarLlegada] = useState(true)
-  const [lugarSalidaTexto, setLugarSalidaTexto] = useState('')
-  const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('')
+  const [editarLugarSalida, setEditarLugarSalida] = useState(true);
+  const [editarLugarLlegada, setEditarLugarLlegada] = useState(true);
+  const [lugarSalidaTexto, setLugarSalidaTexto] = useState('');
+  const [lugarLlegadaTexto, setLugarLlegadaTexto] = useState('');
 
-  const [confirmoLlegada, setConfirmoLlegada] = useState(false)
-  const [horaSalida, setHoraSalida] = useState(dayjs(new Date()))
-  const [horaLlegada, setHoraLlegada] = useState(dayjs(new Date()))
-  const tipo = window.localStorage.getItem('tipo')
+  const [confirmoLlegada, setConfirmoLlegada] = useState(false);
+  const [horaSalida, setHoraSalida] = useState(dayjs(new Date()));
+  const [horaLlegada, setHoraLlegada] = useState(dayjs(new Date()));
+  const tipo = window.localStorage.getItem('tipo');
 
   useEffect(() => {
     if (!dataSeleccionada) {
-      return
+      return;
     }
     if (!ejecutivos) {
-      return
+      return;
     }
     if (!vehiculosEjecutivo) {
-      return
+      return;
     }
     if (!vehiculosProtector) {
-      return
+      return;
     }
     if (!familiaresEjecutivo) {
-      return
+      return;
     }
-    console.log(dataSeleccionada, 'dataSeleccionada')
+    console.log(dataSeleccionada, 'dataSeleccionada');
     const ejecutivoSeleccionado =
       ejecutivos.results &&
-      ejecutivos.results?.find(eje => eje.id === dataSeleccionada.ejecutivo)?.id
+      ejecutivos.results?.find(eje => eje.id === dataSeleccionada.ejecutivo)
+        ?.id;
     const protectorSeleccionado =
       protectores.results &&
-      protectores.results.find(pro => pro.id === dataSeleccionada.protector)?.id
+      protectores.results.find(pro => pro.id === dataSeleccionada.protector)
+        ?.id;
 
     const vehiculoProtectorSeleccionado =
       Array.isArray(vehiculosProtector.results) &&
       vehiculosProtector.results.find(
         veh => veh.id === dataSeleccionada.vehiculo_protector
-      )?.id
+      )?.id;
 
     const idEjecutivo = ejecutivos.results.find(
       eje => eje.id === dataSeleccionada.ejecutivo
-    )?.id
-    dispatch(getGrupoFamiliarByIdAction(idEjecutivo))
-    setEjecutivo(ejecutivoSeleccionado ? ejecutivoSeleccionado : null)
+    )?.id;
+    dispatch(getGrupoFamiliarByIdAction(idEjecutivo));
+    setEjecutivo(ejecutivoSeleccionado ? ejecutivoSeleccionado : null);
 
-    setProtector(protectorSeleccionado ? protectorSeleccionado : null)
+    setProtector(protectorSeleccionado ? protectorSeleccionado : null);
 
     setVehiculosEjecutivos(
       vehiculosEjecutivo.results &&
         vehiculosEjecutivo.results.filter(
           vehiculo => vehiculo.id_ejecutivo === idEjecutivo
         )
-    )
+    );
 
     const idVehiculoEjec = vehiculosEjecutivo.results.find(
       vehiculo => vehiculo.id === dataSeleccionada.vehiculo_ejecutivo
-    )?.id
+    )?.id;
 
-    setVehiculoEjecutivo(idVehiculoEjec ? idVehiculoEjec : null)
+    setVehiculoEjecutivo(idVehiculoEjec ? idVehiculoEjec : null);
     setVehiculoProtector(
       vehiculoProtectorSeleccionado ? vehiculoProtectorSeleccionado : null
-    )
+    );
 
     setFamiliares(
       familiaresEjecutivo.results &&
         familiaresEjecutivo.results.filter(
           familiar => familiar.id_ejecutivo === idEjecutivo
         )
-    )
+    );
 
     const idFamiliar =
       familiaresEjecutivo.results &&
       familiaresEjecutivo.results?.find(
         fam => fam.id === dataSeleccionada.familiar
-      )?.id
+      )?.id;
 
-    setGrupoFamiliar(idFamiliar ? idFamiliar : null)
+    setGrupoFamiliar(idFamiliar ? idFamiliar : null);
 
     const lugarSalidaId = lugares.results?.find(
       lugar => lugar.id === dataSeleccionada.lugar_salida
-    )?.id
-    console.log(lugarSalidaId, 'lugarSalidaId')
-    setLugarSalida(lugarSalidaId ? lugarSalidaId : null)
+    )?.id;
+    console.log(lugarSalidaId, 'lugarSalidaId');
+    setLugarSalida(lugarSalidaId ? lugarSalidaId : null);
 
-    setLugarSalidaTexto(dataSeleccionada.lugar_salida_texto)
+    setLugarSalidaTexto(dataSeleccionada.lugar_salida_texto);
 
     const lugarLlegadaId = dataSeleccionada.lugar_llegada
       ? lugares.results?.find(
           lugar => lugar.id === dataSeleccionada.lugar_llegada
         )?.id
-      : null
-    setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : null)
+      : null;
+    setLugarLlegada(lugarLlegadaId ? lugarLlegadaId : null);
 
-    setLugarLlegadaTexto(dataSeleccionada.lugar_llegada_texto)
+    setLugarLlegadaTexto(dataSeleccionada.lugar_llegada_texto);
 
     setObservacion(
       dataSeleccionada.observacion ? dataSeleccionada.observacion : ''
-    )
+    );
 
-    setHoraSalida(dayjs(new Date(dataSeleccionada.hora_salida)))
-    setHoraLlegada(dayjs(new Date(dataSeleccionada.hora_llegada)))
+    setHoraSalida(dayjs(new Date(dataSeleccionada.hora_salida)));
+    setHoraLlegada(dayjs(new Date(dataSeleccionada.hora_llegada)));
 
-    setEditarLugarSalida(dataSeleccionada.lugar_salida_texto ? false : true)
-    setEditarLugarLlegada(dataSeleccionada.lugar_llegada_texto ? false : true)
-  }, [dataSeleccionada])
+    setEditarLugarSalida(dataSeleccionada.lugar_salida_texto ? false : true);
+    setEditarLugarLlegada(dataSeleccionada.lugar_llegada_texto ? false : true);
+  }, [dataSeleccionada]);
 
   const seleccionaEjecutivo = e => {
-    setEjecutivo(e.target.value)
-    dispatch(getGrupoFamiliarByIdAction(e.target.value))
+    setEjecutivo(e.target.value);
+    dispatch(getGrupoFamiliarByIdAction(e.target.value));
 
     setVehiculosEjecutivos(
       vehiculosEjecutivo.results.filter(
         vehiculo => vehiculo.id_ejecutivo === Number(e.target.value)
       ) || []
-    )
+    );
 
     setFamiliares(
       familiaresEjecutivo.results.filter(
         familiar => familiar.id_ejecutivo === Number(e.target.value)
       ) || []
-    )
-  }
+    );
+  };
 
   const handleLugarSalidaComponente = lugarSalidaTF => {
-    setEditarLugarSalida(lugarSalidaTF)
+    setEditarLugarSalida(lugarSalidaTF);
 
     if (lugarSalidaTF === true) {
-      setLugarSalidaTexto('')
+      setLugarSalidaTexto('');
     }
-  }
+  };
 
   const handleLugarLlegadaComponente = lugarLlegadaTF => {
-    setEditarLugarLlegada(lugarLlegadaTF)
+    setEditarLugarLlegada(lugarLlegadaTF);
 
     if (lugarLlegadaTF === true) {
-      setLugarLlegadaTexto('')
+      setLugarLlegadaTexto('');
     }
-  }
+  };
 
   // #region Handle Editar
   const handleEditarEvento = () => {
     if (lugarSalidaTexto === '') {
       if (lugarSalida === '' || lugarSalida === null) {
-        dispatch(setToast('error', 'Debe seleccionar un lugar de salida'))
-        return
+        dispatch(setToast('error', 'Debe seleccionar un lugar de salida'));
+        return;
       }
     }
     if (lugarLlegadaTexto === '') {
       if (lugarLlegada === '' || lugarLlegada === null) {
-        dispatch(setToast('error', 'Debe seleccionar un lugar de llegada'))
+        dispatch(setToast('error', 'Debe seleccionar un lugar de llegada'));
 
-        return
+        return;
       }
     }
 
     if (Number(tipo) !== 1 && confirmoLlegada === false) {
-      console.log(tipo, 'tipo')
-      dispatch(setToast('error', 'Debe confirmar la llegada'))
-      return
+      console.log(tipo, 'tipo');
+      dispatch(setToast('error', 'Debe confirmar la llegada'));
+      return;
     }
     if (tipo === '1') {
       const eventoEditado = {
@@ -223,25 +225,25 @@ const EditMovimiento = ({
         hora_salida: format(new Date(horaSalida), 'yyyy-MM-dd HH:mm:ss'),
         hora_llegada: format(new Date(horaLlegada), 'yyyy-MM-dd HH:mm:ss'),
         observacion: observacion,
-      }
+      };
 
-      console.log(eventoEditado, 'eventoEditado')
-      handleAction(eventoEditado)
+      console.log(eventoEditado, 'eventoEditado');
+      handleAction(eventoEditado);
     } else {
       const eventoEditado = {
         ...dataSeleccionada,
-        lugar_llegada: lugarLlegada,
+        lugar_llegada: Number(lugarLlegada),
         lugar_llegada_texto: lugarLlegadaTexto !== null && lugarLlegadaTexto,
 
         hora_llegada: 'True',
 
         observacion: observacion,
-      }
+      };
 
-      console.log(eventoEditado, 'eventoEditado')
-      handleAction(eventoEditado)
+      console.log(eventoEditado, 'eventoEditado');
+      handleAction(eventoEditado);
     }
-  }
+  };
   // #endregion
 
   return (
@@ -680,7 +682,7 @@ const EditMovimiento = ({
         </Box>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default EditMovimiento
+export default EditMovimiento;
