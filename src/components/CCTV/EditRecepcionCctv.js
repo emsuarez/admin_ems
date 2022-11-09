@@ -1048,7 +1048,7 @@ const EditRecepcionCctv = () => {
                       Firma:
                     </p>
                     <p className=' h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
-                      Hora:
+                      Hora: {created?.split(' ')[1]}
                     </p>
                     <p className='h-20 w-1/2 flex flex-col justify-end p-2 border-r-2 border-gray-500'>
                       Firma:
