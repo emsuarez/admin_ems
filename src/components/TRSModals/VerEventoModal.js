@@ -1,11 +1,11 @@
-import { Box, Modal } from '@mui/material'
-import React from 'react'
+import { Box, Modal } from '@mui/material';
+import React from 'react';
 
-import { format } from 'date-fns'
-import { useRef } from 'react'
-import { useReactToPrint } from 'react-to-print'
-import logo from '../../assets/logo.png'
-import { ICONS } from '../constants'
+import { format } from 'date-fns';
+import { useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
+import logo from '../../assets/logo.png';
+import { ICONS } from '../constants';
 
 const VerEventoModal = ({
   openModal,
@@ -21,10 +21,10 @@ const VerEventoModal = ({
   lugares,
   familiaresEjecutivo,
 }) => {
-  const componentRef = useRef()
+  const componentRef = useRef();
   const handleGenerarReportePdf = useReactToPrint({
     content: () => componentRef.current,
-  })
+  });
   return (
     <>
       <Modal
@@ -42,17 +42,29 @@ const VerEventoModal = ({
           <div id='defaultModal' aria-hidden='true' className=''>
             <div className='p-4 w-[650px] '>
               <div className=' bg-white rounded-lg p-2'>
-                <button
-                  onClick={() => handleGenerarReportePdf()}
-                  className='flex w-full justify-end'
-                >
-                  <div className='flex'>
-                    <p className='text-blue-800 hover:cursor-pointer'>
-                      Exportar a PDF
-                    </p>
-                    <ICONS.ChevronDownIconO className='w-3 ml-2' color='blue' />
+                <div className='flex w-full justify-between'>
+                  <div className='flex flex-row justify-center items-center'>
+                    <label className='font-semibold text-sm pr-4'>
+                      Operador:
+                    </label>
+                    <span>{dataSeleccionada.agente}</span>
                   </div>
-                </button>
+                  <button
+                    onClick={() => handleGenerarReportePdf()}
+                    className=''
+                  >
+                    <div className='flex'>
+                      <p className='text-blue-800 hover:cursor-pointer'>
+                        Exportar a PDF
+                      </p>
+                      <ICONS.ChevronDownIconO
+                        className='w-3 ml-2'
+                        color='blue'
+                      />
+                    </div>
+                  </button>
+                </div>
+
                 <div ref={componentRef} className='grid grid-rows-7'>
                   <div className='flex flex-col justify-center items-center'>
                     <img src={logo} className='h-14' />
@@ -245,7 +257,7 @@ const VerEventoModal = ({
         </Box>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default VerEventoModal
+export default VerEventoModal;
