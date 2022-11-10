@@ -216,10 +216,10 @@ const EditMovimiento = ({
 
         vehiculo_protector: vehiculoProtector,
 
-        lugar_salida: lugarSalida,
+        lugar_salida: lugarSalida ? Number(lugarSalida) : null,
 
         lugar_salida_texto: lugarSalidaTexto !== null && lugarSalidaTexto,
-        lugar_llegada: lugarLlegada,
+        lugar_llegada: lugarLlegada ? Number(lugarLlegada) : null,
 
         lugar_llegada_texto: lugarLlegadaTexto !== null && lugarLlegadaTexto,
         hora_salida: format(new Date(horaSalida), 'yyyy-MM-dd HH:mm:ss'),
@@ -232,10 +232,10 @@ const EditMovimiento = ({
     } else {
       const eventoEditado = {
         ...dataSeleccionada,
-        lugar_llegada: Number(lugarLlegada),
+        lugar_llegada: lugarLlegada ? Number(lugarLlegada) : null,
         lugar_llegada_texto: lugarLlegadaTexto !== null && lugarLlegadaTexto,
 
-        hora_llegada: 'True',
+        hora_llegada: true,
 
         observacion: observacion,
       };
@@ -445,7 +445,9 @@ const EditMovimiento = ({
                                 onChange={e => setLugarSalida(e.target.value)}
                                 disabled={tipo !== '1'}
                               >
-                                <option value=''>Seleccione un lugar</option>
+                                <option value={null}>
+                                  Seleccione un lugar
+                                </option>
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>
@@ -552,7 +554,9 @@ const EditMovimiento = ({
                                 value={lugarLlegada}
                                 onChange={e => setLugarLlegada(e.target.value)}
                               >
-                                <option value=''>Seleccione un lugar</option>
+                                <option value={null}>
+                                  Seleccione un lugar
+                                </option>
                                 {Object.keys(lugares).length > 0
                                   ? lugares.results.map(lugar => (
                                       <option key={lugar.id} value={lugar.id}>

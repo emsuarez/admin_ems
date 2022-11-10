@@ -42,6 +42,7 @@ const EditRecepcion = () => {
     state => state.informes.actaSeleccionada
   );
   const {
+    id_agente_saliente,
     agente_saliente,
     agente_entrante,
     protectores,
@@ -58,6 +59,7 @@ const EditRecepcion = () => {
   const { consignas, novedades } = consignasNovedadesPendientesTrs || {};
 
   // #region STATE_INICIAL
+  const [editable, setEditable] = useState(true);
 
   const [openModalAgregarProtector, setOpenModalAgregarProtector] =
     useState(false);
@@ -105,12 +107,28 @@ const EditRecepcion = () => {
     useState(false);
 
   const tipo = window.localStorage.getItem('tipo');
+  const userid = window.localStorage.getItem('userid');
 
   const [personalSeleccionable, setPersonalSeleccionable] = useState([]);
   //#endregion
 
   const protectoresState = useSelector(state => state.recursos.allProtectores);
   const usuariosState = useSelector(state => state.auth.allUsers);
+
+  useEffect(() => {
+    console.log(userid, 'userid');
+    console.log(id_agente_saliente, 'id_agente_saliente');
+    console.log(Number(userid) !== Number(id_agente_saliente));
+    if (Number(userid) !== Number(id_agente_saliente)) {
+      setEditable(false);
+      dispatch(
+        setToast(
+          'error',
+          `El acta ya fue creada por otro centralista - No puede editar esta acta`
+        )
+      );
+    }
+  }, [editable]);
 
   useEffect(() => {
     const cargarDatos = () => {

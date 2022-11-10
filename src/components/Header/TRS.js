@@ -1,75 +1,75 @@
-import { Button, Menu, MenuItem } from '@mui/material'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import Icon from '../../assets/Icon'
-import { setToast } from '../../store/actions'
+import { Button, Menu, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Icon from '../../assets/Icon';
+import { setToast } from '../../store/actions';
 import {
   getInformeTrs,
   getNovedadesConsignasTrsPendientes,
   postInformeTrs,
-} from '../../store/actions/InformesAction'
-import AlertCrearInforme from '../alerts/AlertCrearInforme'
-import { ICONS } from '../constants'
+} from '../../store/actions/InformesAction';
+import AlertCrearInforme from '../alerts/AlertCrearInforme';
+import { ICONS } from '../constants';
 
 const TRS = ({ item }) => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [openModalCrearActaDiurna, setOpenModalCrearActaDiurna] =
-    useState(false)
+    useState(false);
   const [openModalCrearActaNocturna, setOpenModalCrearActaNocturna] =
-    useState(false)
+    useState(false);
 
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [subMenu, setSubMenu] = useState()
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [subMenu, setSubMenu] = useState();
 
-  const idInforme = useSelector(states => states.informes.idInformeCreado)
-  const open = Boolean(anchorEl)
-  const openSubMenu = Boolean(subMenu)
+  const idInforme = useSelector(states => states.informes.idInformeCreado);
+  const open = Boolean(anchorEl);
+  const openSubMenu = Boolean(subMenu);
 
-  const informesTrsControl = useSelector(state => state.informes.informesTrs)
-  const { results } = informesTrsControl
+  const informesTrsControl = useSelector(state => state.informes.informesTrs);
+  const { results } = informesTrsControl;
   useEffect(() => {
-    dispatch(getInformeTrs())
-  }, [])
+    dispatch(getInformeTrs());
+  }, []);
 
   const handleClick = event => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClickSubMenu = event => {
-    setSubMenu(event.currentTarget)
-  }
+    setSubMenu(event.currentTarget);
+  };
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleOpenCrearActaModal = tipo => {
     if (tipo === 1) {
-      setOpenModalCrearActaDiurna(true)
+      setOpenModalCrearActaDiurna(true);
     } else if (tipo === 0) {
-      setOpenModalCrearActaNocturna(true)
+      setOpenModalCrearActaNocturna(true);
     }
-  }
+  };
 
   const handleCloseCrearActaModal = () => {
-    setOpenModalCrearActaDiurna(false)
-    setOpenModalCrearActaNocturna(false)
-  }
+    setOpenModalCrearActaDiurna(false);
+    setOpenModalCrearActaNocturna(false);
+  };
 
   const handleNuevoInformeDiurno = () => {
-    dispatch(postInformeTrs(1))
-    setOpenModalCrearActaDiurna(false)
+    dispatch(postInformeTrs(1));
+    setOpenModalCrearActaDiurna(false);
 
-    navigate('/editrecepcion')
-  }
+    navigate('/editrecepcion');
+  };
   const handleNuevoInformeNocturno = () => {
-    dispatch(postInformeTrs(0))
-    setOpenModalCrearActaNocturna(false)
+    dispatch(postInformeTrs(0));
+    setOpenModalCrearActaNocturna(false);
 
-    navigate('/editrecepcion')
-  }
+    navigate('/editrecepcion');
+  };
   return (
     <div>
       <Button
@@ -110,7 +110,7 @@ const TRS = ({ item }) => {
                   window.location.host +
                   '/controlmovimiento'
               ) {
-                navigate('/controlmovimiento')
+                navigate('/controlmovimiento');
               }
             }}
           >
@@ -128,7 +128,7 @@ const TRS = ({ item }) => {
                 window.location.host +
                 '/historialmovimiento'
             ) {
-              navigate('/historialmovimiento')
+              navigate('/historialmovimiento');
             }
           }}
         >
@@ -184,7 +184,7 @@ const TRS = ({ item }) => {
                 window.location.host +
                 '/recepcionturno'
             ) {
-              navigate('/recepcionturno')
+              navigate('/recepcionturno');
             }
           }}
         >
@@ -214,7 +214,7 @@ const TRS = ({ item }) => {
         handleAction={handleNuevoInformeNocturno}
       />
     </div>
-  )
-}
+  );
+};
 
-export default TRS
+export default TRS;
