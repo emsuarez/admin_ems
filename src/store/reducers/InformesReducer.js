@@ -11,6 +11,7 @@ const initialState = {
   personalInformeTrs: {},
   actaSeleccionada: {},
   idInformeSeleccionado: 0,
+  usernameInformeSeleccionado: '',
   novedadesTrs: [],
 };
 
@@ -534,6 +535,7 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isLoading: false,
         idInformeSeleccionado: payload.id,
+        usernameInformeSeleccionado: payload.id_user,
       };
 
     case types.POST_INFORMETRS_FAILED:

@@ -115,20 +115,20 @@ const EditRecepcion = () => {
   const protectoresState = useSelector(state => state.recursos.allProtectores);
   const usuariosState = useSelector(state => state.auth.allUsers);
 
-  useEffect(() => {
-    console.log(userid, 'userid');
-    console.log(id_agente_saliente, 'id_agente_saliente');
-    console.log(Number(userid) !== Number(id_agente_saliente));
-    if (Number(userid) !== Number(id_agente_saliente)) {
-      setEditable(false);
-      dispatch(
-        setToast(
-          'error',
-          `El acta ya fue creada por otro centralista - No puede editar esta acta`
-        )
-      );
-    }
-  }, [editable]);
+  // useEffect(() => {
+  //   console.log(userid, 'userid');
+  //   console.log(id_agente_saliente, 'id_agente_saliente');
+  //   console.log(Number(userid) !== Number(id_agente_saliente));
+  //   if (Number(userid) !== Number(id_agente_saliente)) {
+  //     setEditable(false);
+  //     dispatch(
+  //       setToast(
+  //         'error',
+  //         `El acta ya fue creada por otro centralista - No puede editar esta acta`
+  //       )
+  //     );
+  //   }
+  // }, [editable]);
 
   useEffect(() => {
     const cargarDatos = () => {
@@ -666,7 +666,10 @@ const EditRecepcion = () => {
                     <h2 className='font-semibold text-center mx-auto text-sm'>
                       GRUPO DE PROTECCION GUARDIA
                     </h2>
-                    <button onClick={handleOpenAgregarProtector}>
+                    <button
+                      disabled={!editable}
+                      onClick={handleOpenAgregarProtector}
+                    >
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     {openModalAgregarProtector && (
@@ -695,6 +698,7 @@ const EditRecepcion = () => {
                                 <p className='font-semibold'>{protector}</p>
                                 <div className='flex flex-row '>
                                   <button
+                                    disabled={!editable}
                                     onClick={() =>
                                       handleOpenEditarProtector(protector)
                                     }
@@ -707,6 +711,7 @@ const EditRecepcion = () => {
                                     </div>
                                   </button>
                                   <button
+                                    disabled={!editable}
                                     onClick={() =>
                                       handleOpenEliminarProtector(protector)
                                     }
@@ -760,7 +765,10 @@ const EditRecepcion = () => {
                     <h2 className='font-semibold text-center mx-auto text-sm'>
                       GRUPO DE TRABAJO
                     </h2>{' '}
-                    <button onClick={handleOpenAgregarCentralista}>
+                    <button
+                      disabled={!editable}
+                      onClick={handleOpenAgregarCentralista}
+                    >
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     {openModalAgregarCentralista && (
@@ -792,6 +800,7 @@ const EditRecepcion = () => {
                                   </p>
                                   <div className='flex flex-row'>
                                     <button
+                                      disabled={!editable}
                                       onClick={() =>
                                         handleOpenEditarCentralista(centralista)
                                       }
@@ -804,6 +813,7 @@ const EditRecepcion = () => {
                                       </div>
                                     </button>
                                     <button
+                                      disabled={!editable}
                                       onClick={() =>
                                         handleOpenEliminarCentralista(
                                           centralista
@@ -860,7 +870,10 @@ const EditRecepcion = () => {
                     <h2 className='font-semibold text-center mx-auto text-sm'>
                       NOVEDADES ESPECIALES
                     </h2>
-                    <button onClick={handleOpenAgregarNovedad}>
+                    <button
+                      disabled={!editable}
+                      onClick={handleOpenAgregarNovedad}
+                    >
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     {openModalAgregarNovedad && (
@@ -948,7 +961,10 @@ const EditRecepcion = () => {
                     <h2 className='font-semibold text-center mx-auto text-sm'>
                       CONSIGNAS ESPECIALES
                     </h2>
-                    <button onClick={handleOpenAgregarConsigna}>
+                    <button
+                      disabled={!editable}
+                      onClick={handleOpenAgregarConsigna}
+                    >
                       <ICONS.PlusCircleIconS className='h-6 ml-2 hover:cursor-pointer hover:bg-gray-200 hover:rounded-md' />
                     </button>
                     {openModalAgregarConsigna && (

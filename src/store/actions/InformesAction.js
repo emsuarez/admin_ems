@@ -1041,7 +1041,7 @@ export const postInformeTrs = data => {
         payload: result2.results[0],
       });
 
-      dispatch(setToast('success', result.message));
+      // dispatch(setToast('success', result.message));
       progress.finish();
     } catch (error) {
       dispatch({ type: types.POST_INFORMETRS_FAILED, payload: true });

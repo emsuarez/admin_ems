@@ -26,7 +26,6 @@ export const UserLogin = data => async dispatch => {
     if (result.message === 'Bienvenido a Emsecor') {
       window.localStorage.clear();
       window.localStorage.setItem('token', result.userData.token);
-      window.localStorage.setItem('userid', result.userData.user_id);
       window.localStorage.setItem('tipo', result.userData.tipo);
       window.localStorage.setItem('username', result.userData.username);
 

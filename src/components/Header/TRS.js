@@ -14,6 +14,12 @@ import AlertCrearInforme from '../alerts/AlertCrearInforme';
 import { ICONS } from '../constants';
 
 const TRS = ({ item }) => {
+  const usernameLogeado = useSelector(
+    state => state.auth.user.userData.username
+  );
+  const usernameInformeSeleccionado = useSelector(
+    state => state.informes.usernameInformeSeleccionado
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -61,8 +67,16 @@ const TRS = ({ item }) => {
   const handleNuevoInformeDiurno = () => {
     dispatch(postInformeTrs(1));
     setOpenModalCrearActaDiurna(false);
-
-    navigate('/editrecepcion');
+    if (usernameLogeado === usernameInformeSeleccionado) {
+      navigate('/editrecepcion');
+    } else {
+      dispatch(
+        setToast(
+          'error',
+          `Informe creado por ${usernameInformeSeleccionado} - No puede editar este informe`
+        )
+      );
+    }
   };
   const handleNuevoInformeNocturno = () => {
     dispatch(postInformeTrs(0));

@@ -115,8 +115,10 @@ const ControlMovimiento = () => {
   const tipo = window.localStorage.getItem('tipo');
   const handleEditInformeModal = informe => {
     if (tipo === '1') {
+      console.log(tipo);
       dispatch(patchControlMovimiento(informe));
     } else {
+      console.log(tipo);
       dispatch(putControMovimiento(informe));
     }
 
