@@ -26,7 +26,7 @@ const CreateVehiculo = ({
 
   const handleEjectAndClean = () => {
     const datos = { placas, alias, tipo, propietario }
-    console.log(datos)
+
     handleAction(datos)
 
     setPlacas('')

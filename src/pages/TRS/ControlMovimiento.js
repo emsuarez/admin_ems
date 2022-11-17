@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   EditMovimiento,
   Header,
   HistorialMovimientoTable,
   ICONS,
   RedirectWithoutLogin,
-} from '../../components';
+} from '../../components'
 
 import {
   deleteControlMovimientoAction,
@@ -25,120 +25,116 @@ import {
   patchControlMovimiento,
   postControlMovimiento,
   putControMovimiento,
-} from '../../store/actions';
+} from '../../store/actions'
 
 // import dayjs from 'dayjs'
-import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico';
-import FormCrearEvento from '../../components/TRSModals/FormCrearEvento';
-import VerEventoModal from '../../components/TRSModals/VerEventoModal';
-import Icon from '../../assets/Icon';
-import controlMovimientoReportPDF from '../../reports/TRS/controlMovimientoReportPDF';
+import EliminarModalGenerico from '../../components/TRSModals/EliminarModalGenerico'
+import FormCrearEvento from '../../components/TRSModals/FormCrearEvento'
+import VerEventoModal from '../../components/TRSModals/VerEventoModal'
+import Icon from '../../assets/Icon'
+import controlMovimientoReportPDF from '../../reports/TRS/controlMovimientoReportPDF'
 const ControlMovimiento = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [openViewModal, setOpenViewModal] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openViewModal, setOpenViewModal] = useState(false)
+  const [openEditModal, setOpenEditModal] = useState(false)
 
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [itemVisualizar, setItemVisualizar] = useState({});
-  const [itemEditar, setItemEditar] = useState({});
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [itemVisualizar, setItemVisualizar] = useState({})
+  const [itemEditar, setItemEditar] = useState({})
 
-  const [itemEliminar, setItemEliminar] = useState('');
+  const [itemEliminar, setItemEliminar] = useState('')
 
-  const historiales = useSelector(state => state.informes.historialMovimientos);
+  const historiales = useSelector(state => state.informes.historialMovimientos)
   const allHistoriales = useSelector(
     state => state.informes.allHistorialMovimientos
-  );
+  )
 
-  const allEjecutivos = useSelector(state => state.recursos.allEjecutivos);
+  const allEjecutivos = useSelector(state => state.recursos.allEjecutivos)
 
   const allVehiculosEjecutivos = useSelector(
     state => state.recursos.allVehiculosEjecutivos
-  );
+  )
 
-  const allProtectores = useSelector(state => state.recursos.allProtectores);
+  const allProtectores = useSelector(state => state.recursos.allProtectores)
 
   const allVehiculosProtectores = useSelector(
     state => state.recursos.allVehiculosProtectores
-  );
-  const allLugares = useSelector(state => state.recursos.allLugares);
+  )
+  const allLugares = useSelector(state => state.recursos.allLugares)
   const familiaresEjecutivo = useSelector(
     state => state.recursos.grupoFamiliarByEjecutivo
-  );
+  )
   const allFamiliaresEjecutivo = useSelector(
     state => state.recursos.allFamiliares
-  );
+  )
 
   useEffect(() => {
     // const obtenerInfoVista = () => {
-    dispatch(getAllEjecutivosAction());
-    dispatch(getVehiculoEjecutivoAction('/vehiculoejecutivo/?id=-1'));
-    dispatch(getAllProtectoresAction());
-    dispatch(getAllVehiculosEjecutivoAction());
-    dispatch(getAllVehiculoProtectorAction());
-    dispatch(GetAllLugaresAction());
-    dispatch(getHistorialMovimientosAction());
-    dispatch(getAllHistorialMovimientosAction());
-    dispatch(getGrupoFamiliarByIdAction());
-    dispatch(getAllFamiliaresAction());
+    dispatch(getAllEjecutivosAction())
+    dispatch(getVehiculoEjecutivoAction('/vehiculoejecutivo/?id=-1'))
+    dispatch(getAllProtectoresAction())
+    dispatch(getAllVehiculosEjecutivoAction())
+    dispatch(getAllVehiculoProtectorAction())
+    dispatch(GetAllLugaresAction())
+    dispatch(getHistorialMovimientosAction())
+    dispatch(getAllHistorialMovimientosAction())
+    dispatch(getGrupoFamiliarByIdAction())
+    dispatch(getAllFamiliaresAction())
     // }
     // obtenerInfoVista()
-  }, [dispatch]);
+  }, [dispatch])
 
   const handleSearch = e => {
-    dispatch(getInformeTrs('/controlmovimiento/?query=' + e.target.value));
-  };
+    dispatch(getInformeTrs('/controlmovimiento/?query=' + e.target.value))
+  }
 
   const handleOpenViewInforme = informe => {
-    setOpenViewModal(true);
-    setItemVisualizar(informe);
-  };
+    setOpenViewModal(true)
+    setItemVisualizar(informe)
+  }
 
   const handleCloseViewModal = () => {
-    setOpenViewModal(false);
-  };
+    setOpenViewModal(false)
+  }
 
   const handleOpenEditInforme = informe => {
-    setItemEditar(informe);
-    setOpenEditModal(true);
-  };
+    setItemEditar(informe)
+    setOpenEditModal(true)
+  }
 
   const handleCloseEditModal = () => {
-    setOpenEditModal(false);
-  };
+    setOpenEditModal(false)
+  }
 
   const handleCrearEvento = infoEvento => {
-    console.log(infoEvento);
-    dispatch(postControlMovimiento(infoEvento));
-  };
+    dispatch(postControlMovimiento(infoEvento))
+  }
 
-  const tipo = window.localStorage.getItem('tipo');
+  const tipo = window.localStorage.getItem('tipo')
   const handleEditInformeModal = informe => {
     if (tipo === '1') {
-      console.log(tipo);
-      dispatch(patchControlMovimiento(informe));
+      dispatch(patchControlMovimiento(informe))
     } else {
-      console.log(tipo);
-      dispatch(putControMovimiento(informe));
+      dispatch(putControMovimiento(informe))
     }
 
-    setOpenEditModal(false);
-  };
+    setOpenEditModal(false)
+  }
 
   const handleOpenDeleteEvento = itemEliminar => {
-    setOpenDeleteModal(true);
-    setItemEliminar(itemEliminar);
-  };
+    setOpenDeleteModal(true)
+    setItemEliminar(itemEliminar)
+  }
 
   const handleCloseDeleteModal = () => {
-    setOpenDeleteModal(false);
-  };
+    setOpenDeleteModal(false)
+  }
 
   const handleDeleteEvento = movimiento => {
-    console.log(movimiento, 'movimiento');
-    dispatch(deleteControlMovimientoAction({ id: movimiento.id }));
-    setOpenDeleteModal(false);
-  };
+    dispatch(deleteControlMovimientoAction({ id: movimiento.id }))
+    setOpenDeleteModal(false)
+  }
 
   const handleExportarPDF = () => {
     const historialMovimientos = allHistoriales.results?.map(historial => ({
@@ -161,10 +157,10 @@ const ControlMovimiento = () => {
       protector: allProtectores.results?.find(
         protector => protector.id === historial.protector
       )?.nombres,
-    }));
+    }))
 
-    controlMovimientoReportPDF(historialMovimientos);
-  };
+    controlMovimientoReportPDF(historialMovimientos)
+  }
   return (
     <>
       <div>
@@ -237,7 +233,7 @@ const ControlMovimiento = () => {
                   placeholder='Buscar'
                   className='border-[1px] outline-none pl-3 rounded-2xl bg-gray-50 py-1'
                   onChange={e => {
-                    handleSearch(e);
+                    handleSearch(e)
                   }}
                 />
               </div>
@@ -295,7 +291,7 @@ const ControlMovimiento = () => {
         />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ControlMovimiento;
+export default ControlMovimiento

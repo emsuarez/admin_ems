@@ -1,11 +1,11 @@
-import { format } from 'date-fns';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useReactToPrint } from 'react-to-print';
-import Icon from '../../assets/Icon';
-import logo from '../../assets/logo.png';
-import { Header, ICONS, RedirectWithoutLogin } from '../../components';
+import { format } from 'date-fns'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useReactToPrint } from 'react-to-print'
+import Icon from '../../assets/Icon'
+import logo from '../../assets/logo.png'
+import { Header, ICONS, RedirectWithoutLogin } from '../../components'
 import {
   cerrarConsignaTRSAction,
   cerrarInformeTrs,
@@ -24,23 +24,21 @@ import {
   setToast,
   updateConsignaTRSAction,
   updateNovedadTRSAction,
-} from '../../store/actions';
-import AlertOperadorCierre from '../alerts/AlertOperadorCierre';
-import ConsignasNovedades from '../Informes/ConsignasNovedades';
-import CrearEditarModalGenerico from './CrearEditarModalGenerico';
-import EliminarModalGenerico from './EliminarModalGenerico';
+} from '../../store/actions'
+import AlertOperadorCierre from '../alerts/AlertOperadorCierre'
+import ConsignasNovedades from '../Informes/ConsignasNovedades'
+import CrearEditarModalGenerico from './CrearEditarModalGenerico'
+import EliminarModalGenerico from './EliminarModalGenerico'
 
 const EditRecepcion = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const ultimaActaCreada = useSelector(
     state => state.informes.informesTrs.results[0]
-  );
+  )
 
-  const actaSeleccionada = useSelector(
-    state => state.informes.actaSeleccionada
-  );
+  const actaSeleccionada = useSelector(state => state.informes.actaSeleccionada)
   const {
     id_agente_saliente,
     agente_saliente,
@@ -51,74 +49,71 @@ const EditRecepcion = () => {
     turno,
     trsnovedad,
     created,
-  } = actaSeleccionada || {};
+  } = actaSeleccionada || {}
 
   const consignasNovedadesPendientesTrs = useSelector(
     state => state.informes.consignasNovedadesPendientes
-  );
-  const { consignas, novedades } = consignasNovedadesPendientesTrs || {};
+  )
+  const { consignas, novedades } = consignasNovedadesPendientesTrs || {}
 
   // #region STATE_INICIAL
-  const [editable, setEditable] = useState(true);
+  const [editable, setEditable] = useState(true)
 
   const [openModalAgregarProtector, setOpenModalAgregarProtector] =
-    useState(false);
+    useState(false)
   const [openModalEditarProtector, setOpenModalEditarProtector] =
-    useState(false);
+    useState(false)
   const [openModalEliminarProtector, setOpenModalEliminarProtector] =
-    useState(false);
+    useState(false)
 
   const [openModalAgregarCentralista, setOpenModalAgregarCentralista] =
-    useState(false);
+    useState(false)
   const [openModalEditarCentralista, setOpenModalEditarCentralista] =
-    useState(false);
+    useState(false)
   const [openModalEliminarCentralista, setOpenModalEliminarCentralista] =
-    useState(false);
+    useState(false)
 
-  const [openModalAgregarNovedad, setOpenModalAgregarNovedad] = useState(false);
-  const [openModalEditarNovedad, setOpenModalEditarNovedad] = useState(false);
+  const [openModalAgregarNovedad, setOpenModalAgregarNovedad] = useState(false)
+  const [openModalEditarNovedad, setOpenModalEditarNovedad] = useState(false)
   const [openModalEditarNovedadCerrada, setOpenModalEditarNovedadCerrada] =
-    useState(false);
+    useState(false)
   const [openModalEliminarNovedad, setOpenModalEliminarNovedad] =
-    useState(false);
+    useState(false)
 
   const [openModalAgregarConsigna, setOpenModalAgregarConsigna] =
-    useState(false);
-  const [openModalEditarConsigna, setOpenModalEditarConsigna] = useState(false);
+    useState(false)
+  const [openModalEditarConsigna, setOpenModalEditarConsigna] = useState(false)
   const [openModalEditarConsignaCerrada, setOpenModalEditarConsignaCerrada] =
-    useState(false);
+    useState(false)
   const [openModalEliminarConsigna, setOpenModalEliminarConsigna] =
-    useState(false);
+    useState(false)
 
-  const [openModalCerrarNovedad, setOpenModalCerrarNovedad] = useState(false);
-  const [openModalCerrarConsigna, setOpenModalCerrarConsigna] = useState(false);
+  const [openModalCerrarNovedad, setOpenModalCerrarNovedad] = useState(false)
+  const [openModalCerrarConsigna, setOpenModalCerrarConsigna] = useState(false)
 
-  const [protectorSeleccionado, setProtectorSeleccionado] = useState();
-  const [centralistaSeleccionado, setCentralistaSeleccionado] = useState();
+  const [protectorSeleccionado, setProtectorSeleccionado] = useState()
+  const [centralistaSeleccionado, setCentralistaSeleccionado] = useState()
 
-  const [novedadSeleccionada, setNovedadSeleccionada] = useState();
+  const [novedadSeleccionada, setNovedadSeleccionada] = useState()
   const [observacionNovedadSeleccionada, setObservacionNovedadSeleccionada] =
-    useState();
-  const [consignaSeleccionada, setConsignaSeleccionada] = useState();
+    useState()
+  const [consignaSeleccionada, setConsignaSeleccionada] = useState()
   const [observacionConsignaSeleccionada, setObservacionConsignaSeleccionada] =
-    useState();
+    useState()
 
   const [openModalAgregarOperadorCierre, setOpenModalAgregarOperadorCierre] =
-    useState(false);
+    useState(false)
 
-  const tipo = window.localStorage.getItem('tipo');
-  const userid = window.localStorage.getItem('userid');
+  const tipo = window.localStorage.getItem('tipo')
+  const userid = window.localStorage.getItem('userid')
 
-  const [personalSeleccionable, setPersonalSeleccionable] = useState([]);
+  const [personalSeleccionable, setPersonalSeleccionable] = useState([])
   //#endregion
 
-  const protectoresState = useSelector(state => state.recursos.allProtectores);
-  const usuariosState = useSelector(state => state.auth.allUsers);
+  const protectoresState = useSelector(state => state.recursos.allProtectores)
+  const usuariosState = useSelector(state => state.auth.allUsers)
 
   // useEffect(() => {
-  //   console.log(userid, 'userid');
-  //   console.log(id_agente_saliente, 'id_agente_saliente');
-  //   console.log(Number(userid) !== Number(id_agente_saliente));
   //   if (Number(userid) !== Number(id_agente_saliente)) {
   //     setEditable(false);
   //     dispatch(
@@ -132,13 +127,13 @@ const EditRecepcion = () => {
 
   useEffect(() => {
     const cargarDatos = () => {
-      dispatch(getNovedadesConsignasTrsPendientes());
-      dispatch(getAllProtectoresAction());
-      dispatch(getAllUsersReportAction());
-      dispatch(getInformeTrs());
-    };
-    cargarDatos();
-  }, []);
+      dispatch(getNovedadesConsignasTrsPendientes())
+      dispatch(getAllProtectoresAction())
+      dispatch(getAllUsersReportAction())
+      dispatch(getInformeTrs())
+    }
+    cargarDatos()
+  }, [])
 
   useEffect(() => {
     if (protectoresState && usuariosState) {
@@ -146,40 +141,40 @@ const EditRecepcion = () => {
         return {
           id: persona.id + new Date().getTime(),
           nombres: persona.nombres,
-        };
-      });
+        }
+      })
       const nuevoUsuarios = usuariosState.results?.map(usuario => {
         return {
           id: usuario.user_id + new Date().getTime(),
           nombres: `${usuario.first_name} ${usuario.last_name}`,
-        };
-      });
+        }
+      })
 
       const personalCompleto = nuevoProtectores &&
-        nuevoUsuarios && [...nuevoProtectores, ...nuevoUsuarios];
+        nuevoUsuarios && [...nuevoProtectores, ...nuevoUsuarios]
 
-      setPersonalSeleccionable(personalCompleto);
+      setPersonalSeleccionable(personalCompleto)
     }
-  }, [protectoresState, usuariosState]);
+  }, [protectoresState, usuariosState])
 
   // #region CRUD_PROTECTORES
   const handleOpenAgregarProtector = () => {
-    setOpenModalAgregarProtector(true);
-  };
+    setOpenModalAgregarProtector(true)
+  }
 
   const handleCloseAgregarProtector = () => {
-    setOpenModalAgregarProtector(false);
-  };
+    setOpenModalAgregarProtector(false)
+  }
 
   const handleAgregarProtector = protector => {
-    setOpenModalAgregarProtector(false);
+    setOpenModalAgregarProtector(false)
     const prevProtectores =
       protectores?.split(',')?.map(protector => {
-        return protector.trim();
-      }) || [];
+        return protector.trim()
+      }) || []
     if (prevProtectores.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'));
-      return;
+      dispatch(setToast('error', 'Alcanzo el limite maximo protectores'))
+      return
     }
 
     const newProtector = {
@@ -189,22 +184,22 @@ const EditRecepcion = () => {
         : protector,
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
-    };
+    }
 
-    dispatch(crudPersonalActaAction(newProtector));
-  };
+    dispatch(crudPersonalActaAction(newProtector))
+  }
 
   const handleOpenEditarProtector = protector => {
-    setOpenModalEditarProtector(true);
-    setProtectorSeleccionado(protector);
-  };
+    setOpenModalEditarProtector(true)
+    setProtectorSeleccionado(protector)
+  }
 
   const handleCloseEditarProtector = () => {
-    setOpenModalEditarProtector(false);
-  };
+    setOpenModalEditarProtector(false)
+  }
 
   const handleEditarProtector = protector => {
-    setOpenModalEditarProtector(false);
+    setOpenModalEditarProtector(false)
     const protectorEditado = {
       id: actaSeleccionada.id,
       protectores: String(
@@ -214,22 +209,22 @@ const EditRecepcion = () => {
       ),
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
-    };
+    }
 
-    dispatch(crudPersonalActaAction(protectorEditado));
-  };
+    dispatch(crudPersonalActaAction(protectorEditado))
+  }
 
   const handleOpenEliminarProtector = protector => {
-    setOpenModalEliminarProtector(true);
-    setProtectorSeleccionado(protector);
-  };
+    setOpenModalEliminarProtector(true)
+    setProtectorSeleccionado(protector)
+  }
 
   const handleCloseEliminarProtector = () => {
-    setOpenModalEliminarProtector(false);
-  };
+    setOpenModalEliminarProtector(false)
+  }
 
   const handleEliminarProtector = () => {
-    setOpenModalEliminarProtector(false);
+    setOpenModalEliminarProtector(false)
     const protectorEliminado = {
       id: actaSeleccionada.id,
       protectores: String(
@@ -237,30 +232,30 @@ const EditRecepcion = () => {
       ),
       centralistas: actaSeleccionada.centralistas,
       observacion: actaSeleccionada.observacion,
-    };
+    }
 
-    dispatch(crudPersonalActaAction(protectorEliminado));
-  };
+    dispatch(crudPersonalActaAction(protectorEliminado))
+  }
   //#endregion
 
   // #region CRUD_CENTRALISTAS
   const handleOpenAgregarCentralista = () => {
-    setOpenModalAgregarCentralista(true);
-  };
+    setOpenModalAgregarCentralista(true)
+  }
 
   const handleCloseAgregarCentralista = () => {
-    setOpenModalAgregarCentralista(false);
-  };
+    setOpenModalAgregarCentralista(false)
+  }
 
   const handleAgregarCentralista = centralista => {
-    setOpenModalAgregarCentralista(false);
+    setOpenModalAgregarCentralista(false)
     const prevCentralistas =
       centralistas?.split(',')?.map(cent => {
-        return cent.trim();
-      }) || [];
+        return cent.trim()
+      }) || []
     if (prevCentralistas.length > 4) {
-      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'));
-      return;
+      dispatch(setToast('error', 'Alcanzo el limite maximo centralistas'))
+      return
     }
 
     const newCentralista = {
@@ -270,22 +265,22 @@ const EditRecepcion = () => {
         ? String([...prevCentralistas, centralista])
         : centralista,
       observacion: actaSeleccionada.observacion,
-    };
+    }
 
-    dispatch(crudPersonalActaAction(newCentralista));
-  };
+    dispatch(crudPersonalActaAction(newCentralista))
+  }
 
   const handleOpenEditarCentralista = centralista => {
-    setOpenModalEditarCentralista(true);
-    setCentralistaSeleccionado(centralista);
-  };
+    setOpenModalEditarCentralista(true)
+    setCentralistaSeleccionado(centralista)
+  }
 
   const handleCloseEditarCentralista = () => {
-    setOpenModalEditarCentralista(false);
-  };
+    setOpenModalEditarCentralista(false)
+  }
 
   const handleEditarCentralista = centralista => {
-    setOpenModalEditarCentralista(false);
+    setOpenModalEditarCentralista(false)
     const centralistaEditado = {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
@@ -295,22 +290,22 @@ const EditRecepcion = () => {
           ?.map(c => (c === centralistaSeleccionado ? centralista : c))
       ),
       observacion: actaSeleccionada.observacion,
-    };
+    }
 
-    dispatch(crudPersonalActaAction(centralistaEditado));
-  };
+    dispatch(crudPersonalActaAction(centralistaEditado))
+  }
 
   const handleOpenEliminarCentralista = centralista => {
-    setOpenModalEliminarCentralista(true);
-    setCentralistaSeleccionado(centralista);
-  };
+    setOpenModalEliminarCentralista(true)
+    setCentralistaSeleccionado(centralista)
+  }
 
   const handleCloseEliminarCentralista = () => {
-    setOpenModalEliminarCentralista(false);
-  };
+    setOpenModalEliminarCentralista(false)
+  }
 
   const handleEliminarCentralista = () => {
-    setOpenModalEliminarCentralista(false);
+    setOpenModalEliminarCentralista(false)
     const centralistaEliminado = {
       id: actaSeleccionada.id,
       protectores: actaSeleccionada.protectores,
@@ -318,10 +313,10 @@ const EditRecepcion = () => {
         centralistas?.split(',')?.filter(c => c !== centralistaSeleccionado)
       ),
       observacion: actaSeleccionada.observacion,
-    };
+    }
 
-    dispatch(crudPersonalActaAction(centralistaEliminado));
-  };
+    dispatch(crudPersonalActaAction(centralistaEliminado))
+  }
   //#endregion
 
   // #region CRUD_NOVEDADES
@@ -329,18 +324,18 @@ const EditRecepcion = () => {
     if (trsnovedad.length > 13) {
       dispatch(
         setToast('Error', 'Se ha alcanzado el límite máximo de novedades')
-      );
-      return;
+      )
+      return
     }
-    setOpenModalAgregarNovedad(true);
-  };
+    setOpenModalAgregarNovedad(true)
+  }
 
   const handleCloseAgregarNovedad = () => {
-    setOpenModalAgregarNovedad(false);
-  };
+    setOpenModalAgregarNovedad(false)
+  }
 
   const handleAgregarNovedad = novedad => {
-    setOpenModalAgregarNovedad(false);
+    setOpenModalAgregarNovedad(false)
     const newNovedad = {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
@@ -348,88 +343,88 @@ const EditRecepcion = () => {
       fecha_obs_cierre: null,
       estado: 1,
       created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    };
+    }
 
-    dispatch(createNovedadTRSAction(newNovedad));
-  };
+    dispatch(createNovedadTRSAction(newNovedad))
+  }
 
   const handleOpenEditarNovedad = novedad => {
-    setOpenModalEditarNovedad(true);
-    setNovedadSeleccionada(novedad);
-    setObservacionNovedadSeleccionada(novedad.obs_creacion);
-  };
+    setOpenModalEditarNovedad(true)
+    setNovedadSeleccionada(novedad)
+    setObservacionNovedadSeleccionada(novedad.obs_creacion)
+  }
 
   const handleCloseEditarNovedad = () => {
-    setOpenModalEditarNovedad(false);
-  };
+    setOpenModalEditarNovedad(false)
+  }
 
   const handleEditarNovedad = novedad => {
-    setOpenModalEditarNovedad(false);
+    setOpenModalEditarNovedad(false)
     const novedadEditada = {
       ...novedadSeleccionada,
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: novedad,
-    };
+    }
 
-    dispatch(updateNovedadTRSAction(novedadEditada));
-  };
+    dispatch(updateNovedadTRSAction(novedadEditada))
+  }
 
   const handleOpenEliminarNovedad = novedad => {
-    setOpenModalEliminarNovedad(true);
-    setNovedadSeleccionada(novedad);
-  };
+    setOpenModalEliminarNovedad(true)
+    setNovedadSeleccionada(novedad)
+  }
 
   const handleCloseEliminarNovedad = () => {
-    setOpenModalEliminarNovedad(false);
-  };
+    setOpenModalEliminarNovedad(false)
+  }
 
   const handleEliminarNovedad = () => {
-    setOpenModalEliminarNovedad(false);
-    dispatch(deleteNovedadTRSAction({ id: novedadSeleccionada.id }));
-  };
+    setOpenModalEliminarNovedad(false)
+    dispatch(deleteNovedadTRSAction({ id: novedadSeleccionada.id }))
+  }
 
   const handleOpenEditarNovedadCerrada = novedad => {
-    setOpenModalEditarNovedadCerrada(true);
-    setNovedadSeleccionada(novedad);
-    setObservacionNovedadSeleccionada(novedad.obs_cierre);
-  };
+    setOpenModalEditarNovedadCerrada(true)
+    setNovedadSeleccionada(novedad)
+    setObservacionNovedadSeleccionada(novedad.obs_cierre)
+  }
 
   const handleCloseEditarNovedadCerrada = () => {
-    setOpenModalEditarNovedadCerrada(false);
-  };
+    setOpenModalEditarNovedadCerrada(false)
+  }
 
   const handleEditarNovedadCerrada = novedad => {
-    setOpenModalEditarNovedadCerrada(false);
+    setOpenModalEditarNovedadCerrada(false)
     const novedadEditada = {
       ...novedadSeleccionada,
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: novedad,
-    };
+    }
 
-    dispatch(updateNovedadTRSAction(novedadEditada));
-  };
+    dispatch(updateNovedadTRSAction(novedadEditada))
+  }
 
   const handleOpenCerrarNovedad = novedad => {
-    setOpenModalCerrarNovedad(true);
-    setNovedadSeleccionada(novedad);
-  };
+    setOpenModalCerrarNovedad(true)
+    setNovedadSeleccionada(novedad)
+  }
 
   const handleCloseCerrarNovedad = () => {
-    setOpenModalCerrarNovedad(false);
-  };
+    setOpenModalCerrarNovedad(false)
+  }
 
   const handleCerrarNovedad = novedad => {
-    setOpenModalCerrarNovedad(false);
+    setOpenModalCerrarNovedad(false)
     const novedadCerrada = {
       ...novedadSeleccionada,
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: novedad,
       estado: 0,
       fecha_obs_cierre: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    };
+    }
 
-    dispatch(cerrarNovedadTRSAction(novedadCerrada));
-  };
+    dispatch(cerrarNovedadTRSAction(novedadCerrada))
+  }
   //#endregion
 
   // #region CRUD_CONSIGNAS
@@ -437,18 +432,18 @@ const EditRecepcion = () => {
     if (trsconsigna.length > 13) {
       dispatch(
         setToast('Error', 'Se ha alcanzado el límite máximo de consignas')
-      );
-      return;
+      )
+      return
     }
-    setOpenModalAgregarConsigna(true);
-  };
+    setOpenModalAgregarConsigna(true)
+  }
 
   const handleCloseAgregarConsigna = () => {
-    setOpenModalAgregarConsigna(false);
-  };
+    setOpenModalAgregarConsigna(false)
+  }
 
   const handleAgregarConsigna = consigna => {
-    setOpenModalAgregarConsigna(false);
+    setOpenModalAgregarConsigna(false)
     const newConsigna = {
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: consigna,
@@ -456,150 +451,150 @@ const EditRecepcion = () => {
       fecha_obs_cierre: null,
       estado: 1,
       created: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    };
+    }
 
-    dispatch(createConsignaTRSAction(newConsigna));
-  };
+    dispatch(createConsignaTRSAction(newConsigna))
+  }
 
   const handleOpenEditarConsigna = consigna => {
-    setOpenModalEditarConsigna(true);
-    setConsignaSeleccionada(consigna);
-    setObservacionConsignaSeleccionada(consigna.obs_creacion);
-  };
+    setOpenModalEditarConsigna(true)
+    setConsignaSeleccionada(consigna)
+    setObservacionConsignaSeleccionada(consigna.obs_creacion)
+  }
 
   const handleCloseEditarConsigna = () => {
-    setOpenModalEditarConsigna(false);
-  };
+    setOpenModalEditarConsigna(false)
+  }
 
   const handleEditarConsigna = consigna => {
-    setOpenModalEditarConsigna(false);
+    setOpenModalEditarConsigna(false)
 
     const consignaEditada = {
       ...consignaSeleccionada,
       informe_trs_id: actaSeleccionada.id,
       obs_creacion: consigna,
-    };
+    }
 
-    dispatch(updateConsignaTRSAction(consignaEditada));
-  };
+    dispatch(updateConsignaTRSAction(consignaEditada))
+  }
 
   const handleOpenEliminarConsigna = consigna => {
-    setOpenModalEliminarConsigna(true);
-    setConsignaSeleccionada(consigna);
-  };
+    setOpenModalEliminarConsigna(true)
+    setConsignaSeleccionada(consigna)
+  }
 
   const handleCloseEliminarConsigna = () => {
-    setOpenModalEliminarConsigna(false);
-  };
+    setOpenModalEliminarConsigna(false)
+  }
 
   const handleEliminarConsigna = () => {
-    setOpenModalEliminarConsigna(false);
-    dispatch(deleteConsignaTRSAction({ id: consignaSeleccionada.id }));
-  };
+    setOpenModalEliminarConsigna(false)
+    dispatch(deleteConsignaTRSAction({ id: consignaSeleccionada.id }))
+  }
 
   const handleOpenEditarConsignaCerrada = consigna => {
-    setOpenModalEditarConsignaCerrada(true);
-    setConsignaSeleccionada(consigna);
-    setObservacionConsignaSeleccionada(consigna.obs_cierre);
-  };
+    setOpenModalEditarConsignaCerrada(true)
+    setConsignaSeleccionada(consigna)
+    setObservacionConsignaSeleccionada(consigna.obs_cierre)
+  }
 
   const handleCloseEditarConsignaCerrada = () => {
-    setOpenModalEditarConsignaCerrada(false);
-  };
+    setOpenModalEditarConsignaCerrada(false)
+  }
 
   const handleEditarConsignaCerrada = consigna => {
-    setOpenModalEditarConsignaCerrada(false);
+    setOpenModalEditarConsignaCerrada(false)
     const consignaEditada = {
       ...consignaSeleccionada,
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: consigna,
-    };
+    }
 
-    dispatch(updateConsignaTRSAction(consignaEditada));
-  };
+    dispatch(updateConsignaTRSAction(consignaEditada))
+  }
 
   const handleOpenCerrarConsigna = consigna => {
-    setOpenModalCerrarConsigna(true);
-    setConsignaSeleccionada(consigna);
-  };
+    setOpenModalCerrarConsigna(true)
+    setConsignaSeleccionada(consigna)
+  }
 
   const handleCloseCerrarConsigna = () => {
-    setOpenModalCerrarConsigna(false);
-  };
+    setOpenModalCerrarConsigna(false)
+  }
 
   const handleCerrarConsigna = consigna => {
-    setOpenModalCerrarConsigna(false);
+    setOpenModalCerrarConsigna(false)
     const consignaCerrada = {
       ...consignaSeleccionada,
       informe_trs_id: actaSeleccionada.id,
       obs_cierre: consigna,
       estado: 0,
       fecha_obs_cierre: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-    };
+    }
 
-    dispatch(cerrarConsignaTRSAction(consignaCerrada));
-  };
+    dispatch(cerrarConsignaTRSAction(consignaCerrada))
+  }
 
   // #endregion
 
   // #region FUNCIONES_ADICIONALES
   const handleSalir = () => {
-    navigate(-1);
-  };
-  const listaInformesTrs = useSelector(state => state.informes.informesTrs);
+    navigate(-1)
+  }
+  const listaInformesTrs = useSelector(state => state.informes.informesTrs)
   const handleInformeAnterior = () => {
     if (
       actaSeleccionada.id !==
       listaInformesTrs.results[listaInformesTrs.results.length - 1].id
     ) {
-      dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 0));
+      dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 0))
     } else {
-      dispatch(getInformeTrsById(listaInformesTrs.results[0].id));
+      dispatch(getInformeTrsById(listaInformesTrs.results[0].id))
     }
-  };
+  }
 
   const handleSiguienteInforme = () => {
     if (actaSeleccionada.id !== listaInformesTrs.results[0].id) {
-      dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 1));
+      dispatch(getInformeTrsNavegacion(actaSeleccionada.id, 1))
     } else {
       dispatch(
         getInformeTrsById(
           listaInformesTrs.results[listaInformesTrs.results.length - 1].id
         )
-      );
+      )
     }
-  };
+  }
 
-  const componentRef = useRef();
+  const componentRef = useRef()
   const handleGenerarInformePdf = useReactToPrint({
     content: () => componentRef.current,
-  });
+  })
 
   const handleOpenModalAgregarOperadorCierre = () => {
-    setOpenModalAgregarOperadorCierre(true);
-  };
+    setOpenModalAgregarOperadorCierre(true)
+  }
 
   const handleCloseAgregarOperadorCierre = () => {
-    setOpenModalAgregarOperadorCierre(false);
-  };
+    setOpenModalAgregarOperadorCierre(false)
+  }
 
   const handleAgregarOperadorCierre = operador => {
-    setOpenModalAgregarOperadorCierre(false);
+    setOpenModalAgregarOperadorCierre(false)
     const operadorCierre = {
       id: actaSeleccionada.id,
       username: operador.username,
       nombre_entrante: `${operador.first_name} ${operador.last_name}`,
-    };
+    }
 
-    dispatch(cerrarInformeTrs(operadorCierre));
-  };
+    dispatch(cerrarInformeTrs(operadorCierre))
+  }
 
   const validarFecha = fecha => {
-    const fechaActual = new Date().setHours(0, 0, 0, 0);
-    const fechaValidar = new Date(fecha).setHours(0, 0, 0, 0);
+    const fechaActual = new Date().setHours(0, 0, 0, 0)
+    const fechaValidar = new Date(fecha).setHours(0, 0, 0, 0)
 
-    return fechaActual === fechaValidar;
-  };
+    return fechaActual === fechaValidar
+  }
   // #endregion
   return (
     <>
@@ -1123,7 +1118,7 @@ const EditRecepcion = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default EditRecepcion;
+export default EditRecepcion

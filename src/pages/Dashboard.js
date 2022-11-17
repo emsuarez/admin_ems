@@ -52,13 +52,11 @@ const Dashboard = () => {
 
   const handleTimeGraficaCctv = consigna => {
     // setIdConsigna(consigna)
-    console.log(consigna, 'consigna')
     dispatch(obtenerConsignasGrafica(consigna, 'cctv'))
   }
 
   const handleTimeGraficaTrs = consigna => {
     // setIdConsigna(consigna)
-    console.log(consigna, 'consigna')
     dispatch(obtenerConsignasGrafica(consigna, 'trs'))
   }
 

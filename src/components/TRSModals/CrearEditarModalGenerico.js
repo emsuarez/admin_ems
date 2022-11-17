@@ -15,7 +15,6 @@ const CrearEditarModalGenerico = ({
   const [nuevoValor, setNuevoValor] = useState('')
 
   useEffect(() => {
-    console.log(itemSeleccionado, 'itemSeleccionado')
     setNuevoValor(itemSeleccionado)
   }, [itemSeleccionado])
 

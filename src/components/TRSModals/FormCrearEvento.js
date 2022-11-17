@@ -19,16 +19,16 @@ const FormCrearEvento = ({
   familiaresEjecutivo,
 }) => {
   const dispatch = useDispatch()
-  const [ejecutivo, setEjecutivo] = useState('0')
-  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('0')
-  const [protector, setProtector] = useState('0')
-  const [vehiculoProtector, setVehiculoProtector] = useState('0')
-  const [grupoFamiliar, setGrupoFamiliar] = useState('0')
+  const [ejecutivo, setEjecutivo] = useState('')
+  const [vehiculoEjecutivo, setVehiculoEjecutivo] = useState('')
+  const [protector, setProtector] = useState('')
+  const [vehiculoProtector, setVehiculoProtector] = useState('')
+  const [grupoFamiliar, setGrupoFamiliar] = useState('')
   const [observacionVehiculo, setObservacionVehiculo] = useState('')
-  const [lugarSalida, setLugarSalida] = useState('0')
+  const [lugarSalida, setLugarSalida] = useState('')
   const [horaSalida, setHoraSalida] = React.useState(dayjs(new Date()))
 
-  const [lugarLlegada, setLugarLlegada] = useState('0')
+  const [lugarLlegada, setLugarLlegada] = useState('')
   const [horaLlegada, setHoraLlegada] = React.useState(dayjs(new Date()))
 
   const [observacion, setObservacion] = useState('')
@@ -43,26 +43,33 @@ const FormCrearEvento = ({
   const tipo = window.localStorage.getItem('tipo')
 
   const handleNuevoEvento = () => {
-    if (lugarSalida === '0' || lugarSalida === '' || lugarSalida === null) {
-      dispatch(setToast(true, 'error', 'Debe seleccionar un lugar de salida'))
+    if (
+      ejecutivo === '' ||
+      protector === '' ||
+      (lugarSalida === '' && lugarSalidaTexto === '')
+    ) {
+      dispatch(setToast('error', 'Ingrese los campos obligatorios'))
       return
     }
+
     const nuevoEvento = {
       ejecutivo: Number(ejecutivo),
 
-      familiar: grupoFamiliar === '0' ? null : Number(grupoFamiliar),
-      vehiculo_ejecutivo: Number(vehiculoEjecutivo),
+      familiar: grupoFamiliar === '' ? null : Number(grupoFamiliar),
+      vehiculo_ejecutivo:
+        vehiculoEjecutivo === '' ? null : Number(vehiculoEjecutivo),
 
       vehiculo_observacion: observacionVehiculo,
       protector: Number(protector),
 
-      vehiculo_protector: Number(vehiculoProtector),
+      vehiculo_protector:
+        vehiculoProtector === '' ? null : Number(vehiculoProtector),
 
-      lugar_salida: lugarSalida === '0' ? null : Number(lugarSalida),
+      lugar_salida: lugarSalida === '' ? null : Number(lugarSalida),
       lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
 
-      lugar_llegada: lugarLlegada === '0' ? null : lugarLlegada,
-      lugar_llegada_texto: lugarLlegadaTexto !== '0' ? lugarLlegadaTexto : null,
+      lugar_llegada: lugarLlegada === '' ? null : lugarLlegada,
+      lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
 
       hora_salida: true,
       observacion: observacion,
@@ -99,15 +106,15 @@ const FormCrearEvento = ({
   }
 
   const limpiarCampos = () => {
-    setEjecutivo('0')
-    setVehiculoEjecutivo('0')
-    setProtector('0')
-    setVehiculoProtector('0')
-    setGrupoFamiliar('0')
+    setEjecutivo('')
+    setVehiculoEjecutivo('')
+    setProtector('')
+    setVehiculoProtector('')
+    setGrupoFamiliar('')
     setObservacionVehiculo('')
-    setLugarSalida('0')
+    setLugarSalida('')
     setHoraSalida(dayjs(new Date()))
-    setLugarLlegada('0')
+    setLugarLlegada('')
     setHoraLlegada(dayjs(new Date()))
     setObservacion('')
     setLugarSalidaTexto('')
@@ -138,7 +145,7 @@ const FormCrearEvento = ({
                         value={ejecutivo}
                         onChange={e => seleccionaEjecutivo(e)}
                       >
-                        <option value='0'>Seleccione un ejecutivo</option>
+                        <option value=''>Seleccione un ejecutivo</option>
                         {Object.keys(ejecutivos).length > 0 &&
                           ejecutivos.results.map(ejecutivo => (
                             <option key={ejecutivo.id} value={ejecutivo.id}>
@@ -165,7 +172,7 @@ const FormCrearEvento = ({
                       value={vehiculoEjecutivo}
                       onChange={e => setVehiculoEjecutivo(e.target.value)}
                     >
-                      <option value='0'>Seleccione un vehículo</option>
+                      <option value=''>Seleccione un vehículo</option>
                       {Object.keys(vehiculosEjecutivos).length > 0
                         ? vehiculosEjecutivos.map(vehiculo => (
                             <option key={vehiculo.id} value={vehiculo.id}>
@@ -188,7 +195,7 @@ const FormCrearEvento = ({
                     value={grupoFamiliar}
                     onChange={e => setGrupoFamiliar(e.target.value)}
                   >
-                    <option value='0'>Seleccione un familiar</option>
+                    <option value=''>Seleccione un familiar</option>
                     {familiaresEjecutivo &&
                     Object.keys(familiaresEjecutivo).length > 0
                       ? familiaresEjecutivo.results.map(familiar => (
@@ -226,7 +233,7 @@ const FormCrearEvento = ({
                         value={protector}
                         onChange={e => setProtector(e.target.value)}
                       >
-                        <option value='0'>Seleccione un protector</option>
+                        <option value=''>Seleccione un protector</option>
                         {Object.keys(protectores).length > 0
                           ? protectores.results.map(p => (
                               <option key={p.id} value={p.id}>
@@ -254,7 +261,7 @@ const FormCrearEvento = ({
                       value={vehiculoProtector}
                       onChange={e => setVehiculoProtector(e.target.value)}
                     >
-                      <option value='0'>Seleccione un vehículo</option>
+                      <option value=''>Seleccione un vehículo</option>
                       {Object.keys(vehiculosProtector).length > 0
                         ? vehiculosProtector.results.map(vP => (
                             <option key={vP.id} value={vP.id}>
@@ -283,9 +290,7 @@ const FormCrearEvento = ({
                           value={lugarSalida}
                           onChange={e => setLugarSalida(e.target.value)}
                         >
-                          <option key='0' value='0'>
-                            Seleccione un lugar
-                          </option>
+                          <option value=''>Seleccione un lugar</option>
                           {Object.keys(lugares).length > 0
                             ? lugares.results.map(lugar => (
                                 <option key={lugar.id} value={lugar.id}>
@@ -375,9 +380,7 @@ const FormCrearEvento = ({
                           value={lugarLlegada}
                           onChange={e => setLugarLlegada(e.target.value)}
                         >
-                          <option key='0' value={0}>
-                            Seleccione un lugar
-                          </option>
+                          <option value=''>Seleccione un lugar</option>
                           {Object.keys(lugares).length > 0
                             ? lugares.results.map(lugar => (
                                 <option key={lugar.id} value={lugar.id}>

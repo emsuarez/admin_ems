@@ -99,7 +99,6 @@ const VehicleEjectivos = () => {
   }
 
   const handleSearch = e => {
-    console.log(e.target.value)
     dispatch(
       getVehiculoEjecutivoAction('/vehiculoejecutivo/?query=' + e.target.value)
     )

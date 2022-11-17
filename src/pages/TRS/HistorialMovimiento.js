@@ -128,7 +128,6 @@ const HistorialMovimiento = () => {
   }
 
   const handleDeleteEvento = movimiento => {
-    console.log(movimiento, 'movimiento')
     dispatch(deleteControlMovimientoAction({ id: movimiento.id }))
     setOpenDeleteModal(false)
   }
