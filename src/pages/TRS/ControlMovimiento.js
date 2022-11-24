@@ -108,13 +108,12 @@ const ControlMovimiento = () => {
   }
 
   const handleCrearEvento = infoEvento => {
-    // console.log(infoEvento)
     dispatch(postControlMovimiento(infoEvento))
   }
 
   const tipo = window.localStorage.getItem('tipo')
   const handleEditInformeModal = informe => {
-    if (tipo === '1') {
+    if (Number(tipo) === 1) {
       dispatch(patchControlMovimiento(informe))
     } else {
       dispatch(putControMovimiento(informe))

@@ -228,10 +228,10 @@ const EditMovimiento = ({
     } else {
       const eventoEditado = {
         ...dataSeleccionada,
-        lugar_llegada: lugarLlegada,
+        lugar_llegada: Number(lugarLlegada),
         lugar_llegada_texto: lugarLlegadaTexto,
 
-        hora_llegada: true,
+        hora_llegada: String(true),
 
         observacion: observacion,
       }
