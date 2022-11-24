@@ -108,6 +108,7 @@ const ControlMovimiento = () => {
   }
 
   const handleCrearEvento = infoEvento => {
+    // console.log(infoEvento)
     dispatch(postControlMovimiento(infoEvento))
   }
 

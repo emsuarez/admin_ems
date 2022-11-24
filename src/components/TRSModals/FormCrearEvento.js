@@ -68,7 +68,7 @@ const FormCrearEvento = ({
       lugar_salida: lugarSalida === '' ? null : Number(lugarSalida),
       lugar_salida_texto: lugarSalidaTexto !== '' ? lugarSalidaTexto : null,
 
-      lugar_llegada: lugarLlegada === '' ? null : lugarLlegada,
+      lugar_llegada: lugarLlegada === '' ? null : Number(lugarLlegada),
       lugar_llegada_texto: lugarLlegadaTexto !== '' ? lugarLlegadaTexto : null,
 
       hora_salida: true,
