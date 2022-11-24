@@ -180,7 +180,16 @@ const RecepcionTurnoTable = ({
                       </div>
                     </>
                   ) : (
-                    page > 0 && null
+                    <>
+                      <div
+                        className='bg-blue-900 rounded-md mx-1'
+                        onClick={() => handleOpenViewInforme(row)}
+                      >
+                        <span className='border-t-0 px-2 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap hover:cursor-pointer text-white mx-auto hover:bg-blue-600 hover:rounded'>
+                          Ver
+                        </span>
+                      </div>
+                    </>
                   )}
 
                   {tipo === '1' && (

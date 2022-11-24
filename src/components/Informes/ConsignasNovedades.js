@@ -8,6 +8,7 @@ const ConsignasNovedades = ({
   handleOpenEliminar,
   handleOpenCerrarItem,
   handleOpenEditarItemCerrado,
+  viewMode,
 }) => {
   const tipo = window.localStorage.getItem('tipo')
 
@@ -51,8 +52,7 @@ const ConsignasNovedades = ({
                       </button>
                     </>
                   )}
-
-                  {item.obs_cierre === null && (
+                  {!viewMode && item.obs_cierre === null && (
                     <button
                       onClick={() => handleOpenCerrarItem(item)}
                       className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
@@ -80,12 +80,14 @@ const ConsignasNovedades = ({
                   </div>
                   <div className='item-6 col-span-1 border-l-2'>
                     <div className='flex items-center flex-col mt-3'>
-                      <button
-                        onClick={() => handleOpenEditarItemCerrado(item)}
-                        className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
-                      >
-                        <Icon svgName='ib_editar' className='h-3 my-1' />
-                      </button>
+                      {!viewMode && (
+                        <button
+                          onClick={() => handleOpenEditarItemCerrado(item)}
+                          className='hover:cursor-pointer hover:bg-gray-200 hover:rounded-md'
+                        >
+                          <Icon svgName='ib_editar' className='h-3 my-1' />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </>

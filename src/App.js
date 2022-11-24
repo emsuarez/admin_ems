@@ -20,6 +20,7 @@ import ControlMovimiento from './pages/TRS/ControlMovimiento'
 import { TRSDashboard } from './pages/TRSUSER'
 import Usuarios from './pages/Usuarios'
 import { clearToast } from './store/actions'
+import ViewRecepcionCctv from './components/CCTV/ViewRecepcionCctv'
 
 function App(props) {
   return (
@@ -62,7 +63,7 @@ function App(props) {
           {/* CCTV */}
           <Route path='recepcionturnocctv' element={<RecepcionTurnoCctv />} />
           <Route path='editrecepcioncctv' element={<EditRecepcionCctv />} />
-          <Route path='viewrecepcioncctv' element={<EditRecepcionCctv />} />
+          <Route path='viewrecepcioncctv' element={<ViewRecepcionCctv />} />
           {/* CCTVUSER */}
           <Route path='cctvdashboard' element={<CCTVDashboard />} />
 
