@@ -1,11 +1,11 @@
-import { Box, Modal } from '@mui/material';
-import React from 'react';
+import { Box, Modal } from '@mui/material'
+import React from 'react'
 
-import { format } from 'date-fns';
-import { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import logo from '../../assets/logo.png';
-import { ICONS } from '../constants';
+import { format } from 'date-fns'
+import { useRef } from 'react'
+import { useReactToPrint } from 'react-to-print'
+import logo from '../../assets/logo.png'
+import { ICONS } from '../constants'
 
 const VerEventoModal = ({
   openModal,
@@ -21,10 +21,10 @@ const VerEventoModal = ({
   lugares,
   familiaresEjecutivo,
 }) => {
-  const componentRef = useRef();
+  const componentRef = useRef()
   const handleGenerarReportePdf = useReactToPrint({
     content: () => componentRef.current,
-  });
+  })
   return (
     <>
       <Modal
@@ -192,19 +192,25 @@ const VerEventoModal = ({
                         <span className='font-semibold text-sm pr-4 w-36'>
                           Lugar Salida:
                         </span>
-                        {dataSeleccionada.lugar_salida &&
-                          lugares.results?.find(
-                            lugar => lugar.id === dataSeleccionada.lugar_salida
-                          )?.alias}
+                        {dataSeleccionada.lugar_salida
+                          ? lugares.results?.find(
+                              lugar =>
+                                lugar.id === dataSeleccionada.lugar_salida
+                            )?.alias
+                          : dataSeleccionada.lugar_salida_texto &&
+                            dataSeleccionada.lugar_salida_texto}
                       </p>
                       <p className='text-sm flex justify-start'>
                         <span className='font-semibold text-sm pr-4 w-36'>
                           Lugar Llegada:
                         </span>
-                        {dataSeleccionada.lugar_llegada &&
-                          lugares.results?.find(
-                            lugar => lugar.id === dataSeleccionada.lugar_llegada
-                          )?.alias}
+                        {dataSeleccionada.lugar_llegada
+                          ? lugares.results?.find(
+                              lugar =>
+                                lugar.id === dataSeleccionada.lugar_llegada
+                            )?.alias
+                          : dataSeleccionada.lugar_llegada_texto &&
+                            dataSeleccionada.lugar_llegada_texto}
                       </p>
                     </div>
                     <div className='flex flex-col'>
@@ -257,7 +263,7 @@ const VerEventoModal = ({
         </Box>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default VerEventoModal;
+export default VerEventoModal
